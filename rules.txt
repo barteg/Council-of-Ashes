@@ -1,0 +1,86 @@
+# **Rada Popiołów – Oficjalny Podręcznik Zasad**
+
+## **Wstęp**
+
+Król jest stary, a jego uścisk na królestwie słabnie. Zdrada czai się w cieniach, a starożytne groźby budzą się na granicach. O losie krainy decyduje teraz tajna rada złożona z najpotężniejszych postaci w królestwie – **Rada Popiołów**.
+
+Wcielasz się w jednego z tych ambitnych arystokratów. Twoim celem jest lawirowanie między politycznymi intrygami, zdobywanie wpływów i realizowanie celów swojej frakcji, a wszystko to przy jednoczesnym dbaniu o to, by królestwo nie pogrążyło się w chaosie. Pamiętaj, władza jest ulotna, a sojusze jeszcze bardziej. Tylko jeden może zostać prawdziwą potęgą stojącą za tronem.
+
+## **Cel Gry**
+
+Twoim ostatecznym celem jest zdobycie tytułu najbardziej wpływowej osoby w królestwie.
+
+#### **Warunki Zwycięstwa**
+Gra kończy się, gdy spełniony zostanie jeden z poniższych warunków:
+
+1.  **Zwycięstwo przez Dominację:** Pierwszy gracz, który zdobędzie **100 Punktów Wpływów**, natychmiast wygrywa grę, przejmując de facto kontrolę nad Radą i królestwem.
+2.  **Zwycięstwo na Punkty:** Jeśli żaden gracz nie osiągnie 100 Wpływów do końca **8. rundy**, gra kończy się, a zwycięzcą zostaje gracz z najwyższym Wynikiem Końcowym.
+
+#### **Warunek Przegranej**
+Jeśli w dowolnym momencie jedna z trzech Statystyk Globalnych (`Stabilność`, `Gospodarka` lub `Wiara`) spadnie do **0**, królestwo upada. Wszyscy gracze przegrywają.
+
+## **Struktura Rundy**
+
+Każda z 8 rund gry podzielona jest na cztery fazy, które następują po sobie w ustalonej kolejności:
+
+1.  **Faza Oświadczeń:** Faza dyplomacji i publicznych deklaracji.
+2.  **Faza Akcji:** Faza tajnych działań i wydawania Wpływów.
+3.  **Faza Dylematu:** Faza głosowania nad kluczowym kryzysem.
+4.  **Faza Rozstrzygnięcia:** Faza ujawnienia wyników i poniesienia konsekwencji.
+
+---
+
+### **Faza 1: Faza Oświadczeń**
+
+1.  **Składanie Oświadczeń:** Na początku rundy każdy gracz pisze krótkie oświadczenie, w którym może doradzać Radzie, potępiać działania innych lub forsować cele swojej frakcji.
+2.  **Głosowanie:** Wszystkie oświadczenia są publicznie ujawniane. Następnie każdy gracz w tajemnicy głosuje na jedno oświadczenie, które uważa za najbardziej przekonujące. **Nie można głosować na własne oświadczenie.**
+3.  **Nagroda:** Gracz, którego oświadczenie zdobędzie najwięcej głosów, otrzymuje **Punkty Wpływów równe liczbie otrzymanych głosów**. W przypadku remisu na pierwszym miejscu, nikt nie otrzymuje nagrody.
+    *   *Ważna uwaga:* Wpływy zdobyte w tej fazie **nie wliczają się** do progu 100 Wpływów potrzebnych do Zwycięstwa przez Dominację. Dodaje się je jedynie do wyniku na koniec gry.
+
+### **Faza 2: Faza Akcji**
+
+W tej fazie gracze potajemnie wydają swoje Wpływy, aby wykonać jedną z trzech dostępnych akcji. Wybrana akcja i jej cel pozostają tajne aż do Fazy Rozstrzygnięcia.
+
+| Akcja | Koszt Wpływów | Efekt |
+| :--- | :--- | :--- |
+| **Chroń Reputację** | 5 | W tej rundzie nie możesz być celem akcji `Zdemaskuj`. Próba użycia jej na tobie kończy się niepowodzeniem, a atakujący traci swoje Wpływy. |
+| **Zdemaskuj** | 20 | Wybierz jednego gracza. W Fazie Rozstrzygnięcia otrzymasz prywatną wiadomość z informacją o jego aktualnej liczbie Wpływów oraz o tym, jak zagłosował w tej rundzie. |
+| **Zasiej Niezgodę**| 25 | Wybierz jedną frakcję (może być twoja własna). W Fazie Rozstrzygnięcia indywidualne głosy wszystkich członków tej frakcji zostaną publicznie ujawnione. |
+
+### **Faza 3: Faza Dylematu**
+
+1.  **Ujawnienie Dylematu:** Narrator (Gemini) przedstawia Radzie kryzys lub szansę, przed którą stoi królestwo, wraz z 2-3 możliwymi rozwiązaniami (polisami).
+2.  **Głosowanie:** Każdy gracz w tajemnicy głosuje na jedną z dostępnych opcji.
+
+### **Faza 4: Faza Rozstrzygnięcia**
+
+1.  **Wynik Głosowania:** Głosy są liczone. Polisa, która zdobyła najwięcej głosów, zostaje wdrożona. W przypadku remisu, Narrator dokonuje losowego wyboru spośród opcji z najwyższą liczbą głosów.
+2.  **Rozpatrzenie Akcji:** Efekty akcji `Zdemaskuj` i `Zasiej Niezgodę` są teraz rozpatrywane i ich wyniki są ujawniane (prywatnie lub publicznie, w zależności od akcji).
+3.  **Nagrody za Wpływy:**
+    *   Każdy gracz, który zagłosował na zwycięską polisę, otrzymuje **+5 Wpływów**.
+    *   Jeśli wszyscy członkowie jednej frakcji zagłosowali tak samo (osiągnęli konsensus), każdy z nich otrzymuje dodatkowo **+3 Wpływy**.
+4.  **Aktywacja Mocy Frakcji:** Jeśli frakcja osiągnęła konsensus w głosowaniu, jej unikalna moc zostaje aktywowana (patrz: Frakcje).
+5.  **Konsekwencje:** Narrator opisuje fabularne skutki podjętej decyzji, a Statystyki Globalne (`Stabilność`, `Gospodarka`, `Wiara`) zostają zaktualizowane zgodnie z efektami wybranej polisy.
+
+## **Koniec Gry i Punktacja**
+
+Gra kończy się natychmiast, gdy gracz osiągnie 100 Wpływów, lub po zakończeniu 8. rundy.
+
+1.  **Premia Frakcji Rządzącej:** Na koniec gry zsumujcie Wpływy wszystkich graczy w każdej frakcji. Frakcja z najwyższym łącznym wynikiem zostaje "Frakcją Rządzącą". Każdy gracz należący do tej frakcji otrzymuje **+15 Wpływów** do swojego wyniku końcowego.
+2.  **Obliczenie Wyniku Końcowego:** `Twój Wynik Końcowy = Twoje Wpływy + Premia Frakcji Rządzącej (jeśli dotyczy)`
+3.  **Wyłonienie Zwycięzcy:** Gracz z najwyższym Wynikiem Końcowym zostaje zwycięzcą.
+
+## **Frakcje i Ich Moce**
+
+Każda frakcja posiada unikalną moc, która aktywuje się automatycznie, gdy wszyscy jej członkowie zagłosują w konsensusie nad dylematem.
+
+| Frakcja | Moc Frakcji | Efekt Mocy |
+| :--- | :--- | :--- |
+| **Syndykat Kupiecki** | Mistrzostwo Handlu | Królestwo zyskuje **+3 do Gospodarki**. |
+| **Wysokie Kapłaństwo** | Boska Łaska | Królestwo zyskuje **+3 do Wiary**. |
+| **Gwardia Królewska** | Utrzymanie Porządku | Królestwo zyskuje **+3 do Stabilności**. |
+
+## **Zasady Specjalne**
+
+### **Reguła Hańby**
+Jeśli twój głos zostanie oddany na polisę, która w wyniku swojego efektu spowoduje spadek którejkolwiek ze Statystyk Globalnych do 0 (lub poniżej), zostajesz **Wygnany z Rady**. Twój wynik zostaje wyzerowany i nie możesz wygrać gry, nawet jeśli statystyka zostanie później podniesiona. Twój głos jest ostateczny i wiążący – waż go mądrze.

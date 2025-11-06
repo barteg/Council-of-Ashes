@@ -1,0 +1,27 @@
+{
+  "id": "round_9_echo_okrucienstwa",
+  "title": "Echo Okrucieństwa: Sankcje Handlowe",
+  "description": "Wieści o brutalnej ekspedycji i wykorzystywaniu podbitych ludów rozeszły się szerokim echem. Okoliczne królestwa, oburzone waszymi działaniami, zamknęły swe granice, nakładając surowe sankcje handlowe. Wasze bogactwo jest teraz zagrożone, a królestwo stoi w obliczu narastającej izolacji.",
+  "image": "/static/images/trade_sanctions.png",
+  "choices": [
+    {
+      "text": "Zaproponować negocjacje, oferując reparacje i zakończenie eksploatacji podbitych ludów, by przywrócić stosunki handlowe.",
+      "effects": {
+        "Stability": 10,
+        "Economy": -15,
+        "Faith": 10
+      },
+      "narrative_consequence": "Dyplomaci wyruszą, by naprawić nadszarpnięte stosunki, jednak cena za pokój i odzyskanie wiary będzie wysoka dla skarbca, a Syndykat Kupiecki głośno wyrazi swoje niezadowolenie."
+    },
+    {
+      "text": "Zignorować sankcje, inwestować w samowystarczalność i szukać nowych, nieznanych szlaków handlowych, a w razie potrzeby użyć siły, by je otworzyć.",
+      "effects": {
+        "Stability": -10,
+        "Economy": 5,
+        "Faith": -15
+      },
+      "narrative_consequence": "Królestwo zacieśni pas, mobilizując swe siły i szukając alternatywnych dróg do przetrwania. Wiara w monarchę i stabilność państwa mogą ucierpieć w obliczu narastającej izolacji i konieczności dalszych brutalnych działań."
+    }
+  ],
+  "narrative_prompt": "Rada Popiołów musi zadecydować, czy podtrzymać swą bezwzględną politykę i zaryzykować dalszą izolację, czy też szukać pojednania, co może kosztować cenne zasoby i utratę twarzy. Wybór będzie miał dalekosiężne konsekwencje dla przyszłości królestwa."
+}

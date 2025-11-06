@@ -1,0 +1,318 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+    --background-color: #121212;
+    --card-background-color: #1E1E1E;
+    --text-color: #E0E0E0;
+    --header-color: #FFFFFF;
+    --accent-color: #BB86FC;
+    --accent-color-darker: #3700B3;
+    --border-color: #333333;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --progress-bg: #333333;
+    --progress-bar-color-stability: #03DAC6;
+    --progress-bar-color-economy: #00E676;
+    --progress-bar-color-faith: #FFD600;
+    --progress-bar-color-influence: #FF4081;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--header-color);
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+h1 {
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.container {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.floating-element {
+    background-color: var(--card-background-color);
+    border: 1px solid transparent; /* Changed border color to transparent */
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0 4px 8px var(--shadow-color); /* Added subtle shadow */
+}
+
+.floating-element:hover {
+    transform: translateY(-5px);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-control {
+    background-color: #2C2C2C;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    background-color: #2C2C2C;
+    color: var(--text-color);
+    border-color: var(--accent-color);
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 600;
+    color: var(--header-color);
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: var(--accent-color);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    background-color: var(--accent-color-darker);
+}
+
+.list-group-item {
+    background-color: var(--card-background-color);
+    border: 1px solid transparent; /* Changed border color to transparent */
+    color: var(--text-color);
+    margin-bottom: -1px;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Added subtle shadow */
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.list-group-item:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.list-group-item-action:hover, .list-group-item-action:focus {
+    background-color: #333;
+    color: var(--text-color);
+    transform: scale(1.02);
+    z-index: 1;
+}
+
+.list-group-item.active {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+
+#playerUrls .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#playerUrls strong {
+    flex-grow: 1;
+    margin-right: 1rem;
+}
+
+#playerUrls div[style*="float: right"] {
+    flex-shrink: 0;
+    margin-left: 1rem;
+    background: white;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+/* Progress Bar Styles */
+.progress {
+    height: 28px;
+    margin-bottom: 1.5rem;
+    background-color: var(--progress-bg);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-weight: bold;
+    font-size: 0.9rem;
+    height: 100%;
+    transition: width 0.6s ease;
+    border-radius: 14px;
+}
+
+.progress-bar.bg-info {
+    background-color: var(--progress-bar-color-stability) !important;
+}
+
+.progress-bar.bg-success {
+    background-color: var(--progress-bar-color-economy) !important;
+}
+
+.progress-bar.bg-warning {
+    background-color: var(--progress-bar-color-faith) !important;
+}
+
+.chosen-button::after {
+    content: ' ✔';
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.status-chosen::after {
+    content: '✔';
+    color: var(--progress-bar-color-economy);
+    margin-left: 10px;
+}
+
+.status-waiting::after {
+    content: '...';
+    color: var(--progress-bar-color-faith);
+    margin-left: 10px;
+    animation: pulse 1.5s infinite;
+}
+
+
+
+.status-ready {
+    background-color: #03DAC6;
+    color: #000;
+}
+
+.status-ready::after {
+    content: 'Ready';
+    color: var(--progress-bar-color-stability);
+    margin-left: 10px;
+    font-weight: bold;
+    background-color: #03DAC6; /* Example color for ready status */
+    padding: 2px 8px;
+    border-radius: 5px;
+}
+
+.status-disconnected {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+/* Glowing effect for player names */
+@keyframes glow-name {
+    0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+    50% { text-shadow: 0 0 15px rgba(255, 255, 255, 0.9), 0 0 20px rgba(255, 255, 255, 0.7); }
+    100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+}
+
+.player-name-glow {
+    animation: glow-name 1.5s infinite alternate;
+    color: #fff; /* Ensure text is visible */
+}
+
+/* Glowing effect for three dots */
+@keyframes glow-dots {
+    0% { text-shadow: 0 0 3px rgba(255, 255, 255, 0.3); }
+    50% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 15px rgba(255, 255, 255, 0.5); }
+    100% { text-shadow: 0 0 3px rgba(255, 255, 255, 0.3); }
+}
+
+.player-dots-glow {
+    animation: glow-dots 1.5s infinite alternate;
+    color: #fff; /* Ensure dots are visible */
+    font-weight: bold;
+}
+
+/* Animation for player joining */
+@keyframes player-join-animation {
+    0% { opacity: 0; transform: scale(0.8); }
+    70% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.player-joining {
+    animation: player-join-animation 0.5s ease-out forwards;
+}
+
+/* Yellow Glowing effect for player names (Ready) */
+@keyframes glow-name-yellow {
+    0% { text-shadow: 0 0 5px rgba(255, 255, 0, 0.5); }
+    50% { text-shadow: 0 0 15px rgba(255, 255, 0, 0.9), 0 0 20px rgba(255, 255, 0, 0.7); }
+    100% { text-shadow: 0 0 5px rgba(255, 255, 0, 0.5); }
+}
+
+.player-name-yellow {
+    animation: glow-name-yellow 1.5s infinite alternate;
+    color: #fff; /* Ensure text is visible */
+}
+
+/* Yellow Glowing effect for three dots (Joined but not Ready) */
+@keyframes glow-dots-yellow {
+    0% { text-shadow: 0 0 3px rgba(255, 255, 0, 0.3); }
+    50% { text-shadow: 0 0 10px rgba(255, 255, 0, 0.7), 0 0 15px rgba(255, 255, 0, 0.5); }
+    100% { text-shadow: 0 0 3px rgba(255, 255, 0, 0.3); }
+}
+
+.player-dots-yellow {
+    animation: glow-dots-yellow 1.5s infinite alternate;
+    color: #fff; /* Ensure dots are visible */
+    font-weight: bold;
+}

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Node
+node_modules/
+app@latest/node_modules/
+
+# Tauri
+app@latest/src-tauri/target/
+app@latest/src-tauri/gen/
+
+# Backups
+*.zip
+*.gz
+
+# Large vendor directories
+stable-diffusion-webui/
+
+# IDE
+.vscode/

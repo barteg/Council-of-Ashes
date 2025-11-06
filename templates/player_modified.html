@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontroler Gracza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at top, #2b1d1d, #0d0909); color: #f5f3eb; }
+        .btn { background: linear-gradient(135deg, #d4af37, #ff944d); color: #1a0f0f; font-weight: bold; border-radius: 12px; padding: 12px 24px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.5); cursor: pointer; width: 80%; max-width: 300px; font-size: 1.5rem; margin: 10px; }
+        .btn:disabled { background: #555; cursor: not-allowed; }
+        .avatar-choice { cursor: pointer; transition: transform 0.2s; border: 2px solid transparent; border-radius: 50%; }
+        .avatar-choice.selected { border-color: #d4af37; transform: scale(1.1); }
+        .hidden { display: none; }
+        #message-container {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #fff;
+        }
+        #outcome-message-container {
+            background: rgba(0,0,0,0.7);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="text-center p-4">
+
+    <div id="message-container" class="hidden">
+        <p id="message-text"></p>
+    </div>
+    <input type="hidden" id="game-id" value="{{ game_id }}">
+    <input type="hidden" id="player-id" value="{{ player_id }}">
+
+    <!-- ================= CONTROLLER UI ================= -->
+    <div id="controller-ui" class="flex flex-col items-center justify-center w-full">
+        <h1 id="turn-message" class="text-3xl font-bold mb-8">Oczekiwanie na rozpoczęcie gry...</h1>
+        <img id="dilemma-image" src="" alt="Dilemma Image" class="hidden w-full h-auto mb-4 rounded-lg object-cover">
+
+        <div id="dilemma-options" class="flex flex-col items-center justify-center w-full">
+            <!-- Dilemma buttons will be inserted here -->
+        </div>
+
+        <button id="confirm-drink-shot-btn" class="btn hidden">Potwierdź, że wypiłeś shota</button>
+
+        <!-- Outcome/Penalty/Shot Message Container -->
+        <div id="outcome-message-container" class="hidden mt-4 p-4 bg-gray-800 rounded-lg">
+            <p id="outcome-text" class="text-lg leading-relaxed text-gray-200"></p>
+            <p id="penalty-text" class="text-lg leading-relaxed text-red-400"></p>
+            <h2 id="shot-text" class="text-3xl font-bold text-red-500 hidden"></h2>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        const socket = io({
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000
+        });
+        const gameId = "{{ game_id }}";
+        const playerId = "{{ player_id }}";
+
+        // UI Elements
+        const controllerUI = document.getElementById('controller-ui');
+        const turnMessage = document.getElementById('turn-message');
+        const dilemmaImage = document.getElementById('dilemma-image');
+        const dilemmaOptionsContainer = document.getElementById('dilemma-options');
+        const confirmDrinkShotBtn = document.getElementById('confirm-drink-shot-btn');
+        const outcomeMessageContainer = document.getElementById('outcome-message-container');
+        const outcomeText = document.getElementById('outcome-text');
+        const penaltyText = document.getElementById('penalty-text');
+        const shotText = document.getElementById('shot-text');
+
+
+        // Game controls
+        function disableAllButtons() {
+            confirmDrinkShotBtn.classList.add('hidden'); // Hide the new button
+            dilemmaOptionsContainer.style.display = 'none'; // Explicitly hide
+            dilemmaOptionsContainer.innerHTML = ''; // Clear dilemma buttons
+        }
+
+        function showDilemmaButtons(dilemmaOptionsArray) {
+            dilemmaOptionsContainer.innerHTML = ''; // Clear previous content
+
+            dilemmaOptionsArray.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('btn');
+                button.textContent = option.text;
+                button.dataset.choiceIndex = index;
+                button.addEventListener('click', () => sendDilemmaChoice(index));
+                button.disabled = false; // Ensure button is enabled
+                dilemmaOptionsContainer.appendChild(button);
+            });
+            dilemmaOptionsContainer.style.display = 'flex'; // Ensure dilemma options are visible
+        }
+
+        socket.on('connect', () => {
+            socket.emit('join_game', { game_id: gameId, player_id: playerId });
+            // Automatically emit player_setup after joining
+            socket.emit('player_setup', {
+                game_id: gameId,
+                player_id: playerId
+            });
+        });
+
+        socket.on('game_started_for_player', () => {
+            turnMessage.textContent = 'Gra rozpoczęta! Oczekiwanie na ruch...';
+            // Initial dilemma prompt will handle button display
+        });
+
+        socket.on('game_event', (data) => {
+            console.log('Received game_event:', data);
+
+            if (data.dilemma) { 
+                const dilemmaData = data.dilemma; 
+                if (dilemmaData.image) {
+                    dilemmaImage.src = dilemmaData.image;
+                    dilemmaImage.classList.remove('hidden');
+                } else {
+                    dilemmaImage.classList.add('hidden');
+                }
+
+                if (data.event === 'dilemma_prompt') { // Zmieniono z 'new_turn' na 'dilemma_prompt'
+                    turnMessage.textContent = "Wybierz swoją opcję:";
+                    controllerUI.style.display = 'flex';
+                    outcomeMessageContainer.classList.add('hidden'); // Hide previous outcome
+                    if (dilemmaData.options) {
+                        showDilemmaButtons(dilemmaData.options);
+                    }
+                } else if (data.event === 'player_made_choice' && data.player_id === playerId) {
+                    turnMessage.textContent = "Wysłano wybór. Oczekiwanie na drugiego gracza...";
+                    disableAllButtons();
+                } else if (data.event === 'other_player_made_choice') {
+                    turnMessage.textContent = "Drugi gracz dokonał wyboru. Czekaj...";
+                } else if (data.event === 'drink_shot') { 
+                    turnMessage.textContent = "Nie zgadzacie się! Pijcie shota i potwierdźcie!";
+                    controllerUI.style.display = 'flex';
+                    dilemmaOptionsContainer.style.display = 'none'; // Hide dilemma options
+                    confirmDrinkShotBtn.classList.remove('hidden'); // Show confirm button
+                } else if (data.event === 'dilemma_outcome_for_player') { 
+                    outcomeMessageContainer.classList.remove('hidden');
+                    outcomeText.innerHTML = `<p>${data.outcome_text}</p>`;
+                    if (data.trigger_shot) {
+                        shotText.textContent = "NIE ZGADZACIE SIĘ! PIJCIE SHOTA!";
+                        shotText.classList.remove('hidden');
+                    } else {
+                        shotText.classList.add('hidden');
+                    }
+                    if (data.penalty) {
+                        penaltyText.innerHTML = `KARA: ${data.penalty.description}`;
+                        penaltyText.classList.remove('hidden');
+                    } else {
+                        penaltyText.classList.add('hidden');
+                    }
+                    turnMessage.textContent = "Dylemat rozwiązany. Czekaj na kolejny krok...";
+                    disableAllButtons(); // Ensure buttons are disabled after outcome
+                } else if (data.event === 'story_end') { 
+                    turnMessage.innerHTML = `<h2 class="text-3xl font-bold text-yellow-400">Koniec historii!</h2><p>${dilemmaData.prompt}</p><p>${dilemmaData.outcome}</p>`;
+                    disableAllButtons();
+                }
+            }
+        });
+
+        function sendDilemmaChoice(choiceIndex) {
+            socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'dilemma_choice', choice: choiceIndex });
+            turnMessage.textContent = "Wysłano wybór. Czekaj...";
+            disableAllButtons();
+        }
+
+        confirmDrinkShotBtn.addEventListener('click', () => {
+            socket.emit('confirm_drink_shot', { game_id: gameId, player_id: playerId });
+            turnMessage.textContent = "Potwierdzono. Oczekiwanie na drugiego gracza...";
+            disableAllButtons();
+        });
+
+        socket.on('disconnect', () => {
+            turnMessage.textContent = "Rozłączono z serwerem.";
+            disableAllButtons();
+        });
+
+        socket.on('other_player_disconnected', () => {
+            turnMessage.textContent = "Drugi gracz się rozłączył.";
+            disableAllButtons();
+        });
+
+        socket.on('other_player_reconnected', () => {
+            turnMessage.textContent = "Drugi gracz dołączył ponownie.";
+        });
+    </script>
+</body>
+</html>
