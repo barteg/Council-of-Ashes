@@ -361,6 +361,12 @@ if (gameId && playerId) {
         narrativeText.textContent = data.outcome; // Set text content
         narrativeText.style.display = 'none'; // Explicitly hide the narrative text
         currentRoundSpan.textContent = data.current_round;
+
+        // Update player stats with the new data from the server
+        if (data.players && data.players[playerId]) {
+            updatePersonalStats(data.players[playerId]);
+        }
+
         narrativeOutput.style.display = 'block'; // Show narrativeOutput to display the button
         document.getElementById('nextRoundBtn').style.display = 'block'; // Show the Next Event button
         dilemmaSection.style.display = 'none';

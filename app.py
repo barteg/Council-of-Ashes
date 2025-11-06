@@ -416,7 +416,8 @@ def resolve_dilemma(game_id):
     emit('dilemma_resolved', {
         'outcome': outcome_narrative_data['outcome_narrative'],
         'global_stats': game['global_stats'],
-        'current_round': game['current_round']
+        'current_round': game['current_round'],
+        'players': game['players']  # Add updated player data
     }, room=game_id, broadcast=True)
 
     game['dilemma_active'] = False
