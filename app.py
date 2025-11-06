@@ -444,6 +444,18 @@ def resolve_dilemma(game_id):
         'global_stats_after': game['global_stats'].copy()
     })
 
+    # Check for win condition by influence
+    winner = None
+    for pid, p in game['players'].items():
+        if p['personal_stats']['Influence'] >= 100:
+            winner = p
+            break
+
+    if winner:
+        game['state'] = 'GAME_OVER'
+        emit('game_over', {'winner': winner}, room=game_id, broadcast=True)
+        return
+
     emit('dilemma_resolved', {
         'outcome': outcome_narrative_data['outcome_narrative'],
         'global_stats': game['global_stats'],

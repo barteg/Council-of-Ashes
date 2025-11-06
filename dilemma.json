@@ -1,27 +1,26 @@
 {
-  "id": "round_9_echo_okrucienstwa",
-  "title": "Echo Okrucieństwa: Sankcje Handlowe",
-  "description": "Wieści o brutalnej ekspedycji i wykorzystywaniu podbitych ludów rozeszły się szerokim echem. Okoliczne królestwa, oburzone waszymi działaniami, zamknęły swe granice, nakładając surowe sankcje handlowe. Wasze bogactwo jest teraz zagrożone, a królestwo stoi w obliczu narastającej izolacji.",
-  "image": "/static/images/trade_sanctions.png",
+  "id": "elite_unrest_13",
+  "title": "Zgiełk Wśród Elit",
+  "description": "Po niedawnej rekwizycji majątków, gniew bogatych kupców i szlachty osiągnął punkt krytyczny. Zamiast otwarcie stawiać czoła, elity zaczęły organizować ukryte protesty i sabotaże, które paraliżują handel i rzucają cień na autorytet korony. Miasta nękane są plotkami o zdradzie, a lojalność wielu możnych wisi na włosku.",
   "choices": [
     {
-      "text": "Zaproponować negocjacje, oferując reparacje i zakończenie eksploatacji podbitych ludów, by przywrócić stosunki handlowe.",
+      "text": "Zaoferować publiczne ustępstwa i symbolicznie przywrócić część zarekwirowanych dóbr, by uspokoić nastroje wśród elit i zapobiec dalszemu rozkładowi.",
       "effects": {
-        "Stability": 10,
+        "Stability": 15,
         "Economy": -15,
-        "Faith": 10
+        "Faith": 5
       },
-      "narrative_consequence": "Dyplomaci wyruszą, by naprawić nadszarpnięte stosunki, jednak cena za pokój i odzyskanie wiary będzie wysoka dla skarbca, a Syndykat Kupiecki głośno wyrazi swoje niezadowolenie."
+      "narrative_consequence": "Choć niektórzy magnaci odzyskają część majątku i ulżą w gniewie, Syndykat Kupiecki może poczuć się zdradzony, widząc, jak ustępstwa niweczą jego wcześniejsze poświęcenia."
     },
     {
-      "text": "Zignorować sankcje, inwestować w samowystarczalność i szukać nowych, nieznanych szlaków handlowych, a w razie potrzeby użyć siły, by je otworzyć.",
+      "text": "Wzmocnić Gwardię Królewską i nakazać aresztowania najbardziej wpływowych wichrzycieli oraz dalsze konfiskaty, pokazując nieustępliwą siłę korony.",
       "effects": {
-        "Stability": -10,
-        "Economy": 5,
-        "Faith": -15
+        "Stability": -20,
+        "Economy": 10,
+        "Faith": -10
       },
-      "narrative_consequence": "Królestwo zacieśni pas, mobilizując swe siły i szukając alternatywnych dróg do przetrwania. Wiara w monarchę i stabilność państwa mogą ucierpieć w obliczu narastającej izolacji i konieczności dalszych brutalnych działań."
+      "narrative_consequence": "Choć porządek zostanie przywrócony siłą, elity, w tym być może frakcje Syndykatu, mogą pogłębić swój opór, prowadząc królestwo na skraj wojny domowej."
     }
   ],
-  "narrative_prompt": "Rada Popiołów musi zadecydować, czy podtrzymać swą bezwzględną politykę i zaryzykować dalszą izolację, czy też szukać pojednania, co może kosztować cenne zasoby i utratę twarzy. Wybór będzie miał dalekosiężne konsekwencje dla przyszłości królestwa."
+  "narrative_prompt": "Wybór, przed którym staje Rada, zadecyduje o przyszłości relacji korony z najpotężniejszymi rodami i kupcami, a echa lakonicznych oświadczeń Bartega wciąż rezonują w powietrzu."
 }

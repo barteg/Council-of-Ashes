@@ -436,6 +436,24 @@ if (gameId && playerId) {
     socket.on('other_player_disconnected', (data) => {
         console.log('Other player disconnected:', data);
     });
+
+    socket.on('game_over', (data) => {
+        // Hide all other game areas
+        if (gameArea) gameArea.style.display = 'none';
+        if (document.getElementById('hostControl')) document.getElementById('hostControl').style.display = 'none';
+        if (waitingRoom) waitingRoom.style.display = 'none';
+
+        // Show the game over screen
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const winnerInfo = document.getElementById('winnerInfo');
+
+        if (data.winner) {
+            winnerInfo.textContent = `${data.winner.name} has achieved total domination!`;
+        } else {
+            winnerInfo.textContent = 'The game has ended.';
+        }
+        gameOverScreen.style.display = 'block';
+    });
 }
 function updatePlayerStatusOnHost(player, playerId) {
     const playerStatus = document.getElementById(`player-status-${playerId}`);

@@ -36,62 +36,19 @@
         </div>
 
         <div id="gameArea" style="display: none;">
-            <div id="influenceSection" class="text-center my-5">
-                <h5>Influence</h5>
-                <div class="progress">
-                    <div id="statInfluence" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
+            <!-- Player Info -->
+            ...
+        </div>
 
-            <div id="dilemmaSection" class="floating-element mb-4">
-                <h3 id="dilemmaTitle"></h3>
-                <img id="dilemmaImage" src="" alt="Dilemma Image" class="img-fluid mb-3" style="display: none;">
-                <p id="dilemmaDescription"></p>
-                <div id="dilemmaChoices" class="list-group">
-                    <!-- Choices will be loaded here -->
-                </div>
-            </div>
-
-            <div id="waitingForPlayers" class="text-center" style="display: none;">
-                <h3>Waiting for other players...</h3>
-            </div>
-
-
-
-            <div id="statementVoteSection" class="floating-element mb-4" style="display: none;">
-                <h4>Vote for a Statement</h4>
-                <div id="statementVoteList" class="list-group">
-                    <!-- Statements to vote on will be loaded here -->
-                </div>
-                <p id="statementVoteStatus" class="text-center" style="display: none;">Waiting for other players to vote...</p>
-            </div>
-
-            <div id="actionPhaseSection" class="floating-element mb-4" style="display: none;">
-                <h4>Action Phase</h4>
-                <p>Choose one action to perform this round. Your choice will be revealed in the Resolution Phase.</p>
-                <div id="actionList">
-                    <!-- Actions will be rendered here by main.js -->
-                </div>
-                <button id="submitActionBtn" class="btn btn-primary btn-block mt-3" disabled>Confirm Action</button>
-            </div>
-
-            <div id="playerStatementsSection" class="floating-element mb-4" style="display: none;">
-                <h4>Your Statement to the Council</h4>
-                <textarea id="playerStatementInput" class="form-control mb-2" rows="2" placeholder="Type your statement here..."></textarea>
-                <button id="submitStatementBtn" class="btn btn-secondary btn-block">Submit Statement</button>
-                <ul id="statementStatusList" class="list-group mt-3"></ul>
-            </div>
-
-            <div id="narrativeOutput" class="floating-element mb-4" style="display: none;">
-                <h4>Narrative</h4>
-                <p id="narrativeText"></p>
-                <button id="nextRoundBtn" class="btn btn-success btn-block mt-3" style="display: none;">Next Event</button>
-            </div>
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="text-center" style="display: none;">
+            <h1>Game Over</h1>
+            <h2 id="winnerInfo"></h2>
         </div>
 
         <div id="waitingRoom" class="text-center">
-            <h2>Waiting for the game to start...</h2>
-            <button id="readyBtn" class="btn btn-primary btn-lg mt-3">Ready</button>
+            <h2>Waiting Room</h2>
+            ...
         </div>
     </div>
 
