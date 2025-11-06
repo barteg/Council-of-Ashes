@@ -370,6 +370,12 @@ def resolve_dilemma(game_id):
             game['global_stats'][stat] += change
             game['global_stats'][stat] = max(0, min(100, game['global_stats'][stat]))
 
+    # Check for lose condition (kingdom collapse)
+    if any(stat <= 0 for stat in game['global_stats'].values()):
+        game['state'] = 'GAME_OVER'
+        emit('game_over', {'winner': None, 'reason': 'The kingdom has collapsed!'}, room=game_id, broadcast=True)
+        return
+
     # --- Start of Statement Vote Scoring ---
     statement_vote_counts = {pid: 0 for pid in game['players']}
     for p in game['players'].values():
