@@ -370,6 +370,26 @@ def resolve_dilemma(game_id):
             game['global_stats'][stat] += change
             game['global_stats'][stat] = max(0, min(100, game['global_stats'][stat]))
 
+    # --- Start of Statement Vote Scoring ---
+    statement_vote_counts = {pid: 0 for pid in game['players']}
+    for p in game['players'].values():
+        voted_for = p.get('statement_vote')
+        if voted_for and voted_for in statement_vote_counts:
+            statement_vote_counts[voted_for] += 1
+
+    max_votes = 0
+    winners = []
+    if statement_vote_counts:
+        max_votes = max(statement_vote_counts.values())
+        if max_votes > 0:
+            winners = [pid for pid, count in statement_vote_counts.items() if count == max_votes]
+
+    # Award points only if there is a single winner, as per the rules
+    if len(winners) == 1:
+        winner_id = winners[0]
+        game['players'][winner_id]['personal_stats']['Influence'] = min(100, game['players'][winner_id]['personal_stats']['Influence'] + max_votes)
+    # --- End of Statement Vote Scoring ---
+
     # Update player influence based on their choices
     for player_id, player_data in game['players'].items():
         if player_data['choice'] is not None:
