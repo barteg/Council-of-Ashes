@@ -390,6 +390,17 @@ def resolve_dilemma(game_id):
         game['players'][winner_id]['personal_stats']['Influence'] = min(100, game['players'][winner_id]['personal_stats']['Influence'] + max_votes)
     # --- End of Statement Vote Scoring ---
 
+    # --- Faction Consensus Scoring ---
+    for faction_id, faction_data in game['factions'].items():
+        player_ids = faction_data['players']
+        if len(player_ids) > 0:
+            first_player_choice = game['players'][player_ids[0]].get('choice')
+            if first_player_choice is not None:
+                is_consensus = all(game['players'][pid].get('choice') == first_player_choice for pid in player_ids)
+                if is_consensus:
+                    for pid in player_ids:
+                        game['players'][pid]['personal_stats']['Influence'] = min(100, game['players'][pid]['personal_stats']['Influence'] + 3)
+
     # Update player influence based on their choices
     for player_id, player_data in game['players'].items():
         if player_data['choice'] is not None:
