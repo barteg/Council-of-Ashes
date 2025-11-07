@@ -838,6 +838,8 @@ if (createGameBtn) {
                 hostNarrative.textContent = data.outcome; // Assuming outcome is passed in data
                 hostNarrative.style.display = 'block';
             }
+            // Hide the player comments display after the narrative is shown
+            if (playerCommentsDisplay) playerCommentsDisplay.style.display = 'none';
         }
     });
 

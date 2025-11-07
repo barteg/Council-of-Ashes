@@ -75,7 +75,8 @@ Otrzymasz następujące informacje w obiekcie JSON:
   "chosen_policy": "{chosen_policy}",
   "policy_effects": {policy_effects_json},
   "faction_votes": {faction_votes_json},
-  "player_statements": {player_statements_json}
+  "player_statements": {player_statements_json},
+  "player_comments": {player_comments_json}
 }}
 ```
 
@@ -93,20 +94,21 @@ Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
 
 1.  **Zwięzłość jest najważniejsza:** Twoim najważniejszym zadaniem jest pisanie krótko. **MUSISZ** ograniczyć `outcome_narrative` do maksymalnie 4-5 zdań. Nie pisz więcej.
 2.  **Kontekstualizuj:** Wpleć wybraną politykę i jej efekty w spójną historię.
-3.  **Uwzględnij wkład graczy:** Bezwzględnie wpleć `player_statements` w `outcome_narrative`. Pokaż, jak te oświadczenia, zwłaszcza te zwycięskie w głosowaniu, wpłynęły na rozwój wydarzeń, nastroje społeczne, a nawet subtelne zmiany w globalnych statystykach. Na przykład, jeśli gracz wezwał do buntu, opisz rosnące niezadowolenie lub drobne zamieszki. Jeśli wezwał do pokoju, opisz nadzieję lub początki negocjacji.
+3.  **Uwzględnij wkład graczy:** Bezwzględnie wpleć `player_statements` i `player_comments` w `outcome_narrative`. Pokaż, jak te oświadczenia, zwłaszcza te zwycięskie w głosowaniu, oraz komentarze graczy, wpłynęły na rozwój wydarzeń, nastroje społeczne, a nawet subtelne zmiany w globalnych statystykach. Komentarze powinny odzwierciedlać bezpośrednie reakcje i nastroje graczy na wynik dylematu i być wplecione w narrację, aby ukazać natychmiastowe konsekwencje i publiczne odczucia. Na przykład, jeśli gracz wezwał do buntu, opisz rosnące niezadowolenie lub drobne zamieszki. Jeśli wezwał do pokoju, opisz nadzieję lub początki negocjacji.
 4.  **Odzwierciedlaj statystyki:** Jasno wskaż, jak zmieniły się `global_stats` i co to oznacza dla królestwa.
 5.  **Zapowiadaj:** Daj subtelną wskazówkę, co może nastąpić dalej.
 6.  **Wciągający ton:** Utrzymuj dramatyczny i wciągający ton odpowiedni dla politycznej gry strategicznej.
 """
 
 # --- Gemini API Interaction ---
-def call_gemini_for_outcome_narrative(model, game_state, chosen_policy, policy_effects, faction_votes, player_statements):
+def call_gemini_for_outcome_narrative(model, game_state, chosen_policy, policy_effects, faction_votes, player_statements, player_comments):
     prompt = f"""{OUTCOME_NARRATIVE_PROMPT_STATIC.format(
         game_state_json=json.dumps(game_state, indent=2),
         chosen_policy=chosen_policy,
         policy_effects_json=json.dumps(policy_effects, indent=2),
         faction_votes_json=json.dumps(faction_votes, indent=2),
-        player_statements_json=json.dumps(player_statements, indent=2)
+        player_statements_json=json.dumps(player_statements, indent=2),
+        player_comments_json=json.dumps(player_comments, indent=2)
     )}"""
     try:
         response = model.generate_content(prompt)

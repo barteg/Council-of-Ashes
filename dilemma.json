@@ -1,27 +1,27 @@
 {
-  "id": "round_1_amber_route_dispute",
-  "title": "Spór o Szlak Bursztynowy",
-  "description": "Kupcy alarmują, że lokalny baron, Hrabia Rostow, zablokował kluczowy Szlak Bursztynowy, żądając wygórowanych myt. Ten samowolny akt grozi nie tylko zakłóceniem handlu, ale także gniewem sąsiednich księstw, które polegają na tej drodze. Rada musi szybko zdecydować, jak odpowiedzieć na to wyzwanie dla królewskiej władzy i dobrobytu.",
-  "image": "/static/images/caravan_dispute.png",
+  "id": "round_3_echo_buntu",
+  "title": "Echo Buntu",
+  "description": "Cichy szept niezadowolenia, stłamszony siłą w poprzedniej rundzie, teraz zamienia się w gromki ryk buntu w odległych prowincjach. Raporty mówią o otwartym sprzeciwie wobec władzy centralnej, zamieszkach w miastach i utracie kontroli nad szlakami handlowymi. Stabilność Królestwa Popiołów wisi na włosku, a dawne rany znowu krwawią.",
+  "image": "/static/images/unrest.jpg",
   "choices": [
     {
-      "text": "Wyślij królewskie wojska, aby siłą otworzyły szlak i surowo ukarały Hrabiego Rostowa za jego zuchwałość.",
+      "text": "Wysłać Gwardię Królewską, by z żelazną ręką stłumiła powstanie, przywracając porządek siłą i odstraszając przyszłych buntowników.",
       "effects": {
-        "Stability": -15,
-        "Economy": 10,
-        "Faith": 0
+        "Stability": 10,
+        "Economy": -15,
+        "Faith": 5
       },
-      "narrative_consequence": "Zbrojne ramię korony wyrusza, by przywrócić porządek, lecz wielu mieszkańców regionu Rostowa patrzy na to z niepokojem, a inni lordowie obawiają się o własne przywileje."
+      "narrative_consequence": "Krwawa pacyfikacja przywraca chwilowy spokój, jednak brutalność rozpala tlący się ogień nienawiści i głębokiego niezadowolenia wśród ludu."
     },
     {
-      "text": "Rozpocznij negocjacje z Hrabia Rostowem, oferując mu część wpływów z myta w zamian za natychmiastowe otwarcie Szlaku Bursztynowego.",
+      "text": "Wysłać emisariuszy z ofertą amnestii i pakietem pomocy ekonomicznej, aby załagodzić niezadowolenie i wysłuchać skarg ludu.",
       "effects": {
-        "Stability": 5,
-        "Economy": 5,
-        "Faith": -10
+        "Stability": 20,
+        "Economy": -10,
+        "Faith": -15
       },
-      "narrative_consequence": "Wysłannicy udają się do fortecy Hrabiego, aby negocjować. Chociaż szlak zostaje szybko otwarty, ustępstwo korony osłabia jej autorytet w oczach niektórych wiernych i budzi ciche niezadowolenie wśród lojalistów."
+      "narrative_consequence": "Rozmowy i ustępstwa przynoszą ulgę i nadzieję na pokój, lecz podkopują autorytet Kapłaństwa i Króla, otwierając drzwi dla nowych herezji i słabości."
     }
   ],
-  "narrative_prompt": "Pierwsza decyzja Rady Popiołów zaważyła na percepcji królewskiej władzy i otworzyła nowy rozdział w historii królestwa. Czas pokaże, czy podjęta droga zaprowadzi nas do stabilności, czy też rzuci kolejne cienie na tron."
+  "narrative_prompt": "Między surowością prawa a potrzebą uleczenia ran, Rada Popiołów musi zadecydować, jak zareagować na narastające \"Echo Buntu\". Od tej decyzji zależeć będzie, czy fundamenty społeczne Królestwa Popiołów runą, czy też znajdą nową drogę ku przyszłości."
 }

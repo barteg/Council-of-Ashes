@@ -323,7 +323,7 @@ def handle_game_event(data):
     dilemma_data = data.get('dilemma')
 
 
-def resolve_dilemma(game_id):
+def resolve_dilemma(game_id, player_comments=None):
     game = games.get(game_id)
     if not game:
         return
@@ -431,7 +431,8 @@ def resolve_dilemma(game_id):
         chosen_policy=chosen_policy,
         policy_effects=policy_effects,
         faction_votes=faction_choices,
-        player_statements=player_statements_for_gemini
+        player_statements=player_statements_for_gemini,
+        player_comments=player_comments
     ):
         with open("outcome.json", "r", encoding="utf-8") as f:
             outcome_narrative_data = json.load(f)
@@ -571,15 +572,21 @@ def handle_player_action(data):
 
         emit('game_update', {'players': game['players']}, room=game_id, broadcast=True)
 
+        # Collect player comments for Gemini (always collect, even if not all submitted yet)
+        player_comments_for_gemini = []
+        for pid, p_data in game['players'].items():
+            if 'comment' in p_data:
+                player_comments_for_gemini.append({"player_id": pid, "comment": p_data['comment']})
+
         all_comments_submitted = all('comment' in p for p in game['players'].values())
 
         if all_comments_submitted:
             print(f"[DEBUG] Game {game_id}: All comments submitted. Calling resolve_dilemma.")
             # All comments are in, now proceed to resolve the dilemma and display the outcome narrative
-            resolve_dilemma(game_id)
+            resolve_dilemma(game_id, player_comments_for_gemini) # Pass comments to resolve_dilemma
             print(f"[DEBUG] Game {game_id}: resolve_dilemma completed.")
             
-            # Collect all comments to send to the host
+            # Collect all comments to send to the host (this is already done above, but keeping for clarity)
             all_comments = {pid: {'comment': p['comment'], 'name': p['name']} for pid, p in game['players'].items() if 'comment' in p}
 
             # The outcome narrative data was stored in game['last_outcome_narrative_data'] by resolve_dilemma
