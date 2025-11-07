@@ -75,7 +75,7 @@ Your output **MUST** be a JSON object with the following structure:
 
 2.  **Stat Interpretation:** The `global_stats` (Stability, Economy, Faith) are values between 0 and 100. Interpret them as follows:
     *   **0-20 (Critical):** The kingdom is on the verge of collapse in this area. Generate events that reflect a deep crisis. For example, critical Stability could trigger a civil war event, while critical Economy could lead to widespread famine.
-    *   **21-40 (Low):** The situation is dire and getting worse. Generate events that present difficult choices to avoid a full-blown crisis. Niska Stabilność może prowadzić do zamieszek, a niska Wiara może powodować utratę tożsamości kulturowej.
+    *   **21-40 (Low):** The situation is dire and getting worse. Generate events that present difficult choices to avoid a full-blown crisis. Low Stability can lead to unrest, and low Faith can cause a loss of cultural identity.
     *   **41-60 (Neutral):** The kingdom is managing, but problems are simmering beneath the surface. Events should be a mix of minor crises and opportunities for improvement.
     *   **61-80 (High):** The kingdom is prospering in this area. Generate events that offer opportunities to leverage this strength, or introduce external threats that challenge this prosperity. High Economy could unlock a major trade route, for example.
     *   **81-100 (Excellent):** The kingdom is a beacon of this value. Events should reflect a golden age, but also introduce rare and difficult challenges that could threaten this peak status. Excellent Faith might lead to a divine encounter, or a schism.
@@ -88,7 +88,7 @@ Your output **MUST** be a JSON object with the following structure:
     *   The `narrative_prompt` should tie everything together and can incorporate elements from `player_statements`. For example, if players made strong statements, you can reflect that in the narrative (e.g., "The nobility's cries for 'swift justice' echoed through the council chambers...").
 6.  **Image Paths:** If you include an `image` field, assume images are in `/static/images/` and provide a relevant filename (e.g., `famine.png`, `rebellion.jpg`).
 7.  **Round Progression:** Ensure the events feel like a continuous story, not isolated incidents.
-8.  **Napięcie między frakcjami:** W swojej narracji napomknij o trwających napięciach lub sojuszach między frakcjami, zwłaszcza jeśli `previous_dilemma_outcome.faction_votes` pokazuje niezgodę.
+8.  **Factional Tensions:** In your narrative, allude to ongoing tensions or alliances between factions, especially if `previous_dilemma_outcome.faction_votes` shows disagreement.
 9.  **Concise Storytelling:** Keep descriptions and narrative consequences brief and to the point. Use a "tl;dr" style to focus on the most critical information.
 
 ---

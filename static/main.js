@@ -449,6 +449,8 @@ if (gameId && playerId) {
 
         if (data.winner) {
             winnerInfo.textContent = `${data.winner.name} has achieved total domination!`;
+        } else if (data.reason) {
+            winnerInfo.textContent = data.reason;
         } else {
             winnerInfo.textContent = 'The game has ended.';
         }
