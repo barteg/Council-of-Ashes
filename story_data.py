@@ -93,11 +93,14 @@ Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
 ## Wskazówki:
 
 1.  **Zwięzłość jest najważniejsza:** Twoim najważniejszym zadaniem jest pisanie krótko. **MUSISZ** ograniczyć `outcome_narrative` do maksymalnie 4-5 zdań. Nie pisz więcej.
-2.  **Kontekstualizuj:** Wpleć wybraną politykę i jej efekty w spójną historię.
-3.  **Uwzględnij wkład graczy:** Bezwzględnie wpleć `player_statements` i `player_comments` w `outcome_narrative`. Pokaż, jak te oświadczenia, zwłaszcza te zwycięskie w głosowaniu, oraz komentarze graczy, wpłynęły na rozwój wydarzeń, nastroje społeczne, a nawet subtelne zmiany w globalnych statystykach. Komentarze powinny odzwierciedlać bezpośrednie reakcje i nastroje graczy na wynik dylematu i być wplecione w narrację, aby ukazać natychmiastowe konsekwencje i publiczne odczucia. Na przykład, jeśli gracz wezwał do buntu, opisz rosnące niezadowolenie lub drobne zamieszki. Jeśli wezwał do pokoju, opisz nadzieję lub początki negocjacji.
-4.  **Odzwierciedlaj statystyki:** Jasno wskaż, jak zmieniły się `global_stats` i co to oznacza dla królestwa.
-5.  **Zapowiadaj:** Daj subtelną wskazówkę, co może nastąpić dalej.
-6.  **Wciągający ton:** Utrzymuj dramatyczny i wciągający ton odpowiedni dla politycznej gry strategicznej.
+2.  **Narracja napędzana przez graczy:** Cała narracja **MUSI** być zbudowana wokół `player_statements` i `player_comments`. To one są głównym motorem opowieści.
+3.  **Waga oświadczeń:** `player_statements` mają większą wagę i powinny kształtować kluczowe wydarzenia i decyzje w narracji.
+4.  **Komentarze jako atmosfera:** `player_comments` powinny informować o atmosferze gry, nastrojach między graczami i ogólnym tonie narracji. Użyj ich, aby pokazać reakcje i emocje.
+5.  **Bezpośrednie cytaty:** W narracji używaj bezpośrednich cytatów z komentarzy i oświadczeń graczy, podając ich imiona. Na przykład: "Jak zauważył Gracz A, 'Musimy spalić ich świątynie!', co doprowadziło do..." lub "Komentarz Gracza B, 'Wtf', odzwierciedlał powszechne zaskoczenie...".
+6.  **Kontekstualizuj:** Wpleć wybraną politykę i jej efekty w spójną historię, ale zawsze w kontekście wkładu graczy.
+7.  **Odzwierciedlaj statystyki:** **MUSISZ** jasno i **DOKŁADNIE** wskazać, jak zmieniły się `global_stats` i co to oznacza dla królestwa, łącząc to z działaniami graczy. **NIGDY nie wymyślaj ani nie zmieniaj wartości liczbowych statystyk.** Twoim zadaniem jest interpretowanie znaczenia tych liczb dla królestwa, a nie ich generowanie. Używaj tylko tych liczb, które zostały podane w `game_state`.
+8.  **Zapowiadaj:** Daj subtelną wskazówkę, co może nastąpić dalej, wynikającą z obecnych wydarzeń.
+9.  **Wciągający ton:** Utrzymuj dramatyczny i wciągający ton odpowiedni dla politycznej gry strategicznej.
 """
 
 # --- Gemini API Interaction ---
