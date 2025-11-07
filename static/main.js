@@ -440,17 +440,87 @@ if (gameId && playerId) {
                     const voteButton = document.createElement('button');
                     voteButton.classList.add('btn', 'btn-sm', 'btn-primary');
                     voteButton.textContent = 'Vote';
-                                    voteButton.addEventListener('click', () => {
-                                        socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement_vote', vote_for_player_id: pid });
-                                        // Hide the entire voting section after selection
-                                        if (statementVoteSection) statementVoteSection.style.display = 'none';
-                                        console.log('[DEBUG] Vote button clicked. statementVoteSection hidden.');
-                                    });                listItem.appendChild(voteButton);
-                statementVoteList.appendChild(listItem);
-            }
-            statementVoteSection.style.display = 'block'; // Show voting section
+                    voteButton.addEventListener('click', () => {
+                        socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement_vote', vote_for_player_id: pid });
+                        // Hide the entire voting section after selection
+                        if (statementVoteSection) statementVoteSection.style.display = 'none';
+                        console.log('[DEBUG] Vote button clicked. statementVoteSection hidden.');
+                    });
+                    listItem.appendChild(voteButton);
+                    statementVoteList.appendChild(listItem);
+                }
+                statementVoteSection.style.display = 'block'; // Show voting section
             } else {
                 console.error('[DEBUG] statementVoteSection not found during STATEMENT_VOTE phase_change!');
+            }
+        } else if (data.phase === 'DISPLAY_STATEMENT_RESULTS') {
+            // Hide all other sections
+            if (playerStatementsSection) playerStatementsSection.style.display = 'none';
+            if (statementVoteSection) statementVoteSection.style.display = 'none';
+            if (dilemmaSection) dilemmaSection.style.display = 'none';
+            if (narrativeOutput) narrativeOutput.style.display = 'none';
+            if (nextRoundBtn) nextRoundBtn.style.display = 'none';
+
+            // Display statement voting results on player screen (if needed, currently only host)
+            // For players, this phase is mostly a transition before commenting
+            const playerStatementResultsSection = document.getElementById('playerStatementResultsSection');
+            if (playerStatementResultsSection) {
+                playerStatementResultsSection.style.display = 'block';
+                const statementResultsList = document.getElementById('statementResultsList');
+                statementResultsList.innerHTML = '<h6>Statement Vote Distribution:</h6>';
+                const statementVoteList = document.createElement('ul');
+                statementVoteList.classList.add('list-group');
+
+                const playerInfo = {};
+                for (const pid in data.players) {
+                    playerInfo[pid] = {
+                        name: data.players[pid].name,
+                        statement: data.players[pid].statement || 'No statement submitted'
+                    };
+                }
+
+                for (const pid in data.statement_vote_counts) {
+                    const votes = data.statement_vote_counts[pid];
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('list-group-item');
+                    let statementText = `${playerInfo[pid].name}: "${playerInfo[pid].statement}" - ${votes} votes`;
+                    listItem.innerHTML = statementText;
+                    statementVoteList.appendChild(listItem);
+                }
+                statementResultsList.appendChild(statementVoteList);
+            }
+
+        } else if (data.phase === 'COMMENT_PHASE') {
+            const commentPhaseSection = document.getElementById('commentPhaseSection');
+            const playerCommentInput = document.getElementById('playerCommentInput');
+            const submitCommentBtn = document.getElementById('submitCommentBtn');
+            const playerStatementResultsSection = document.getElementById('playerStatementResultsSection');
+
+
+            // Hide all other sections
+            if (playerStatementsSection) playerStatementsSection.style.display = 'none';
+            if (statementVoteSection) statementVoteSection.style.display = 'none';
+            if (dilemmaSection) dilemmaSection.style.display = 'none';
+            if (narrativeOutput) narrativeOutput.style.display = 'none';
+            if (nextRoundBtn) nextRoundBtn.style.display = 'none';
+
+            if (commentPhaseSection) {
+                commentPhaseSection.style.display = 'block';
+                if (playerStatementResultsSection) playerStatementResultsSection.style.display = 'block'; // Keep results visible during commenting
+                if (submitCommentBtn) {
+                    submitCommentBtn.onclick = () => { // Use onclick to prevent multiple listeners
+                        const comment = playerCommentInput.value;
+                        if (comment) {
+                            socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_comment', comment: comment });
+                            playerCommentInput.value = '';
+                            commentPhaseSection.style.display = 'none'; // Hide comment section after submission
+                            if (playerStatementResultsSection) playerStatementResultsSection.style.display = 'none'; // Hide results after comment
+                            // Optionally show a "waiting for other players" message
+                        }
+                    };
+                }
+            } else {
+                console.error('[DEBUG] commentPhaseSection not found during COMMENT_PHASE phase_change!');
             }
         }
         console.log(`[DEBUG] phase_change: playerStatementsSection.style.display AFTER: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
@@ -678,7 +748,6 @@ if (createGameBtn) {
     });
 
     socket.on('dilemma_resolved', (data) => {
-        document.getElementById('hostNarrative').textContent = data.outcome;
         // Update host global stats progress bars
         const globalStats = data.global_stats;
         hostStatStability.style.width = `${globalStats.Stability}%`;
@@ -692,6 +761,84 @@ if (createGameBtn) {
         hostStatFaith.style.width = `${globalStats.Faith}%`;
         hostStatFaith.setAttribute('aria-valuenow', globalStats.Faith);
         hostStatFaith.textContent = `${globalStats.Faith}`;
+
+        // The narrative and statement voting results are now handled by comments_received and phase_change events
+        // Ensure the narrative is hidden until comments_received
+        const hostNarrative = document.getElementById('hostNarrative');
+        // if (hostNarrative) hostNarrative.style.display = 'none'; // This line is removed
+    });
+
+    socket.on('phase_change', (data) => {
+        // Host-specific phase change handling
+        const hostNarrative = document.getElementById('hostNarrative');
+        const statementVotingResultsDisplay = document.getElementById('statementVotingResultsDisplay');
+        const playerCommentsDisplay = document.getElementById('playerCommentsDisplay');
+
+        if (data.phase === 'DISPLAY_STATEMENT_RESULTS') {
+            if (statementVotingResultsDisplay && data.statement_vote_counts && data.players) {
+                statementVotingResultsDisplay.style.display = 'block';
+                const statementVoteCountsDiv = document.getElementById('statementVoteCounts');
+                statementVoteCountsDiv.innerHTML = '<h6>Statement Vote Distribution:</h6>';
+                const statementVoteList = document.createElement('ul');
+                statementVoteList.classList.add('list-group');
+
+                // Map player IDs to their names and statements for easier display
+                const playerInfo = {};
+                for (const pid in data.players) {
+                    playerInfo[pid] = {
+                        name: data.players[pid].name,
+                        statement: data.players[pid].statement || 'No statement submitted'
+                    };
+                }
+
+                for (const pid in data.statement_vote_counts) {
+                    const votes = data.statement_vote_counts[pid];
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('list-group-item');
+                    let statementText = `${playerInfo[pid].name}: "${playerInfo[pid].statement}" - ${votes} votes`;
+                    listItem.innerHTML = statementText;
+                    statementVoteList.appendChild(listItem);
+                }
+                statementVoteCountsDiv.appendChild(statementVoteList);
+
+                // Hide narrative and comments sections
+                if (hostNarrative) hostNarrative.style.display = 'none';
+                if (playerCommentsDisplay) playerCommentsDisplay.style.display = 'none';
+            }
+        } else if (data.phase === 'COMMENT_PHASE') {
+            // During comment phase, host should still see statement results
+            if (statementVotingResultsDisplay) statementVotingResultsDisplay.style.display = 'block';
+            if (playerCommentsDisplay) playerCommentsDisplay.style.display = 'none'; // Hide comments until received
+            if (hostNarrative) hostNarrative.style.display = 'none'; // Hide narrative until comments received
+        }
+    });
+
+    socket.on('comments_received', (data) => {
+        console.log('Comments received:', data);
+        const playerCommentsDisplay = document.getElementById('playerCommentsDisplay');
+        const commentList = document.getElementById('commentList');
+        const hostNarrative = document.getElementById('hostNarrative');
+        const statementVotingResultsDisplay = document.getElementById('statementVotingResultsDisplay');
+
+        if (playerCommentsDisplay && commentList && data.comments) {
+            statementVotingResultsDisplay.style.display = 'none'; // Hide statement voting results
+            playerCommentsDisplay.style.display = 'block'; // Show comments section
+            commentList.innerHTML = '<h6>Player Comments:</h6>';
+
+            for (const pid in data.comments) {
+                const commentData = data.comments[pid];
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+                listItem.textContent = `${commentData.name}: "${commentData.comment}"`;
+                commentList.appendChild(listItem);
+            }
+
+            // Now display the outcome narrative
+            if (hostNarrative) {
+                hostNarrative.textContent = data.outcome; // Assuming outcome is passed in data
+                hostNarrative.style.display = 'block';
+            }
+        }
     });
 
     socket.on('statements_submitted', (data) => {

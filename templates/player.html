@@ -58,14 +58,29 @@
                 <button id="submitStatementBtn" class="btn btn-primary mt-2">Submit Statement</button>
             </div>
 
-                            <!-- Statement Voting Section -->
-                            <div id="statementVoteSection" class="floating-element" style="display: none;">
-                                <h5>Vote for a Statement</h5>
-                                <ul id="statementVoteList" class="list-group">
-                                    <!-- Statements for voting will be rendered here -->
-                                </ul>
-                            </div>
+            <!-- Statement Voting Section -->
+            <div id="statementVoteSection" class="floating-element" style="display: none;">
+                <h5>Vote for a Statement</h5>
+                <ul id="statementVoteList" class="list-group">
+                    <!-- Statements for voting will be rendered here -->
+                </ul>
+            </div>
+
+            <!-- Player Statement Results Section -->
+            <div id="playerStatementResultsSection" class="floating-element" style="display: none;">
+                <h5>Statement Voting Results</h5>
+                <div id="statementResultsList" class="list-group">
+                    <!-- Statement voting results will be rendered here -->
+                </div>
+            </div>
             
+            <!-- Comment Phase Section -->
+            <div id="commentPhaseSection" class="floating-element" style="display: none;">
+                <h5>Your Comment on the Results</h5>
+                <textarea id="playerCommentInput" class="form-control" rows="3"></textarea>
+                <button id="submitCommentBtn" class="btn btn-primary mt-2">Submit Comment</button>
+            </div>
+
                             <!-- Narrative Output and Next Round Button -->
                             <div id="narrativeOutput" class="floating-element" style="display: none;">
                                 <p id="narrativeText"></p>

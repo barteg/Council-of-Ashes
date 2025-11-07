@@ -451,6 +451,8 @@ def resolve_dilemma(game_id):
         'global_stats_after': game['global_stats'].copy()
     })
 
+    game['last_outcome_narrative_data'] = outcome_narrative_data # Store for later use
+
     # Check for win condition by influence
     winner = None
     for pid, p in game['players'].items():
@@ -463,12 +465,13 @@ def resolve_dilemma(game_id):
         emit('game_over', {'winner': winner}, room=game_id, broadcast=True)
         return
 
-    emit('dilemma_resolved', {
-        'outcome': outcome_narrative_data['outcome_narrative'],
-        'global_stats': game['global_stats'],
-        'current_round': game['current_round'],
-        'players': game['players']  # Add updated player data
-    }, room=game_id, broadcast=True)
+    # The dilemma_resolved event is now emitted after the comment phase is complete
+    # emit('dilemma_resolved', {
+    #     'outcome': outcome_narrative_data['outcome_narrative'],
+    #     'global_stats': game['global_stats'],
+    #     'current_round': game['current_round'],
+    #     'players': game['players']  # Add updated player data
+    # }, room=game_id, broadcast=True)
 
     game['dilemma_active'] = False
     game['current_dilemma'] = None
@@ -531,6 +534,8 @@ def handle_player_action(data):
             game['state'] = 'STATEMENT_VOTE'
             emit('phase_change', {'phase': 'STATEMENT_VOTE', 'statements': statements}, room=game_id, broadcast=True)
 
+
+
     elif action == 'submit_statement_vote':
         if game['state'] != 'STATEMENT_VOTE':
             return
@@ -541,8 +546,87 @@ def handle_player_action(data):
         all_players_voted = all('statement_vote' in p for p in game['players'].values())
 
         if all_players_voted:
-            game['state'] = 'RESOLUTION'
+            # Calculate statement vote counts before resolving dilemma
+            statement_vote_counts = {pid: 0 for pid in game['players']}
+            for p in game['players'].values():
+                voted_for = p.get('statement_vote')
+                if voted_for and voted_for in statement_vote_counts:
+                    statement_vote_counts[voted_for] += 1
+            
+            game['statement_vote_counts'] = statement_vote_counts # Store for later display
+
+            game['state'] = 'DISPLAY_STATEMENT_RESULTS'
+            emit('phase_change', {'phase': 'DISPLAY_STATEMENT_RESULTS', 'statement_vote_counts': statement_vote_counts, 'players': game['players']}, room=game_id, broadcast=True)
+            
+            # Immediately transition to COMMENT_PHASE after displaying results
+            game['state'] = 'COMMENT_PHASE'
+            emit('phase_change', {'phase': 'COMMENT_PHASE'}, room=game_id, broadcast=True)
+
+    elif action == 'submit_comment':
+        if game['state'] != 'COMMENT_PHASE':
+            return
+        comment = data.get('comment', '') # Get comment, default to empty string if not provided
+        game['players'][player_id]['comment'] = comment
+        game['players'][player_id]['action_status'] = 'done'
+
+        emit('game_update', {'players': game['players']}, room=game_id, broadcast=True)
+
+        all_comments_submitted = all('comment' in p for p in game['players'].values())
+
+        if all_comments_submitted:
+            print(f"[DEBUG] Game {game_id}: All comments submitted. Calling resolve_dilemma.")
+            # All comments are in, now proceed to resolve the dilemma and display the outcome narrative
             resolve_dilemma(game_id)
+            print(f"[DEBUG] Game {game_id}: resolve_dilemma completed.")
+            
+            # Collect all comments to send to the host
+            all_comments = {pid: {'comment': p['comment'], 'name': p['name']} for pid, p in game['players'].items() if 'comment' in p}
+
+            # The outcome narrative data was stored in game['last_outcome_narrative_data'] by resolve_dilemma
+            outcome_narrative_data_from_resolve_dilemma = game.get('last_outcome_narrative_data')
+            if outcome_narrative_data_from_resolve_dilemma:
+                print(f"[DEBUG] Game {game_id}: Emitting comments_received to host.")
+                emit('comments_received', { # Emit comments and outcome to host
+                    'comments': all_comments,
+                    'outcome': outcome_narrative_data_from_resolve_dilemma['outcome_narrative'],
+                    'global_stats': game['global_stats'],
+                    'current_round': game['current_round'],
+                    'players': game['players']
+                }, room=game['host_sid'])
+                print(f"[DEBUG] Game {game_id}: Emitting dilemma_resolved to all clients.")
+                emit('dilemma_resolved', { # Emit dilemma_resolved to players to trigger narrative display
+                    'outcome': outcome_narrative_data_from_resolve_dilemma['outcome_narrative'],
+                    'global_stats': game['global_stats'],
+                    'current_round': game['current_round'],
+                    'players': game['players']
+                }, room=game_id, broadcast=True)
+            else:
+                print(f"[DEBUG] Game {game_id}: Fallback narrative. Emitting comments_received to host.")
+                # Fallback if narrative data was not stored
+                emit('comments_received', {
+                    'comments': all_comments,
+                    'outcome': "The council reflects on the comments.",
+                    'global_stats': game['global_stats'],
+                    'current_round': game['current_round'],
+                    'players': game['players']
+                }, room=game['host_sid'])
+                print(f"[DEBUG] Game {game_id}: Fallback narrative. Emitting dilemma_resolved to all clients.")
+                emit('dilemma_resolved', {
+                    'outcome': "The council reflects on the comments.",
+                    'global_stats': game['global_stats'],
+                    'current_round': game['current_round'],
+                    'players': game['players']
+                }, room=game_id, broadcast=True)
+
+            # Reset player comments and statement votes for next round
+            for player_id in game['players']:
+                game['players'][player_id].pop('comment', None)
+                game['players'][player_id].pop('statement_vote', None) # Clear statement vote after resolution
+
+            # After displaying outcome, game is ready for next round
+            game['state'] = 'OUTCOME_DISPLAYED' # New state to indicate outcome is shown
+            print(f"[DEBUG] Game {game_id}: State set to OUTCOME_DISPLAYED.")
+            # Host will need a "Next Round" button to trigger next_round event
 
     elif data.get('event') == 'next_round':
         if player_id not in game.get('next_round_votes', []):

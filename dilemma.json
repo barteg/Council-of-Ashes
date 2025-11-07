@@ -1,26 +1,27 @@
 {
-  "id": "elite_unrest_13",
-  "title": "Zgiełk Wśród Elit",
-  "description": "Po niedawnej rekwizycji majątków, gniew bogatych kupców i szlachty osiągnął punkt krytyczny. Zamiast otwarcie stawiać czoła, elity zaczęły organizować ukryte protesty i sabotaże, które paraliżują handel i rzucają cień na autorytet korony. Miasta nękane są plotkami o zdradzie, a lojalność wielu możnych wisi na włosku.",
+  "id": "round_1_amber_route_dispute",
+  "title": "Spór o Szlak Bursztynowy",
+  "description": "Kupcy alarmują, że lokalny baron, Hrabia Rostow, zablokował kluczowy Szlak Bursztynowy, żądając wygórowanych myt. Ten samowolny akt grozi nie tylko zakłóceniem handlu, ale także gniewem sąsiednich księstw, które polegają na tej drodze. Rada musi szybko zdecydować, jak odpowiedzieć na to wyzwanie dla królewskiej władzy i dobrobytu.",
+  "image": "/static/images/caravan_dispute.png",
   "choices": [
     {
-      "text": "Zaoferować publiczne ustępstwa i symbolicznie przywrócić część zarekwirowanych dóbr, by uspokoić nastroje wśród elit i zapobiec dalszemu rozkładowi.",
+      "text": "Wyślij królewskie wojska, aby siłą otworzyły szlak i surowo ukarały Hrabiego Rostowa za jego zuchwałość.",
       "effects": {
-        "Stability": 15,
-        "Economy": -15,
-        "Faith": 5
+        "Stability": -15,
+        "Economy": 10,
+        "Faith": 0
       },
-      "narrative_consequence": "Choć niektórzy magnaci odzyskają część majątku i ulżą w gniewie, Syndykat Kupiecki może poczuć się zdradzony, widząc, jak ustępstwa niweczą jego wcześniejsze poświęcenia."
+      "narrative_consequence": "Zbrojne ramię korony wyrusza, by przywrócić porządek, lecz wielu mieszkańców regionu Rostowa patrzy na to z niepokojem, a inni lordowie obawiają się o własne przywileje."
     },
     {
-      "text": "Wzmocnić Gwardię Królewską i nakazać aresztowania najbardziej wpływowych wichrzycieli oraz dalsze konfiskaty, pokazując nieustępliwą siłę korony.",
+      "text": "Rozpocznij negocjacje z Hrabia Rostowem, oferując mu część wpływów z myta w zamian za natychmiastowe otwarcie Szlaku Bursztynowego.",
       "effects": {
-        "Stability": -20,
-        "Economy": 10,
+        "Stability": 5,
+        "Economy": 5,
         "Faith": -10
       },
-      "narrative_consequence": "Choć porządek zostanie przywrócony siłą, elity, w tym być może frakcje Syndykatu, mogą pogłębić swój opór, prowadząc królestwo na skraj wojny domowej."
+      "narrative_consequence": "Wysłannicy udają się do fortecy Hrabiego, aby negocjować. Chociaż szlak zostaje szybko otwarty, ustępstwo korony osłabia jej autorytet w oczach niektórych wiernych i budzi ciche niezadowolenie wśród lojalistów."
     }
   ],
-  "narrative_prompt": "Wybór, przed którym staje Rada, zadecyduje o przyszłości relacji korony z najpotężniejszymi rodami i kupcami, a echa lakonicznych oświadczeń Bartega wciąż rezonują w powietrzu."
+  "narrative_prompt": "Pierwsza decyzja Rady Popiołów zaważyła na percepcji królewskiej władzy i otworzyła nowy rozdział w historii królestwa. Czas pokaże, czy podjęta droga zaprowadzi nas do stabilności, czy też rzuci kolejne cienie na tron."
 }
