@@ -131,6 +131,7 @@ def create_game(data):
             'statements': [],
             'personal_stats': {'Influence': 50},
             'ready': False,
+            'shamed': False, # Player is shamed if their choice would collapse the kingdom
             'action_status': 'joined' # Initialize action status to 'joined'
         }
         # Construct the player URL using a relative path
@@ -329,7 +330,7 @@ def resolve_dilemma(game_id):
 
     faction_choices = {}
     for faction_id, faction in game['factions'].items():
-        choices_made_by_faction = [game['players'][pid]['choice'] for pid in faction['players']]
+        choices_made_by_faction = [game['players'][pid]['choice'] for pid in faction['players'] if not game['players'][pid].get('shamed')]
         
         if choices_made_by_faction and len(set(choices_made_by_faction)) == 1:
             faction_choices[faction_id] = {'consensus': True, 'choice_index': choices_made_by_faction[0]}
@@ -487,7 +488,22 @@ def handle_player_action(data):
         if game['state'] != 'DILEMMA':
             return
         choice_index = data.get('choice')
-        game['players'][player_id]['choice'] = choice_index
+
+        # Check if the choice would collapse the kingdom
+        potential_effects = game['current_dilemma']['choices'][choice_index]['effects']
+        would_collapse = False
+        for stat, change in potential_effects.items():
+            if game['global_stats'][stat] + change <= 0:
+                would_collapse = True
+                break
+        
+        if would_collapse:
+            game['players'][player_id]['shamed'] = True
+            game['players'][player_id]['choice'] = None # Their choice is nullified
+            emit('player_shamed', {'player_id': player_id, 'reason': 'Your reckless choice would have doomed the kingdom!'}, room=game['players'][player_id]['sid'])
+            emit('game_update', {'players': game['players']}, room=game_id, broadcast=True) # Notify everyone of the shame
+        else:
+            game['players'][player_id]['choice'] = choice_index
         game['players'][player_id]['action_status'] = 'done' # Player made a choice
 
         emit('game_update', {'players': game['players']}, room=game_id, broadcast=True)
