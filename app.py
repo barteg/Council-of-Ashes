@@ -70,6 +70,8 @@ def tts():
         print("[TTS] Error: ElevenLabs client not initialized. Is the API key set?")
         return jsonify({"error": "TTS service not configured"}), 500
 
+    print(f"DEBUG: Attributes of elevenlabs_client: {dir(elevenlabs_client)}") # DIAGNOSTIC LINE
+
     text = request.json.get('text')
     if not text:
         return jsonify({"error": "No text provided"}), 400

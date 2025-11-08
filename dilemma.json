@@ -1,27 +1,27 @@
 {
-  "id": "round_1_cien_glodu",
-  "title": "Cień Głodu",
-  "description": "Nad królestwem zalega cień. Po wyjątkowo surowej zimie, wschodnie prowincje raportują o fatalnych prognozach zbiorów. Magazyny pustoszeją, a ludność zaczyna szeptać o nadchodzącym głodzie. Rada musi szybko zareagować, by zapobiec katastrofie.",
-  "image": "/static/images/crop_failure.png",
+  "id": "round_1_cien_na_wschodnim_szlaku",
+  "title": "Cień na Wschodnim Szlaku",
+  "description": "Kluczowa przełęcz górska, będąca arterią handlową i komunikacyjną królestwa, została niespodziewanie zablokowana przez serię osuwisk. Kupcy są uwięzieni, zapasy w miastach na wschodzie maleją, a plotki o aktywności bandytów w zdezorganizowanym regionie stają się coraz głośniejsze. Królestwo stoi przed trudnym wyborem, jak przywrócić porządek i swobodny przepływ dóbr.",
+  "image": "/static/images/mountain_pass_blocked.png",
   "choices": [
     {
-      "text": "Przeznaczyć znaczne rezerwy królewskie na natychmiastową pomoc żywnościową dla dotkniętych prowincji, transportując zboże z zasobniejszych regionów.",
+      "text": "Wyślij oddziały wojskowe, aby szybko zabezpieczyć przełęcz i odeprzeć wszelkie zagrożenia, mimo wysokich kosztów.",
       "effects": {
         "Stability": 10,
         "Economy": -15,
-        "Faith": 5
+        "Faith": 0
       },
-      "narrative_consequence": "Wdzięczność ludu rozbrzmi echem po królestwie, lecz skarbiec królewski zostanie poważnie uszczuplony, a kupcy już lamentują nad zakłóceniami w handlu."
+      "narrative_consequence": "Królewscy żołnierze wkroczą do akcji, z determinacją przywracając porządek i poczucie bezpieczeństwa, choć skarbiec królewski odczuje znaczący ubytek."
     },
     {
-      "text": "Zabezpieczyć zasoby stolicy i garnizonów, ograniczając pomoc do minimum, aby uniknąć wewnętrznych rozruchów i zachować siłę militarną.",
+      "text": "Zaoferuj pomoc lokalnym społecznościom w usunięciu blokady i zbadaj przyczyny niestabilności, akceptując opóźnienia.",
       "effects": {
-        "Stability": -10,
+        "Stability": -5,
         "Economy": 10,
-        "Faith": -5
+        "Faith": 5
       },
-      "narrative_consequence": "Stolica pozostanie bezpieczna, lecz echo głodu na wschodzie będzie narastać, a niezadowolenie może wkrótce przekształcić się w otwarty bunt, podważając wiarę w rządy Rady."
+      "narrative_consequence": "Cierpliwe podejście może ukoić gniew i wzmocnić więzi z ludem, ale w międzyczasie chaos na szlaku będzie narastał, testując cierpliwość kupców i wschodnich miast."
     }
   ],
-  "narrative_prompt": "Cień głodu rzucony na wschodnie prowincje zmusza Radę do podjęcia trudnej decyzji, która zaważy na losach nie tylko cierpiących, ale i całego królestwa. Wybór polityki będzie silnie odczuwalny we wszystkich zakątkach państwa."
+  "narrative_prompt": "Przełęcz Wschodu czeka na decyzję Rady, która zadecyduje o losie handlu i bezpieczeństwa wschodnich prowincji w nadchodzących miesiącach, rzucając pierwsze światło na styl rządów nowej Rady."
 }
