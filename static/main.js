@@ -40,46 +40,6 @@ function updatePersonalStats(playerData) {
     }
 }
 
-function renderDilemma(dilemma) {
-    dilemmaTitle.textContent = dilemma.title;
-    dilemmaDescription.textContent = dilemma.description;
-    if (dilemma.image) {
-        dilemmaImage.src = dilemma.image;
-        dilemmaImage.style.display = 'block';
-    } else {
-        dilemmaImage.style.display = 'none';
-    }
-
-    const dilemmaChoices = document.getElementById('dilemmaChoices');
-    if (!dilemmaChoices) {
-        console.error('Could not find dilemmaChoices element in renderDilemma!');
-        return;
-    }
-    dilemmaChoices.innerHTML = '';
-    dilemma.choices.forEach((choice, index) => {
-        const button = document.createElement('button');
-        button.classList.add('list-group-item', 'list-group-item-action', 'mb-2');
-        button.textContent = choice.text;
-        button.addEventListener('click', () => {
-            // Store selected choice index, but don't submit yet
-            playerChoice = index;
-
-            // Remove 'active' class from all choices and add to the clicked one
-            Array.from(dilemmaChoices.children).forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            // Show the Confirm Choice button
-            const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn');
-            if (confirmDilemmaChoiceBtn) confirmDilemmaChoiceBtn.style.display = 'block';
-        });
-        dilemmaChoices.appendChild(button);
-    });
-
-    // Ensure Confirm Choice button is hidden when a new dilemma is rendered
-    const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn');
-    if (confirmDilemmaChoiceBtn) confirmDilemmaChoiceBtn.style.display = 'none';
-}
-
 function updatePlayerChoiceStatus(players) {
     const playerChoiceList = document.getElementById('playerChoiceList');
     if (playerChoiceList) {
@@ -228,6 +188,12 @@ socket.on('game_event', (data) => {
                 return; 
             }
 
+            const originalStats = {
+                Stability: globalStats.Stability,
+                Economy: globalStats.Economy,
+                Faith: globalStats.Faith
+            };
+
             dilemmaChoices.innerHTML = '';
             dilemma.choices.forEach((choice, index) => {
                 console.log('[DEBUG] Rendering choice:', choice.text); // Add this line
@@ -249,26 +215,65 @@ socket.on('game_event', (data) => {
                 }
                 button.textContent = buttonText;
                 button.addEventListener('click', () => {
-                    playerChoice = index;
-                    socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'dilemma_choice', choice: index });
-                    // Disable choices after selection
-                    Array.from(dilemmaChoices.children).forEach(btn => btn.disabled = true);
+                    // Remove 'active' class from all choices and add to the clicked one
+                    Array.from(dilemmaChoices.children).forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
+                    playerChoice = index; // Store the choice, but don't submit yet
 
-                    console.log(`[DEBUG] Dilemma choice clicked: dilemmaSection.style.display BEFORE: ${dilemmaSection ? dilemmaSection.style.display : 'N/A'}`);
-                    console.log(`[DEBUG] Dilemma choice clicked: playerStatementsSection.style.display BEFORE: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
-                    console.log(`[DEBUG] Dilemma choice clicked: statementVoteSection.style.display BEFORE: ${statementVoteSection ? statementVoteSection.style.display : 'N/A'}`);
+                    // Preview the stat changes
+                    const newStability = Math.max(0, Math.min(100, originalStats.Stability + choice.effects.Stability));
+                    const newEconomy = Math.max(0, Math.min(100, originalStats.Economy + choice.effects.Economy));
+                    const newFaith = Math.max(0, Math.min(100, originalStats.Faith + choice.effects.Faith));
+
+                    currentStatStability.style.width = `${newStability}%`;
+                    currentStatStability.setAttribute('aria-valuenow', newStability);
+                    currentStatStability.textContent = `${newStability}`;
+
+                    currentStatEconomy.style.width = `${newEconomy}%`;
+                    currentStatEconomy.setAttribute('aria-valuenow', newEconomy);
+                    currentStatEconomy.textContent = `${newEconomy}`;
+
+                    currentStatFaith.style.width = `${newFaith}%`;
+                    currentStatFaith.setAttribute('aria-valuenow', newFaith);
+                    currentStatFaith.textContent = `${newFaith}`;
+                });
+
+                button.addEventListener('dblclick', () => {
+                    if (playerChoice === index) { // Ensure the double-clicked item is the selected one
+                        
+                        // Revert to original stats before submitting
+                        currentStatStability.style.width = `${originalStats.Stability}%`;
+                        currentStatStability.setAttribute('aria-valuenow', originalStats.Stability);
+                        currentStatStability.textContent = `${originalStats.Stability}`;
+
+                        currentStatEconomy.style.width = `${originalStats.Economy}%`;
+                        currentStatEconomy.setAttribute('aria-valuenow', originalStats.Economy);
+                        currentStatEconomy.textContent = `${originalStats.Economy}`;
+
+                        currentStatFaith.style.width = `${originalStats.Faith}%`;
+                        currentStatFaith.setAttribute('aria-valuenow', originalStats.Faith);
+                        currentStatFaith.textContent = `${originalStats.Faith}`;
+
+                        socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'dilemma_choice', choice: index });
+                        // Disable choices after selection
+                        Array.from(dilemmaChoices.children).forEach(btn => btn.disabled = true);
+                        button.classList.add('active');
+
+                        console.log(`[DEBUG] Dilemma choice dblclicked: dilemmaSection.style.display BEFORE: ${dilemmaSection ? dilemmaSection.style.display : 'N/A'}`);
+                        console.log(`[DEBUG] Dilemma choice dblclicked: playerStatementsSection.style.display BEFORE: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
+                        console.log(`[DEBUG] Dilemma choice dblclicked: statementVoteSection.style.display BEFORE: ${statementVoteSection ? statementVoteSection.style.display : 'N/A'}`);
 
 
-                    // Hide dilemma and show statement section
-                    if (dilemmaSection) dilemmaSection.style.display = 'none';
-                    if (playerStatementsSection) playerStatementsSection.style.display = 'block';
-                    if (statementVoteSection) statementVoteSection.style.display = 'none';
+                        // Hide dilemma and show statement section
+                        if (dilemmaSection) dilemmaSection.style.display = 'none';
+                        if (playerStatementsSection) playerStatementsSection.style.display = 'block';
+                        if (statementVoteSection) statementVoteSection.style.display = 'none';
 
 
-                    console.log(`[DEBUG] Dilemma choice clicked: dilemmaSection.style.display AFTER: ${dilemmaSection ? dilemmaSection.style.display : 'N/A'}`);
-                    console.log(`[DEBUG] Dilemma choice clicked: playerStatementsSection.style.display AFTER: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
-                    console.log(`[DEBUG] Dilemma choice clicked: statementVoteSection.style.display AFTER: ${statementVoteSection ? statementVoteSection.style.display : 'N/A'}`);
+                        console.log(`[DEBUG] Dilemma choice dblclicked: dilemmaSection.style.display AFTER: ${dilemmaSection ? dilemmaSection.style.display : 'N/A'}`);
+                        console.log(`[DEBUG] Dilemma choice dblclicked: playerStatementsSection.style.display AFTER: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
+                        console.log(`[DEBUG] Dilemma choice dblclicked: statementVoteSection.style.display AFTER: ${statementVoteSection ? statementVoteSection.style.display : 'N/A'}`);
+                    }
                 });
                 dilemmaChoices.appendChild(button);
             });
@@ -317,22 +322,6 @@ socket.on('game_event', (data) => {
 });
 
 if (gameId && playerId) {
-    const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn');
-    if (confirmDilemmaChoiceBtn) {
-        confirmDilemmaChoiceBtn.addEventListener('click', () => {
-            if (playerChoice !== null) {
-                socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'dilemma_choice', choice: playerChoice });
-                // Hide confirm button
-                confirmDilemmaChoiceBtn.style.display = 'none';
-
-                // Disable all dilemma choice buttons
-                const dilemmaChoices = document.getElementById('dilemmaChoices');
-                if (dilemmaChoices) {
-                    Array.from(dilemmaChoices.children).forEach(btn => btn.disabled = true);
-                }
-            }
-        });
-    }
 
     const saveNameBtn = document.getElementById('saveNameBtn');
     if (saveNameBtn) {
@@ -418,13 +407,10 @@ if (gameId && playerId) {
 
         const narrativeOutputElement = document.getElementById('narrativeOutput');
         const nextRoundBtnElement = document.getElementById('nextRoundBtn');
-        const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn');
 
         if (narrativeOutputElement) narrativeOutputElement.style.setProperty('display', 'block', 'important'); // Show narrativeOutput to display the button
         if (nextRoundBtnElement) nextRoundBtnElement.style.setProperty('display', 'block', 'important'); // Show the Next Event button
         
-        // Hide confirm button
-        if (confirmDilemmaChoiceBtn) confirmDilemmaChoiceBtn.style.display = 'none';
 
         const dilemmaSection = document.getElementById('dilemmaSection');
         const playerStatementsSection = document.getElementById('playerStatementsSection');
@@ -446,10 +432,6 @@ if (gameId && playerId) {
         const dilemmaSection = document.getElementById('dilemmaSection');
         const narrativeOutput = document.getElementById('narrativeOutput');
         const nextRoundBtn = document.getElementById('nextRoundBtn');
-        const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn'); // Declare here
-
-        // Hide confirm button on any phase change
-        if (confirmDilemmaChoiceBtn) confirmDilemmaChoiceBtn.style.display = 'none';
 
         console.log(`[DEBUG] phase_change: Phase: ${data.phase}`);
         console.log(`[DEBUG] phase_change: playerStatementsSection.style.display BEFORE: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
