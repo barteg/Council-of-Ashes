@@ -7,25 +7,25 @@ import string
 import json
 import socket
 from story_data import call_gemini_for_outcome_narrative, generate_dilemma_with_gemini, EVENT_GENERATION_PROMPT_STATIC, OUTCOME_NARRATIVE_PROMPT_STATIC
-from piper import PiperVoice
-import wave
-import io
+from elevenlabs.client import ElevenLabs
+from elevenlabs import play
 
 # Securely get the API key from the environment
 api_key = os.getenv("GEMINI_API_KEY")
+elevenlabs_api_key = os.getenv("ELEVENLABS_API_KEY")
 
 if not api_key:
     raise ValueError("GEMINI_API_KEY environment variable not set!")
 
-model = genai.GenerativeModel('gemini-2.5-flash')
+# Initialize ElevenLabs client
+if not elevenlabs_api_key:
+    print("WARNING: ELEVENLABS_API_KEY environment variable not set! TTS will not work.")
+    elevenlabs_client = None
+else:
+    elevenlabs_client = ElevenLabs(api_key=elevenlabs_api_key)
 
-# Load Piper TTS model
-voice = PiperVoice.load(
-    "tts_models/pl_PL-gosia-medium.onnx",
-    config_path="tts_models/pl_PL-gosia-medium.json"
-)
 
-
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 # It is critical to set a secret key for session management and security.
@@ -66,37 +66,34 @@ def player_controller(game_id, player_id):
 
 @app.route('/api/tts', methods=['POST'])
 def tts():
-    if not voice:
-        print("[TTS] Error: Voice model not loaded")
-        return jsonify({"error": "TTS voice model not loaded"}), 500
+    if not elevenlabs_client:
+        print("[TTS] Error: ElevenLabs client not initialized. Is the API key set?")
+        return jsonify({"error": "TTS service not configured"}), 500
 
-    print("[TTS] /api/tts endpoint called")
     text = request.json.get('text')
     if not text:
-        print("[TTS] Error: No text provided")
         return jsonify({"error": "No text provided"}), 400
 
-    print(f"[TTS] Received text: {text}")
+    print(f"[TTS] Received text for ElevenLabs: {text}")
     try:
-        print("[TTS] Synthesizing audio...")
-        # Synthesize audio to raw bytes
-        audio_bytes = voice.synthesize(text)
-        print("[TTS] Audio synthesized successfully, creating WAV file.")
+        # Generate audio using ElevenLabs API
+        # Using a default Polish voice ("Antoni"). This can be changed.
+        audio_bytes = elevenlabs_client.generate(
+            text=text,
+            voice="Pz12a6a37c35a3f5805z", # Voice ID for Antoni
+            model="eleven_multilingual_v2"
+        )
 
-        # Create a WAV file in memory
-        audio_stream = io.BytesIO()
-        with wave.open(audio_stream, 'wb') as wav_file:
-            wav_file.setnchannels(1) # Mono audio
-            wav_file.setsampwidth(voice.config.sample_width)
-            wav_file.setframerate(voice.config.sample_rate)
-            wav_file.writeframes(audio_bytes)
+        print("[TTS] Audio generated successfully by ElevenLabs.")
         
-        print("[TTS] WAV file created in memory.")
-        audio_stream.seek(0)
-        return send_file(audio_stream, mimetype='audio/wav')
+        # Send the audio data back to the client
+        return send_file(
+            io.BytesIO(audio_bytes),
+            mimetype='audio/mpeg',
+            as_attachment=False
+        )
     except Exception as e:
-        print(f"[TTS] Error during audio synthesis or WAV creation: {e}")
-        # It's helpful to log the full traceback for debugging
+        print(f"[TTS] Error during ElevenLabs audio generation: {e}")
         import traceback
         traceback.print_exc()
         return jsonify({"error": "TTS synthesis failed"}), 500
