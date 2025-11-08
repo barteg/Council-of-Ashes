@@ -1,27 +1,27 @@
 {
-  "id": "round_1_zaraza_popiolow",
-  "title": "Zaraza Popiołów",
-  "description": "Z północnych prowincji napływają niepokojące wieści. Tajemnicza zaraza, nazywana 'Zarazą Popiołów', niszczy plony, zmieniając żyzne pola w jałowe, szare pustkowia. Grozi to powszechnym głodem i wybuchem paniki, a ludzie patrzą na Radę, szukając ratunku.",
-  "image": "/static/images/ash_blight.png",
+  "id": "rada_popiolow_r1_szmer_herezji",
+  "title": "Szmer Herezji",
+  "description": "Ludzie odwracają się od pradawnych bogów. W zubożałych zachodnich prowincjach pojawił się charyzmatyczny prorok Elias, głoszący nową doktrynę samowystarczalności. Jego zwolennicy rosną w siłę, kwestionując ustalony porządek, a kapłaństwo bije na alarm, domagając się działania.",
+  "image": "/static/images/heresy_prophet.png",
   "choices": [
     {
-      "text": "Natychmiastowe wysłanie zapasów żywności i medykamentów z królewskich spichlerzy, by ulżyć cierpieniu i zapobiec zamieszkom.",
+      "text": "Wyślij legiony, by stłumić herezję i przywrócić porządek siłą, a proroka Eliasa pojmać.",
       "effects": {
-        "Stability": 12,
-        "Economy": -15,
-        "Faith": 5
+        "Stability": -10,
+        "Economy": -5,
+        "Faith": 15
       },
-      "narrative_consequence": "Tysiące dusz zostaje uratowanych przed głodem, a mieszkańcy wiwatują na cześć Rady, lecz królewskie skarbce odczuwają poważne uszczuplenie."
+      "narrative_consequence": "Rozpoczyna się krwawa pacyfikacja zachodnich prowincji, ugruntowując pozycję tradycyjnego kapłaństwa, lecz tworząc armię męczenników dla nowej wiary."
     },
     {
-      "text": "Utworzenie specjalnej rady uczonych i magów, aby zbadali naturę zarazy i znaleźli trwałe rozwiązanie, zamiast doraźnej pomocy.",
+      "text": "Wyślij emisariuszy, by poznali nauki Eliasa i rozważyli możliwość włączenia jego ruchu w struktury państwowe lub kulturowe.",
       "effects": {
-        "Stability": -8,
-        "Economy": -5,
-        "Faith": -3
+        "Stability": 5,
+        "Economy": 5,
+        "Faith": -10
       },
-      "narrative_consequence": "Nadzieja na przyszłe wyleczenie rośnie, lecz w dotkniętych regionach narasta frustracja i gniew z powodu braku natychmiastowej pomocy, podważając zaufanie do Korony."
+      "narrative_consequence": "Pojawia się rozłam wśród duchowieństwa, a niepewna przyszłość dla jedności królestwa wisi w powietrzu, ale chwilowy spokój na zachodzie zostaje zachowany."
     }
   ],
-  "narrative_prompt": "Rada stoi przed swoją pierwszą poważną próbą. Jak zareaguje na kryzys, zdefiniuje jej priorytety i nakreśli przyszłość królestwa."
+  "narrative_prompt": "Cień niepokoju padł na Radę, gdy wieści o Eliasie dotarły do stolicy. Królestwo stoi u progu nowej ery – czy będzie to era jedności, czy podziałów?"
 }

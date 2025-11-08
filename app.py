@@ -100,7 +100,7 @@ def tts():
         # Generate audio using ElevenLabs API
         audio_bytes = elevenlabs_client.text_to_speech.convert(
             text=text,
-            voice_id="21m00Tzpb8YvFRxQk1eM", # Voice ID for Rachel (default)
+            voice_id="8qCMI2ZZW5ZGwmg0lM1l", # User's preferred voice ID
             model_id="eleven_multilingual_v2",
             output_format="mp3_44100_128"
         )
