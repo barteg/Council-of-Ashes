@@ -1,27 +1,27 @@
 {
-  "id": "round_1_threat_from_the_north",
-  "title": "Zew z Górnego Przełęczy",
-  "description": "Z odległej prowincji Górny Przełęcz, kluczowej dla zasobów rudy, nadeszły alarmujące wieści. Zwiększona aktywność bandytów zagraża szlakom handlowym i kopalniom, a lokalny gubernator domaga się natychmiastowej interwencji Korony. Grozi, że bez wsparcia, produkcja królestwa znacząco spadnie, co może wywołać niepokój.",
-  "image": "/static/images/mountain_pass_bandits.png",
+  "id": "round_1_zaraza_popiolow",
+  "title": "Zaraza Popiołów",
+  "description": "Z północnych prowincji napływają niepokojące wieści. Tajemnicza zaraza, nazywana 'Zarazą Popiołów', niszczy plony, zmieniając żyzne pola w jałowe, szare pustkowia. Grozi to powszechnym głodem i wybuchem paniki, a ludzie patrzą na Radę, szukając ratunku.",
+  "image": "/static/images/ash_blight.png",
   "choices": [
     {
-      "text": "Wysłać elitarne oddziały Gwardii Królewskiej i przeznaczyć znaczne fundusze na obronę oraz rozbudowę infrastruktury w Górnym Przełęczy.",
+      "text": "Natychmiastowe wysłanie zapasów żywności i medykamentów z królewskich spichlerzy, by ulżyć cierpieniu i zapobiec zamieszkom.",
       "effects": {
         "Stability": 12,
         "Economy": -15,
-        "Faith": 0
+        "Faith": 5
       },
-      "narrative_consequence": "Poświęcenie zasobów umacnia lojalność odległej prowincji i zapewnia bezpieczeństwo strategicznych dostaw, choć skarbiec odczuje ten wydatek."
+      "narrative_consequence": "Tysiące dusz zostaje uratowanych przed głodem, a mieszkańcy wiwatują na cześć Rady, lecz królewskie skarbce odczuwają poważne uszczuplenie."
     },
     {
-      "text": "Zaoferować symboliczną pomoc wojskową i wezwać lokalnych lordów do samodzielnego zorganizowania obrony, podkreślając ich obowiązek wobec Korony.",
+      "text": "Utworzenie specjalnej rady uczonych i magów, aby zbadali naturę zarazy i znaleźli trwałe rozwiązanie, zamiast doraźnej pomocy.",
       "effects": {
-        "Stability": -10,
-        "Economy": 5,
-        "Faith": 0
+        "Stability": -8,
+        "Economy": -5,
+        "Faith": -3
       },
-      "narrative_consequence": "Prowincja Górny Przełęcz czuje się porzucona, co może doprowadzić do poważnych niepokojów i zakłóceń w dostawach, ale królestwo oszczędza cenne zasoby."
+      "narrative_consequence": "Nadzieja na przyszłe wyleczenie rośnie, lecz w dotkniętych regionach narasta frustracja i gniew z powodu braku natychmiastowej pomocy, podważając zaufanie do Korony."
     }
   ],
-  "narrative_prompt": "Pierwsze poważne wyzwanie dla jedności królestwa rzuca długi cień na salę obrad. Odpowiedź Rady zadecyduje o przyszłości odległych ziem i nastrojach wśród ludu."
+  "narrative_prompt": "Rada stoi przed swoją pierwszą poważną próbą. Jak zareaguje na kryzys, zdefiniuje jej priorytety i nakreśli przyszłość królestwa."
 }
