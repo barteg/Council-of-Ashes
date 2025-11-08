@@ -7,7 +7,8 @@ import string
 import json
 import socket
 from story_data import call_gemini_for_outcome_narrative, generate_dilemma_with_gemini, EVENT_GENERATION_PROMPT_STATIC, OUTCOME_NARRATIVE_PROMPT_STATIC
-from elevenlabs import set_api_key, generate
+from elevenlabs import ElevenLabs
+import io
 
 # Securely get the API key from the environment
 api_key = os.getenv("GEMINI_API_KEY")
@@ -16,11 +17,12 @@ elevenlabs_api_key = os.getenv("ELEVENLABS_API_KEY")
 if not api_key:
     raise ValueError("GEMINI_API_KEY environment variable not set!")
 
-# Set ElevenLabs API key
+# Initialize ElevenLabs client
 if not elevenlabs_api_key:
     print("WARNING: ELEVENLABS_API_KEY environment variable not set! TTS will not work.")
+    elevenlabs_client = None
 else:
-    set_api_key(elevenlabs_api_key)
+    elevenlabs_client = ElevenLabs(api_key=elevenlabs_api_key)
 
 
 model = genai.GenerativeModel('gemini-pro')
@@ -64,8 +66,8 @@ def player_controller(game_id, player_id):
 
 @app.route('/api/tts', methods=['POST'])
 def tts():
-    if not elevenlabs_api_key:
-        print("[TTS] Error: ElevenLabs API key not set.")
+    if not elevenlabs_client:
+        print("[TTS] Error: ElevenLabs client not initialized. Is the API key set?")
         return jsonify({"error": "TTS service not configured"}), 500
 
     text = request.json.get('text')
@@ -74,8 +76,8 @@ def tts():
 
     print(f"[TTS] Received text for ElevenLabs: {text}")
     try:
-        # Generate audio using ElevenLabs API (function-based approach)
-        audio_bytes = generate(
+        # Generate audio using ElevenLabs API
+        audio_bytes = elevenlabs_client.tts.generate(
             text=text,
             voice="Pz12a6a37c35a3f5805z", # Voice ID for Antoni
             model="eleven_multilingual_v2"
