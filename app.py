@@ -12,24 +12,38 @@ from story_data import (
     EVENT_GENERATION_PROMPT_STATIC,
     OUTCOME_NARRATIVE_PROMPT_STATIC,
 )
-from elevenlabs.client import ElevenLabs
-import io
+import torch
+from TTS.api import TTS
+import numpy as np
+import wave
+
+# --- Coqui XTTS v2 Setup ---
+# Determine the device to use
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"[TTS] Using device: {device}")
+
+# Load the TTS model
+# This will download the model on the first run, which may take a while.
+print("[TTS] Loading Coqui XTTS v2 model...")
+try:
+    tts_model = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
+    print("[TTS] Coqui XTTS v2 model loaded successfully.")
+except Exception as e:
+    print(f"[TTS] Error loading Coqui XTTS model: {e}")
+    tts_model = None
+
+# Ensure the 'voices' directory exists
+if not os.path.exists("voices"):
+    os.makedirs("voices")
+    print("Created 'voices' directory.")
+# --- End of Coqui XTTS Setup ---
+
 
 # Securely get the API key from the environment
 api_key = os.getenv("GEMINI_API_KEY")
-elevenlabs_api_key = os.getenv("ELEVENLABS_API_KEY")
 
 if not api_key:
     raise ValueError("GEMINI_API_KEY environment variable not set!")
-
-# Initialize ElevenLabs client
-if not elevenlabs_api_key:
-    print(
-        "WARNING: ELEVENLABS_API_KEY environment variable not set! TTS will not work."
-    )
-    elevenlabs_client = None
-else:
-    elevenlabs_client = ElevenLabs(api_key=elevenlabs_api_key)
 
 
 model = genai.GenerativeModel("gemini-2.5-flash")
@@ -87,37 +101,48 @@ def player_controller(game_id, player_id):
 
 @app.route("/api/tts", methods=["POST"])
 def tts():
-    if not elevenlabs_client:
-        print("[TTS] Error: ElevenLabs client not initialized. Is the API key set?")
+    if not tts_model:
+        print("[TTS] Error: Coqui TTS model not loaded.")
         return jsonify({"error": "TTS service not configured"}), 500
 
     text = request.json.get("text")
     if not text:
         return jsonify({"error": "No text provided"}), 400
 
-    print(f"[TTS] Received text for ElevenLabs: {text}")
+    speaker_wav_path = "voices/voice1.wav"
+    if not os.path.exists(speaker_wav_path):
+        print(f"[TTS] Error: Speaker WAV file not found at {speaker_wav_path}")
+        return jsonify({"error": f"Speaker voice file not found. Please place it at {speaker_wav_path}"}), 500
+
+    print(f"[TTS] Received text for Coqui XTTS: {text}")
     try:
-        # Generate audio using ElevenLabs API
-        audio_bytes = elevenlabs_client.text_to_speech.convert(
+        # Generate audio using Coqui XTTS
+        wav_data = tts_model.tts(
             text=text,
-            voice_id="8qCMI2ZZW5ZGwmg0lM1l", # User's preferred voice ID
-            model_id="eleven_multilingual_v2",
-            output_format="mp3_44100_128"
+            speaker_wav=speaker_wav_path,
+            language="pl"
         )
 
-        # The API returns a generator that streams audio chunks. We need to concatenate them.
-        audio_content = b"".join(audio_bytes)
-
-        print("[TTS] Audio stream collected successfully.")
+        # The output is a numpy array. We need to convert it to a WAV byte stream.
+        audio_stream = io.BytesIO()
+        with wave.open(audio_stream, 'wb') as wf:
+            wf.setnchannels(1)  # XTTS is mono
+            wf.setsampwidth(2)  # 16-bit audio
+            wf.setframerate(tts_model.synthesizer.output_sample_rate)
+            # Convert float numpy array to 16-bit int bytes
+            audio_int = np.array(wav_data * 32767, dtype=np.int16)
+            wf.writeframes(audio_int.tobytes())
         
-        # Send the audio data back to the client
+        audio_stream.seek(0)
+        print("[TTS] Audio generated successfully by Coqui XTTS.")
+        
         return send_file(
-            io.BytesIO(audio_content),
-            mimetype='audio/mpeg',
+            audio_stream,
+            mimetype='audio/wav',
             as_attachment=False
         )
     except Exception as e:
-        print(f"[TTS] Error during ElevenLabs audio generation: {e}")
+        print(f"[TTS] Error during Coqui XTTS audio generation: {e}")
         import traceback
 
         traceback.print_exc()

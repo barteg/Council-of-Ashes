@@ -1,27 +1,27 @@
 {
-  "id": "rada_popiolow_r1_szmer_herezji",
-  "title": "Szmer Herezji",
-  "description": "Ludzie odwracają się od pradawnych bogów. W zubożałych zachodnich prowincjach pojawił się charyzmatyczny prorok Elias, głoszący nową doktrynę samowystarczalności. Jego zwolennicy rosną w siłę, kwestionując ustalony porządek, a kapłaństwo bije na alarm, domagając się działania.",
-  "image": "/static/images/heresy_prophet.png",
+  "id": "round_1_cien_glodu",
+  "title": "Cień Głodu",
+  "description": "Zeszła sroga zima i zaraza zniszczyły znaczną część tegorocznych zbiorów. Królestwo stoi w obliczu widma głodu, a zubożały lud spogląda z nadzieją na Radę Popiołów, szukając ratunku przed nędzą. Skarbiec jest pusty, a zapasy drastycznie maleją.",
+  "image": "/static/images/famine.png",
   "choices": [
     {
-      "text": "Wyślij legiony, by stłumić herezję i przywrócić porządek siłą, a proroka Eliasa pojmać.",
+      "text": "Otwórz królewskie spichlerze i przeznacz rezerwy na zakup dodatkowej żywności, by ulżyć cierpieniom ludu.",
       "effects": {
-        "Stability": -10,
-        "Economy": -5,
-        "Faith": 15
+        "Stability": 15,
+        "Economy": -20,
+        "Faith": 10
       },
-      "narrative_consequence": "Rozpoczyna się krwawa pacyfikacja zachodnich prowincji, ugruntowując pozycję tradycyjnego kapłaństwa, lecz tworząc armię męczenników dla nowej wiary."
+      "narrative_consequence": "Królestwo uchroni się przed zamieszkami, a wdzięczny lud wychwala króla. Jednak królewski skarbiec świeci pustkami, a długi narastają, grożąc dalszym zubożeniem."
     },
     {
-      "text": "Wyślij emisariuszy, by poznali nauki Eliasa i rozważyli możliwość włączenia jego ruchu w struktury państwowe lub kulturowe.",
+      "text": "Wprowadź surowe racjonowanie, zabezpieczając potrzeby stolicy i wojska, a resztę pozostawiając lokalnym władzom.",
       "effects": {
-        "Stability": 5,
-        "Economy": 5,
+        "Stability": -15,
+        "Economy": 10,
         "Faith": -10
       },
-      "narrative_consequence": "Pojawia się rozłam wśród duchowieństwa, a niepewna przyszłość dla jedności królestwa wisi w powietrzu, ale chwilowy spokój na zachodzie zostaje zachowany."
+      "narrative_consequence": "Stolicę i wojska udaje się utrzymać w ryzach, lecz prowincje wrą niezadowoleniem, a na ulicach pojawiają się pierwsze oznaki buntu. Wiara w władcę drastycznie spada."
     }
   ],
-  "narrative_prompt": "Cień niepokoju padł na Radę, gdy wieści o Eliasie dotarły do stolicy. Królestwo stoi u progu nowej ery – czy będzie to era jedności, czy podziałów?"
+  "narrative_prompt": "Decyzja Rady rozbrzmi echem po całym królestwie, kształtując jego najbliższą przyszłość w obliczu narastającego kryzysu."
 }

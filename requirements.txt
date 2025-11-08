@@ -2,4 +2,4 @@ flask
 flask-socketio
 google-generativeai
 eventlet
-elevenlabs
+TTS
