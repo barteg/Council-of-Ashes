@@ -105,11 +105,16 @@ def tts():
             output_format="mp3_44100_128"
         )
 
-        print("[TTS] Audio generated successfully by ElevenLabs.")
+        # The API returns a generator that streams audio chunks. We need to concatenate them.
+        audio_content = b"".join(audio_bytes)
 
+        print("[TTS] Audio stream collected successfully.")
+        
         # Send the audio data back to the client
         return send_file(
-            io.BytesIO(audio_bytes), mimetype="audio/mpeg", as_attachment=False
+            io.BytesIO(audio_content),
+            mimetype='audio/mpeg',
+            as_attachment=False
         )
     except Exception as e:
         print(f"[TTS] Error during ElevenLabs audio generation: {e}")

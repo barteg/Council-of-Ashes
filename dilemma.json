@@ -1,27 +1,27 @@
 {
-  "id": "round_1_pustoszące_zbiory",
-  "title": "Pustoszące Zbiory",
-  "description": "Nad królestwem zaległa niewidzialna plaga, która spowiła pola i wysuszyła spichlerze. Pustoszące zbiory grożą niedoborem żywności w całym kraju, a ludność w miastach i na wsi zaczyna odczuwać pierwsze skutki głodu. Jeśli Rada nie podejmie szybkich działań, niepokoje mogą szybko przerodzić się w otwarty bunt.",
-  "image": "/static/images/scarcity.png",
+  "id": "round_1_threat_from_the_north",
+  "title": "Zew z Górnego Przełęczy",
+  "description": "Z odległej prowincji Górny Przełęcz, kluczowej dla zasobów rudy, nadeszły alarmujące wieści. Zwiększona aktywność bandytów zagraża szlakom handlowym i kopalniom, a lokalny gubernator domaga się natychmiastowej interwencji Korony. Grozi, że bez wsparcia, produkcja królestwa znacząco spadnie, co może wywołać niepokój.",
+  "image": "/static/images/mountain_pass_bandits.png",
   "choices": [
     {
-      "text": "Nakazać rozdanie królewskich rezerw zboża i wprowadzić sztywne ceny, aby zapewnić dostępność żywności dla każdego.",
+      "text": "Wysłać elitarne oddziały Gwardii Królewskiej i przeznaczyć znaczne fundusze na obronę oraz rozbudowę infrastruktury w Górnym Przełęczy.",
       "effects": {
-        "Stability": 10,
+        "Stability": 12,
         "Economy": -15,
-        "Faith": 5
+        "Faith": 0
       },
-      "narrative_consequence": "Lud odetchnie z ulgą, widząc, że korona troszczy się o swoich poddanych, ale kupcy i właściciele ziemscy wyrażą swoje oburzenie na centralne zarządzanie ich majątkiem."
+      "narrative_consequence": "Poświęcenie zasobów umacnia lojalność odległej prowincji i zapewnia bezpieczeństwo strategicznych dostaw, choć skarbiec odczuje ten wydatek."
     },
     {
-      "text": "Znieść cła handlowe i zachęcić kupców do sprowadzania żywności zza granicy, licząc na ożywienie lokalnej produkcji.",
+      "text": "Zaoferować symboliczną pomoc wojskową i wezwać lokalnych lordów do samodzielnego zorganizowania obrony, podkreślając ich obowiązek wobec Korony.",
       "effects": {
         "Stability": -10,
-        "Economy": 15,
-        "Faith": -5
+        "Economy": 5,
+        "Faith": 0
       },
-      "narrative_consequence": "Pustawe spichlerze mogą zostać uzupełnione, ale gniew biedoty rośnie, widząc, jak bogacą się kupcy kosztem ich niedoli, zaś świątynie wyrażają zaniepokojenie upadkiem moralności."
+      "narrative_consequence": "Prowincja Górny Przełęcz czuje się porzucona, co może doprowadzić do poważnych niepokojów i zakłóceń w dostawach, ale królestwo oszczędza cenne zasoby."
     }
   ],
-  "narrative_prompt": "Rada Popiołów staje przed pierwszym prawdziwym testem swojej władzy – wyborem między natychmiastową ulgą a długoterminową strategią, podczas gdy cienie głodu zwiastują nadchodzące niepokoje."
+  "narrative_prompt": "Pierwsze poważne wyzwanie dla jedności królestwa rzuca długi cień na salę obrad. Odpowiedź Rady zadecyduje o przyszłości odległych ziem i nastrojach wśród ludu."
 }
