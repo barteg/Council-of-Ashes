@@ -98,12 +98,12 @@ def tts():
     print(f"[TTS] Received text for ElevenLabs: {text}")
     try:
         # Generate audio using ElevenLabs API
-                audio_bytes = elevenlabs_client.text_to_speech.convert(
-                    text=text,
-                    voice_id="21m00Tzpb8YvFRxQk1eM", # Voice ID for Rachel (default)
-                    model_id="eleven_multilingual_v2",
-                    output_format="mp3_44100_128"
-                )
+        audio_bytes = elevenlabs_client.text_to_speech.convert(
+            text=text,
+            voice_id="21m00Tzpb8YvFRxQk1eM", # Voice ID for Rachel (default)
+            model_id="eleven_multilingual_v2",
+            output_format="mp3_44100_128"
+        )
 
         # The API returns a generator that streams audio chunks. We need to concatenate them.
         audio_content = b"".join(audio_bytes)
