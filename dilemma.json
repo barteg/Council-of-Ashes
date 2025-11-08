@@ -1,27 +1,27 @@
 {
-  "id": "round_1_shadow_of_famine",
-  "title": "Cień Głodu nad Krainą",
-  "description": "Zbiory tego roku okazały się katastrofalne, a magazyny są przerażająco puste. Ludzie na wsi głodują, a ceny żywności w miastach szybują w górę, grożąc masowymi niepokojami. Rada musi działać szybko, zanim królestwo pogrąży się w chaosie.",
-  "image": "/static/images/famine.png",
+  "id": "round_1_infrastructure_crisis",
+  "title": "Sieć Królestwa: Zniszczone Drogi",
+  "description": "Po latach zaniedbań i niszczycielskich konfliktów, sieć dróg i mostów królestwa popada w ruinę. Handel jest utrudniony, podróżowanie niebezpieczne, a niezadowolenie kupców i prostego ludu rośnie, utrudniając życie codzienne i zagrażając jedności. Stare szlaki, niegdyś symbole potęgi, dziś są jedynie rozsypującymi się pozostałościami dawnej chwały.",
+  "image": "/static/images/ruined_road.png",
   "choices": [
     {
-      "text": "Natychmiastowe sprowadzenie żywności z sąsiednich królestw, wykorzystując rezerwy skarbca.",
+      "text": "Zainwestuj ogromne środki w natychmiastową, kompleksową odbudowę kluczowych szlaków handlowych i mostów.",
       "effects": {
-        "Stability": 10,
-        "Economy": -15,
-        "Faith": 0
+        "Stability": 12,
+        "Economy": -18,
+        "Faith": 2
       },
-      "narrative_consequence": "Karawany pełne zboża z trudem docierają do miast i wsi, przynosząc ulgę głodującym, lecz skarbiec pustoszeje w zastraszającym tempie."
+      "narrative_consequence": "Wielkie projekty budowlane ożywią regiony, zapewnią bezpieczeństwo i pracę, ale pochłoną znaczną część skarbca, obciążając gospodarkę na pewien czas."
     },
     {
-      "text": "Wprowadzenie ścisłych racji żywnościowych i konfiskata nadwyżek od zamożnych posiadaczy ziemskich.",
+      "text": "Wprowadź jedynie doraźne naprawy najbardziej krytycznych odcinków, przeznaczając większość funduszy na ulgi podatkowe i bezpośrednie wsparcie dla rolników i kupców.",
       "effects": {
-        "Stability": -5,
-        "Economy": -10,
+        "Stability": -8,
+        "Economy": 15,
         "Faith": 5
       },
-      "narrative_consequence": "Wprowadzone racje wywołują mieszane uczucia wśród ludności, a gniew zamożnych posiadaczy ziemskich narasta, lecz najbiedniejsi otrzymują nadzieję na przetrwanie dzięki odważnej decyzji Rady."
+      "narrative_consequence": "Natychmiastowa ulga gospodarcza odsunie widmo kryzysu, lecz prowizoryczne rozwiązania drogowe nie rozwiążą problemu, a narastające niezadowolenie z infrastruktury może podważyć autorytet Rady."
     }
   ],
-  "narrative_prompt": "Decyzja Rady w obliczu panującego głodu wstrząśnie fundamentami królestwa, ukazując, czy cenicie sobie jego dobrobyt, czy spokój poddanych, kosztem innych wartości."
+  "narrative_prompt": "Rada Popiołów staje przed pierwszym prawdziwym wyzwaniem: czy skupić się na odbudowie fundamentów królestwa, czy na natychmiastowym wsparciu ludzi? Decyzja ukształtuje przyszłość i pokaże, jaki kurs obierze wasza władza."
 }

@@ -66,6 +66,10 @@ def player_controller(game_id, player_id):
 
 @app.route('/api/tts', methods=['POST'])
 def tts():
+    if not voice:
+        print("[TTS] Error: Voice model not loaded")
+        return jsonify({"error": "TTS voice model not loaded"}), 500
+
     print("[TTS] /api/tts endpoint called")
     text = request.json.get('text')
     if not text:
@@ -73,16 +77,28 @@ def tts():
         return jsonify({"error": "No text provided"}), 400
 
     print(f"[TTS] Received text: {text}")
-    audio_stream = io.BytesIO()
     try:
         print("[TTS] Synthesizing audio...")
+        # Synthesize audio to raw bytes
+        audio_bytes = voice.synthesize(text)
+        print("[TTS] Audio synthesized successfully, creating WAV file.")
+
+        # Create a WAV file in memory
+        audio_stream = io.BytesIO()
         with wave.open(audio_stream, 'wb') as wav_file:
-            voice.synthesize(text, wav_file)
-        print("[TTS] Audio synthesized successfully")
+            wav_file.setnchannels(1) # Mono audio
+            wav_file.setsampwidth(voice.config.sample_width)
+            wav_file.setframerate(voice.config.sample_rate)
+            wav_file.writeframes(audio_bytes)
+        
+        print("[TTS] WAV file created in memory.")
         audio_stream.seek(0)
         return send_file(audio_stream, mimetype='audio/wav')
     except Exception as e:
-        print(f"[TTS] Error during audio synthesis: {e}")
+        print(f"[TTS] Error during audio synthesis or WAV creation: {e}")
+        # It's helpful to log the full traceback for debugging
+        import traceback
+        traceback.print_exc()
         return jsonify({"error": "TTS synthesis failed"}), 500
 
 @app.route('/dilemma')
