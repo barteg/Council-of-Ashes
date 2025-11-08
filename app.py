@@ -25,7 +25,7 @@ else:
     elevenlabs_client = ElevenLabs(api_key=elevenlabs_api_key)
 
 
-model = genai.GenerativeModel('gemini-1.5-flash')
+model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 # It is critical to set a secret key for session management and security.
@@ -78,7 +78,7 @@ def tts():
     try:
         # Generate audio using ElevenLabs API
         # Using a default Polish voice ("Antoni"). This can be changed.
-        audio_bytes = elevenlabs_client.generate(
+        audio_bytes = elevenlabs_client.tts.generate(
             text=text,
             voice="Pz12a6a37c35a3f5805z", # Voice ID for Antoni
             model="eleven_multilingual_v2"

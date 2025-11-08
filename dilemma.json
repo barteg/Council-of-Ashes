@@ -1,27 +1,27 @@
 {
-  "id": "round_1_infrastructure_crisis",
-  "title": "Sieć Królestwa: Zniszczone Drogi",
-  "description": "Po latach zaniedbań i niszczycielskich konfliktów, sieć dróg i mostów królestwa popada w ruinę. Handel jest utrudniony, podróżowanie niebezpieczne, a niezadowolenie kupców i prostego ludu rośnie, utrudniając życie codzienne i zagrażając jedności. Stare szlaki, niegdyś symbole potęgi, dziś są jedynie rozsypującymi się pozostałościami dawnej chwały.",
-  "image": "/static/images/ruined_road.png",
+  "id": "round_1_cien_glodu",
+  "title": "Cień Głodu",
+  "description": "Nad królestwem zalega cień. Po wyjątkowo surowej zimie, wschodnie prowincje raportują o fatalnych prognozach zbiorów. Magazyny pustoszeją, a ludność zaczyna szeptać o nadchodzącym głodzie. Rada musi szybko zareagować, by zapobiec katastrofie.",
+  "image": "/static/images/crop_failure.png",
   "choices": [
     {
-      "text": "Zainwestuj ogromne środki w natychmiastową, kompleksową odbudowę kluczowych szlaków handlowych i mostów.",
+      "text": "Przeznaczyć znaczne rezerwy królewskie na natychmiastową pomoc żywnościową dla dotkniętych prowincji, transportując zboże z zasobniejszych regionów.",
       "effects": {
-        "Stability": 12,
-        "Economy": -18,
-        "Faith": 2
-      },
-      "narrative_consequence": "Wielkie projekty budowlane ożywią regiony, zapewnią bezpieczeństwo i pracę, ale pochłoną znaczną część skarbca, obciążając gospodarkę na pewien czas."
-    },
-    {
-      "text": "Wprowadź jedynie doraźne naprawy najbardziej krytycznych odcinków, przeznaczając większość funduszy na ulgi podatkowe i bezpośrednie wsparcie dla rolników i kupców.",
-      "effects": {
-        "Stability": -8,
-        "Economy": 15,
+        "Stability": 10,
+        "Economy": -15,
         "Faith": 5
       },
-      "narrative_consequence": "Natychmiastowa ulga gospodarcza odsunie widmo kryzysu, lecz prowizoryczne rozwiązania drogowe nie rozwiążą problemu, a narastające niezadowolenie z infrastruktury może podważyć autorytet Rady."
+      "narrative_consequence": "Wdzięczność ludu rozbrzmi echem po królestwie, lecz skarbiec królewski zostanie poważnie uszczuplony, a kupcy już lamentują nad zakłóceniami w handlu."
+    },
+    {
+      "text": "Zabezpieczyć zasoby stolicy i garnizonów, ograniczając pomoc do minimum, aby uniknąć wewnętrznych rozruchów i zachować siłę militarną.",
+      "effects": {
+        "Stability": -10,
+        "Economy": 10,
+        "Faith": -5
+      },
+      "narrative_consequence": "Stolica pozostanie bezpieczna, lecz echo głodu na wschodzie będzie narastać, a niezadowolenie może wkrótce przekształcić się w otwarty bunt, podważając wiarę w rządy Rady."
     }
   ],
-  "narrative_prompt": "Rada Popiołów staje przed pierwszym prawdziwym wyzwaniem: czy skupić się na odbudowie fundamentów królestwa, czy na natychmiastowym wsparciu ludzi? Decyzja ukształtuje przyszłość i pokaże, jaki kurs obierze wasza władza."
+  "narrative_prompt": "Cień głodu rzucony na wschodnie prowincje zmusza Radę do podjęcia trudnej decyzji, która zaważy na losach nie tylko cierpiących, ale i całego królestwa. Wybór polityki będzie silnie odczuwalny we wszystkich zakątkach państwa."
 }
