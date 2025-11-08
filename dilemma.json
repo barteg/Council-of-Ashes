@@ -1,27 +1,27 @@
 {
-  "id": "round_1_zagrozenie_rubiezy",
-  "title": "Zagrożenie na Rubieżach: Banditry i Niepokoje",
-  "description": "Z odległych rubieży królestwa docierają niepokojące wieści o rosnącej fali bandytyzmu i lokalnych niepokojów. Szlaki handlowe są coraz bardziej niebezpieczne, a wieśniacy uciekają ze swoich domów w poszukiwaniu bezpieczeństwa. Rada musi zdecydować, jak zareagować na te narastające problemy, zanim przerodzą się w otwarty bunt.",
-  "image": "/static/images/banditry_unrest.png",
+  "id": "round_1_shadow_of_famine",
+  "title": "Cień Głodu nad Krainą",
+  "description": "Zbiory tego roku okazały się katastrofalne, a magazyny są przerażająco puste. Ludzie na wsi głodują, a ceny żywności w miastach szybują w górę, grożąc masowymi niepokojami. Rada musi działać szybko, zanim królestwo pogrąży się w chaosie.",
+  "image": "/static/images/famine.png",
   "choices": [
     {
-      "text": "Wyślij elitarne oddziały Królewskiej Gwardii, by stłumiły bandytów i przywróciły porządek na rubieżach.",
+      "text": "Natychmiastowe sprowadzenie żywności z sąsiednich królestw, wykorzystując rezerwy skarbca.",
       "effects": {
-        "Stability": 12,
+        "Stability": 10,
         "Economy": -15,
-        "Faith": -5
+        "Faith": 0
       },
-      "narrative_consequence": "Żołnierze wyruszą, by zaprowadzić ład, lecz ich marsz będzie kosztownym brzemieniem dla skarbca, a lud może odczuć, że ich ciężka praca została zignorowana na rzecz wojny."
+      "narrative_consequence": "Karawany pełne zboża z trudem docierają do miast i wsi, przynosząc ulgę głodującym, lecz skarbiec pustoszeje w zastraszającym tempie."
     },
     {
-      "text": "Upoważnij lokalnych baronów i duchowieństwo do samodzielnego rozwiązywania problemu, oferując ograniczone wsparcie i zaufanie.",
+      "text": "Wprowadzenie ścisłych racji żywnościowych i konfiskata nadwyżek od zamożnych posiadaczy ziemskich.",
       "effects": {
-        "Stability": -8,
-        "Economy": 10,
-        "Faith": 10
+        "Stability": -5,
+        "Economy": -10,
+        "Faith": 5
       },
-      "narrative_consequence": "Władza zostanie przekazana w ręce miejscowych, co może wzmocnić ich pozycję i wiarę w autorytet króla, ale także grozi eskalacją konfliktu bez bezpośredniego nadzoru."
+      "narrative_consequence": "Wprowadzone racje wywołują mieszane uczucia wśród ludności, a gniew zamożnych posiadaczy ziemskich narasta, lecz najbiedniejsi otrzymują nadzieję na przetrwanie dzięki odważnej decyzji Rady."
     }
   ],
-  "narrative_prompt": "Cisza zaległa w sali obrad po przedstawieniu raportu, a każdy z członków Rady ważył ryzyko i korzyści płynące z podjęcia decyzji. Przyszłość odległych prowincji, a co za tym idzie całego królestwa, spoczywała teraz w ich rękach."
+  "narrative_prompt": "Decyzja Rady w obliczu panującego głodu wstrząśnie fundamentami królestwa, ukazując, czy cenicie sobie jego dobrobyt, czy spokój poddanych, kosztem innych wartości."
 }

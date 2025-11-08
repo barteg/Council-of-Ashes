@@ -446,6 +446,10 @@ if (gameId && playerId) {
         const dilemmaSection = document.getElementById('dilemmaSection');
         const narrativeOutput = document.getElementById('narrativeOutput');
         const nextRoundBtn = document.getElementById('nextRoundBtn');
+        const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn'); // Declare here
+
+        // Hide confirm button on any phase change
+        if (confirmDilemmaChoiceBtn) confirmDilemmaChoiceBtn.style.display = 'none';
 
         console.log(`[DEBUG] phase_change: Phase: ${data.phase}`);
         console.log(`[DEBUG] phase_change: playerStatementsSection.style.display BEFORE: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
