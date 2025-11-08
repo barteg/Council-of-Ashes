@@ -64,26 +64,26 @@ def player_controller(game_id, player_id):
         return render_template("player.html", game_id=game_id, player_id=player_id, global_stats=game['global_stats'], current_round=game['current_round'])
     return "Game or Player not found", 404
 
-# @app.route('/api/tts', methods=['POST'])
-# def tts():
-#     print("[TTS] /api/tts endpoint called")
-#     text = request.json.get('text')
-#     if not text:
-#         print("[TTS] Error: No text provided")
-#         return jsonify({"error": "No text provided"}), 400
-# 
-#     print(f"[TTS] Received text: {text}")
-#     audio_stream = io.BytesIO()
-#     try:
-#         print("[TTS] Synthesizing audio...")
-#         with wave.open(audio_stream, 'wb') as wav_file:
-#             voice.synthesize(text, wav_file)
-#         print("[TTS] Audio synthesized successfully")
-#         audio_stream.seek(0)
-#         return send_file(audio_stream, mimetype='audio/wav')
-#     except Exception as e:
-#         print(f"[TTS] Error during audio synthesis: {e}")
-#         return jsonify({"error": "TTS synthesis failed"}), 500
+@app.route('/api/tts', methods=['POST'])
+def tts():
+    print("[TTS] /api/tts endpoint called")
+    text = request.json.get('text')
+    if not text:
+        print("[TTS] Error: No text provided")
+        return jsonify({"error": "No text provided"}), 400
+
+    print(f"[TTS] Received text: {text}")
+    audio_stream = io.BytesIO()
+    try:
+        print("[TTS] Synthesizing audio...")
+        with wave.open(audio_stream, 'wb') as wav_file:
+            voice.synthesize(text, wav_file)
+        print("[TTS] Audio synthesized successfully")
+        audio_stream.seek(0)
+        return send_file(audio_stream, mimetype='audio/wav')
+    except Exception as e:
+        print(f"[TTS] Error during audio synthesis: {e}")
+        return jsonify({"error": "TTS synthesis failed"}), 500
 
 @app.route('/dilemma')
 def dilemma():
