@@ -25,7 +25,7 @@ else:
     elevenlabs_client = ElevenLabs(api_key=elevenlabs_api_key)
 
 
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 # It is critical to set a secret key for session management and security.
