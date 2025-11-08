@@ -1,27 +1,27 @@
 {
-  "id": "round_1_cien_na_wschodnim_szlaku",
-  "title": "Cień na Wschodnim Szlaku",
-  "description": "Kluczowa przełęcz górska, będąca arterią handlową i komunikacyjną królestwa, została niespodziewanie zablokowana przez serię osuwisk. Kupcy są uwięzieni, zapasy w miastach na wschodzie maleją, a plotki o aktywności bandytów w zdezorganizowanym regionie stają się coraz głośniejsze. Królestwo stoi przed trudnym wyborem, jak przywrócić porządek i swobodny przepływ dóbr.",
-  "image": "/static/images/mountain_pass_blocked.png",
+  "id": "round_1_pustoszące_zbiory",
+  "title": "Pustoszące Zbiory",
+  "description": "Nad królestwem zaległa niewidzialna plaga, która spowiła pola i wysuszyła spichlerze. Pustoszące zbiory grożą niedoborem żywności w całym kraju, a ludność w miastach i na wsi zaczyna odczuwać pierwsze skutki głodu. Jeśli Rada nie podejmie szybkich działań, niepokoje mogą szybko przerodzić się w otwarty bunt.",
+  "image": "/static/images/scarcity.png",
   "choices": [
     {
-      "text": "Wyślij oddziały wojskowe, aby szybko zabezpieczyć przełęcz i odeprzeć wszelkie zagrożenia, mimo wysokich kosztów.",
+      "text": "Nakazać rozdanie królewskich rezerw zboża i wprowadzić sztywne ceny, aby zapewnić dostępność żywności dla każdego.",
       "effects": {
         "Stability": 10,
         "Economy": -15,
-        "Faith": 0
-      },
-      "narrative_consequence": "Królewscy żołnierze wkroczą do akcji, z determinacją przywracając porządek i poczucie bezpieczeństwa, choć skarbiec królewski odczuje znaczący ubytek."
-    },
-    {
-      "text": "Zaoferuj pomoc lokalnym społecznościom w usunięciu blokady i zbadaj przyczyny niestabilności, akceptując opóźnienia.",
-      "effects": {
-        "Stability": -5,
-        "Economy": 10,
         "Faith": 5
       },
-      "narrative_consequence": "Cierpliwe podejście może ukoić gniew i wzmocnić więzi z ludem, ale w międzyczasie chaos na szlaku będzie narastał, testując cierpliwość kupców i wschodnich miast."
+      "narrative_consequence": "Lud odetchnie z ulgą, widząc, że korona troszczy się o swoich poddanych, ale kupcy i właściciele ziemscy wyrażą swoje oburzenie na centralne zarządzanie ich majątkiem."
+    },
+    {
+      "text": "Znieść cła handlowe i zachęcić kupców do sprowadzania żywności zza granicy, licząc na ożywienie lokalnej produkcji.",
+      "effects": {
+        "Stability": -10,
+        "Economy": 15,
+        "Faith": -5
+      },
+      "narrative_consequence": "Pustawe spichlerze mogą zostać uzupełnione, ale gniew biedoty rośnie, widząc, jak bogacą się kupcy kosztem ich niedoli, zaś świątynie wyrażają zaniepokojenie upadkiem moralności."
     }
   ],
-  "narrative_prompt": "Przełęcz Wschodu czeka na decyzję Rady, która zadecyduje o losie handlu i bezpieczeństwa wschodnich prowincji w nadchodzących miesiącach, rzucając pierwsze światło na styl rządów nowej Rady."
+  "narrative_prompt": "Rada Popiołów staje przed pierwszym prawdziwym testem swojej władzy – wyborem między natychmiastową ulgą a długoterminową strategią, podczas gdy cienie głodu zwiastują nadchodzące niepokoje."
 }
