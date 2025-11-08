@@ -61,33 +61,23 @@ function renderDilemma(dilemma) {
         button.classList.add('list-group-item', 'list-group-item-action', 'mb-2');
         button.textContent = choice.text;
         button.addEventListener('click', () => {
+            // Store selected choice index, but don't submit yet
             playerChoice = index;
-            socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'dilemma_choice', choice: index });
-            // Disable choices after selection
-            Array.from(dilemmaChoices.children).forEach(btn => btn.disabled = true);
+
+            // Remove 'active' class from all choices and add to the clicked one
+            Array.from(dilemmaChoices.children).forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-            console.log(`[DEBUG] Dilemma choice clicked: dilemmaSection.style.display BEFORE: ${document.getElementById('dilemmaSection') ? document.getElementById('dilemmaSection').style.display : 'N/A'}`);
-            console.log(`[DEBUG] Dilemma choice clicked: playerStatementsSection.style.display BEFORE: ${document.getElementById('playerStatementsSection') ? document.getElementById('playerStatementsSection').style.display : 'N/A'}`);
-            console.log(`[DEBUG] Dilemma choice clicked: statementVoteSection.style.display BEFORE: ${document.getElementById('statementVoteSection') ? document.getElementById('statementVoteSection').style.display : 'N/A'}`);
-
-
-            // Hide dilemma and show statement section
-            const dilemmaSection = document.getElementById('dilemmaSection');
-            const playerStatementsSection = document.getElementById('playerStatementsSection');
-            const statementVoteSection = document.getElementById('statementVoteSection');
-
-            if (dilemmaSection) dilemmaSection.style.display = 'none';
-            if (playerStatementsSection) playerStatementsSection.style.display = 'block';
-            if (statementVoteSection) statementVoteSection.style.display = 'none';
-
-
-            console.log(`[DEBUG] Dilemma choice clicked: dilemmaSection.style.display AFTER: ${document.getElementById('dilemmaSection') ? document.getElementById('dilemmaSection').style.display : 'N/A'}`);
-            console.log(`[DEBUG] Dilemma choice clicked: playerStatementsSection.style.display AFTER: ${document.getElementById('playerStatementsSection') ? document.getElementById('playerStatementsSection').style.display : 'N/A'}`);
-            console.log(`[DEBUG] Dilemma choice clicked: statementVoteSection.style.display AFTER: ${document.getElementById('statementVoteSection') ? document.getElementById('statementVoteSection').style.display : 'N/A'}`);
+            // Show the Confirm Choice button
+            const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn');
+            if (confirmDilemmaChoiceBtn) confirmDilemmaChoiceBtn.style.display = 'block';
         });
         dilemmaChoices.appendChild(button);
     });
+
+    // Ensure Confirm Choice button is hidden when a new dilemma is rendered
+    const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn');
+    if (confirmDilemmaChoiceBtn) confirmDilemmaChoiceBtn.style.display = 'none';
 }
 
 function updatePlayerChoiceStatus(players) {
@@ -198,6 +188,29 @@ socket.on('game_event', (data) => {
         if (document.getElementById('gameArea')) {
             console.log('[DEBUG] Player Dilemma Object:', dilemma);
             dilemmaTitle.textContent = dilemma.title;
+
+            // Update current kingdom stats display
+            const globalStats = data.global_stats;
+            const currentStatStability = document.getElementById('currentStatStability');
+            const currentStatEconomy = document.getElementById('currentStatEconomy');
+            const currentStatFaith = document.getElementById('currentStatFaith');
+
+            if (currentStatStability) {
+                currentStatStability.style.width = `${globalStats.Stability}%`;
+                currentStatStability.setAttribute('aria-valuenow', globalStats.Stability);
+                currentStatStability.textContent = `${globalStats.Stability}`;
+            }
+            if (currentStatEconomy) {
+                currentStatEconomy.style.width = `${globalStats.Economy}%`;
+                currentStatEconomy.setAttribute('aria-valuenow', globalStats.Economy);
+                currentStatEconomy.textContent = `${globalStats.Economy}`;
+            }
+            if (currentStatFaith) {
+                currentStatFaith.style.width = `${globalStats.Faith}%`;
+                currentStatFaith.setAttribute('aria-valuenow', globalStats.Faith);
+                currentStatFaith.textContent = `${globalStats.Faith}`;
+            }
+
             const dilemmaChoices = document.getElementById('dilemmaChoices'); // Select element just-in-time
             const dilemmaSection = document.getElementById('dilemmaSection');
             const playerStatementsSection = document.getElementById('playerStatementsSection');
@@ -304,6 +317,23 @@ socket.on('game_event', (data) => {
 });
 
 if (gameId && playerId) {
+    const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn');
+    if (confirmDilemmaChoiceBtn) {
+        confirmDilemmaChoiceBtn.addEventListener('click', () => {
+            if (playerChoice !== null) {
+                socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'dilemma_choice', choice: playerChoice });
+                // Hide confirm button
+                confirmDilemmaChoiceBtn.style.display = 'none';
+
+                // Disable all dilemma choice buttons
+                const dilemmaChoices = document.getElementById('dilemmaChoices');
+                if (dilemmaChoices) {
+                    Array.from(dilemmaChoices.children).forEach(btn => btn.disabled = true);
+                }
+            }
+        });
+    }
+
     const saveNameBtn = document.getElementById('saveNameBtn');
     if (saveNameBtn) {
         saveNameBtn.addEventListener('click', () => {
@@ -388,10 +418,14 @@ if (gameId && playerId) {
 
         const narrativeOutputElement = document.getElementById('narrativeOutput');
         const nextRoundBtnElement = document.getElementById('nextRoundBtn');
+        const confirmDilemmaChoiceBtn = document.getElementById('confirmDilemmaChoiceBtn');
 
         if (narrativeOutputElement) narrativeOutputElement.style.setProperty('display', 'block', 'important'); // Show narrativeOutput to display the button
         if (nextRoundBtnElement) nextRoundBtnElement.style.setProperty('display', 'block', 'important'); // Show the Next Event button
         
+        // Hide confirm button
+        if (confirmDilemmaChoiceBtn) confirmDilemmaChoiceBtn.style.display = 'none';
+
         const dilemmaSection = document.getElementById('dilemmaSection');
         const playerStatementsSection = document.getElementById('playerStatementsSection');
         const statementVoteSection = document.getElementById('statementVoteSection');

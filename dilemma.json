@@ -1,27 +1,27 @@
 {
-  "id": "initial_economic_crisis_r1",
-  "title": "Cień Głodu nad Królestwem",
-  "description": "Zima okazała się długa i bezlitosna, a plony minionego lata ledwo wystarczają na utrzymanie ludności. Ceny podstawowych produktów gwałtownie szybują, a szept niezadowolenia przekształca się w otwarte narzekania na targach i ulicach. Królewskie spichlerze topnieją, a widmo powszechnego głodu zagląda w oczy biedniejszym warstwom społeczeństwa.",
-  "image": "/static/images/famine_crisis.png",
+  "id": "round_1_zagrozenie_rubiezy",
+  "title": "Zagrożenie na Rubieżach: Banditry i Niepokoje",
+  "description": "Z odległych rubieży królestwa docierają niepokojące wieści o rosnącej fali bandytyzmu i lokalnych niepokojów. Szlaki handlowe są coraz bardziej niebezpieczne, a wieśniacy uciekają ze swoich domów w poszukiwaniu bezpieczeństwa. Rada musi zdecydować, jak zareagować na te narastające problemy, zanim przerodzą się w otwarty bunt.",
+  "image": "/static/images/banditry_unrest.png",
   "choices": [
     {
-      "text": "Zarządź otwarcie królewskich spichlerzy i wprowadź tymczasowe kontrole cen, aby złagodzić cierpienia ludu.",
+      "text": "Wyślij elitarne oddziały Królewskiej Gwardii, by stłumiły bandytów i przywróciły porządek na rubieżach.",
       "effects": {
         "Stability": 12,
-        "Economy": -18,
+        "Economy": -15,
         "Faith": -5
       },
-      "narrative_consequence": "Królewska interwencja zapewni chwilową ulgę, lecz zasoby Korony zostaną poważnie nadszarpnięte, a kupcy poczują się pokrzywdzeni."
+      "narrative_consequence": "Żołnierze wyruszą, by zaprowadzić ład, lecz ich marsz będzie kosztownym brzemieniem dla skarbca, a lud może odczuć, że ich ciężka praca została zignorowana na rzecz wojny."
     },
     {
-      "text": "Znieś cła i podatki dla kupców, zachęcając do swobodnego handlu i licząc na samoregulację rynku, pomimo początkowych trudności.",
+      "text": "Upoważnij lokalnych baronów i duchowieństwo do samodzielnego rozwiązywania problemu, oferując ograniczone wsparcie i zaufanie.",
       "effects": {
-        "Stability": -15,
-        "Economy": 12,
-        "Faith": 8
+        "Stability": -8,
+        "Economy": 10,
+        "Faith": 10
       },
-      "narrative_consequence": "Decyzja może wywołać gniew wśród biednych, ale handlowcy dostrzegą szansę, a drogi królestwa ożyją z nadzieją na przyszły zysk."
+      "narrative_consequence": "Władza zostanie przekazana w ręce miejscowych, co może wzmocnić ich pozycję i wiarę w autorytet króla, ale także grozi eskalacją konfliktu bez bezpośredniego nadzoru."
     }
   ],
-  "narrative_prompt": "Rada Popiołów musi zadecydować, czy natychmiastowe bezpieczeństwo i dobrobyt poddanych są najważniejsze, czy też długoterminowa stabilność gospodarcza jest warta obecnych poświęceń."
+  "narrative_prompt": "Cisza zaległa w sali obrad po przedstawieniu raportu, a każdy z członków Rady ważył ryzyko i korzyści płynące z podjęcia decyzji. Przyszłość odległych prowincji, a co za tym idzie całego królestwa, spoczywała teraz w ich rękach."
 }
