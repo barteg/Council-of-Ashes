@@ -20,3 +20,7 @@ stable-diffusion-webui/
 
 # IDE
 .vscode/
+
+# Temporary game files
+dilemma.json
+outcome.json

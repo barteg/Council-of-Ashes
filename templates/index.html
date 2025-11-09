@@ -23,10 +23,31 @@
             <button id="createGameBtn" class="btn btn-primary btn-block">Create New Game</button>
         </div>
 
+        <div id="lobbyControl" style="display: none;">
+            <div id="gameControlContainer" class="floating-element mb-4">
+                <h5 id="gameControlHeader">Game Control</h5>
+                <p id="gameIdContainer"><strong>Game ID:</strong> <span id="gameIdDisplay"></span></p>
+                <h5 id="playerLinksHeader">Player Links:</h5>
+                <div id="playerUrls" class="list-group"></div>
+            </div>
+
+            <div class="floating-element mb-4">
+                <h5 id="playerStatusHeader">Player Status:</h5>
+                <div id="playerStatus" class="list-group">
+                    <!-- Player status will be generated here -->
+                </div>
+            </div>
+        </div>
+
         <div id="hostControl" class="floating-element mb-4" style="display: none;">
             <div class="row">
                 <!-- Left Column: Game State & Narrative -->
                 <div class="col-md-8">
+                    <div class="floating-element mb-4">
+                        <h5>Narrative:</h5>
+                        <p id="hostNarrative"></p>
+                    </div>
+
                     <div class="floating-element mb-4">
                         <h5>Global Stats:</h5>
                         <div class="mb-2">
@@ -49,22 +70,9 @@
                         </div>
                     </div>
 
-                    <div class="floating-element mb-4">
-                        <h5>Narrative:</h5>
-                        <p id="hostNarrative"></p>
-                    </div>
-
                     <div id="statementVotingResultsDisplay" class="floating-element mb-4" style="display: none;">
                         <h5>Statement Voting Results:</h5>
                         <div id="statementVoteCounts"></div>
-                    </div>
-
-                    <!-- Player Comments Display -->
-                    <div id="playerCommentsDisplay" class="floating-element mb-4" style="display: none;">
-                        <h5>Player Comments:</h5>
-                        <ul id="commentList" class="list-group">
-                            <!-- Player comments will be listed here -->
-                        </ul>
                     </div>
 
                     <div id="playerStatements" class="floating-element mb-4" style="display: none;">
@@ -83,22 +91,12 @@
 
                 <!-- Right Column: Player Management & Controls -->
                 <div class="col-md-4">
-                    <div class="floating-element mb-4">
-                        <h5 id="gameControlHeader">Game Control</h5>
-                        <p id="gameIdContainer"><strong>Game ID:</strong> <span id="gameIdDisplay"></span></p>
-                        <h5 id="playerLinksHeader">Player Links:</h5>
-                        <div id="playerUrls" class="list-group"></div>
-                    </div>
-
-                    <div class="floating-element mb-4">
-                        <h5 id="playerStatusHeader">Player Status:</h5>
-                        <div id="playerStatus" class="list-group">
-                            <!-- Player status will be generated here -->
-                        </div>
-                    </div>
-
-                    <div id="factionColumns" class="row mb-4 floating-element" style="display: none;">
-                        <!-- Faction columns will be generated here -->
+                    <!-- Player Comments Display -->
+                    <div id="playerCommentsDisplay" class="floating-element mb-4" style="display: none;">
+                        <h5>Player Comments:</h5>
+                        <ul id="commentList" class="list-group">
+                            <!-- Player comments will be listed here -->
+                        </ul>
                     </div>
                 </div>
             </div>

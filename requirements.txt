@@ -2,4 +2,4 @@ flask
 flask-socketio
 google-generativeai
 eventlet
-piper-tts
+elevenlabs

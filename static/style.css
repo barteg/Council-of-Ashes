@@ -316,3 +316,8 @@ h1 {
     color: #fff; /* Ensure dots are visible */
     font-weight: bold;
 }
+
+.player-joined {
+    background-color: #00E676; /* A green color to indicate success */
+    color: #000; /* Black text for contrast */
+}
