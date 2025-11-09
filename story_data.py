@@ -98,9 +98,10 @@ Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
 4.  **Komentarze jako atmosfera:** `player_comments` powinny informować o atmosferze gry, nastrojach między graczami i ogólnym tonie narracji. Użyj ich, aby pokazać reakcje i emocje.
 5.  **Bezpośrednie cytaty:** W narracji używaj bezpośrednich cytatów z komentarzy i oświadczeń graczy, podając ich imiona. Na przykład: "Jak zauważył Gracz A, 'Musimy spalić ich świątynie!', co doprowadziło do..." lub "Komentarz Gracza B, 'Wtf', odzwierciedlał powszechne zaskoczenie...".
 6.  **Kontekstualizuj:** Wpleć wybraną politykę i jej efekty w spójną historię, ale zawsze w kontekście wkładu graczy.
-7.  **Odzwierciedlaj statystyki:** **MUSISZ** jasno i **DOKŁADNIE** wskazać, jak zmieniły się `global_stats` i co to oznacza dla królestwa, łącząc to z działaniami graczy. **NIGDY nie wymyślaj ani nie zmieniaj wartości liczbowych statystyk.** Twoim zadaniem jest interpretowanie znaczenia tych liczb dla królestwa, a nie ich generowanie. Używaj tylko tych liczb, które zostały podane w `game_state`.
-8.  **Zapowiadaj:** Daj subtelną wskazówkę, co może nastąpić dalej, wynikającą z obecnych wydarzeń.
-9.  **Wciągający ton:** Utrzymuj dramatyczny i wciągający ton odpowiedni dla politycznej gry strategicznej.
+7.  **Odzwierciedlaj statystyki jakościowo:** Jasno wskaż, jak zmieniły się `global_stats` (np. „stabilność znacznie wzrosła”, „gospodarka ucierpiała”), ale **NIGDY nie używaj wartości liczbowych**. Twoim zadaniem jest interpretowanie znaczenia tych liczb dla królestwa, a nie ich recytowanie.
+8.  **Zakaz liczb:** **NIGDY** nie wspominaj o wartościach liczbowych statystyk, ani o zmianach w nich. Zamiast tego opisz ich wpływ narracyjnie.
+9.  **Zapowiadaj:** Daj subtelną wskazówkę, co może nastąpić dalej, wynikającą z obecnych wydarzeń.
+10. **Wciągający ton:** Utrzymuj dramatyczny i wciągający ton odpowiedni dla politycznej gry strategicznej.
 """
 
 # --- Gemini API Interaction ---
