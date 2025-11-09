@@ -1,27 +1,27 @@
 {
-  "id": "round_1_soli_szlak_dylemat",
-  "title": "Spór o Szlak Soli",
-  "description": "Odwieczny Szlak Soli, żyła gospodarcza królestwa, stanął w obliczu nowych wyzwań. Plemiona górskie utrudniają przejazd kupcom, domagając się myta, co grozi zakłóceniem kluczowych dostaw. Handlarze błagają o ochronę, a królewscy doradcy są podzieleni co do właściwej reakcji. Pierwszy dylemat Rady Popiołów jest testem ich wizji przyszłości królestwa.",
-  "image": "/static/images/salt_route.png",
+  "id": "round_1_plaga_herezji",
+  "title": "Plaga Herezji",
+  "description": "Szepty niezadowolenia i dziwnych nauk rozprzestrzeniają się niczym zaraza pośród prostego ludu. Kapłani biją na alarm, widząc jak wierni odwracają się od Starej Wiary, a ich lojalność wobec korony słabnie. Nowe, heretyckie kazania obiecują raj na ziemi, siejąc jednocześnie ziarno chaosu i niepokoju w sercach poddanych.",
+  "image": "/static/images/heresy.png",
   "choices": [
     {
-      "text": "Nakazać wysłanie oddziałów, aby siłą zabezpieczyć Szlak Soli i stłumić opór plemion górskich.",
+      "text": "Wysłać Inkwizycję i wojsko, by brutalnie stłumić herezję i przywrócić porządek siłą.",
       "effects": {
-        "Stability": 10,
-        "Economy": -8,
-        "Faith": -3
+        "Stability": 15,
+        "Economy": -10,
+        "Faith": 10
       },
-      "narrative_consequence": "Żołnierze zabezpieczą szlak, demonstrując siłę królestwa, lecz gniew plemion górskich narasta, grożąc długotrwałym konfliktem i kosztowną okupacją."
+      "narrative_consequence": "Ulice spłyną krwią, ale porządek zostanie przywrócony, a wiara w oficjalne dogmaty wzmocniona kosztem wolności i życia wielu niewinnych."
     },
     {
-      "text": "Rozpocząć negocjacje z plemionami, oferując im część zysków ze Szlaku Soli w zamian za bezpieczny przejazd.",
+      "text": "Wysłuchać skarg ludu, wysłać emisariuszy do heretyków i spróbować zrozumieć przyczyny ich niezadowolenia.",
       "effects": {
         "Stability": -5,
-        "Economy": 12,
-        "Faith": 5
+        "Economy": 5,
+        "Faith": -10
       },
-      "narrative_consequence": "Pokojowe rozwiązanie otwiera nowe drogi handlowe i buduje mosty między kulturami, lecz niektórzy szlachcice postrzegają ustępstwa jako słabość królestwa, potencjalnie osłabiając autorytet Rady."
+      "narrative_consequence": "Napięcia początkowo wzrosną, a Kościół będzie oburzony, lecz istnieje szansa na długoterminowe uspokojenie sytuacji i odzyskanie zaufania ludu."
     }
   ],
-  "narrative_prompt": "Pierwsze decyzje Rady Popiołów zaważą na reputacji królestwa, kształtując jego stosunki z sąsiadami i wewnętrzną politykę na nadchodzące lata. Czekają dalsze wyzwania."
+  "narrative_prompt": "Decyzja Rady rozbrzmi echem przez całe królestwo, kształtując przyszłość zarówno tronu, jak i ołtarza. Czas pokaże, czy wybrano drogę sprawiedliwości, czy opresji."
 }

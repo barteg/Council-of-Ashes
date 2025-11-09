@@ -79,7 +79,6 @@ socket.on('game_started_for_player', (initial_game_state) => {
         console.log('[DEBUG] hostControl display style after setting:', hostControl.style.display); // Modify this line
 
         // Now, make the game-specific elements within hostControl visible
-        document.getElementById('factionColumns').style.display = 'flex'; // Assuming it's a flex container
         document.getElementById('hostStatStability').parentElement.parentElement.style.display = 'block'; // Parent of progress bar
         document.getElementById('hostStatEconomy').parentElement.parentElement.style.display = 'block';
         document.getElementById('hostStatFaith').parentElement.parentElement.style.display = 'block';
@@ -711,37 +710,7 @@ if (createGameBtn) {
     });
 
     socket.on('game_update', (data) => {
-        if (data.players && data.factions) {
-            // This is a faction update, update the player list on the host page
-            for (const pid in data.players) {
-                updatePlayerStatusOnHost(data.players[pid], pid);
-            }
-            const factionColumnsDiv = document.getElementById('factionColumns');
-            factionColumnsDiv.innerHTML = '';
-            for (const factionId in data.factions) {
-                const faction = data.factions[factionId];
-                const factionCol = document.createElement('div');
-                factionCol.classList.add('col-md');
-                
-                const factionHeader = document.createElement('h5');
-                factionHeader.textContent = factionId;
-                factionCol.appendChild(factionHeader);
-                
-                const playerList = document.createElement('ul');
-                playerList.classList.add('list-group');
-                
-                faction.players.forEach(playerId => {
-                    const player = data.players[playerId];
-                    const playerItem = document.createElement('li');
-                    playerItem.classList.add('list-group-item');
-                    playerItem.textContent = player.name;
-                    playerList.appendChild(playerItem);
-                });
-                
-                factionCol.appendChild(playerList);
-                factionColumnsDiv.appendChild(factionCol);
-            }
-        } else if (data.players) {
+        if (data.players) {
             // This is a name update or choice update, update the player list on the host page
             for (const pid in data.players) {
                 updatePlayerStatusOnHost(data.players[pid], pid);
