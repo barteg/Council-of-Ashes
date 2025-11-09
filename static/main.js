@@ -69,14 +69,14 @@ if (nextRoundBtn) {
 socket.on('game_started_for_player', (initial_game_state) => {
     console.log('[DEBUG] game_started_for_player event received');
     const hostControl = document.getElementById('hostControl');
+    const lobbyControl = document.getElementById('lobbyControl');
 
     if (hostControl) { // hostGameArea is removed, so we only check for hostControl
         // Host
         console.log('[DEBUG] Client is host, updating UI');
         document.getElementById('gameSetup').style.display = 'none'; // Explicitly hide gameSetup
-        console.log('[DEBUG] hostControl initial display style:', hostControl.style.display); // Add this line
+        if(lobbyControl) lobbyControl.style.display = 'none'; // Hide lobby controls
         hostControl.style.display = 'block'; // Ensure hostControl is visible
-        console.log('[DEBUG] hostControl display style after setting:', hostControl.style.display); // Modify this line
 
         // Now, make the game-specific elements within hostControl visible
         document.getElementById('hostStatStability').parentElement.parentElement.style.display = 'block'; // Parent of progress bar
@@ -85,8 +85,6 @@ socket.on('game_started_for_player', (initial_game_state) => {
         document.getElementById('hostNarrative').parentElement.style.display = 'block'; // Parent of narrative
         document.getElementById('hostNarrative').style.display = 'block'; // Make the narrative text itself visible
 
-        // Hide all lobby-specific elements
-        document.getElementById('gameControlContainer').style.display = 'none';
     } else if (gameArea) {
         // Player
         waitingRoom.style.display = 'none';
@@ -685,7 +683,7 @@ if (createGameBtn) {
         }
         
         document.getElementById('gameSetup').style.display = 'none';
-        document.getElementById('hostControl').style.display = 'block';
+        document.getElementById('lobbyControl').style.display = 'block';
     });
 
     socket.on('player_joined', (players) => {
