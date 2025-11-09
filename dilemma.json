@@ -1,27 +1,27 @@
 {
-  "id": "round_1_initial_crisis_famine",
-  "title": "Pierwsze Drżenie Królestwa: Głodowe Niepokoje",
-  "description": "Zwiastuny chłodnej zimy niosą ze sobą wieści o tragicznym nieurodzaju. Puste spichlerze i rosnące ceny żywności podsycają niepokój wśród ludu. Szepty o głodzie i niesprawiedliwości zamieniają się w otwarte narzekania na ulicach stolicy, grożąc wybuchem otwartego buntu.",
-  "image": "/static/images/famine.png",
+  "id": "R1_GLOD",
+  "title": "Pustka w Królewskich Spichlerzach",
+  "description": "Zimowa aura okazała się bezlitosna, a zaraza zdziesiątkowała zbiory, pozostawiając pustkę w spichlerzach. Głód zagląda w oczy prostym ludziom, a kupcy, widząc okazję, windują ceny zboża do niebotycznych rozmiarów. Rada musi działać szybko, zanim rozpacz przerodzi się w otwarty bunt.",
+  "image": "/static/images/empty_granaries.png",
   "choices": [
     {
-      "text": "Zorganizować natychmiastową dystrybucję zapasów królewskich i nałożyć limity cenowe na zboże, by ulżyć cierpieniu najbiedniejszych.",
+      "text": "Otworzyć Królewskie Spichlerze: Natychmiastowe rozdanie zapasów z królewskich spichlerzy i nałożenie limitów cenowych na zboże, by ulżyć cierpiącym poddanym.",
       "effects": {
         "Stability": 10,
         "Economy": -15,
         "Faith": 5
       },
-      "narrative_consequence": "Ludzność z ulgą przyjmuje pomoc, jednak kupcy i bogaci właściciele ziemscy wyrażają głębokie niezadowolenie z ingerencji w wolny rynek, a królewski skarbiec odczuwa dotkliwy drenaż."
+      "narrative_consequence": "Ulga rozprzestrzenia się wśród ludu, lecz skarbiec królewski odczuwa ciężar, a kupcy szepczą o niesprawiedliwym traktowaniu."
     },
     {
-      "text": "Zezwolić rynkowi na regulację cen, oferując ulgi podatkowe kupcom sprowadzającym żywność, by stymulować handel i uniknąć drenażu skarbca.",
+      "text": "Negocjacje z Kupcami i Długoterminowe Rozwiązania: Negocjowanie z zamożnymi kupcami w celu zakupu zboża po obniżonych cenach i rozpoczęcie programów odbudowy rolnictwa na wiosnę.",
       "effects": {
-        "Stability": -10,
+        "Stability": -5,
         "Economy": 10,
         "Faith": -5
       },
-      "narrative_consequence": "Królewski skarbiec pozostaje bezpieczny, a kupcy obiecują większe dostawy w przyszłości, lecz gniew głodujących mas wzrasta, a duchowieństwo oskarża Radę o brak miłosierdzia."
+      "narrative_consequence": "Ludzie czują się porzuceni, rośnie niezadowolenie, ale królestwo unika drenażu skarbca, stawiając na przyszłą samowystarczalność."
     }
   ],
-  "narrative_prompt": "Pierwszy kryzys wstrząsnął posadami królestwa, a jego skutki z pewnością odbiją się szerokim echem w kolejnych tygodniach, niezależnie od podjętej decyzji. Rada Popiołów stoi przed trudnym zadaniem wyważenia potrzeb ludu z długoterminowym dobrobytem."
+  "narrative_prompt": "Decyzja Rady w sprawie głodu zaważy na losach tysięcy i ujawni prawdziwe oblicze naszego królestwa wobec nadchodzących wyzwań."
 }

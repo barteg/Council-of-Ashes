@@ -88,8 +88,6 @@ socket.on('game_started_for_player', (initial_game_state) => {
 
         // Hide all lobby-specific elements
         document.getElementById('gameControlContainer').style.display = 'none';
-        document.getElementById('playerStatusHeader').style.display = 'none';
-        document.getElementById('playerStatus').style.display = 'none';
     } else if (gameArea) {
         // Player
         waitingRoom.style.display = 'none';
