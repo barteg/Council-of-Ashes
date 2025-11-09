@@ -630,10 +630,7 @@ function updatePlayerStatusOnHost(player, playerId) {
             choiceStatusSpan.textContent = 'Chosen';
             playerStatus.appendChild(choiceStatusSpan);
         } else if (player.action_status === 'joined') {
-            const dotsSpan = document.createElement('span');
-            dotsSpan.classList.add('player-dots-yellow'); // Yellow glowing dots for joined but not ready
-            dotsSpan.textContent = ' ● ● ●';
-            playerStatus.appendChild(dotsSpan);
+            playerStatus.classList.add('player-joined');
         }
         else if (player.action_status === 'waiting' && player.faction) { // Only show waiting if they are in a faction and waiting for an action
             const choiceStatusSpan = document.createElement('span');
