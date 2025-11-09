@@ -1,0 +1,27 @@
+{
+  "id": "round_1_pustoszące_zbiory",
+  "title": "Pustoszące Zbiory",
+  "description": "Nad królestwem zaległa niewidzialna plaga, która spowiła pola i wysuszyła spichlerze. Pustoszące zbiory grożą niedoborem żywności w całym kraju, a ludność w miastach i na wsi zaczyna odczuwać pierwsze skutki głodu. Jeśli Rada nie podejmie szybkich działań, niepokoje mogą szybko przerodzić się w otwarty bunt.",
+  "image": "/static/images/scarcity.png",
+  "choices": [
+    {
+      "text": "Nakazać rozdanie królewskich rezerw zboża i wprowadzić sztywne ceny, aby zapewnić dostępność żywności dla każdego.",
+      "effects": {
+        "Stability": 10,
+        "Economy": -15,
+        "Faith": 5
+      },
+      "narrative_consequence": "Lud odetchnie z ulgą, widząc, że korona troszczy się o swoich poddanych, ale kupcy i właściciele ziemscy wyrażą swoje oburzenie na centralne zarządzanie ich majątkiem."
+    },
+    {
+      "text": "Znieść cła handlowe i zachęcić kupców do sprowadzania żywności zza granicy, licząc na ożywienie lokalnej produkcji.",
+      "effects": {
+        "Stability": -10,
+        "Economy": 15,
+        "Faith": -5
+      },
+      "narrative_consequence": "Pustawe spichlerze mogą zostać uzupełnione, ale gniew biedoty rośnie, widząc, jak bogacą się kupcy kosztem ich niedoli, zaś świątynie wyrażają zaniepokojenie upadkiem moralności."
+    }
+  ],
+  "narrative_prompt": "Rada Popiołów staje przed pierwszym prawdziwym testem swojej władzy – wyborem między natychmiastową ulgą a długoterminową strategią, podczas gdy cienie głodu zwiastują nadchodzące niepokoje."
+}

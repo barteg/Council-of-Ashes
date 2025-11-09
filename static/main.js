@@ -1,5 +1,57 @@
 const socket = io('http://10.0.1.38:5000');
 
+let audioQueue = [];
+let isPlaying = false;
+let currentAudio = null;
+
+function playNarration(text) {
+    if (!text || text.trim() === '') return;
+
+    audioQueue.push(text);
+    if (!isPlaying) {
+        playNextInQueue();
+    }
+}
+
+function playNextInQueue() {
+    if (audioQueue.length === 0) {
+        isPlaying = false;
+        return;
+    }
+
+    isPlaying = true;
+    const text = audioQueue.shift();
+
+    fetch('/api/tts', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: text }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        const audioUrl = URL.createObjectURL(blob);
+        currentAudio = new Audio(audioUrl);
+        currentAudio.play();
+        currentAudio.onended = () => {
+            currentAudio = null;
+            playNextInQueue();
+        };
+    })
+    .catch(error => {
+        console.error('Error fetching TTS audio:', error);
+        isPlaying = false;
+        playNextInQueue(); // Try next item even if current one failed
+    });
+}
+
+
 const gameId = document.getElementById('gameId') ? document.getElementById('gameId').textContent.trim() : null;
 const playerId = document.getElementById('playerId') ? document.getElementById('playerId').textContent.trim() : null;
 
@@ -108,6 +160,7 @@ socket.on('game_event', (data) => {
         if (document.getElementById('hostControl')) {
             console.log('[DEBUG] Host Dilemma Description:', dilemma.description);
             document.getElementById('hostNarrative').textContent = dilemma.description;
+            playNarration(dilemma.description); // AI NARRATOR
             // Update host global stats progress bars
             const globalStats = data.global_stats;
             console.log('[DEBUG] Host Global Stats:', globalStats); // Add this line
@@ -389,6 +442,7 @@ if (gameId && playerId) {
         console.log('[DEBUG] dilemma_resolved event received.');
         if (gameArea) gameArea.style.display = 'block'; // Ensure gameArea is visible
         narrativeText.textContent = data.outcome; // Set text content
+        playNarration(data.outcome); // AI NARRATOR
         if (narrativeText) narrativeText.style.setProperty('display', 'block', 'important'); // Ensure the narrative text is visible
         currentRoundSpan.textContent = data.current_round;
 
@@ -810,6 +864,7 @@ if (createGameBtn) {
             if (hostNarrative) {
                 hostNarrative.textContent = data.outcome; // Assuming outcome is passed in data
                 hostNarrative.style.display = 'block';
+                playNarration(data.outcome); // AI NARRATOR
             }
             // Hide the player comments display after the narrative is shown
             if (playerCommentsDisplay) playerCommentsDisplay.style.display = 'none';
