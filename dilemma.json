@@ -1,27 +1,27 @@
 {
-  "id": "R1_GLOD",
-  "title": "Pustka w Królewskich Spichlerzach",
-  "description": "Zimowa aura okazała się bezlitosna, a zaraza zdziesiątkowała zbiory, pozostawiając pustkę w spichlerzach. Głód zagląda w oczy prostym ludziom, a kupcy, widząc okazję, windują ceny zboża do niebotycznych rozmiarów. Rada musi działać szybko, zanim rozpacz przerodzi się w otwarty bunt.",
-  "image": "/static/images/empty_granaries.png",
+  "id": "round_1_soli_szlak_dylemat",
+  "title": "Spór o Szlak Soli",
+  "description": "Odwieczny Szlak Soli, żyła gospodarcza królestwa, stanął w obliczu nowych wyzwań. Plemiona górskie utrudniają przejazd kupcom, domagając się myta, co grozi zakłóceniem kluczowych dostaw. Handlarze błagają o ochronę, a królewscy doradcy są podzieleni co do właściwej reakcji. Pierwszy dylemat Rady Popiołów jest testem ich wizji przyszłości królestwa.",
+  "image": "/static/images/salt_route.png",
   "choices": [
     {
-      "text": "Otworzyć Królewskie Spichlerze: Natychmiastowe rozdanie zapasów z królewskich spichlerzy i nałożenie limitów cenowych na zboże, by ulżyć cierpiącym poddanym.",
+      "text": "Nakazać wysłanie oddziałów, aby siłą zabezpieczyć Szlak Soli i stłumić opór plemion górskich.",
       "effects": {
         "Stability": 10,
-        "Economy": -15,
-        "Faith": 5
+        "Economy": -8,
+        "Faith": -3
       },
-      "narrative_consequence": "Ulga rozprzestrzenia się wśród ludu, lecz skarbiec królewski odczuwa ciężar, a kupcy szepczą o niesprawiedliwym traktowaniu."
+      "narrative_consequence": "Żołnierze zabezpieczą szlak, demonstrując siłę królestwa, lecz gniew plemion górskich narasta, grożąc długotrwałym konfliktem i kosztowną okupacją."
     },
     {
-      "text": "Negocjacje z Kupcami i Długoterminowe Rozwiązania: Negocjowanie z zamożnymi kupcami w celu zakupu zboża po obniżonych cenach i rozpoczęcie programów odbudowy rolnictwa na wiosnę.",
+      "text": "Rozpocząć negocjacje z plemionami, oferując im część zysków ze Szlaku Soli w zamian za bezpieczny przejazd.",
       "effects": {
         "Stability": -5,
-        "Economy": 10,
-        "Faith": -5
+        "Economy": 12,
+        "Faith": 5
       },
-      "narrative_consequence": "Ludzie czują się porzuceni, rośnie niezadowolenie, ale królestwo unika drenażu skarbca, stawiając na przyszłą samowystarczalność."
+      "narrative_consequence": "Pokojowe rozwiązanie otwiera nowe drogi handlowe i buduje mosty między kulturami, lecz niektórzy szlachcice postrzegają ustępstwa jako słabość królestwa, potencjalnie osłabiając autorytet Rady."
     }
   ],
-  "narrative_prompt": "Decyzja Rady w sprawie głodu zaważy na losach tysięcy i ujawni prawdziwe oblicze naszego królestwa wobec nadchodzących wyzwań."
+  "narrative_prompt": "Pierwsze decyzje Rady Popiołów zaważą na reputacji królestwa, kształtując jego stosunki z sąsiadami i wewnętrzną politykę na nadchodzące lata. Czekają dalsze wyzwania."
 }
