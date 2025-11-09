@@ -1,27 +1,27 @@
 {
-  "id": "round_1_shadow_of_famine",
-  "title": "Cień Głodu nad Krainą",
-  "description": "Zbiory tego roku okazały się katastrofalne, a magazyny są przerażająco puste. Ludzie na wsi głodują, a ceny żywności w miastach szybują w górę, grożąc masowymi niepokojami. Rada musi działać szybko, zanim królestwo pogrąży się w chaosie.",
+  "id": "round_1_initial_crisis_famine",
+  "title": "Pierwsze Drżenie Królestwa: Głodowe Niepokoje",
+  "description": "Zwiastuny chłodnej zimy niosą ze sobą wieści o tragicznym nieurodzaju. Puste spichlerze i rosnące ceny żywności podsycają niepokój wśród ludu. Szepty o głodzie i niesprawiedliwości zamieniają się w otwarte narzekania na ulicach stolicy, grożąc wybuchem otwartego buntu.",
   "image": "/static/images/famine.png",
   "choices": [
     {
-      "text": "Natychmiastowe sprowadzenie żywności z sąsiednich królestw, wykorzystując rezerwy skarbca.",
+      "text": "Zorganizować natychmiastową dystrybucję zapasów królewskich i nałożyć limity cenowe na zboże, by ulżyć cierpieniu najbiedniejszych.",
       "effects": {
         "Stability": 10,
         "Economy": -15,
-        "Faith": 0
-      },
-      "narrative_consequence": "Karawany pełne zboża z trudem docierają do miast i wsi, przynosząc ulgę głodującym, lecz skarbiec pustoszeje w zastraszającym tempie."
-    },
-    {
-      "text": "Wprowadzenie ścisłych racji żywnościowych i konfiskata nadwyżek od zamożnych posiadaczy ziemskich.",
-      "effects": {
-        "Stability": -5,
-        "Economy": -10,
         "Faith": 5
       },
-      "narrative_consequence": "Wprowadzone racje wywołują mieszane uczucia wśród ludności, a gniew zamożnych posiadaczy ziemskich narasta, lecz najbiedniejsi otrzymują nadzieję na przetrwanie dzięki odważnej decyzji Rady."
+      "narrative_consequence": "Ludzność z ulgą przyjmuje pomoc, jednak kupcy i bogaci właściciele ziemscy wyrażają głębokie niezadowolenie z ingerencji w wolny rynek, a królewski skarbiec odczuwa dotkliwy drenaż."
+    },
+    {
+      "text": "Zezwolić rynkowi na regulację cen, oferując ulgi podatkowe kupcom sprowadzającym żywność, by stymulować handel i uniknąć drenażu skarbca.",
+      "effects": {
+        "Stability": -10,
+        "Economy": 10,
+        "Faith": -5
+      },
+      "narrative_consequence": "Królewski skarbiec pozostaje bezpieczny, a kupcy obiecują większe dostawy w przyszłości, lecz gniew głodujących mas wzrasta, a duchowieństwo oskarża Radę o brak miłosierdzia."
     }
   ],
-  "narrative_prompt": "Decyzja Rady w obliczu panującego głodu wstrząśnie fundamentami królestwa, ukazując, czy cenicie sobie jego dobrobyt, czy spokój poddanych, kosztem innych wartości."
+  "narrative_prompt": "Pierwszy kryzys wstrząsnął posadami królestwa, a jego skutki z pewnością odbiją się szerokim echem w kolejnych tygodniach, niezależnie od podjętej decyzji. Rada Popiołów stoi przed trudnym zadaniem wyważenia potrzeb ludu z długoterminowym dobrobytem."
 }

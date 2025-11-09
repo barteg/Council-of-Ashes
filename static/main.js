@@ -87,10 +87,7 @@ socket.on('game_started_for_player', (initial_game_state) => {
         document.getElementById('hostNarrative').style.display = 'block'; // Make the narrative text itself visible
 
         // Hide all lobby-specific elements
-        document.getElementById('gameControlHeader').style.display = 'none';
-        document.getElementById('gameIdContainer').style.display = 'none';
-        document.getElementById('playerLinksHeader').style.display = 'none';
-        document.getElementById('playerUrls').style.display = 'none';
+        document.getElementById('gameControlContainer').style.display = 'none';
         document.getElementById('playerStatusHeader').style.display = 'none';
         document.getElementById('playerStatus').style.display = 'none';
     } else if (gameArea) {
@@ -610,12 +607,6 @@ function updatePlayerStatusOnHost(player, playerId) {
     const playerStatus = document.getElementById(`player-status-${playerId}`);
     if (playerStatus) {
         let statusText = player.name;
-        if (player.faction) {
-            statusText += ` (${player.faction})`;
-        }
-        if (player.ready) {
-            statusText += ' (Ready)';
-        }
 
         playerStatus.innerHTML = ''; // Clear existing content
 
