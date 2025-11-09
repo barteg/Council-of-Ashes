@@ -23,6 +23,22 @@
             <button id="createGameBtn" class="btn btn-primary btn-block">Create New Game</button>
         </div>
 
+        <div id="lobbyControl" style="display: none;">
+            <div id="gameControlContainer" class="floating-element mb-4">
+                <h5 id="gameControlHeader">Game Control</h5>
+                <p id="gameIdContainer"><strong>Game ID:</strong> <span id="gameIdDisplay"></span></p>
+                <h5 id="playerLinksHeader">Player Links:</h5>
+                <div id="playerUrls" class="list-group"></div>
+            </div>
+
+            <div class="floating-element mb-4">
+                <h5 id="playerStatusHeader">Player Status:</h5>
+                <div id="playerStatus" class="list-group">
+                    <!-- Player status will be generated here -->
+                </div>
+            </div>
+        </div>
+
         <div id="hostControl" class="floating-element mb-4" style="display: none;">
             <div class="row">
                 <!-- Left Column: Game State & Narrative -->
@@ -83,21 +99,6 @@
 
                 <!-- Right Column: Player Management & Controls -->
                 <div class="col-md-4">
-                    <div id="lobbyControl">
-                        <div id="gameControlContainer" class="floating-element mb-4">
-                            <h5 id="gameControlHeader">Game Control</h5>
-                            <p id="gameIdContainer"><strong>Game ID:</strong> <span id="gameIdDisplay"></span></p>
-                            <h5 id="playerLinksHeader">Player Links:</h5>
-                            <div id="playerUrls" class="list-group"></div>
-                        </div>
-
-                        <div class="floating-element mb-4">
-                            <h5 id="playerStatusHeader">Player Status:</h5>
-                            <div id="playerStatus" class="list-group">
-                                <!-- Player status will be generated here -->
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
