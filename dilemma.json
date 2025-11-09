@@ -1,27 +1,27 @@
 {
-  "id": "round_1_plaga_herezji",
-  "title": "Plaga Herezji",
-  "description": "Szepty niezadowolenia i dziwnych nauk rozprzestrzeniają się niczym zaraza pośród prostego ludu. Kapłani biją na alarm, widząc jak wierni odwracają się od Starej Wiary, a ich lojalność wobec korony słabnie. Nowe, heretyckie kazania obiecują raj na ziemi, siejąc jednocześnie ziarno chaosu i niepokoju w sercach poddanych.",
-  "image": "/static/images/heresy.png",
+  "id": "round_3_glod_skarbca",
+  "title": "Głód Skarbca",
+  "description": "Królewskie skarbce świecą pustkami po hojnej, lecz kosztownej decyzji o otwarciu spichlerzy. Echa niedawnej dystrybucji zapasów wciąż rezonują, a wraz z nimi narasta widmo pustej szkatuły, zagrażającej przyszłości królestwa. Handel zamiera, a brak funduszy paraliżuje wszelkie próby odbudowy. Rada musi znaleźć sposób na uzupełnienie skarbców, zanim zrujnowana gospodarka pogrąży wszystkich w chaosie.",
+  "image": "/static/images/empty_coffers.png",
   "choices": [
     {
-      "text": "Wysłać Inkwizycję i wojsko, by brutalnie stłumić herezję i przywrócić porządek siłą.",
+      "text": "Wprowadź drakońskie cięcia w wydatkach publicznych i nałóż nowe, ciężkie podatki na handel oraz posiadłości ziemskie, aby szybko uzupełnić skarbce.",
       "effects": {
-        "Stability": 15,
-        "Economy": -10,
-        "Faith": 10
+        "Stability": -15,
+        "Economy": 18,
+        "Faith": -5
       },
-      "narrative_consequence": "Ulice spłyną krwią, ale porządek zostanie przywrócony, a wiara w oficjalne dogmaty wzmocniona kosztem wolności i życia wielu niewinnych."
+      "narrative_consequence": "Niezadowolenie narasta wśród uciśnionego ludu i oburzonych kupców, lecz skarb państwa zaczyna się wypełniać, ratując królestwo przed natychmiastową ruiną."
     },
     {
-      "text": "Wysłuchać skarg ludu, wysłać emisariuszy do heretyków i spróbować zrozumieć przyczyny ich niezadowolenia.",
+      "text": "Sfinansuj kosztowne, dalekosiężne ekspedycje poszukujące nowych zasobów i szlaków handlowych, licząc na przyszłe, ogromne zyski.",
       "effects": {
-        "Stability": -5,
-        "Economy": 5,
-        "Faith": -10
+        "Stability": 5,
+        "Economy": 10,
+        "Faith": 10
       },
-      "narrative_consequence": "Napięcia początkowo wzrosną, a Kościół będzie oburzony, lecz istnieje szansa na długoterminowe uspokojenie sytuacji i odzyskanie zaufania ludu."
+      "narrative_consequence": "Wieści o odważnych wyprawach wzbudzają nadzieję i ekscytację wśród obywateli, choć sukces jest niepewny, a koszty początkowe obciążają już i tak nadszarpniętą kasę."
     }
   ],
-  "narrative_prompt": "Decyzja Rady rozbrzmi echem przez całe królestwo, kształtując przyszłość zarówno tronu, jak i ołtarza. Czas pokaże, czy wybrano drogę sprawiedliwości, czy opresji."
+  "narrative_prompt": "Ciężar wyboru spoczywa na Radzie. Czy królestwo przetrwa bez twardej ręki, czy może odważna wizja uratuje nas przed ekonomicznym upadkiem? Zegar bije nieubłaganie, a echo głodu skarbca odbija się w murach pałacu."
 }
