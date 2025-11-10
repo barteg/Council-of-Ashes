@@ -81,6 +81,17 @@ const nextRoundBtn = document.getElementById('nextRoundBtn');
 
 let playerChoice = null;
 
+function updatePersonalStats(playerData) {
+    if (playerData && playerData.personal_stats) {
+        const influence = playerData.personal_stats.Influence;
+        if (statInfluenceSpan) {
+            statInfluenceSpan.style.width = `${influence}%`;
+            statInfluenceSpan.setAttribute('aria-valuenow', influence);
+            statInfluenceSpan.textContent = `${influence}`; // Display number inside bar
+        }
+    }
+}
+
 if (nextRoundBtn) {
     nextRoundBtn.addEventListener('click', () => {
         socket.emit('player_action', { game_id: gameId, player_id: playerId, event: 'next_round' });

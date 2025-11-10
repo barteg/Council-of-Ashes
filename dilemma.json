@@ -1,7 +1,7 @@
 {
-  "id": "round_1_winter_calamity",
-  "title": "Klęska Zimy i Rosnący Chaos",
-  "description": "Królestwo zmaga się z konsekwencjami wyjątkowo srogiej zimy. Pola są jałowe, spichlerze pustoszeją, a głód zmusza ludzi do desperacji. Na drogach królują bandyci, paraliżując handel i szerząc strach wśród ludności. Stabilność i gospodarka królestwa są na skaju załamania.",
-  "image": "/static/images/winter_famine_bandits.jpg",
-  "narrative_prompt": "W obliczu zbliżającej się katastrofy, Rada Popiołów musi podjąć decyzje, które zadecydują o przetrwaniu królestwa i zaufaniu ludu."
+  "id": "round_1_szept_heretyka",
+  "title": "Szept Heretyka: Kryzys Wiary",
+  "description": "W miastach i wioskach szerzą się szepty o charyzmatycznym kaznodziei, zwanym 'Oświeconym', który głosi nowe, radykalne doktryny. Jego słowa, kwestionujące odwieczne dogmaty Kościoła, znajdują posłuch wśród zmęczonego ludu. Hierarchowie Kościoła potępiają go jako niebezpiecznego heretyka, lecz jego zwolennicy rosną w siłę, budząc niepokój i podziały.",
+  "image": "/static/images/heresy.jpg",
+  "narrative_prompt": "Królestwo stoi na krawędzi duchowego rozłamu. Wybór Rady Popiołów zadecyduje o przyszłości wiary, jedności społeczeństwa i być może o samym losie narodu. Szepczący wiatr niesie ze sobą niepewność, a każde drgnienie zważy na szali losy milionów."
 }
