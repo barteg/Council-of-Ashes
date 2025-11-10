@@ -530,7 +530,7 @@ def handle_player_action(data):
         return
 
     elif action == "submit_statement":
-        if game["state"] != "STATEMENT":
+        if game["state"] != "DILEMMA":
             return
         statement = data.get("statement")
         if statement:

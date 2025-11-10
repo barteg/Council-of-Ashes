@@ -1,27 +1,7 @@
 {
-  "id": "round_1_spiritual_unrest",
-  "title": "Narastające Niepokoje Duchowe",
-  "description": "W miarę jak lata mijają od Wielkiej Katastrofy, dawna wiara traci swój blask. Świątynie pustoszeją, a ludzie szukają ukojenia w sceptycyzmie lub nowych, nieznanych kultach. Kapłani alarmują, że królestwo stoi na progu duchowej pustki, co osłabia morale i jedność narodu.",
-  "image": "/static/images/spiritual_unrest.png",
-  "choices": [
-    {
-      "text": "Przyznać Kościołowi Większe Uprawnienia i Ziemie, by wzmocnić jego autorytet i przywrócić wiarę ludu.",
-      "effects": {
-        "Stability": -5,
-        "Economy": -10,
-        "Faith": 15
-      },
-      "narrative_consequence": "Kościół odzyska część wpływów, lecz wielu poddanych będzie szemrać na rosnącą dominację duchowieństwa, a zasoby królestwa odczują ten ciężar."
-    },
-    {
-      "text": "Skoncentrować się na odbudowie gospodarki i porządku cywilnego, pozwalając wierze ewoluować naturalnie, bez ingerencji Rady.",
-      "effects": {
-        "Stability": 10,
-        "Economy": 10,
-        "Faith": -5
-      },
-      "narrative_consequence": "Państwo odzyska pewność siebie, ale pustka duchowa może prowadzić do niekontrolowanego rozkwitu heretyckich idei, dodatkowo dzieląc społeczeństwo."
-    }
-  ],
-  "narrative_prompt": "Królestwo, choć stabilne na powierzchni, z niepokojem patrzy w przyszłość. Rada Popiołów musi zadecydować, czy duchowe fundamenty są ważniejsze niż materialny dobrobyt w obliczu nadchodzących wyzwań."
+  "id": "round_1_winter_calamity",
+  "title": "Klęska Zimy i Rosnący Chaos",
+  "description": "Królestwo zmaga się z konsekwencjami wyjątkowo srogiej zimy. Pola są jałowe, spichlerze pustoszeją, a głód zmusza ludzi do desperacji. Na drogach królują bandyci, paraliżując handel i szerząc strach wśród ludności. Stabilność i gospodarka królestwa są na skaju załamania.",
+  "image": "/static/images/winter_famine_bandits.jpg",
+  "narrative_prompt": "W obliczu zbliżającej się katastrofy, Rada Popiołów musi podjąć decyzje, które zadecydują o przetrwaniu królestwa i zaufaniu ludu."
 }
