@@ -495,23 +495,12 @@ function updatePlayerStatusOnHost(player, playerId) {
 
 // For the host page (index.html)
 const createGameBtn = document.getElementById('createGameBtn');
-const startGameBtn = document.getElementById('startGameBtn');
 
 if (createGameBtn) {
     createGameBtn.addEventListener('click', () => {
         const numPlayers = document.getElementById('numPlayers').value;
         socket.emit('create_game', { num_players: parseInt(numPlayers) });
     });
-
-    if (startGameBtn) {
-        startGameBtn.addEventListener('click', () => {
-            const gameId = document.getElementById('gameIdDisplay').textContent;
-            if (gameId) {
-                socket.emit('start_game', { game_id: gameId });
-            }
-        });
-    }
-
 
     socket.on('game_created', (data) => {
         document.getElementById('gameIdDisplay').textContent = data.game_id;
@@ -568,13 +557,6 @@ if (createGameBtn) {
 
     socket.on('player_disconnected', (data) => {
         updatePlayerStatusOnHost(data.player, data.player_id);
-    });
-
-    socket.on('all_players_ready', () => {
-        const startGameBtn = document.getElementById('startGameBtn');
-        if (startGameBtn) {
-            startGameBtn.disabled = false;
-        }
     });
 
     socket.on('game_update', (data) => {

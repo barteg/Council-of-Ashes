@@ -280,15 +280,6 @@ def join_faction(data):
     )
 
 
-@socketio.on("start_game")
-def start_game(data):
-    game_id = data["game_id"]
-    game = games.get(game_id)
-    if game and game["host_sid"] == request.sid:
-        print(f"[DEBUG] Host has started game {game_id}")
-        start_game_logic(game_id)
-
-
 @socketio.on("player_name_update")
 def player_name_update(data):
     game_id = data["game_id"]
@@ -391,8 +382,8 @@ def player_ready(data):
     all_ready = all(p["ready"] for p in game["players"].values())
     print(f"[DEBUG] Checking if all players are ready in game {game_id}: {all_ready}")
     if all_ready:
-        print("[DEBUG] All players are ready. Notifying host.")
-        emit("all_players_ready", room=game["host_sid"])
+        print("[DEBUG] All players are ready. Starting game logic...")
+        start_game_logic(game_id)
 
 
 @socketio.on("game_event")
