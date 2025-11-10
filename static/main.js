@@ -226,7 +226,7 @@ socket.on('game_event', (data) => {
                 nextRoundBtn.disabled = false;
             }
         }
-
+    }
 });
 
 if (gameId && playerId) {
