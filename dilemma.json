@@ -1,27 +1,27 @@
 {
-  "id": "round_1_pustoszące_zbiory",
-  "title": "Pustoszące Zbiory",
-  "description": "Nad królestwem zaległa niewidzialna plaga, która spowiła pola i wysuszyła spichlerze. Pustoszące zbiory grożą niedoborem żywności w całym kraju, a ludność w miastach i na wsi zaczyna odczuwać pierwsze skutki głodu. Jeśli Rada nie podejmie szybkich działań, niepokoje mogą szybko przerodzić się w otwarty bunt.",
-  "image": "/static/images/scarcity.png",
+  "id": "round_1_spiritual_unrest",
+  "title": "Narastające Niepokoje Duchowe",
+  "description": "W miarę jak lata mijają od Wielkiej Katastrofy, dawna wiara traci swój blask. Świątynie pustoszeją, a ludzie szukają ukojenia w sceptycyzmie lub nowych, nieznanych kultach. Kapłani alarmują, że królestwo stoi na progu duchowej pustki, co osłabia morale i jedność narodu.",
+  "image": "/static/images/spiritual_unrest.png",
   "choices": [
     {
-      "text": "Nakazać rozdanie królewskich rezerw zboża i wprowadzić sztywne ceny, aby zapewnić dostępność żywności dla każdego.",
+      "text": "Przyznać Kościołowi Większe Uprawnienia i Ziemie, by wzmocnić jego autorytet i przywrócić wiarę ludu.",
       "effects": {
-        "Stability": 10,
-        "Economy": -15,
-        "Faith": 5
+        "Stability": -5,
+        "Economy": -10,
+        "Faith": 15
       },
-      "narrative_consequence": "Lud odetchnie z ulgą, widząc, że korona troszczy się o swoich poddanych, ale kupcy i właściciele ziemscy wyrażą swoje oburzenie na centralne zarządzanie ich majątkiem."
+      "narrative_consequence": "Kościół odzyska część wpływów, lecz wielu poddanych będzie szemrać na rosnącą dominację duchowieństwa, a zasoby królestwa odczują ten ciężar."
     },
     {
-      "text": "Znieść cła handlowe i zachęcić kupców do sprowadzania żywności zza granicy, licząc na ożywienie lokalnej produkcji.",
+      "text": "Skoncentrować się na odbudowie gospodarki i porządku cywilnego, pozwalając wierze ewoluować naturalnie, bez ingerencji Rady.",
       "effects": {
-        "Stability": -10,
-        "Economy": 15,
+        "Stability": 10,
+        "Economy": 10,
         "Faith": -5
       },
-      "narrative_consequence": "Pustawe spichlerze mogą zostać uzupełnione, ale gniew biedoty rośnie, widząc, jak bogacą się kupcy kosztem ich niedoli, zaś świątynie wyrażają zaniepokojenie upadkiem moralności."
+      "narrative_consequence": "Państwo odzyska pewność siebie, ale pustka duchowa może prowadzić do niekontrolowanego rozkwitu heretyckich idei, dodatkowo dzieląc społeczeństwo."
     }
   ],
-  "narrative_prompt": "Rada Popiołów staje przed pierwszym prawdziwym testem swojej władzy – wyborem między natychmiastową ulgą a długoterminową strategią, podczas gdy cienie głodu zwiastują nadchodzące niepokoje."
+  "narrative_prompt": "Królestwo, choć stabilne na powierzchni, z niepokojem patrzy w przyszłość. Rada Popiołów musi zadecydować, czy duchowe fundamenty są ważniejsze niż materialny dobrobyt w obliczu nadchodzących wyzwań."
 }

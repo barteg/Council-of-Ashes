@@ -11,6 +11,7 @@ from story_data import (
     generate_dilemma_with_gemini,
     EVENT_GENERATION_PROMPT_STATIC,
     OUTCOME_NARRATIVE_PROMPT_STATIC,
+    evaluate_player_statements_with_gemini,
 )
 from elevenlabs.client import ElevenLabs
 import io
@@ -332,7 +333,6 @@ def start_game_logic(game_id):
             "id": "error_dilemma",
             "title": "Chwila ciszy",
             "description": "Wiatry losu milczą. Rada nie jest w stanie się zebrać w tym czasie. Proszę spróbować później.",
-            "choices": [],
             "narrative_prompt": "Królestwo wstrzymuje oddech.",
         }
 
@@ -403,51 +403,33 @@ def resolve_dilemma(game_id, player_comments=None):
     if not game:
         return
 
-    faction_choices = {}
-    for faction_id, faction in game["factions"].items():
-        choices_made_by_faction = [
-            game["players"][pid]["choice"]
-            for pid in faction["players"]
-            if not game["players"][pid].get("shamed")
-        ]
+    # Gather all player statements
+    player_statements_for_gemini = []
+    for player_id, player_data in game["players"].items():
+        if "statement" in player_data:
+            player_statements_for_gemini.append(
+                {"player_id": player_id, "statement": player_data["statement"], "name": player_data["name"]}
+            )
 
-        if choices_made_by_faction and len(set(choices_made_by_faction)) == 1:
-            faction_choices[faction_id] = {
-                "consensus": True,
-                "choice_index": choices_made_by_faction[0],
-            }
-        else:
-            faction_choices[faction_id] = {"consensus": False, "choice_index": None}
-
-    vote_counts = {}
-    for choice_index, choice_data in enumerate(game["current_dilemma"]["choices"]):
-        vote_counts[choice_index] = 0
-
-    for faction_id, faction_vote_data in faction_choices.items():
-        if faction_vote_data["consensus"]:
-            vote_counts[faction_vote_data["choice_index"]] += 1
-
-    winning_choice_index = None
-    max_votes = -1
-    tied_choices = []
-
-    for choice_index, votes in vote_counts.items():
-        if votes > max_votes:
-            max_votes = votes
-            winning_choice_index = choice_index
-            tied_choices = [choice_index]
-        elif votes == max_votes:
-            tied_choices.append(choice_index)
-
-    if len(tied_choices) > 1:
-        winning_choice_index = random.choice(tied_choices)
+    # Call Gemini to evaluate player statements and determine policy/effects
+    evaluation_result = evaluate_player_statements_with_gemini(
+        model,
+        game_state={
+            "current_round": game["current_round"],
+            "global_stats": game["global_stats"],
+            "event_history": game["event_history"],
+        },
+        player_statements=player_statements_for_gemini,
+    )
 
     chosen_policy = "No policy adopted due to council inaction."
     policy_effects = {}
-    if winning_choice_index is not None:
-        chosen_policy_data = game["current_dilemma"]["choices"][winning_choice_index]
-        chosen_policy = chosen_policy_data["text"]
-        policy_effects = chosen_policy_data["effects"]
+    narrative_consequence = "The council's indecision led to stagnation."
+
+    if evaluation_result:
+        chosen_policy = evaluation_result.get("chosen_policy", chosen_policy)
+        policy_effects = evaluation_result.get("effects", policy_effects)
+        narrative_consequence = evaluation_result.get("narrative_consequence", narrative_consequence)
 
         for stat, change in policy_effects.items():
             game["global_stats"][stat] += change
@@ -464,79 +446,28 @@ def resolve_dilemma(game_id, player_comments=None):
         )
         return
 
-    # --- Start of Statement Vote Scoring ---
-    statement_vote_counts = {pid: 0 for pid in game["players"]}
-    for p in game["players"].values():
-        voted_for = p.get("statement_vote")
-        if voted_for and voted_for in statement_vote_counts:
-            statement_vote_counts[voted_for] += 1
-
-    max_votes = 0
-    winners = []
-    if statement_vote_counts:
-        max_votes = max(statement_vote_counts.values())
-        if max_votes > 0:
-            winners = [
-                pid
-                for pid, count in statement_vote_counts.items()
-                if count == max_votes
-            ]
-
-    # Award points only if there is a single winner, as per the rules
-    if len(winners) == 1:
-        winner_id = winners[0]
-        game["players"][winner_id]["personal_stats"]["Influence"] = min(
-            100, game["players"][winner_id]["personal_stats"]["Influence"] + max_votes
-        )
-    # --- End of Statement Vote Scoring ---
-
-    # --- Faction Consensus Scoring ---
-    for faction_id, faction_data in game["factions"].items():
-        player_ids = faction_data["players"]
-        if len(player_ids) > 0:
-            first_player_choice = game["players"][player_ids[0]].get("choice")
-            if first_player_choice is not None:
-                is_consensus = all(
-                    game["players"][pid].get("choice") == first_player_choice
-                    for pid in player_ids
-                )
-                if is_consensus:
-                    for pid in player_ids:
-                        game["players"][pid]["personal_stats"]["Influence"] = min(
-                            100, game["players"][pid]["personal_stats"]["Influence"] + 3
-                        )
-
-    # Update player influence based on their choices
+    # Player influence logic (simplified for now, can be expanded later)
+    # For now, players who submitted statements gain a small amount of influence
     for player_id, player_data in game["players"].items():
-        if player_data["choice"] is not None:
-            if player_data["choice"] == winning_choice_index:
-                # Reward players who chose the winning policy
-                player_data["personal_stats"]["Influence"] = min(
-                    100, player_data["personal_stats"]["Influence"] + 5
-                )
-            else:
-                # Penalize players who chose a losing policy
-                player_data["personal_stats"]["Influence"] = max(
-                    0, player_data["personal_stats"]["Influence"] - 5
-                )
-        # Ensure influence stays within bounds
+        if "statement" in player_data:
+            player_data["personal_stats"]["Influence"] = min(
+                100, player_data["personal_stats"]["Influence"] + 2
+            )
         player_data["personal_stats"]["Influence"] = max(
             0, min(100, player_data["personal_stats"]["Influence"])
         )
 
-    player_statements_for_gemini = []
-    for player_id, player_data in game["players"].items():
-        if "statement" in player_data:
-            player_statements_for_gemini.append(
-                {"player_id": player_id, "statement": player_data["statement"]}
-            )
-
+    # Generate outcome narrative using the determined policy and effects
     if call_gemini_for_outcome_narrative(
         model,
-        game_state=game,
+        game_state={
+            "current_round": game["current_round"],
+            "global_stats": game["global_stats"],
+            "event_history": game["event_history"],
+        },
         chosen_policy=chosen_policy,
         policy_effects=policy_effects,
-        faction_votes=faction_choices,
+        faction_votes={}, # No faction votes in this new system
         player_statements=player_statements_for_gemini,
         player_comments=player_comments,
     ):
@@ -554,7 +485,7 @@ def resolve_dilemma(game_id, player_comments=None):
             "round": game["current_round"],
             "policy_chosen": chosen_policy,
             "effects": policy_effects,
-            "faction_votes": faction_choices,
+            "faction_votes": {}, # No faction votes in this new system
             "outcome_narrative": outcome_narrative_data["outcome_narrative"],
             "global_stats_after": game["global_stats"].copy(),
         }
@@ -574,14 +505,6 @@ def resolve_dilemma(game_id, player_comments=None):
         emit("game_over", {"winner": winner}, room=game_id, broadcast=True)
         return
 
-    # The dilemma_resolved event is now emitted after the comment phase is complete
-    # emit('dilemma_resolved', {
-    #     'outcome': outcome_narrative_data['outcome_narrative'],
-    #     'global_stats': game['global_stats'],
-    #     'current_round': game['current_round'],
-    #     'players': game['players']  # Add updated player data
-    # }, room=game_id, broadcast=True)
-
     game["dilemma_active"] = False
     game["current_dilemma"] = None
 
@@ -596,50 +519,6 @@ def handle_player_action(data):
 
     if not game or player_id not in game["players"]:
         return
-
-    if action == "dilemma_choice":
-        if game["state"] != "DILEMMA":
-            return
-        choice_index = data.get("choice")
-
-        # Check if the choice would collapse the kingdom
-        potential_effects = game["current_dilemma"]["choices"][choice_index]["effects"]
-        would_collapse = False
-        for stat, change in potential_effects.items():
-            if game["global_stats"][stat] + change <= 0:
-                would_collapse = True
-                break
-
-        if would_collapse:
-            game["players"][player_id]["shamed"] = True
-            game["players"][player_id]["choice"] = None  # Their choice is nullified
-            emit(
-                "player_shamed",
-                {
-                    "player_id": player_id,
-                    "reason": "Your reckless choice would have doomed the kingdom!",
-                },
-                room=game["players"][player_id]["sid"],
-            )
-            emit(
-                "game_update",
-                {"players": game["players"]},
-                room=game_id,
-                broadcast=True,
-            )  # Notify everyone of the shame
-        else:
-            game["players"][player_id]["choice"] = choice_index
-        game["players"][player_id]["action_status"] = "done"  # Player made a choice
-
-        emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
-
-        all_players_chosen = all(
-            p["choice"] is not None for p in game["players"].values()
-        )
-
-        if all_players_chosen:
-            game["state"] = "STATEMENT"
-            emit("phase_change", {"phase": "STATEMENT"}, room=game_id, broadcast=True)
 
     elif action == "submit_statement":
         if game["state"] != "STATEMENT":
@@ -669,53 +548,12 @@ def handle_player_action(data):
                 {"statements": statements},
                 room=game["host_sid"],
             )
-            game["state"] = "STATEMENT_VOTE"
+            game["state"] = "COMMENT_PHASE" # Directly move to comment phase after statements
             emit(
                 "phase_change",
-                {"phase": "STATEMENT_VOTE", "statements": statements},
+                {"phase": "COMMENT_PHASE", "statements": statements},
                 room=game_id,
                 broadcast=True,
-            )
-
-    elif action == "submit_statement_vote":
-        if game["state"] != "STATEMENT_VOTE":
-            return
-        vote_for_player_id = data.get("vote_for_player_id")
-        game["players"][player_id]["statement_vote"] = vote_for_player_id
-        game["players"][player_id]["action_status"] = (
-            "done"  # Player voted for statement
-        )
-
-        all_players_voted = all("statement_vote" in p for p in game["players"].values())
-
-        if all_players_voted:
-            # Calculate statement vote counts before resolving dilemma
-            statement_vote_counts = {pid: 0 for pid in game["players"]}
-            for p in game["players"].values():
-                voted_for = p.get("statement_vote")
-                if voted_for and voted_for in statement_vote_counts:
-                    statement_vote_counts[voted_for] += 1
-
-            game["statement_vote_counts"] = (
-                statement_vote_counts  # Store for later display
-            )
-
-            game["state"] = "DISPLAY_STATEMENT_RESULTS"
-            emit(
-                "phase_change",
-                {
-                    "phase": "DISPLAY_STATEMENT_RESULTS",
-                    "statement_vote_counts": statement_vote_counts,
-                    "players": game["players"],
-                },
-                room=game_id,
-                broadcast=True,
-            )
-
-            # Immediately transition to COMMENT_PHASE after displaying results
-            game["state"] = "COMMENT_PHASE"
-            emit(
-                "phase_change", {"phase": "COMMENT_PHASE"}, room=game_id, broadcast=True
             )
 
     elif action == "submit_comment":

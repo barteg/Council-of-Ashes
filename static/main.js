@@ -81,35 +81,6 @@ const nextRoundBtn = document.getElementById('nextRoundBtn');
 
 let playerChoice = null;
 
-function updatePersonalStats(playerData) {
-    if (playerData && playerData.personal_stats) {
-        const influence = playerData.personal_stats.Influence;
-        if (statInfluenceSpan) {
-            statInfluenceSpan.style.width = `${influence}%`;
-            statInfluenceSpan.setAttribute('aria-valuenow', influence);
-            statInfluenceSpan.textContent = `${influence}`; // Display number inside bar
-        }
-    }
-}
-
-function updatePlayerChoiceStatus(players) {
-    const playerChoiceList = document.getElementById('playerChoiceList');
-    if (playerChoiceList) {
-        playerChoiceList.innerHTML = '';
-        for (const pid in players) {
-            const player = players[pid];
-            const listItem = document.createElement('li');
-            listItem.classList.add('list-group-item');
-            listItem.textContent = `${player.name}: ${player.choice !== null ? 'Chosen' : 'Waiting...'}`;
-            playerChoiceList.appendChild(listItem);
-        }
-        const votingStatus = document.getElementById('votingStatus');
-        if(votingStatus) {
-            // votingStatus.style.display = 'block';
-        }
-    }
-}
-
 if (nextRoundBtn) {
     nextRoundBtn.addEventListener('click', () => {
         socket.emit('player_action', { game_id: gameId, player_id: playerId, event: 'next_round' });
@@ -216,7 +187,6 @@ socket.on('game_event', (data) => {
                 currentStatFaith.textContent = `${globalStats.Faith}`;
             }
 
-            const dilemmaChoices = document.getElementById('dilemmaChoices'); // Select element just-in-time
             const dilemmaSection = document.getElementById('dilemmaSection');
             const playerStatementsSection = document.getElementById('playerStatementsSection');
             const statementVoteSection = document.getElementById('statementVoteSection');
@@ -228,111 +198,9 @@ socket.on('game_event', (data) => {
             console.log(`[DEBUG] dilemma_prompt: statementVoteSection.style.display BEFORE: ${statementVoteSection ? statementVoteSection.style.display : 'N/A'}`);
 
 
-            if (!dilemmaChoices) {
-                console.error('Could not find dilemmaChoices element!');
-                return; 
-            }
-
-            const originalStats = {
-                Stability: globalStats.Stability,
-                Economy: globalStats.Economy,
-                Faith: globalStats.Faith
-            };
-
-            dilemmaChoices.innerHTML = '';
-            dilemma.choices.forEach((choice, index) => {
-                console.log('[DEBUG] Rendering choice:', choice.text); // Add this line
-                const button = document.createElement('button');
-                button.classList.add('list-group-item', 'list-group-item-action', 'mb-2');
-                let buttonText = choice.text;
-                const effects = [];
-                if (choice.effects.Stability !== 0) {
-                    effects.push(`${choice.effects.Stability > 0 ? '+' : ''}${choice.effects.Stability} Stability`);
-                }
-                if (choice.effects.Economy !== 0) {
-                    effects.push(`${choice.effects.Economy > 0 ? '+' : ''}${choice.effects.Economy} Economy`);
-                }
-                if (choice.effects.Faith !== 0) {
-                    effects.push(`${choice.effects.Faith > 0 ? '+' : ''}${choice.effects.Faith} Faith`);
-                }
-                if (effects.length > 0) {
-                    buttonText += ` (${effects.join(', ')})`;
-                }
-                button.textContent = buttonText;
-                button.addEventListener('click', () => {
-                    // Remove 'active' class from all choices and add to the clicked one
-                    Array.from(dilemmaChoices.children).forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    playerChoice = index; // Store the choice, but don't submit yet
-
-                    // Preview the stat changes
-                    const newStability = Math.max(0, Math.min(100, originalStats.Stability + choice.effects.Stability));
-                    const newEconomy = Math.max(0, Math.min(100, originalStats.Economy + choice.effects.Economy));
-                    const newFaith = Math.max(0, Math.min(100, originalStats.Faith + choice.effects.Faith));
-
-                    currentStatStability.style.width = `${newStability}%`;
-                    currentStatStability.setAttribute('aria-valuenow', newStability);
-                    currentStatStability.textContent = `${newStability}`;
-
-                    currentStatEconomy.style.width = `${newEconomy}%`;
-                    currentStatEconomy.setAttribute('aria-valuenow', newEconomy);
-                    currentStatEconomy.textContent = `${newEconomy}`;
-
-                    currentStatFaith.style.width = `${newFaith}%`;
-                    currentStatFaith.setAttribute('aria-valuenow', newFaith);
-                    currentStatFaith.textContent = `${newFaith}`;
-                });
-
-                button.addEventListener('dblclick', () => {
-                    if (playerChoice === index) { // Ensure the double-clicked item is the selected one
-                        
-                        // Revert to original stats before submitting
-                        currentStatStability.style.width = `${originalStats.Stability}%`;
-                        currentStatStability.setAttribute('aria-valuenow', originalStats.Stability);
-                        currentStatStability.textContent = `${originalStats.Stability}`;
-
-                        currentStatEconomy.style.width = `${originalStats.Economy}%`;
-                        currentStatEconomy.setAttribute('aria-valuenow', originalStats.Economy);
-                        currentStatEconomy.textContent = `${originalStats.Economy}`;
-
-                        currentStatFaith.style.width = `${originalStats.Faith}%`;
-                        currentStatFaith.setAttribute('aria-valuenow', originalStats.Faith);
-                        currentStatFaith.textContent = `${originalStats.Faith}`;
-
-                        socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'dilemma_choice', choice: index });
-                        // Disable choices after selection
-                        Array.from(dilemmaChoices.children).forEach(btn => btn.disabled = true);
-                        button.classList.add('active');
-
-                        console.log(`[DEBUG] Dilemma choice dblclicked: dilemmaSection.style.display BEFORE: ${dilemmaSection ? dilemmaSection.style.display : 'N/A'}`);
-                        console.log(`[DEBUG] Dilemma choice dblclicked: playerStatementsSection.style.display BEFORE: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
-                        console.log(`[DEBUG] Dilemma choice dblclicked: statementVoteSection.style.display BEFORE: ${statementVoteSection ? statementVoteSection.style.display : 'N/A'}`);
-
-
-                        // Hide dilemma and show statement section
-                        if (dilemmaSection) dilemmaSection.style.display = 'none';
-                        if (playerStatementsSection) playerStatementsSection.style.display = 'block';
-                        if (statementVoteSection) statementVoteSection.style.display = 'none';
-
-
-                        console.log(`[DEBUG] Dilemma choice dblclicked: dilemmaSection.style.display AFTER: ${dilemmaSection ? dilemmaSection.style.display : 'N/A'}`);
-                        console.log(`[DEBUG] Dilemma choice dblclicked: playerStatementsSection.style.display AFTER: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
-                        console.log(`[DEBUG] Dilemma choice dblclicked: statementVoteSection.style.display AFTER: ${statementVoteSection ? statementVoteSection.style.display : 'N/A'}`);
-                    }
-                });
-                dilemmaChoices.appendChild(button);
-            });
-            console.log('[DEBUG] Number of dilemma choices rendered:', dilemmaChoices.children.length); // Add this line
-
             const currentRoundSpan = document.getElementById('currentRound');
             if (currentRoundSpan) {
                 currentRoundSpan.textContent = data.current_round;
-            }
-            // Re-enable choices
-            // const dilemmaChoices = document.getElementById('dilemmaChoices'); // This was a duplicate declaration
-            if (dilemmaChoices) {
-                Array.from(dilemmaChoices.children).forEach(btn => btn.disabled = false);
-                Array.from(dilemmaChoices.children).forEach(btn => btn.classList.remove('active'));
             }
             const narrativeOutput = document.getElementById('narrativeOutput');
             if (narrativeOutput) {
@@ -346,7 +214,7 @@ socket.on('game_event', (data) => {
                 console.log(`[DEBUG] dilemma_prompt: dilemmaSection.style.display after setting: ${dilemmaSection.style.display}`);
             }
             if (playerStatementsSection) { // Ensure playerStatementsSection is initially hidden
-                playerStatementsSection.style.display = 'none';
+                playerStatementsSection.style.display = 'block'; // Show statement input immediately
                 console.log(`[DEBUG] dilemma_prompt: playerStatementsSection.style.display after setting: ${playerStatementsSection.style.display}`);
             }
             if (statementVoteSection) { // Ensure statementVoteSection is initially hidden
@@ -358,12 +226,7 @@ socket.on('game_event', (data) => {
                 nextRoundBtn.disabled = false;
             }
         }
-    } else if (data.event === 'player_made_choice' || data.event === 'other_player_made_choice') {
-        // Request updated player choices from server to update status
-        // For now, we'll just show a generic message
-        // Removed votingStatus reference
-        // In a more complete implementation, you'd request the full player list to update playerChoiceList
-    }
+
 });
 
 if (gameId && playerId) {
@@ -460,12 +323,10 @@ if (gameId && playerId) {
 
         const dilemmaSection = document.getElementById('dilemmaSection');
         const playerStatementsSection = document.getElementById('playerStatementsSection');
-        const statementVoteSection = document.getElementById('statementVoteSection');
 
 
         if (dilemmaSection) dilemmaSection.style.display = 'none';
         if (playerStatementsSection) playerStatementsSection.style.display = 'none';
-        if (statementVoteSection) statementVoteSection.style.display = 'none';
         waitingRoom.style.display = 'none';
 
         console.log(`[DEBUG] dilemma_resolved: narrativeOutput.style.display AFTER: ${narrativeOutputElement ? narrativeOutputElement.style.display : 'N/A'}`);
@@ -487,76 +348,7 @@ if (gameId && playerId) {
         console.log(`[DEBUG] phase_change: nextRoundBtn.style.display BEFORE: ${nextRoundBtn ? nextRoundBtn.style.display : 'N/A'}`);
 
 
-        if (data.phase === 'STATEMENT_VOTE') {
-            if (playerStatementsSection) playerStatementsSection.style.display = 'none'; // Hide statement submission
-            if (dilemmaSection) dilemmaSection.style.display = 'none'; // Hide dilemma section
-            if (narrativeOutput) narrativeOutput.style.display = 'none'; // Hide narrative output
-            if (nextRoundBtn) nextRoundBtn.style.display = 'none'; // Hide next round button
-            
-            if (statementVoteSection) {
-                const statementVoteList = document.getElementById('statementVoteList');
-                statementVoteList.innerHTML = '';
-
-                for (const pid in data.statements) {
-                    const statementData = data.statements[pid];
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
-                    listItem.textContent = `${statementData.name}: "${statementData.statement}"`;
-
-                    const voteButton = document.createElement('button');
-                    voteButton.classList.add('btn', 'btn-sm', 'btn-primary');
-                    voteButton.textContent = 'Vote';
-                    voteButton.addEventListener('click', () => {
-                        socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement_vote', vote_for_player_id: pid });
-                        // Hide the entire voting section after selection
-                        if (statementVoteSection) statementVoteSection.style.display = 'none';
-                        console.log('[DEBUG] Vote button clicked. statementVoteSection hidden.');
-                    });
-                    listItem.appendChild(voteButton);
-                    statementVoteList.appendChild(listItem);
-                }
-                statementVoteSection.style.display = 'block'; // Show voting section
-            } else {
-                console.error('[DEBUG] statementVoteSection not found during STATEMENT_VOTE phase_change!');
-            }
-        } else if (data.phase === 'DISPLAY_STATEMENT_RESULTS') {
-            // Hide all other sections
-            if (playerStatementsSection) playerStatementsSection.style.display = 'none';
-            if (statementVoteSection) statementVoteSection.style.display = 'none';
-            if (dilemmaSection) dilemmaSection.style.display = 'none';
-            if (narrativeOutput) narrativeOutput.style.display = 'none';
-            if (nextRoundBtn) nextRoundBtn.style.display = 'none';
-
-            // Display statement voting results on player screen (if needed, currently only host)
-            // For players, this phase is mostly a transition before commenting
-            const playerStatementResultsSection = document.getElementById('playerStatementResultsSection');
-            if (playerStatementResultsSection) {
-                playerStatementResultsSection.style.display = 'block';
-                const statementResultsList = document.getElementById('statementResultsList');
-                statementResultsList.innerHTML = '<h6>Statement Vote Distribution:</h6>';
-                const statementVoteList = document.createElement('ul');
-                statementVoteList.classList.add('list-group');
-
-                const playerInfo = {};
-                for (const pid in data.players) {
-                    playerInfo[pid] = {
-                        name: data.players[pid].name,
-                        statement: data.players[pid].statement || 'No statement submitted'
-                    };
-                }
-
-                for (const pid in data.statement_vote_counts) {
-                    const votes = data.statement_vote_counts[pid];
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('list-group-item');
-                    let statementText = `${playerInfo[pid].name}: "${playerInfo[pid].statement}" - ${votes} votes`;
-                    listItem.innerHTML = statementText;
-                    statementVoteList.appendChild(listItem);
-                }
-                statementResultsList.appendChild(statementVoteList);
-            }
-
-        } else if (data.phase === 'COMMENT_PHASE') {
+        if (data.phase === 'COMMENT_PHASE') {
             const commentPhaseSection = document.getElementById('commentPhaseSection');
             const playerCommentInput = document.getElementById('playerCommentInput');
             const submitCommentBtn = document.getElementById('submitCommentBtn');
@@ -572,7 +364,7 @@ if (gameId && playerId) {
 
             if (commentPhaseSection) {
                 commentPhaseSection.style.display = 'block';
-                if (playerStatementResultsSection) playerStatementResultsSection.style.display = 'block'; // Keep results visible during commenting
+                if (playerStatementResultsSection) playerStatementResultsSection.style.display = 'none'; // Hide results during commenting
                 if (submitCommentBtn) {
                     submitCommentBtn.onclick = () => { // Use onclick to prevent multiple listeners
                         const comment = playerCommentInput.value;
@@ -580,7 +372,6 @@ if (gameId && playerId) {
                             socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_comment', comment: comment });
                             playerCommentInput.value = '';
                             commentPhaseSection.style.display = 'none'; // Hide comment section after submission
-                            if (playerStatementResultsSection) playerStatementResultsSection.style.display = 'none'; // Hide results after comment
                             // Optionally show a "waiting for other players" message
                         }
                     };
@@ -599,9 +390,9 @@ if (gameId && playerId) {
     socket.on('game_update', (data) => {
         if (data.players) {
             // This is a name update, update the player list in the voting status
-            updatePlayerChoiceStatus(data.players);
             if (data.players[playerId]) {
                 playerNameSpan.textContent = data.players[playerId].name;
+                updatePersonalStats(data.players[playerId]);
             }
         } else if (data.player_id === playerId) {
             updatePersonalStats(data.data);
@@ -663,20 +454,15 @@ function updatePlayerStatusOnHost(player, playerId) {
         nameSpan.textContent = statusText;
         playerStatus.appendChild(nameSpan);
 
-        // Add choice status if available
-        if (player.choice !== null) {
-            const choiceStatusSpan = document.createElement('span');
-            choiceStatusSpan.classList.add('ml-2', 'badge', 'badge-success'); // Bootstrap badge for chosen
-            choiceStatusSpan.textContent = 'Chosen';
-            playerStatus.appendChild(choiceStatusSpan);
-        } else if (player.action_status === 'joined') {
+        if (player.action_status === 'joined') {
             playerStatus.classList.add('player-joined');
-        }
-        else if (player.action_status === 'waiting' && player.faction) { // Only show waiting if they are in a faction and waiting for an action
-            const choiceStatusSpan = document.createElement('span');
-            choiceStatusSpan.classList.add('ml-2', 'badge', 'badge-warning'); // Bootstrap badge for waiting
-            choiceStatusSpan.textContent = 'Waiting...';
-            playerStatus.appendChild(choiceStatusSpan);
+        } else if (player.action_status === 'waiting') {
+            const dotsSpan = document.createElement('span');
+            dotsSpan.classList.add('player-dots-glow'); // Original glowing dots for waiting in-game
+            dotsSpan.textContent = ' ● ● ●';
+            playerStatus.appendChild(dotsSpan);
+        } else if (player.action_status === 'done') {
+            nameSpan.classList.add('player-name-glow'); // Original glowing name for action done
         }
 
         // Apply glowing effects based on action_status and ready status
@@ -874,7 +660,7 @@ if (createGameBtn) {
     socket.on('statements_submitted', (data) => {
         console.log('Statements submitted:', data);
         const hostNarrative = document.getElementById('hostNarrative');
-        hostNarrative.innerHTML = '<h5>Player Statements for Voting:</h5>'; // Clear and add a title
+        hostNarrative.innerHTML = '<h5>Player Statements:</h5>'; // Clear and add a title
         const statementList = document.createElement('ul');
         statementList.classList.add('list-group');
         for (const playerId in data.statements) {
