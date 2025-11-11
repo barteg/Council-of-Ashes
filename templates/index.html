@@ -9,7 +9,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 </head>
 <body>
-    
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <p id="loadingMessage">Preparing event...</p>
+            <div class="progress-bar-container">
+                <div id="loadingProgressBar" class="progress-bar-fill"></div>
+            </div>
+            <p id="loadingProgressText">0%</p>
+        </div>
+    </div>
+
     <div class="container mt-4">
         <h1 class="text-center">The Council of Ashes - Host</h1>
 

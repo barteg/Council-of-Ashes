@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <p id="loadingMessage">Preparing event...</p>
+            <div class="progress-bar-container">
+                <div id="loadingProgressBar" class="progress-bar-fill"></div>
+            </div>
+            <p id="loadingProgressText">0%</p>
+        </div>
+    </div>
     
     <div id="gameId" style="display: none;">{{ game_id }}</div>
     <div id="playerId" style="display: none;">{{ player_id }}</div>
@@ -41,72 +50,74 @@
                 <div id="statInfluence" class="progress-bar bg-info" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0</div>
             </div>
 
-            <!-- Dilemma Section -->
-            <div id="dilemmaSection" class="floating-element" style="display: none;">
-                <h2 id="dilemmaTitle"></h2>
-                <img id="dilemmaImage" src="" alt="Dilemma Image" class="img-fluid mb-3" style="display: none;">
-                <p id="dilemmaDescription"></p>
-                <!-- Current Kingdom Stats Display -->
-                <div id="currentKingdomStatsDisplay" class="floating-element mb-3">
-                    <h5>Current Kingdom Stats:</h5>
-                    <div class="mb-2">
-                        <p class="mb-0"><strong>Stability:</strong></p>
-                        <div class="progress">
-                            <div id="currentStatStability" class="progress-bar bg-info" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <p class="mb-0"><strong>Economy:</strong></p>
-                        <div class="progress">
-                            <div id="currentStatEconomy" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <p class="mb-0"><strong>Faith:</strong></p>
-                        <div class="progress">
-                            <div id="currentStatFaith" class="progress-bar bg-warning" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                </div>
-                <small class="form-text text-muted" style="display: none;">Double-click your choice to confirm.</small>
-            </div>
-
-            <!-- Player Statements Section -->
-            <div id="playerStatementsSection" class="floating-element" style="display: none;">
-                <h5>Your Statement</h5>
-                <textarea id="playerStatementInput" class="form-control" rows="3"></textarea>
-                <button id="submitStatementBtn" class="btn btn-primary mt-2">Submit Statement</button>
-            </div>
-
-            <!-- Statement Voting Section -->
-            <div id="statementVoteSection" class="floating-element" style="display: none;">
-                <h5>Vote for a Statement</h5>
-                <ul id="statementVoteList" class="list-group">
-                    <!-- Statements for voting will be rendered here -->
-                </ul>
-            </div>
-
-            <!-- Player Statement Results Section -->
-            <div id="playerStatementResultsSection" class="floating-element" style="display: none;">
-                <h5>Statement Voting Results</h5>
-                <div id="statementResultsList" class="list-group">
-                    <!-- Statement voting results will be rendered here -->
-                </div>
-            </div>
-            
-            <!-- Comment Phase Section -->
-            <div id="commentPhaseSection" class="floating-element" style="display: none;">
-                <h5>Your Comment on the Results</h5>
-                <textarea id="playerCommentInput" class="form-control" rows="3"></textarea>
-                <button id="submitCommentBtn" class="btn btn-primary mt-2">Submit Comment</button>
-            </div>
-
-                            <!-- Narrative Output and Next Round Button -->
-                            <div id="narrativeOutput" class="floating-element" style="display: none;">
-                                <p id="narrativeText"></p>
-                                <button id="nextRoundBtn" class="btn btn-primary mt-3" style="display: none;">Next Event</button>
+            <div id="mainContentArea">
+                <!-- Dilemma Section -->
+                <div id="dilemmaSection" class="floating-element" style="display: none;">
+                    <h2 id="dilemmaTitle"></h2>
+                    <img id="dilemmaImage" src="" alt="Dilemma Image" class="img-fluid mb-3" style="display: none;">
+                    <p id="dilemmaDescription"></p>
+                    <!-- Current Kingdom Stats Display -->
+                    <div id="currentKingdomStatsDisplay" class="floating-element mb-3">
+                        <h5>Current Kingdom Stats:</h5>
+                        <div class="mb-2">
+                            <p class="mb-0"><strong>Stability:</strong></p>
+                            <div class="progress">
+                                <div id="currentStatStability" class="progress-bar bg-info" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
+                        <div class="mb-2">
+                            <p class="mb-0"><strong>Economy:</strong></p>
+                            <div class="progress">
+                                <div id="currentStatEconomy" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <p class="mb-0"><strong>Faith:</strong></p>
+                            <div class="progress">
+                                <div id="currentStatFaith" class="progress-bar bg-warning" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="form-text text-muted" style="display: none;">Double-click your choice to confirm.</small>
+                </div>
+
+                <!-- Player Statements Section -->
+                <div id="playerStatementsSection" class="floating-element" style="display: none;">
+                    <h5>Your Statement</h5>
+                    <textarea id="playerStatementInput" class="form-control" rows="3"></textarea>
+                    <button id="submitStatementBtn" class="btn btn-primary mt-2">Submit Statement</button>
+                </div>
+
+                <!-- Statement Voting Section -->
+                <div id="statementVoteSection" class="floating-element" style="display: none;">
+                    <h5>Vote for a Statement</h5>
+                    <ul id="statementVoteList" class="list-group">
+                        <!-- Statements for voting will be rendered here -->
+                    </ul>
+                </div>
+
+                <!-- Player Statement Results Section -->
+                <div id="playerStatementResultsSection" class="floating-element" style="display: none;">
+                    <h5>Statement Voting Results</h5>
+                    <div id="statementResultsList" class="list-group">
+                        <!-- Statement voting results will be rendered here -->
+                    </div>
+                </div>
+                
+                <!-- Comment Phase Section -->
+                <div id="commentPhaseSection" class="floating-element" style="display: none;">
+                    <h5>Your Comment on the Results</h5>
+                    <textarea id="playerCommentInput" class="form-control" rows="3"></textarea>
+                    <button id="submitCommentBtn" class="btn btn-primary mt-2">Submit Comment</button>
+                </div>
+
+                <!-- Narrative Output and Next Round Button -->
+                <div id="narrativeOutput" class="floating-element" style="display: none;">
+                    <p id="narrativeText"></p>
+                    <button id="nextRoundBtn" class="btn btn-primary mt-3" style="display: none;">Next Event</button>
+                </div>
+            </div>
+        </div>
         <!-- Game Over Screen -->
         <div id="gameOverScreen" class="text-center" style="display: none;">
             <h1>Game Over</h1>

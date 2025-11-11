@@ -3,14 +3,114 @@ const socket = io('http://10.0.1.38:5000');
 let audioQueue = [];
 let isPlaying = false;
 let currentAudio = null;
+let loadingTimeout;
+
+function showLoadingScreen(isPlayerView = false) {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const progressBar = document.getElementById('loadingProgressBar');
+    const progressText = document.getElementById('loadingProgressText');
+    const loadingMessage = document.getElementById('loadingMessage');
+
+    const funnyMessages = [
+        "Reticulating splines...",
+        "Generating witty dialog...",
+        "Sharpening pitchforks...",
+        "Consulting the elder gods...",
+        "Polishing the monocles...",
+        "Herding cats...",
+        "Counting to infinity (twice)...",
+        "Brewing coffee...",
+        "Definitely not stealing your data...",
+        "Convincing the hamsters to run faster..."
+    ];
+
+    if (loadingMessage) {
+        const randomIndex = Math.floor(Math.random() * funnyMessages.length);
+        loadingMessage.textContent = funnyMessages[randomIndex];
+    }
+
+    if (isPlayerView) {
+        const mainContentArea = document.getElementById('mainContentArea');
+        if (mainContentArea) mainContentArea.style.display = 'none';
+    }
+
+    let progress = 0;
+    if (progressBar) progressBar.style.width = '0%';
+    if (progressText) progressText.textContent = '0%';
+    if (loadingOverlay) loadingOverlay.style.display = 'flex';
+
+    clearTimeout(loadingTimeout);
+
+    function animateProgress() {
+        const increment = Math.random() * 5 + 1; // Random increment between 1 and 6
+        progress += increment;
+
+        if (progress >= 99) {
+            progress = 99;
+            if (progressBar) progressBar.style.width = '99%';
+            if (progressText) progressText.textContent = '99%';
+            return; // Stop the animation
+        }
+
+        if (progressBar) progressBar.style.width = `${progress}%`;
+        if (progressText) progressText.textContent = `${Math.floor(progress)}%`;
+
+        const delay = Math.random() * 400 + 100; // Random delay between 100ms and 500ms
+        loadingTimeout = setTimeout(animateProgress, delay);
+    }
+
+    animateProgress();
+}
+
+function completeLoading(isPlayerView = false) {
+    clearTimeout(loadingTimeout);
+    const progressBar = document.getElementById('loadingProgressBar');
+    const progressText = document.getElementById('loadingProgressText');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+
+    if (progressBar) progressBar.style.width = '100%';
+    if (progressText) progressText.textContent = '100%';
+
+    setTimeout(() => {
+        if (loadingOverlay) loadingOverlay.style.display = 'none';
+        if (isPlayerView) {
+            const mainContentArea = document.getElementById('mainContentArea');
+            if (mainContentArea) mainContentArea.style.display = 'block';
+        }
+    }, 500); // Wait half a second before hiding
+}
 
 function playNarration(text) {
-    if (!text || text.trim() === '') return;
+    return new Promise((resolve, reject) => {
+        if (!text || text.trim() === '') {
+            resolve();
+            return;
+        }
 
-    audioQueue.push(text);
-    if (!isPlaying) {
-        playNextInQueue();
-    }
+        fetch('/api/tts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text }),
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.blob();
+        })
+        .then(blob => {
+            const audioUrl = URL.createObjectURL(blob);
+            currentAudio = new Audio(audioUrl);
+            currentAudio.play();
+            currentAudio.onended = () => {
+                currentAudio = null;
+                // This part is for queuing, not directly related to the loading promise
+            };
+            resolve(); // Resolve the promise once audio is ready and starts playing
+        })
+        .catch(error => {
+            console.error('Error fetching TTS audio:', error);
+            reject(error); // Reject the promise on error
+        });
+    });
 }
 
 function playNextInQueue() {
@@ -21,33 +121,10 @@ function playNextInQueue() {
 
     isPlaying = true;
     const text = audioQueue.shift();
-
-    fetch('/api/tts', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text: text }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.blob();
-    })
-    .then(blob => {
-        const audioUrl = URL.createObjectURL(blob);
-        currentAudio = new Audio(audioUrl);
-        currentAudio.play();
-        currentAudio.onended = () => {
-            currentAudio = null;
-            playNextInQueue();
-        };
-    })
-    .catch(error => {
-        console.error('Error fetching TTS audio:', error);
-        isPlaying = false;
-        playNextInQueue(); // Try next item even if current one failed
+    playNarration(text).catch(error => {
+        console.error("Error playing narration from queue:", error);
+    }).finally(() => {
+        playNextInQueue();
     });
 }
 
@@ -94,6 +171,7 @@ function updatePersonalStats(playerData) {
 
 if (nextRoundBtn) {
     nextRoundBtn.addEventListener('click', () => {
+        showLoadingScreen(true);
         socket.emit('player_action', { game_id: gameId, player_id: playerId, event: 'next_round' });
         nextRoundBtn.disabled = true;
     });
@@ -121,6 +199,7 @@ socket.on('game_started_for_player', (initial_game_state) => {
 
     } else if (gameArea) {
         // Player
+        showLoadingScreen(true);
         waitingRoom.style.display = 'none';
         gameArea.style.display = 'block';
         console.log(`[DEBUG] game_started_for_player: gameArea.style.display after setting: ${gameArea.style.display}`);
@@ -133,16 +212,25 @@ socket.on('game_started_for_player', (initial_game_state) => {
     }
 });
 
-socket.on('game_event', (data) => {
+socket.on('game_event', async (data) => {
     console.log('Game Event:', data);
     if (data.event === 'dilemma_prompt') {
         const dilemma = JSON.parse(data.dilemma_json);
 
         // Check if we are on the host page
         if (document.getElementById('hostControl')) {
+            showLoadingScreen(false);
             console.log('[DEBUG] Host Dilemma Description:', dilemma.description);
             document.getElementById('hostNarrative').textContent = dilemma.description;
-            playNarration(dilemma.description); // AI NARRATOR
+            
+            try {
+                await playNarration(dilemma.description); // AI NARRATOR
+            } catch (error) {
+                console.error("Failed to play narration:", error);
+            } finally {
+                completeLoading(false);
+            }
+
             // Update host global stats progress bars
             const globalStats = data.global_stats;
             console.log('[DEBUG] Host Global Stats:', globalStats); // Add this line
@@ -169,6 +257,9 @@ socket.on('game_event', (data) => {
                     hostStatFaith.textContent = `${globalStats.Faith}`;;
                 }
             }
+        } else {
+             // If not host (i.e., player), complete the loading screen started by 'game_started_for_player'
+            completeLoading(true);
         }
 
         // Check if we are on the player page
@@ -257,6 +348,7 @@ if (gameId && playerId) {
     const readyBtn = document.getElementById('readyBtn');
     if (readyBtn) {
         readyBtn.addEventListener('click', () => {
+            showLoadingScreen(true);
             socket.emit('player_ready', { game_id: gameId, player_id: playerId });
             readyBtn.textContent = 'Waiting for other players...';
             readyBtn.disabled = true;
@@ -278,6 +370,7 @@ if (gameId && playerId) {
 
     if (nextRoundBtn) {
         nextRoundBtn.addEventListener('click', () => {
+            showLoadingScreen(true);
             socket.emit('player_action', { game_id: gameId, player_id: playerId, event: 'next_round' });
             nextRoundBtn.disabled = true;
         });
@@ -312,11 +405,20 @@ if (gameId && playerId) {
 
 
 
-    socket.on('dilemma_resolved', (data) => {
+    socket.on('dilemma_resolved', async (data) => {
         console.log('[DEBUG] dilemma_resolved event received.');
+        showLoadingScreen(true);
         if (gameArea) gameArea.style.display = 'block'; // Ensure gameArea is visible
         narrativeText.textContent = data.outcome; // Set text content
-        playNarration(data.outcome); // AI NARRATOR
+        
+        try {
+            await playNarration(data.outcome); // AI NARRATOR
+        } catch (error) {
+            console.error("Failed to play narration:", error);
+        } finally {
+            completeLoading(true);
+        }
+
         if (narrativeText) narrativeText.style.setProperty('display', 'block', 'important'); // Ensure the narrative text is visible
         currentRoundSpan.textContent = data.current_round;
 
@@ -380,6 +482,7 @@ if (gameId && playerId) {
                     submitCommentBtn.onclick = () => { // Use onclick to prevent multiple listeners
                         const comment = playerCommentInput.value;
                         if (comment) {
+                            showLoadingScreen(true);
                             socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_comment', comment: comment });
                             playerCommentInput.value = '';
                             commentPhaseSection.style.display = 'none'; // Hide comment section after submission
@@ -638,8 +741,9 @@ if (createGameBtn) {
         }
     });
 
-    socket.on('comments_received', (data) => {
+    socket.on('comments_received', async (data) => {
         console.log('Comments received:', data);
+        showLoadingScreen(false);
         const playerCommentsDisplay = document.getElementById('playerCommentsDisplay');
         const commentList = document.getElementById('commentList');
         const hostNarrative = document.getElementById('hostNarrative');
@@ -662,7 +766,13 @@ if (createGameBtn) {
             if (hostNarrative) {
                 hostNarrative.textContent = data.outcome; // Assuming outcome is passed in data
                 hostNarrative.style.display = 'block';
-                playNarration(data.outcome); // AI NARRATOR
+                try {
+                    await playNarration(data.outcome); // AI NARRATOR
+                } catch (error) {
+                    console.error("Failed to play narration:", error);
+                } finally {
+                    completeLoading(false);
+                }
             }
             // Hide the player comments display after the narrative is shown
             if (playerCommentsDisplay) playerCommentsDisplay.style.display = 'none';
