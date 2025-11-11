@@ -333,18 +333,6 @@ socket.on('game_event', async (data) => {
 
 if (gameId && playerId) {
 
-    const saveNameBtn = document.getElementById('saveNameBtn');
-    if (saveNameBtn) {
-        saveNameBtn.addEventListener('click', () => {
-            const newName = document.getElementById('playerNameInput').value;
-            if (newName) {
-                socket.emit('player_name_update', { game_id: gameId, player_id: playerId, name: newName });
-                nameSetup.style.display = 'none';
-                factionSelection.style.display = 'block';
-            }
-        });
-    }
-
     const readyBtn = document.getElementById('readyBtn');
     if (readyBtn) {
         readyBtn.addEventListener('click', () => {
@@ -375,33 +363,6 @@ if (gameId && playerId) {
             nextRoundBtn.disabled = true;
         });
     }
-
-    socket.on('faction_info', (data) => {
-        const factionSelectionDiv = document.getElementById('factionSelection');
-        const factionSelect = document.getElementById('factionSelect');
-        factionSelect.innerHTML = '';
-
-        for (const factionId in data.factions) {
-            const option = document.createElement('option');
-            option.value = factionId;
-            option.textContent = factionId;
-            factionSelect.appendChild(option);
-        }
-        
-        const joinFactionBtn = document.getElementById('joinFactionBtn');
-        joinFactionBtn.addEventListener('click', () => {
-            const selectedFaction = factionSelect.value;
-            if (selectedFaction) {
-                socket.emit('join_faction', { game_id: gameId, player_id: playerId, faction_id: selectedFaction });
-                factionSelectionDiv.style.display = 'none';
-                waitingRoom.style.display = 'block';
-            }
-        });
-
-        // This was moved to after name save
-        // factionSelectionDiv.style.display = 'block';
-        // waitingRoom.style.display = 'none';
-    });
 
 
 
@@ -515,6 +476,10 @@ if (gameId && playerId) {
 
     socket.on('connect', () => {
         console.log('Connected to server');
+        const reconnectingIndicator = document.getElementById('reconnectingIndicator');
+        if (reconnectingIndicator) {
+            reconnectingIndicator.style.display = 'none';
+        }
         // Re-join the game room on reconnection
         if (gameId && playerId) {
             socket.emit('join_game', { game_id: gameId, player_id: playerId });
@@ -523,6 +488,10 @@ if (gameId && playerId) {
 
     socket.on('disconnect', () => {
         console.log('Disconnected from server');
+        const reconnectingIndicator = document.getElementById('reconnectingIndicator');
+        if (reconnectingIndicator) {
+            reconnectingIndicator.style.display = 'block';
+        }
     });
 
     socket.on('error', (data) => {
@@ -556,6 +525,110 @@ if (gameId && playerId) {
         }
         gameOverScreen.style.display = 'block';
     });
+
+    socket.on('game_state_sync', (game_state) => {
+        console.log('[DEBUG] game_state_sync received:', game_state);
+        const reconnectingIndicator = document.getElementById('reconnectingIndicator');
+        if (reconnectingIndicator) {
+            reconnectingIndicator.style.display = 'none';
+        }
+
+        // Update global stats
+        if (game_state.global_stats) {
+            const globalStats = game_state.global_stats;
+            if (hostStatStability) {
+                hostStatStability.style.width = `${globalStats.Stability}%`;
+                hostStatStability.setAttribute('aria-valuenow', globalStats.Stability);
+                hostStatStability.textContent = `${globalStats.Stability}`;
+            }
+            if (hostStatEconomy) {
+                hostStatEconomy.style.width = `${globalStats.Economy}%`;
+                hostStatEconomy.setAttribute('aria-valuenow', globalStats.Economy);
+                hostStatEconomy.textContent = `${globalStats.Economy}`;
+            }
+            if (hostStatFaith) {
+                hostStatFaith.style.width = `${globalStats.Faith}%`;
+                hostStatFaith.setAttribute('aria-valuenow', globalStats.Faith);
+                hostStatFaith.textContent = `${globalStats.Faith}`;
+            }
+        }
+
+        // Update player-specific info
+        if (game_state.players && game_state.players[playerId]) {
+            const player = game_state.players[playerId];
+            if (playerNameSpan) playerNameSpan.textContent = player.name;
+            updatePersonalStats(player);
+        }
+        if (currentRoundSpan) currentRoundSpan.textContent = game_state.current_round;
+
+        // Adjust UI based on game state
+        const hostControl = document.getElementById('hostControl');
+        const gameSetup = document.getElementById('gameSetup');
+        const lobbyControl = document.getElementById('lobbyControl');
+        const dilemmaSection = document.getElementById('dilemmaSection');
+        const playerStatementsSection = document.getElementById('playerStatementsSection');
+        const statementVoteSection = document.getElementById('statementVoteSection');
+        const commentPhaseSection = document.getElementById('commentPhaseSection');
+        const narrativeOutput = document.getElementById('narrativeOutput');
+        const nextRoundBtn = document.getElementById('nextRoundBtn');
+        const waitingRoom = document.getElementById('waitingRoom');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const mainContentArea = document.getElementById('mainContentArea');
+
+
+        // Hide all main game sections initially
+        if (gameSetup) gameSetup.style.display = 'none';
+        if (lobbyControl) lobbyControl.style.display = 'none';
+        if (hostControl) hostControl.style.display = 'none';
+        if (gameArea) gameArea.style.display = 'none';
+        if (dilemmaSection) dilemmaSection.style.display = 'none';
+        if (playerStatementsSection) playerStatementsSection.style.display = 'none';
+        if (statementVoteSection) statementVoteSection.style.display = 'none';
+        if (commentPhaseSection) commentPhaseSection.style.display = 'none';
+        if (narrativeOutput) narrativeOutput.style.display = 'none';
+        if (nextRoundBtn) nextRoundBtn.style.display = 'none';
+        if (waitingRoom) waitingRoom.style.display = 'none';
+        if (gameOverScreen) gameOverScreen.style.display = 'none';
+        if (mainContentArea) mainContentArea.style.display = 'none';
+
+
+        // Show relevant sections based on game state
+        if (game_state.state === 'waiting') {
+            if (gameArea) gameArea.style.display = 'block';
+            if (waitingRoom) waitingRoom.style.display = 'block';
+        } else if (game_state.state === 'DILEMMA') {
+            if (gameArea) gameArea.style.display = 'block';
+            if (mainContentArea) mainContentArea.style.display = 'block';
+            if (dilemmaSection) dilemmaSection.style.display = 'block';
+            if (playerStatementsSection) playerStatementsSection.style.display = 'block';
+            if (game_state.current_dilemma) {
+                dilemmaTitle.textContent = game_state.current_dilemma.title;
+                dilemmaDescription.textContent = game_state.current_dilemma.description;
+            }
+        } else if (game_state.state === 'COMMENT_PHASE') {
+            if (gameArea) gameArea.style.display = 'block';
+            if (mainContentArea) mainContentArea.style.display = 'block';
+            if (commentPhaseSection) commentPhaseSection.style.display = 'block';
+            // Potentially re-render statements for voting if that's part of the comment phase UI
+        } else if (game_state.state === 'OUTCOME_DISPLAYED') {
+            if (gameArea) gameArea.style.display = 'block';
+            if (mainContentArea) mainContentArea.style.display = 'block';
+            if (narrativeOutput) narrativeOutput.style.display = 'block';
+            if (nextRoundBtn) nextRoundBtn.style.display = 'block';
+            if (game_state.last_outcome_narrative_data && narrativeText) {
+                narrativeText.textContent = game_state.last_outcome_narrative_data.outcome_narrative;
+            }
+        } else if (game_state.state === 'GAME_OVER') {
+            if (gameOverScreen) gameOverScreen.style.display = 'block';
+            // Populate winner info if available
+        }
+
+        // Host specific UI updates
+        if (document.getElementById('hostControl')) {
+            if (hostControl) hostControl.style.display = 'block';
+            // Additional host-specific elements might need to be shown/hidden
+        }
+    });
 }
 function updatePlayerStatusOnHost(player, playerId) {
     const playerStatus = document.getElementById(`player-status-${playerId}`);
@@ -568,7 +641,12 @@ function updatePlayerStatusOnHost(player, playerId) {
         nameSpan.textContent = statusText;
         playerStatus.appendChild(nameSpan);
 
-        if (player.action_status === 'joined') {
+        playerStatus.classList.remove('player-name-glow', 'player-dots-glow', 'player-dots-yellow', 'player-name-yellow', 'player-joined'); // Remove previous states
+        nameSpan.classList.remove('player-name-glow', 'player-name-yellow'); // Remove from nameSpan as well
+
+        if (player.action_status === 'empty') {
+            // No special glow for empty slots, just display the name (e.g., "Player 1 (Empty)")
+        } else if (player.action_status === 'joined') {
             playerStatus.classList.add('player-joined');
         } else if (player.action_status === 'waiting') {
             const dotsSpan = document.createElement('span');
@@ -579,19 +657,8 @@ function updatePlayerStatusOnHost(player, playerId) {
             nameSpan.classList.add('player-name-glow'); // Original glowing name for action done
         }
 
-        // Apply glowing effects based on action_status and ready status
-        playerStatus.classList.remove('player-name-glow', 'player-dots-glow', 'player-dots-yellow', 'player-name-yellow'); // Remove previous states
-        nameSpan.classList.remove('player-name-glow', 'player-name-yellow'); // Remove from nameSpan as well
-
         if (player.ready) {
             nameSpan.classList.add('player-name-yellow'); // Glowing yellow name for ready players
-        } else if (player.action_status === 'waiting') {
-            const dotsSpan = document.createElement('span');
-            dotsSpan.classList.add('player-dots-glow'); // Original glowing dots for waiting in-game
-            dotsSpan.textContent = ' ● ● ●';
-            playerStatus.appendChild(dotsSpan);
-        } else if (player.action_status === 'done') {
-            nameSpan.classList.add('player-name-glow'); // Original glowing name for action done
         }
     }
 }
@@ -607,24 +674,14 @@ if (createGameBtn) {
 
     socket.on('game_created', (data) => {
         document.getElementById('gameIdDisplay').textContent = data.game_id;
-        const playerUrlsDiv = document.getElementById('playerUrls');
-        playerUrlsDiv.innerHTML = '';
-        for (const playerId in data.player_urls) {
-            const url = new URL(data.player_urls[playerId], window.location.origin).href;
-            const item = document.createElement('div');
-            item.classList.add('list-group-item');
+        const joinQrCodeDiv = document.getElementById('joinQrCode');
+        joinQrCodeDiv.innerHTML = ''; // Clear existing content
 
-            const qrContainer = document.createElement('div');
-            qrContainer.style.float = 'right';
-            const qr = qrcode(0, 'L');
-            qr.addData(url);
-            qr.make();
-            qrContainer.innerHTML = qr.createImgTag(4);
-
-            item.innerHTML = `<strong>${data.players[playerId].name}</strong>`;
-            item.appendChild(qrContainer);
-            playerUrlsDiv.appendChild(item);
-        }
+        const url = new URL(data.join_url, window.location.origin).href;
+        const qr = qrcode(0, 'L');
+        qr.addData(url);
+        qr.make();
+        joinQrCodeDiv.innerHTML = qr.createImgTag(6); // Larger QR code
 
         const playerStatusDiv = document.getElementById('playerStatus');
         playerStatusDiv.innerHTML = '';

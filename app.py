@@ -72,6 +72,13 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/join/<game_id>")
+def join_game_page(game_id):
+    game = games.get(game_id)
+    if not game:
+        return "Game not found", 404
+    return render_template("join_game.html", game_id=game_id, factions=game["factions"])
+
 @app.route("/player/<game_id>/<player_id>")
 def player_controller(game_id, player_id):
     game = games.get(game_id)
@@ -155,26 +162,26 @@ def create_game(data):
         "Wysokie Kapłaństwo": {"power": "Boska Łaska", "players": []},
         "Gwardia Królewska": {"power": "Utrzymanie Porządku", "players": []},
     }
-    player_urls = {}
-
+    
+    # Pre-populate player slots with default data
     for i in range(num_players):
-        player_id = "".join(random.choices(string.ascii_lowercase + string.digits, k=8))
-
+        player_id = f"player_{i+1}" # Use a simple sequential ID for initial slots
         players[player_id] = {
             "id": player_id,
             "sid": None,
-            "name": f"Player {i + 1}",
+            "name": f"Player {i + 1} (Empty)", # Indicate slot is empty
             "avatar": f"/static/avatars/avatar{i + 1}.png",
-            "faction": None,  # Player will choose faction
+            "faction": None,
             "choice": None,
             "statements": [],
             "personal_stats": {"Influence": 50},
             "ready": False,
-            "shamed": False,  # Player is shamed if their choice would collapse the kingdom
-            "action_status": "joined",  # Initialize action status to 'joined'
+            "shamed": False,
+            "action_status": "empty", # New status for empty slots
         }
-        # Construct the player URL using a relative path
-        player_urls[player_id] = f"/player/{game_id}/{player_id}"
+
+    # Generate a single join URL
+    join_url = f"/join/{game_id}"
 
     games[game_id] = {
         "host_sid": request.sid,
@@ -192,13 +199,14 @@ def create_game(data):
         "event_history": [],
         "gemini_output": {},
         "next_round_votes": [],
+        "join_url": join_url, # Store join URL in game state
     }
     join_room(game_id)
     emit(
         "game_created",
         {
             "game_id": game_id,
-            "player_urls": player_urls,
+            "join_url": join_url, # Emit single join URL
             "players": players,
             "factions": factions,
         },
@@ -207,183 +215,202 @@ def create_game(data):
 
 @socketio.on("join_game")
 def join_game(data):
-    game_id = data["game_id"]
-    player_id = data.get("player_id")
-    game = games.get(game_id)
+    try:
+        game_id = data["game_id"]
+        player_id = data.get("player_id") # This will be None for initial join via QR
+        player_name = data.get("player_name") # New: for initial join via QR
+        faction_id = data.get("faction_id") # New: for initial join via QR
+        game = games.get(game_id)
 
-    if not game:
-        emit("error", {"message": "Game not found."})
-        return
+        print(f"[DEBUG] join_game received: {data}")
 
-    join_room(game_id)
+        if not game:
+            emit("error", {"message": "Game not found."}, room=request.sid)
+            return
 
-    if player_id and player_id in game["players"]:
-        game["players"][player_id]["sid"] = request.sid
+        join_room(game_id)
 
-        player_faction_id = game["players"][player_id]["faction"]
-        if player_faction_id:
-            for pid in game["factions"][player_faction_id]["players"]:
-                if pid != player_id and game["players"][pid]["sid"]:
-                    emit(
-                        "other_player_reconnected",
-                        {"player": game["players"][player_id], "player_id": player_id},
-                        room=game["players"][pid]["sid"],
-                    )
+        if player_id: # Player is reconnecting with an existing player_id
+            print(f"[DEBUG] Player {player_id} is reconnecting.")
+            if player_id in game["players"]:
+                game["players"][player_id]["sid"] = request.sid
+                game["players"][player_id]["action_status"] = "joined" # Ensure status is correct on reconnect
 
-        emit("player_joined", game["players"], room=game["host_sid"])
+                player_faction_id = game["players"][player_id]["faction"]
+                if player_faction_id:
+                    for pid in game["factions"][player_faction_id]["players"]:
+                        if pid != player_id and game["players"][pid]["sid"]:
+                            emit(
+                                "other_player_reconnected",
+                                {"player": game["players"][player_id], "player_id": player_id},
+                                room=game["players"][pid]["sid"],
+                            )
 
-        if not player_faction_id:
-            pass
+                emit("player_joined", game["players"], room=game["host_sid"])
 
-    elif not player_id:  # Host is joining/reconnecting
-        game["host_sid"] = request.sid
-    else:
-        emit("error", {"message": "Invalid player ID."})
-        return
+                # Send full game state to the reconnected player
+                player_game_state = {
+                    "global_stats": game["global_stats"],
+                    "current_round": game["current_round"],
+                    "players": game["players"],
+                    "factions": game["factions"],
+                    "state": game["state"],
+                    "current_dilemma": game["current_dilemma"] if game["dilemma_active"] else None,
+                    "last_outcome_narrative_data": game.get("last_outcome_narrative_data"),
+                }
+                emit("game_state_sync", player_game_state, room=request.sid)
+                print(f"[DEBUG] Sent game_state_sync to reconnected player {player_id}")
 
+            else:
+                emit("error", {"message": "Invalid player ID for reconnection."}, room=request.sid)
+                return
 
-@socketio.on("request_faction_info")
-def request_faction_info(data):
-    game_id = data["game_id"]
-    game = games.get(game_id)
-    if game:
-        emit("faction_info", {"factions": game["factions"]}, room=request.sid)
+        elif player_name and faction_id: # New player joining via QR code
+            print(f"[DEBUG] New player '{player_name}' is joining faction '{faction_id}'.")
+            assigned_player_id = None
+            for pid, player_data in game["players"].items():
+                if player_data["action_status"] == "empty":
+                    assigned_player_id = pid
+                    break
+            
+            if assigned_player_id:
+                print(f"[DEBUG] Assigning new player to slot: {assigned_player_id}")
+                game["players"][assigned_player_id]["sid"] = request.sid
+                game["players"][assigned_player_id]["name"] = player_name
+                game["players"][assigned_player_id]["faction"] = faction_id
+                game["players"][assigned_player_id]["action_status"] = "joined"
+                
+                game["factions"][faction_id]["players"].append(assigned_player_id)
 
+                emit("player_assigned", {"player_id": assigned_player_id}, room=request.sid)
+                print(f"[DEBUG] Emitted 'player_assigned' to {assigned_player_id}")
+                emit("game_update", {"players": game["players"], "factions": game["factions"]}, room=game_id, broadcast=True)
+                print(f"[DEBUG] Emitted 'game_update' to game {game_id}")
+            else:
+                emit("error", {"message": "No available player slots."}, room=request.sid)
+                return
 
-@socketio.on("join_faction")
-def join_faction(data):
-    game_id = data["game_id"]
-    player_id = data["player_id"]
-    faction_id = data["faction_id"]
-    game = games.get(game_id)
-
-    if (
-        not game
-        or player_id not in game["players"]
-        or faction_id not in game["factions"]
-    ):
-        return
-
-    old_faction = game["players"][player_id]["faction"]
-    if old_faction and old_faction in game["factions"]:
-        if player_id in game["factions"][old_faction]["players"]:
-            game["factions"][old_faction]["players"].remove(player_id)
-
-    game["players"][player_id]["faction"] = faction_id
-    game["factions"][faction_id]["players"].append(player_id)
-
-    emit(
-        "game_update",
-        {"players": game["players"], "factions": game["factions"]},
-        room=game_id,
-        broadcast=True,
-    )
-
-
-@socketio.on("player_name_update")
-def player_name_update(data):
-    game_id = data["game_id"]
-    player_id = data["player_id"]
-    new_name = data["name"]
-    game = games.get(game_id)
-
-    if not game or player_id not in game["players"]:
-        return
-
-    game["players"][player_id]["name"] = new_name
-
-    emit("name_accepted", room=request.sid)
-    emit(
-        "faction_info", {"factions": game["factions"]}, room=request.sid
-    )  # Emit faction info to the player
-    emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
+        elif not player_id and not player_name: # Host is joining/reconnecting
+            print("[DEBUG] Host is reconnecting.")
+            game["host_sid"] = request.sid
+        else:
+            emit("error", {"message": "Invalid join request."}, room=request.sid)
+            return
+    except Exception as e:
+        print(f"[ERROR] Exception in join_game handler: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 def start_game_logic(game_id):
-    print(f"[DEBUG] Starting game {game_id}")
-    game = games.get(game_id)
-    if not game or game["state"] != "waiting":
-        return
+    try:
+        print(f"[DEBUG] Starting game {game_id}")
+        game = games.get(game_id)
+        if not game or game["state"] != "waiting":
+            print(f"[ERROR] start_game_logic called with invalid game state: {game.get('state') if game else 'No game'}")
+            return
 
-    game["state"] = "DILEMMA"
+        game["state"] = "DILEMMA"
 
-    # Start the first round
-    game["current_round"] = 1
-    game["dilemma_active"] = True
-    for player in game["players"].values():
-        player["choice"] = None
-        player.pop("statement", None)
-        player.pop("statement_vote", None)
-        player["action_status"] = "waiting"  # Reset action status
+        # Start the first round
+        game["current_round"] = 1
+        game["dilemma_active"] = True
+        for player_id, player in game["players"].items():
+            player["choice"] = None
+            player.pop("statement", None)
+            player.pop("statement_vote", None)
+            player["action_status"] = "waiting"  # Reset action status
+            print(f"[DEBUG] Reset player {player_id} for new round.")
 
-    game_state_for_gemini = {
-        "current_round": game["current_round"],
-        "global_stats": game["global_stats"],
-        "event_history": game["event_history"],
-        "player_statements": [],
-        "previous_dilemma_outcome": None,
-    }
-    if generate_dilemma_with_gemini(model, game_state_for_gemini):
-        print("[DEBUG] Gemini event generation successful.")
-        with open("dilemma.json", "r", encoding="utf-8") as f:
-            generated_dilemma = json.load(f)
-    else:
-        print("[DEBUG] Gemini event generation failed, using fallback dilemma.")
-        generated_dilemma = {
-            "id": "error_dilemma",
-            "title": "Chwila ciszy",
-            "description": "Wiatry losu milczą. Rada nie jest w stanie się zebrać w tym czasie. Proszę spróbować później.",
-            "narrative_prompt": "Królestwo wstrzymuje oddech.",
-        }
-
-    game["current_dilemma"] = generated_dilemma
-    game["gemini_output"] = generated_dilemma
-
-    print("[DEBUG] Emitting game_started_for_player")
-    emit("game_started_for_player", game, room=game_id, broadcast=True)
-    print("[DEBUG] Emitting game_started_for_host")
-    emit("game_started_for_host", game, room=game["host_sid"])
-    print("[DEBUG] Emitting game_event")
-    emit(
-        "game_event",
-        {
-            "event": "dilemma_prompt",
-            "dilemma_json": json.dumps(game["gemini_output"]),
-            "global_stats": game["global_stats"],
+        game_state_for_gemini = {
             "current_round": game["current_round"],
-            "players": game["players"],
-        },
-        room=game_id,
-        broadcast=True,
-    )
+            "global_stats": game["global_stats"],
+            "event_history": game["event_history"],
+            "player_statements": [],
+            "previous_dilemma_outcome": None,
+        }
+        if generate_dilemma_with_gemini(model, game_state_for_gemini):
+            print("[DEBUG] Gemini event generation successful.")
+            with open("dilemma.json", "r", encoding="utf-8") as f:
+                generated_dilemma = json.load(f)
+        else:
+            print("[DEBUG] Gemini event generation failed, using fallback dilemma.")
+            generated_dilemma = {
+                "id": "error_dilemma",
+                "title": "Chwila ciszy",
+                "description": "Wiatry losu milczą. Rada nie jest w stanie się zebrać w tym czasie. Proszę spróbować później.",
+                "narrative_prompt": "Królestwo wstrzymuje oddech.",
+            }
+
+        game["current_dilemma"] = generated_dilemma
+        game["gemini_output"] = generated_dilemma
+
+        print("[DEBUG] Emitting game_started_for_player")
+        emit("game_started_for_player", game, room=game_id, broadcast=True)
+        print("[DEBUG] Emitting game_started_for_host")
+        emit("game_started_for_host", game, room=game["host_sid"])
+        print("[DEBUG] Emitting game_event for dilemma_prompt")
+        emit(
+            "game_event",
+            {
+                "event": "dilemma_prompt",
+                "dilemma_json": json.dumps(game["gemini_output"]),
+                "global_stats": game["global_stats"],
+                "current_round": game["current_round"],
+                "players": game["players"],
+            },
+            room=game_id,
+            broadcast=True,
+        )
+        print("[DEBUG] start_game_logic completed successfully.")
+    except Exception as e:
+        print(f"[ERROR] Exception in start_game_logic: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 @socketio.on("player_ready")
 def player_ready(data):
-    game_id = data["game_id"]
-    player_id = data["player_id"]
-    game = games.get(game_id)
+    try:
+        game_id = data["game_id"]
+        player_id = data["player_id"]
+        game = games.get(game_id)
 
-    if not game or player_id not in game["players"]:
-        return
+        if not game or player_id not in game["players"]:
+            print(f"[ERROR] player_ready: Invalid game or player ID. Game: {game_id}, Player: {player_id}")
+            return
 
-    print(f"[DEBUG] Player {player_id} is ready in game {game_id}")
-    game["players"][player_id]["ready"] = True
-    print(f"[DEBUG] Player statuses: {[p['ready'] for p in game['players'].values()]}")
+        print(f"[DEBUG] Player {player_id} in game {game_id} is now ready.")
+        game["players"][player_id]["ready"] = True
+        
+        player_statuses = {pid: p['ready'] for pid, p in game['players'].items()}
+        print(f"[DEBUG] Player ready statuses: {player_statuses}")
 
-    # Notify host about the player's ready status
-    emit(
-        "player_ready_update",
-        {"player": game["players"][player_id], "player_id": player_id},
-        room=game["host_sid"],
-    )
+        # Notify host about the player's ready status
+        emit(
+            "player_ready_update",
+            {"player": game["players"][player_id], "player_id": player_id},
+            room=game["host_sid"],
+        )
 
-    # Check if all players are ready
-    all_ready = all(p["ready"] for p in game["players"].values())
-    print(f"[DEBUG] Checking if all players are ready in game {game_id}: {all_ready}")
-    if all_ready:
-        print("[DEBUG] All players are ready. Starting game logic...")
-        start_game_logic(game_id)
+        # Check if all *joined* players are ready
+        joined_players = [p for p in game["players"].values() if p["action_status"] != "empty"]
+        all_joined_ready = all(p["ready"] for p in joined_players)
+        
+        print(f"[DEBUG] Checking if all joined players are ready: {all_joined_ready}")
+        print(f"[DEBUG] Number of joined players: {len(joined_players)}")
+        print(f"[DEBUG] Total number of player slots: {len(game['players'])}")
+
+        # The game should only start if all slots are filled and all players are ready
+        if len(joined_players) == len(game['players']) and all_joined_ready:
+            print("[DEBUG] All player slots are filled and all players are ready. Starting game logic...")
+            start_game_logic(game_id)
+        else:
+            print("[DEBUG] Not all players are ready or not all slots are filled.")
+    except Exception as e:
+        print(f"[ERROR] Exception in player_ready handler: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 @socketio.on("game_event")

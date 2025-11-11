@@ -22,23 +22,6 @@
     <div id="playerId" style="display: none;">{{ player_id }}</div>
 
     <div class="container mt-4">
-        <div id="nameSetup" class="input-group mb-3">
-            <input type="text" id="playerNameInput" class="form-control" placeholder="Enter your name">
-            <div class="input-group-append">
-                <button id="saveNameBtn" class="btn btn-outline-secondary" type="button">Save</button>
-            </div>
-        </div>
-
-        <div id="factionSelection" class="floating-element" style="display: none;">
-            <h3>Choose your faction:</h3>
-            <div class="input-group mb-3">
-                <select class="custom-select" id="factionSelect"></select>
-                <div class="input-group-append">
-                    <button id="joinFactionBtn" class="btn btn-outline-secondary" type="button">Join</button>
-                </div>
-            </div>
-        </div>
-
         <div class="text-right">
             <h5 id="playerName"></h5>
             <p><strong>Round:</strong> <span id="currentRound">{{ current_round }}</span></p>
@@ -146,6 +129,10 @@
     </div>
 
     <div id="notification-container" style="position: fixed; bottom: 10px; right: 10px; z-index: 1050;"></div>
+
+    <div id="reconnectingIndicator" style="display: none; position: fixed; top: 10px; right: 10px; background-color: #ffc107; color: #343a40; padding: 5px 10px; border-radius: 5px; z-index: 10000;">
+        Reconnecting...
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
