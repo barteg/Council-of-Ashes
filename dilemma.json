@@ -1,7 +1,12 @@
-{
-  "id": "round_3_zew_buntu_i_pustki",
-  "title": "Zew Buntu i Pustki",
-  "description": "Skutki paraliżu Rady z poprzedniej rundy uderzyły z całą mocą. Wszędzie tam, gdzie zawiódł autorytet korony, wybucha otwarty bunt. Zdesperowani chłopi, cierpiący z powodu głodu i bezprawia, porzucają pola, tworząc zbrojne bandy, a szlaki handlowe stają się śmiertelnymi pułapkami. ",
-  "image": "/static/images/rebellion.png",
-  "narrative_prompt": "Królestwo osuwa się w otchłań anarchii, a utracona wiara w Radę tylko pogłębia chaos. Bez szybkiej i zdecydowanej interwencji, ten stan rzeczy doprowadzi do całkowitego upadku. Co powinno zrobić królestwo?"
+{                                                                                            
+  "id": "round_1_pierwsze_iskry_niezadowolenia",                                             
+  "title": "Szepty Niezadowolenia",                                                          
+  "description": "Wraz z pierwszymi promieniami słońca nad stolicą, pośród ludu rozchodzą się
+ niepokojące wieści o rosnącym niezadowoleniu. Niskie plony i plotki o królewskim wystawności
+ doprowadziły do publicznych protestów i zamieszek w dzielnicach biedoty. Rada Popiołów musi 
+podjąć decyzję, zanim iskra niezadowolenia rozpali prawdziwy bunt.",                         
+  "image": "/static/images/unrest.png",                                                      
+  "narrative_prompt": "Napięcie w mieście rośnie z każdą godziną, a lojalność niektórych wasa
+li zaczyna być kwestionowana. Królestwo stoi w obliczu poważnego testu. Co powinno zrobić kró
+lestwo?"                                                                                     
 }

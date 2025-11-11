@@ -11,7 +11,7 @@ Otrzymasz następujące informacje w obiekcie JSON:
 ```
 
 ## Format wyjściowy:
-Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
+Twoja odpowiedź **MUSI** być **TYLKO** obiektem JSON o następującej strukturze, bez żadnego dodatkowego tekstu ani formatowania Markdown poza samym obiektem JSON:
 ```json
 {{
   "id": "unikalny_identyfikator_wydarzenia_dla_tej_rundy",
@@ -222,9 +222,16 @@ def generate_dilemma_with_gemini(model, game_state):
         json_block_end = gemini_text.rfind('```')
         if json_block_start != -1 and json_block_end != -1 and json_block_start < json_block_end:
             json_string = gemini_text[json_block_start + 7:json_block_end].strip()
-            with open("dilemma.json", "w", encoding="utf-8") as f:
-                f.write(json_string)
-            return True
+            try:
+                # Attempt to parse the JSON string to validate it
+                parsed_json = json.loads(json_string)
+                with open("dilemma.json", "w", encoding="utf-8") as f:
+                    json.dump(parsed_json, f, ensure_ascii=False, indent=2) # Write validated JSON
+                return True
+            except json.JSONDecodeError as e:
+                print(f"[ERROR] Failed to parse JSON from Gemini response: {e}")
+                print(f"[ERROR] Malformed JSON string: {json_string}")
+                return False
         else:
             return False
     except Exception as e:

@@ -350,7 +350,6 @@ if (gameId && playerId) {
     const readyBtn = document.getElementById('readyBtn');
     if (readyBtn) {
         readyBtn.addEventListener('click', () => {
-            showLoadingScreen(true);
             socket.emit('player_ready', { game_id: gameId, player_id: playerId });
             readyBtn.textContent = 'Waiting for other players...';
             readyBtn.disabled = true;
