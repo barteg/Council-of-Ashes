@@ -3,3 +3,4 @@ flask-socketio
 google-generativeai
 eventlet
 TTS
+torchcodec
