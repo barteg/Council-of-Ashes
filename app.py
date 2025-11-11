@@ -136,31 +136,28 @@ def tts():
         return jsonify({"error": f"Speaker voice file not found. Please place it at {speaker_wav_path}"}), 500
 
     print(f"[TTS] Received text for Coqui XTTS: {text}")
+    
+    temp_audio_file = None
     try:
-        # Generate audio using Coqui XTTS
-        wav_data = tts_model.tts(
+        import tempfile # Ensure tempfile is imported
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmpfile:
+            temp_audio_file = tmpfile.name
+
+        print(f"[TTS] Synthesizing '{text}' using '{speaker_wav_path}' to temporary file {temp_audio_file}...")
+        tts_model.tts_to_file(
             text=text,
             speaker_wav=speaker_wav_path,
-            language="pl"
+            language="pl",
+            file_path=temp_audio_file,
         )
+        print(f"[TTS] Audio synthesized successfully to {temp_audio_file}.")
 
-        # The output is a numpy array. We need to convert it to a WAV byte stream.
-        audio_stream = io.BytesIO()
-        with wave.open(audio_stream, 'wb') as wf:
-            wf.setnchannels(1)  # XTTS is mono
-            wf.setsampwidth(2)  # 16-bit audio
-            wf.setframerate(tts_model.synthesizer.output_sample_rate)
-            # Convert float numpy array to 16-bit int bytes
-            audio_int = np.array(wav_data * 32767, dtype=np.int16)
-            wf.writeframes(audio_int.tobytes())
-        
-        audio_stream.seek(0)
-        print("[TTS] Audio generated successfully by Coqui XTTS.")
-        
         return send_file(
-            audio_stream,
+            temp_audio_file,
             mimetype='audio/wav',
-            as_attachment=False
+            as_attachment=False,
+            download_name='speech.wav',
+            max_age=0
         )
     except Exception as e:
         print(f"[TTS] Error during Coqui XTTS audio generation: {e}")
@@ -168,6 +165,9 @@ def tts():
 
         traceback.print_exc()
         return jsonify({"error": "TTS synthesis failed"}), 500
+    finally:
+        if temp_audio_file and os.path.exists(temp_audio_file):
+            os.remove(temp_audio_file)
 
 
 @app.route("/dilemma")
