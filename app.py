@@ -49,8 +49,22 @@ print(f"[TTS] Using device: {device}")
 # This will download the model on the first run, which may take a while.
 print("[TTS] Loading Coqui XTTS v2 model...")
 try:
-    tts_model = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
-    print("[TTS] Coqui XTTS v2 model loaded successfully.")
+    model_name = "tts_models/multilingual/multi-dataset/xtts_v2"
+    config_path = os.path.join(
+        os.path.expanduser("~"),
+        ".local/share/tts/",
+        model_name.replace("/", "--"),
+        "config.json",
+    )
+    model_path = os.path.dirname(config_path)
+
+    if not os.path.exists(config_path):
+        print(f"[TTS] Model config not found at {config_path}")
+        print("[TTS] Please ensure the model is downloaded and accessible.")
+        tts_model = None
+    else:
+        tts_model = TTS(model_path=model_path, config_path=config_path).to(device)
+        print("[TTS] Coqui XTTS v2 model loaded successfully.")
 except Exception as e:
     print(f"[TTS] Error loading Coqui XTTS model: {e}")
     tts_model = None
