@@ -18,26 +18,6 @@ Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
   "title": "Tytuł wydarzenia",
   "description": "Szczegółowy opis obecnego kryzysu lub szansy, przed którą stoi królestwo. Opis powinien być wciągający i wprowadzać w nastrój. **Maksymalnie 3-4 zdania.**",
   "image": "/static/images/event_image.png", // Opcjonalnie: ścieżka do obrazu dla wydarzenia
-  "choices": [
-    {{
-      "text": "Opcja polityki 1: Zwięzłe podsumowanie polityki. **Maksymalnie 1 zdanie.**",
-      "effects": {{
-        "Stability": 5,
-        "Economy": -10,
-        "Faith": 0
-      }},
-      "narrative_consequence": "Krótki opis tego, co się stanie, jeśli ta polityka zostanie wybrana, z perspektywy narracyjnej."
-    }},
-    {{
-      "text": "Opcja polityki 2: Kolejne zwięzłe podsumowanie. **Maksymalnie 1 zdanie.**",
-      "effects": {{
-        "Stability": -5,
-        "Economy": 10,
-        "Faith": 5
-      }},
-      "narrative_consequence": "Krótki opis tego, co się stanie, jeśli ta polityka zostanie wybrana, z perspektywy narracyjnej."
-    }}
-  ],
   "narrative_prompt": "Zdanie lub dwa podsumowujące, które przygotowują do następnej rundy lub podsumowują obecną sytuację, potencjalnie uwzględniając wypowiedzi graczy lub napięcia między frakcjami."
 }}
 ```
@@ -144,6 +124,77 @@ def call_gemini_for_outcome_narrative(model, game_state, chosen_policy, policy_e
         print(f"Error calling Gemini API: {e}")
         return False
 
+
+# Static part of the Gemini prompt for statement evaluation
+STATEMENT_EVALUATION_PROMPT_STATIC = """Jesteś wszechwiedzącym narratorem i generatorem wydarzeń w grze „Rada Popiołów”. Twoim zadaniem jest analizowanie oświadczeń graczy i na ich podstawie określanie wybranej polityki, jej skutków dla królestwa oraz narracyjnych konsekwencji. Odpowiadaj wyłącznie po polsku.
+
+## Wejście:
+Otrzymasz następujące informacje w obiekcie JSON:
+```json
+{{
+  "game_state": {game_state_json},
+  "player_statements": {player_statements_json}
+}}
+```
+
+## Format wyjściowy:
+Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
+```json
+{{
+  "chosen_policy": "Zwięzłe podsumowanie polityki wybranej na podstawie oświadczeń graczy. **Maksymalnie 1 zdanie.**",
+  "effects": {{
+    "Stability": 5,
+    "Economy": -10,
+    "Faith": 0
+  }},
+  "narrative_consequence": "Krótki opis tego, co się stanie, jeśli ta polityka zostanie wybrana, z perspektywy narracyjnej. **Maksymalnie 2-3 zdania.**"
+}}
+```
+
+## Wskazówki:
+
+1.  **Analiza oświadczeń:** Przeanalizuj `player_statements`. Zidentyfikuj dominujące tematy, konflikty lub najbardziej wpływowe propozycje.
+2.  **Syntetyzowanie polityki:** Na podstawie analizy, stwórz jedną, spójną `chosen_policy`. Może to być kompromis, dominująca propozycja lub wynik konfliktu.
+3.  **Uzasadnione efekty:** Określ `effects` na `Stability`, `Economy` i `Faith`. Wartości powinny być rozsądne (zazwyczaj od -20 do +20) i logicznie wynikać z wybranej polityki oraz obecnego `global_stats`.
+4.  **Wciągająca narracja:** `narrative_consequence` powinien być żywy i bezpośrednio odzwierciedlać wpływ wybranej polityki na królestwo.
+5.  **Kontekstualizacja:** Weź pod uwagę `global_stats` i `event_history` z `game_state`, aby efekty i narracja były spójne z bieżącą sytuacją królestwa.
+6.  **Zwięzłość:** Pamiętaj o ograniczeniach długości dla `chosen_policy` i `narrative_consequence`.
+"""
+
+def evaluate_player_statements_with_gemini(model, game_state, player_statements):
+    prompt = f"""{STATEMENT_EVALUATION_PROMPT_STATIC.format(
+        game_state_json=json.dumps(game_state, indent=2),
+        player_statements_json=json.dumps(player_statements, indent=2)
+    )}"""
+    try:
+        response = model.generate_content(prompt)
+        print(f"[DEBUG] Gemini Response Object (Statement Evaluation): {response}")
+        if not response.candidates:
+            print("[DEBUG] No candidates in response. Checking prompt feedback.")
+            print(f"[DEBUG] Prompt Feedback: {response.prompt_feedback}")
+            return None
+
+        candidate = response.candidates[0]
+        print(f"[DEBUG] Candidate (Statement Evaluation): {candidate}")
+        if candidate.finish_reason != 'STOP':
+            print(f"[DEBUG] Generation finished with reason: {candidate.finish_reason}")
+
+        print(f"[DEBUG] Safety Ratings (Statement Evaluation): {candidate.safety_ratings}")
+
+        gemini_text = candidate.content.parts[0].text
+        print(f"[DEBUG] Gemini Statement Evaluation Raw Response Text: {gemini_text}")
+        
+        json_block_start = gemini_text.find('```json')
+        json_block_end = gemini_text.rfind('```')
+        if json_block_start != -1 and json_block_end != -1 and json_block_start < json_block_end:
+            json_string = gemini_text[json_block_start + 7:json_block_end].strip()
+            return json.loads(json_string)
+        else:
+            print("[DEBUG] No JSON block found in Gemini statement evaluation response.")
+            return None
+    except Exception as e:
+        print(f"Error calling Gemini API for statement evaluation: {e}")
+        return None
 
 def generate_dilemma_with_gemini(model, game_state):
     prompt = f"""{EVENT_GENERATION_PROMPT_STATIC.format(

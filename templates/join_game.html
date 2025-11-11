@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Game - Council of Ashes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="floating-element text-center">
+                    <h1 class="mb-4">Join Game</h1>
+                    <p>Enter your name to join the game.</p>
+                    <div class="form-group">
+                        <input type="text" id="playerNameInput" class="form-control" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="factionSelect">Choose your faction:</label>
+                        <select class="custom-select" id="factionSelect">
+                            {% for faction_id, faction_data in factions.items() %}
+                                <option value="{{ faction_id }}">{{ faction_id }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button id="joinGameBtn" class="btn btn-primary btn-block">Join Game</button>
+                    <p id="errorMessage" class="text-danger mt-3" style="display: none;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script>
+        const socket = io('http://' + document.domain + ':' + location.port);
+        const gameId = "{{ game_id }}";
+        const playerNameInput = document.getElementById('playerNameInput');
+        const factionSelect = document.getElementById('factionSelect');
+        const joinGameBtn = document.getElementById('joinGameBtn');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // On page load, check if the player is returning to this game
+        window.addEventListener('load', () => {
+            const storedGameId = localStorage.getItem('council_game_id');
+            const storedPlayerId = localStorage.getItem('council_player_id');
+
+            if (storedGameId === gameId && storedPlayerId) {
+                // If they are returning to the same game, redirect them to their player controller
+                window.location.href = `/player/${gameId}/${storedPlayerId}`;
+            }
+        });
+
+        joinGameBtn.addEventListener('click', () => {
+            const playerName = playerNameInput.value.trim();
+            const factionId = factionSelect.value;
+            if (playerName && factionId) {
+                socket.emit('join_game', { game_id: gameId, player_name: playerName, faction_id: factionId });
+            } else {
+                errorMessage.textContent = "Please enter your name and select a faction.";
+                errorMessage.style.display = 'block';
+            }
+        });
+
+        socket.on('player_assigned', (data) => {
+            const playerId = data.player_id;
+            // Save the game and player ID to localStorage
+            localStorage.setItem('council_game_id', gameId);
+            localStorage.setItem('council_player_id', playerId);
+            // Redirect to the player controller
+            window.location.href = `/player/${gameId}/${playerId}`;
+        });
+
+        socket.on('error', (data) => {
+            errorMessage.textContent = data.message;
+            errorMessage.style.display = 'block';
+        });
+
+        socket.on('connect', () => {
+            console.log('Connected to server from join page');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server from join page');
+        });
+    </script>
+</body>
+</html>

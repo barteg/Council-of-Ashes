@@ -1,27 +1,7 @@
 {
-  "id": "round_1_cien_glodu",
-  "title": "Cień Głodu",
-  "description": "Zeszła sroga zima i zaraza zniszczyły znaczną część tegorocznych zbiorów. Królestwo stoi w obliczu widma głodu, a zubożały lud spogląda z nadzieją na Radę Popiołów, szukając ratunku przed nędzą. Skarbiec jest pusty, a zapasy drastycznie maleją.",
-  "image": "/static/images/famine.png",
-  "choices": [
-    {
-      "text": "Otwórz królewskie spichlerze i przeznacz rezerwy na zakup dodatkowej żywności, by ulżyć cierpieniom ludu.",
-      "effects": {
-        "Stability": 15,
-        "Economy": -20,
-        "Faith": 10
-      },
-      "narrative_consequence": "Królestwo uchroni się przed zamieszkami, a wdzięczny lud wychwala króla. Jednak królewski skarbiec świeci pustkami, a długi narastają, grożąc dalszym zubożeniem."
-    },
-    {
-      "text": "Wprowadź surowe racjonowanie, zabezpieczając potrzeby stolicy i wojska, a resztę pozostawiając lokalnym władzom.",
-      "effects": {
-        "Stability": -15,
-        "Economy": 10,
-        "Faith": -10
-      },
-      "narrative_consequence": "Stolicę i wojska udaje się utrzymać w ryzach, lecz prowincje wrą niezadowoleniem, a na ulicach pojawiają się pierwsze oznaki buntu. Wiara w władcę drastycznie spada."
-    }
-  ],
-  "narrative_prompt": "Decyzja Rady rozbrzmi echem po całym królestwie, kształtując jego najbliższą przyszłość w obliczu narastającego kryzysu."
+  "id": "round_3_uprising_cleric_condemnation",
+  "title": "Gniew Buntu i Klątwa Kościoła",
+  "description": "Po bezprecedensowej polityce „dystrybucji” królestwo pogrążyło się w chaosie. Lud, oburzony i pozbawiony nadziei, chwyta za broń, a kaznodzieje nawołują do świętej wojny przeciw koronie. Stolica jest oblężona, a lojalność wielu poddanych chwieje się pod naporem powszechnego gniewu.",
+  "image": "/static/images/peasant_revolt.png",
+  "narrative_prompt": "W obliczu tej katastrofy, Rada Popiołów musi zadecydować, jak odpowiedzieć na ogień buntu, zanim całe królestwo spłonie w popiele."
 }
