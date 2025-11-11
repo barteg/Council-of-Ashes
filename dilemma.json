@@ -1,7 +1,7 @@
 {
-  "id": "round_3_uprising_cleric_condemnation",
-  "title": "Gniew Buntu i Klątwa Kościoła",
-  "description": "Po bezprecedensowej polityce „dystrybucji” królestwo pogrążyło się w chaosie. Lud, oburzony i pozbawiony nadziei, chwyta za broń, a kaznodzieje nawołują do świętej wojny przeciw koronie. Stolica jest oblężona, a lojalność wielu poddanych chwieje się pod naporem powszechnego gniewu.",
-  "image": "/static/images/peasant_revolt.png",
-  "narrative_prompt": "W obliczu tej katastrofy, Rada Popiołów musi zadecydować, jak odpowiedzieć na ogień buntu, zanim całe królestwo spłonie w popiele."
+  "id": "rozdzial_1_zagrozenie_na_szlaku",
+  "title": "Cień na Szlaku Królewskim",
+  "description": "Wzmożona aktywność bandytów pustoszy Szlak Królewski, kluczową arterię handlową królestwa. Karawany są regularnie grabione, a kupcy odmawiają dalszych podróży, paraliżując przepływ towarów i podważając autorytet Rady. Ludność przygranicznych osad żyje w strachu, kwestionując zdolność królestwa do zapewnienia bezpieczeństwa.",
+  "image": "/static/images/bandit_ambush.png",
+  "narrative_prompt": "Niska stabilność królestwa ujawnia się w chaosie panującym na strategicznym szlaku handlowym. Rada Popiołów musi podjąć szybkie i zdecydowane działania, aby przywrócić porządek i udowodnić swoją siłę, zanim niezadowolenie rozleje się po całym królestwie."
 }
