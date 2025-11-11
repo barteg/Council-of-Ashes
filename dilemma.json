@@ -1,7 +1,7 @@
 {
-  "id": "round_1_initial_challenge",
-  "title": "Cień Głodu i Zmrożone Szlaki",
-  "description": "Mroźna zima, której srogość zaskoczyła wielu, dobiegła końca. Niestety, pozostawiła po sobie spustoszenie: zbiory zostały uszczuplone, a wiele szlaków handlowych jest nadal nieprzejezdnych. Królestwo stoi przed wyzwaniem odbudowy i zabezpieczenia przyszłości, zanim widmo głodu i rosnących cen przerodzi się w powszechny niepokój.",
-  "image": "/static/images/winter_crisis.png",
-  "narrative_prompt": "Mroźne echo zimy wciąż dręczy królestwo. Rada Popiołów musi podjąć pierwsze kluczowe decyzje, aby zaradzić widmu głodu i przywrócić zaufanie ludu w obliczu nadchodzącego lata."
+  "id": "round_3_zew_buntu_i_pustki",
+  "title": "Zew Buntu i Pustki",
+  "description": "Skutki paraliżu Rady z poprzedniej rundy uderzyły z całą mocą. Wszędzie tam, gdzie zawiódł autorytet korony, wybucha otwarty bunt. Zdesperowani chłopi, cierpiący z powodu głodu i bezprawia, porzucają pola, tworząc zbrojne bandy, a szlaki handlowe stają się śmiertelnymi pułapkami. ",
+  "image": "/static/images/rebellion.png",
+  "narrative_prompt": "Królestwo osuwa się w otchłań anarchii, a utracona wiara w Radę tylko pogłębia chaos. Bez szybkiej i zdecydowanej interwencji, ten stan rzeczy doprowadzi do całkowitego upadku. Co powinno zrobić królestwo?"
 }

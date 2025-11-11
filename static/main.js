@@ -157,6 +157,7 @@ const narrativeText = document.getElementById('narrativeText');
 const nextRoundBtn = document.getElementById('nextRoundBtn');
 
 let playerChoice = null;
+let lastSubmittedStatement = ''; // New variable to store the last submitted statement
 
 function updatePersonalStats(playerData) {
     if (playerData && playerData.personal_stats) {
@@ -327,6 +328,19 @@ socket.on('game_event', async (data) => {
             if(nextRoundBtn) {
                 nextRoundBtn.disabled = false;
             }
+
+            // Reset statement input for new round or pre-fill if already submitted
+            if (playerStatementInput && submitStatementBtn) {
+                if (lastSubmittedStatement) {
+                    playerStatementInput.value = lastSubmittedStatement;
+                    playerStatementInput.disabled = true;
+                    submitStatementBtn.disabled = true;
+                } else {
+                    playerStatementInput.value = '';
+                    playerStatementInput.disabled = false;
+                    submitStatementBtn.disabled = false;
+                }
+            }
         }
     }
 });
@@ -350,7 +364,8 @@ if (gameId && playerId) {
             const statement = playerStatementInput.value;
             if (statement) {
                 socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement', statement: statement });
-                playerStatementInput.value = 'Submitted';
+                lastSubmittedStatement = statement; // Store the submitted statement
+                playerStatementInput.value = statement; // Display the submitted statement
                 playerStatementInput.disabled = true;
                 submitStatementBtn.disabled = true;
             }
