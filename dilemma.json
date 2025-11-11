@@ -1,7 +1,7 @@
 {
-  "id": "rozdzial_1_zagrozenie_na_szlaku",
-  "title": "Cień na Szlaku Królewskim",
-  "description": "Wzmożona aktywność bandytów pustoszy Szlak Królewski, kluczową arterię handlową królestwa. Karawany są regularnie grabione, a kupcy odmawiają dalszych podróży, paraliżując przepływ towarów i podważając autorytet Rady. Ludność przygranicznych osad żyje w strachu, kwestionując zdolność królestwa do zapewnienia bezpieczeństwa.",
-  "image": "/static/images/bandit_ambush.png",
-  "narrative_prompt": "Niska stabilność królestwa ujawnia się w chaosie panującym na strategicznym szlaku handlowym. Rada Popiołów musi podjąć szybkie i zdecydowane działania, aby przywrócić porządek i udowodnić swoją siłę, zanim niezadowolenie rozleje się po całym królestwie."
+  "id": "round_1_initial_challenge",
+  "title": "Cień Głodu i Zmrożone Szlaki",
+  "description": "Mroźna zima, której srogość zaskoczyła wielu, dobiegła końca. Niestety, pozostawiła po sobie spustoszenie: zbiory zostały uszczuplone, a wiele szlaków handlowych jest nadal nieprzejezdnych. Królestwo stoi przed wyzwaniem odbudowy i zabezpieczenia przyszłości, zanim widmo głodu i rosnących cen przerodzi się w powszechny niepokój.",
+  "image": "/static/images/winter_crisis.png",
+  "narrative_prompt": "Mroźne echo zimy wciąż dręczy królestwo. Rada Popiołów musi podjąć pierwsze kluczowe decyzje, aby zaradzić widmu głodu i przywrócić zaufanie ludu w obliczu nadchodzącego lata."
 }

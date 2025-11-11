@@ -607,8 +607,9 @@ def handle_player_action(data):
 
         if all_players_submitted:
             statements = {
-                pid: {"statement": p["statement"], "name": p["name"]}
-                for pid, p in game["players"].items()
+                pid: {"statement": "Submitted", "name": f"Player {idx + 1}"}
+                for idx, (pid, p) in enumerate(game["players"].items())
+                if "statement" in p
             }
             emit(
                 "statements_submitted",
@@ -656,8 +657,8 @@ def handle_player_action(data):
 
             # Collect all comments to send to the host (this is already done above, but keeping for clarity)
             all_comments = {
-                pid: {"comment": p["comment"], "name": p["name"]}
-                for pid, p in game["players"].items()
+                pid: {"comment": "Submitted", "name": f"Player {idx + 1}"}
+                for idx, (pid, p) in enumerate(game["players"].items())
                 if "comment" in p
             }
 

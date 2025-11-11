@@ -18,7 +18,7 @@ Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
   "title": "Tytuł wydarzenia",
   "description": "Szczegółowy opis obecnego kryzysu lub szansy, przed którą stoi królestwo. Opis powinien być wciągający i wprowadzać w nastrój. **Maksymalnie 3-4 zdania.**",
   "image": "/static/images/event_image.png", // Opcjonalnie: ścieżka do obrazu dla wydarzenia
-  "narrative_prompt": "Zdanie lub dwa podsumowujące, które przygotowują do następnej rundy lub podsumowują obecną sytuację, potencjalnie uwzględniając wypowiedzi graczy lub napięcia między frakcjami."
+  "narrative_prompt": "Zdanie lub dwa podsumowujące, które przygotowują do następnej rundy lub podsumowują obecną sytuację, potencjalnie uwzględniając wypowiedzi graczy lub napięcia między frakcjami. Ostatnie zdanie musi być pytaniem do graczy: Co powinno zrobić królestwo?"
 }}
 ```
 
