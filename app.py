@@ -7,9 +7,23 @@ import string
 import json
 import socket
 from story_data import call_gemini_for_outcome_narrative, generate_dilemma_with_gemini, EVENT_GENERATION_PROMPT_STATIC, OUTCOME_NARRATIVE_PROMPT_STATIC
-from piper import PiperVoice
-import wave
-import io
+
+import torch
+import torch.serialization
+from TTS.api import TTS
+
+# Import the classes we need to allowlist
+from TTS.tts.configs.xtts_config import XttsConfig
+from TTS.tts.models.xtts import XttsAudioConfig, XttsArgs
+from TTS.config.shared_configs import BaseDatasetConfig
+
+# --- Allowlist fix for safe deserialization ---
+torch.serialization.add_safe_globals(
+    [XttsConfig, XttsAudioConfig, BaseDatasetConfig, XttsArgs]
+)
+# ----------------------------------------------
+
+import tempfile
 
 # Securely get the API key from the environment
 api_key = os.getenv("GEMINI_API_KEY")
@@ -19,12 +33,14 @@ if not api_key:
 
 model = genai.GenerativeModel('gemini-2.5-flash')
 
-# Load Piper TTS model
-voice = PiperVoice.load(
-    "tts_models/pl_PL-gosia-medium.onnx",
-    config_path="tts_models/pl_PL-gosia-medium.json"
-)
+# Get device
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
 
+# Init TTS (multilingual XTTSv2)
+print("Loading XTTSv2 model...")
+tts_model = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
+print("XTTSv2 model loaded.")
 
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
@@ -63,6 +79,46 @@ def player_controller(game_id, player_id):
     if game and player_id in game['players']:
         return render_template("player.html", game_id=game_id, player_id=player_id, global_stats=game['global_stats'], current_round=game['current_round'])
     return "Game or Player not found", 404
+
+@app.route('/api/tts', methods=['POST'])
+def tts_endpoint():
+    print("[TTS] /api/tts endpoint called")
+    text = request.json.get('text')
+    if not text:
+        print("[TTS] Error: No text provided")
+        return jsonify({"error": "No text provided"}), 400
+
+    print(f"[TTS] Received text: {text}")
+    
+    temp_audio_file = None
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmpfile:
+            temp_audio_file = tmpfile.name
+
+        SPEAKER_WAV_PATH = os.path.join(app.root_path, 'tts', 'Rafal_Walentowicz.wav')
+        if not os.path.exists(SPEAKER_WAV_PATH):
+            print(f"[TTS] Speaker WAV not found at {SPEAKER_WAV_PATH}")
+            return jsonify({"error": "Speaker WAV not found"}), 500
+
+        print(f"[TTS] Synthesizing '{text}' using '{SPEAKER_WAV_PATH}'...")
+        tts_model.tts_to_file(
+            text=text,
+            speaker_wav=SPEAKER_WAV_PATH,
+            language="pl",
+            file_path=temp_audio_file,
+        )
+        print(f"[TTS] Audio synthesized successfully to {temp_audio_file}")
+
+        return send_file(temp_audio_file, mimetype='audio/wav', as_attachment=False,
+                         download_name='speech.wav',
+                         max_age=0)
+
+    except Exception as e:
+        print(f"[TTS] Error during audio synthesis: {e}")
+        return jsonify({"error": "TTS synthesis failed"}), 500
+    finally:
+        if temp_audio_file and os.path.exists(temp_audio_file):
+            os.remove(temp_audio_file)
 
 # @app.route('/api/tts', methods=['POST'])
 # def tts():
