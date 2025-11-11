@@ -2,4 +2,4 @@ flask
 flask-socketio
 google-generativeai
 eventlet
-TTS
+TTS==0.22.0

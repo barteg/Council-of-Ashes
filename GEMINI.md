@@ -115,3 +115,12 @@ Your output **MUST** be a JSON object with the following structure:
 
 **Outstanding Issues:**
 *   None currently reported.
+
+---
+
+### Dependencies
+
+*   **Python:** 3.11.9
+*   **TTS:** 0.22.0
+*   **torch:** 2.9.0
+*   **torchaudio:** 2.9.0
