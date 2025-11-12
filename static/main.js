@@ -1,4 +1,4 @@
-const socket = io('http://10.0.1.38:5000');
+const socket = io('http://' + window.SERVER_IP + ':5000');
 
 let audioQueue = [];
 let isPlaying = false;

@@ -104,13 +104,26 @@ socketio = SocketIO(app, ping_interval=25, ping_timeout=60)
 games = {}
 
 
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
+
+
 def generate_game_id():
     return "".join(random.choices(string.ascii_uppercase, k=4))
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", server_ip=get_local_ip())
 
 
 @app.route("/join/<game_id>")
@@ -118,7 +131,7 @@ def join_game_page(game_id):
     game = games.get(game_id)
     if not game:
         return "Game not found", 404
-    return render_template("join_game.html", game_id=game_id, factions=game["factions"])
+    return render_template("join_game.html", game_id=game_id, factions=game["factions"], server_ip=get_local_ip())
 
 @app.route("/player/<game_id>/<player_id>")
 def player_controller(game_id, player_id):
@@ -130,6 +143,7 @@ def player_controller(game_id, player_id):
             player_id=player_id,
             global_stats=game["global_stats"],
             current_round=game["current_round"],
+            server_ip=get_local_ip(),
         )
     return "Game or Player not found", 404
 
@@ -868,14 +882,6 @@ if __name__ == "__main__":
     # The server is configured to be accessible from other devices on the network (host='0.0.0.0').
     host = "0.0.0.0"
     port = 5000
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # doesn't even have to be reachable
-        s.connect(("10.255.255.255", 1))
-        IP = s.getsockname()[0]
-    except Exception:
-        IP = "127.0.0.1"
-    finally:
-        s.close()
+    IP = get_local_ip()
     print(f"Starting server on http://{IP}:{port}")
     socketio.run(app, host=host, port=port)
