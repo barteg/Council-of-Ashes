@@ -348,11 +348,9 @@ if (gameId && playerId) {
     if (submitStatementBtn) {
         submitStatementBtn.addEventListener('click', () => {
             const statement = playerStatementInput.value;
-            if (statement) {
-                socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement', statement: statement });
-                playerStatementInput.value = '';
-                // Maybe show a confirmation
-            }
+            socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement', statement: statement });
+            playerStatementInput.value = '';
+            // Maybe show a confirmation
         });
     }
 
@@ -422,7 +420,39 @@ if (gameId && playerId) {
         console.log(`[DEBUG] phase_change: nextRoundBtn.style.display BEFORE: ${nextRoundBtn ? nextRoundBtn.style.display : 'N/A'}`);
 
 
-        if (data.phase === 'COMMENT_PHASE') {
+        if (data.phase === 'VOTING_PHASE') {
+            const statementVoteSection = document.getElementById('statementVoteSection');
+            const statementVoteList = document.getElementById('statementVoteList');
+
+            // Hide other sections
+            if (playerStatementsSection) playerStatementsSection.style.display = 'none';
+            if (dilemmaSection) dilemmaSection.style.display = 'none';
+            if (narrativeOutput) narrativeOutput.style.display = 'none';
+            if (nextRoundBtn) nextRoundBtn.style.display = 'none';
+            const commentPhaseSection = document.getElementById('commentPhaseSection');
+            if (commentPhaseSection) commentPhaseSection.style.display = 'none';
+
+            if (statementVoteSection) {
+                statementVoteSection.style.display = 'block';
+                statementVoteList.innerHTML = ''; // Clear previous statements
+
+                for (const aPlayerId in data.statements) {
+                    const statementData = data.statements[aPlayerId];
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('list-group-item', 'list-group-item-action');
+                    listItem.textContent = `${statementData.name}: "${statementData.statement}"`;
+                    listItem.dataset.playerId = aPlayerId;
+                    listItem.addEventListener('click', (event) => {
+                        const votedForPlayerId = event.currentTarget.dataset.playerId;
+                        showLoadingScreen(true);
+                        socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_vote', voted_for_player_id: votedForPlayerId });
+                        statementVoteSection.style.display = 'none';
+                    });
+                    statementVoteList.appendChild(listItem);
+                }
+            }
+        } else if (data.phase === 'COMMENT_PHASE') {
+            completeLoading(true);
             const commentPhaseSection = document.getElementById('commentPhaseSection');
             const playerCommentInput = document.getElementById('playerCommentInput');
             const submitCommentBtn = document.getElementById('submitCommentBtn');
@@ -442,13 +472,11 @@ if (gameId && playerId) {
                 if (submitCommentBtn) {
                     submitCommentBtn.onclick = () => { // Use onclick to prevent multiple listeners
                         const comment = playerCommentInput.value;
-                        if (comment) {
-                            showLoadingScreen(true);
-                            socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_comment', comment: comment });
-                            playerCommentInput.value = '';
-                            commentPhaseSection.style.display = 'none'; // Hide comment section after submission
-                            // Optionally show a "waiting for other players" message
-                        }
+                        showLoadingScreen(true);
+                        socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_comment', comment: comment });
+                        playerCommentInput.value = '';
+                        commentPhaseSection.style.display = 'none'; // Hide comment section after submission
+                        // Optionally show a "waiting for other players" message
                     };
                 }
             } else {
@@ -836,7 +864,9 @@ if (createGameBtn) {
         }
     });
 
+    let all_statements = {};
     socket.on('statements_submitted', (data) => {
+        all_statements = data.statements;
         console.log('Statements submitted:', data);
         const hostNarrative = document.getElementById('hostNarrative');
         hostNarrative.innerHTML = '<h5>Player Statements:</h5>'; // Clear and add a title
@@ -851,5 +881,33 @@ if (createGameBtn) {
         }
         hostNarrative.appendChild(statementList);
         hostNarrative.style.display = 'block'; // Ensure hostNarrative is visible
+    });
+
+    socket.on('voting_results', (data) => {
+        const statementVotingResultsDisplay = document.getElementById('statementVotingResultsDisplay');
+        const statementVoteCounts = document.getElementById('statementVoteCounts');
+
+        if (statementVotingResultsDisplay && statementVoteCounts) {
+            statementVotingResultsDisplay.style.display = 'block';
+            statementVoteCounts.innerHTML = ''; // Clear previous results
+
+            const voteList = document.createElement('ul');
+            voteList.classList.add('list-group');
+
+            for (const playerId in data.vote_counts) {
+                const voteCount = data.vote_counts[playerId];
+                const statementData = all_statements[playerId];
+                const statementText = `${statementData.name}: "${statementData.statement}"`;
+
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+                listItem.innerHTML = `${statementText} - ${voteCount} votes`;
+                if (data.winning_statement.player_id === playerId) {
+                    listItem.classList.add('list-group-item-success');
+                }
+                voteList.appendChild(listItem);
+            }
+            statementVoteCounts.appendChild(voteList);
+        }
     });
 }

@@ -484,13 +484,16 @@ def resolve_dilemma(game_id, player_comments=None):
     if not game:
         return
 
-    # Gather all player statements
-    player_statements_for_gemini = []
-    for player_id, player_data in game["players"].items():
-        if "statement" in player_data:
-            player_statements_for_gemini.append(
-                {"player_id": player_id, "statement": player_data["statement"], "name": player_data["name"]}
-            )
+    # Use the winning statement if it exists, otherwise use all statements
+    if "winning_statement" in game:
+        player_statements_for_gemini = [game["winning_statement"]]
+    else:
+        player_statements_for_gemini = []
+        for player_id, player_data in game["players"].items():
+            if "statement" in player_data:
+                player_statements_for_gemini.append(
+                    {"player_id": player_id, "statement": player_data["statement"], "name": player_data["name"]}
+                )
 
     # Call Gemini to evaluate player statements and determine policy/effects
     evaluation_result = evaluate_player_statements_with_gemini(
@@ -605,17 +608,16 @@ def handle_player_action(data):
         if game["state"] != "DILEMMA":
             return
         statement = data.get("statement")
-        if statement:
-            game["players"][player_id]["statement"] = statement
-            game["players"][player_id]["action_status"] = (
-                "done"  # Player submitted statement
-            )
-            emit(
-                "game_update",
-                {"players": game["players"]},
-                room=game_id,
-                broadcast=True,
-            )
+        game["players"][player_id]["statement"] = statement
+        game["players"][player_id]["action_status"] = (
+            "done"  # Player submitted statement
+        )
+        emit(
+            "game_update",
+            {"players": game["players"]},
+            room=game_id,
+            broadcast=True,
+        )
 
         all_players_submitted = all("statement" in p for p in game["players"].values())
 
@@ -629,10 +631,53 @@ def handle_player_action(data):
                 {"statements": statements},
                 room=game["host_sid"],
             )
-            game["state"] = "COMMENT_PHASE" # Directly move to comment phase after statements
+            game["state"] = "VOTING_PHASE" # Transition to voting phase
             emit(
                 "phase_change",
-                {"phase": "COMMENT_PHASE", "statements": statements},
+                {"phase": "VOTING_PHASE", "statements": statements},
+                room=game_id,
+                broadcast=True,
+            )
+
+    elif action == "submit_vote":
+        if game["state"] != "VOTING_PHASE":
+            return
+        voted_for_player_id = data.get("voted_for_player_id")
+        if voted_for_player_id:
+            game["players"][player_id]["statement_vote"] = voted_for_player_id
+            game["players"][player_id]["action_status"] = "done"
+            emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
+
+        all_players_voted = all("statement_vote" in p for p in game["players"].values())
+
+        if all_players_voted:
+            # Tally votes
+            vote_counts = {}
+            for p in game["players"].values():
+                vote = p["statement_vote"]
+                vote_counts[vote] = vote_counts.get(vote, 0) + 1
+            
+            # Find the winning statement
+            winning_player_id = max(vote_counts, key=vote_counts.get)
+            winning_statement = {
+                "player_id": winning_player_id,
+                "statement": game["players"][winning_player_id]["statement"],
+                "name": game["players"][winning_player_id]["name"],
+            }
+            game["winning_statement"] = winning_statement # Store winning statement in game
+
+            # Emit voting results to the host
+            emit(
+                "voting_results",
+                {"vote_counts": vote_counts, "winning_statement": winning_statement},
+                room=game["host_sid"],
+            )
+
+            # For now, we will move to the comment phase
+            game["state"] = "COMMENT_PHASE"
+            emit(
+                "phase_change",
+                {"phase": "COMMENT_PHASE", "winning_statement": winning_statement},
                 room=game_id,
                 broadcast=True,
             )
