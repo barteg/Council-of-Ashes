@@ -128,6 +128,27 @@ function playNextInQueue() {
     });
 }
 
+function updateHostFactionObjectives(factions) {
+    const factionObjectivesContainer = document.getElementById('factionObjectivesContainer');
+    if (factionObjectivesContainer && factions) {
+        factionObjectivesContainer.innerHTML = ''; // Clear previous objectives
+
+        for (const factionId in factions) {
+            const factionData = factions[factionId];
+            const completedObjectives = factionData.objectives.filter(obj => obj.completed).length;
+            const totalObjectives = factionData.objectives.length;
+
+            const factionDiv = document.createElement('div');
+            factionDiv.classList.add('floating-element', 'mb-4');
+            factionDiv.innerHTML = `
+                <h5>${factionId}</h5>
+                <p>${completedObjectives} / ${totalObjectives} objectives completed</p>
+            `;
+            factionObjectivesContainer.appendChild(factionDiv);
+        }
+    }
+}
+
 
 const gameId = document.getElementById('gameId') ? document.getElementById('gameId').textContent.trim() : null;
 const playerId = document.getElementById('playerId') ? document.getElementById('playerId').textContent.trim() : null;
@@ -197,6 +218,8 @@ socket.on('game_started_for_player', (initial_game_state) => {
         document.getElementById('hostStatFaith').parentElement.parentElement.style.display = 'block';
         document.getElementById('hostNarrative').parentElement.style.display = 'block'; // Parent of narrative
         document.getElementById('hostNarrative').style.display = 'block'; // Make the narrative text itself visible
+
+        updateHostFactionObjectives(initial_game_state.factions);
 
     } else if (gameArea) {
         // Player
@@ -730,23 +753,7 @@ if (gameId && playerId) {
         if (document.getElementById('hostControl')) {
             if (hostControl) hostControl.style.display = 'block';
             
-            const factionObjectivesHostSection = document.getElementById('factionObjectivesHostSection');
-            const factionObjectiveHostList = document.getElementById('factionObjectiveHostList');
-            if (factionObjectivesHostSection && factionObjectiveHostList && game_state.factions) {
-                factionObjectivesHostSection.style.display = 'block';
-                factionObjectiveHostList.innerHTML = ''; // Clear previous objectives
-
-                for (const factionId in game_state.factions) {
-                    const factionData = game_state.factions[factionId];
-                    const completedObjectives = factionData.objectives.filter(obj => obj.completed).length;
-                    const totalObjectives = factionData.objectives.length;
-
-                    const factionProgressDiv = document.createElement('div');
-                    factionProgressDiv.classList.add('mb-2');
-                    factionProgressDiv.innerHTML = `<h6>${factionId}</h6>`;
-                    factionObjectiveHostList.appendChild(factionProgressDiv);
-                }
-            }
+            updateHostFactionObjectives(game_state.factions);
         }
     });
 }
