@@ -17,14 +17,6 @@
                     <div class="form-group">
                         <input type="text" id="playerNameInput" class="form-control" placeholder="Your Name" required>
                     </div>
-                    <div class="form-group">
-                        <label for="factionSelect">Choose your faction:</label>
-                        <select class="custom-select" id="factionSelect">
-                            {% for faction_id, faction_data in factions.items() %}
-                                <option value="{{ faction_id }}">{{ faction_id }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
                     <button id="joinGameBtn" class="btn btn-primary btn-block">Join Game</button>
                     <p id="errorMessage" class="text-danger mt-3" style="display: none;"></p>
                 </div>
@@ -37,7 +29,6 @@
         const socket = io('http://' + document.domain + ':' + location.port);
         const gameId = "{{ game_id }}";
         const playerNameInput = document.getElementById('playerNameInput');
-        const factionSelect = document.getElementById('factionSelect');
         const joinGameBtn = document.getElementById('joinGameBtn');
         const errorMessage = document.getElementById('errorMessage');
 
@@ -54,11 +45,10 @@
 
         joinGameBtn.addEventListener('click', () => {
             const playerName = playerNameInput.value.trim();
-            const factionId = factionSelect.value;
-            if (playerName && factionId) {
-                socket.emit('join_game', { game_id: gameId, player_name: playerName, faction_id: factionId });
+            if (playerName) {
+                socket.emit('join_game', { game_id: gameId, player_name: playerName });
             } else {
-                errorMessage.textContent = "Please enter your name and select a faction.";
+                errorMessage.textContent = "Please enter your name.";
                 errorMessage.style.display = 'block';
             }
         });

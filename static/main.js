@@ -157,6 +157,7 @@ const narrativeText = document.getElementById('narrativeText');
 const nextRoundBtn = document.getElementById('nextRoundBtn');
 
 let playerChoice = null;
+let lastSubmittedStatement = ''; // New variable to store the last submitted statement
 
 function updatePersonalStats(playerData) {
     if (playerData && playerData.personal_stats) {
@@ -327,6 +328,21 @@ socket.on('game_event', async (data) => {
             if(nextRoundBtn) {
                 nextRoundBtn.disabled = false;
             }
+
+            lastSubmittedStatement = ''; // Reset for the new round
+
+            // Reset statement input for new round
+            const statementInputArea = document.getElementById('statementInputArea');
+            const statementSubmitted = document.getElementById('statementSubmitted');
+            if (playerStatementInput) {
+                playerStatementInput.value = '';
+            }
+            if (statementInputArea) {
+                statementInputArea.style.display = 'block';
+            }
+            if (statementSubmitted) {
+                statementSubmitted.style.display = 'none';
+            }
         }
     }
 });
@@ -336,7 +352,6 @@ if (gameId && playerId) {
     const readyBtn = document.getElementById('readyBtn');
     if (readyBtn) {
         readyBtn.addEventListener('click', () => {
-            showLoadingScreen(true);
             socket.emit('player_ready', { game_id: gameId, player_id: playerId });
             readyBtn.textContent = 'Waiting for other players...';
             readyBtn.disabled = true;
@@ -348,9 +363,22 @@ if (gameId && playerId) {
     if (submitStatementBtn) {
         submitStatementBtn.addEventListener('click', () => {
             const statement = playerStatementInput.value;
-            socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement', statement: statement });
-            playerStatementInput.value = '';
-            // Maybe show a confirmation
+<<<<<<< HEAD
+    if (submitStatementBtn) {
+        submitStatementBtn.addEventListener('click', () => {
+            const statement = playerStatementInput.value;
+            if (statement) {
+                socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement', statement: statement });
+                lastSubmittedStatement = statement; // Store the submitted statement
+                
+                const statementInputArea = document.getElementById('statementInputArea');
+                const statementSubmitted = document.getElementById('statementSubmitted');
+
+                if(statementInputArea) statementInputArea.style.display = 'none';
+                if(statementSubmitted) statementSubmitted.style.display = 'block';
+            }
+        });
+    }
         });
     }
 
@@ -833,11 +861,13 @@ if (createGameBtn) {
         const commentList = document.getElementById('commentList');
         const hostNarrative = document.getElementById('hostNarrative');
         const statementVotingResultsDisplay = document.getElementById('statementVotingResultsDisplay');
+        const playerStatementsDiv = document.getElementById('playerStatements'); // Get the player statements div
 
         if (playerCommentsDisplay && commentList && data.comments) {
-            statementVotingResultsDisplay.style.display = 'none'; // Hide statement voting results
+            if (statementVotingResultsDisplay) statementVotingResultsDisplay.style.display = 'none'; // Hide statement voting results
+            if (playerStatementsDiv) playerStatementsDiv.style.display = 'none'; // Hide player statements
             playerCommentsDisplay.style.display = 'block'; // Show comments section
-            commentList.innerHTML = '<h6>Player Comments:</h6>';
+            commentList.innerHTML = '<h5>Player Comments:</h5>'; // Clear and add a title
 
             for (const pid in data.comments) {
                 const commentData = data.comments[pid];
@@ -859,8 +889,6 @@ if (createGameBtn) {
                     completeLoading(false);
                 }
             }
-            // Hide the player comments display after the narrative is shown
-            if (playerCommentsDisplay) playerCommentsDisplay.style.display = 'none';
         }
     });
 
@@ -868,19 +896,23 @@ if (createGameBtn) {
     socket.on('statements_submitted', (data) => {
         all_statements = data.statements;
         console.log('Statements submitted:', data);
-        const hostNarrative = document.getElementById('hostNarrative');
-        hostNarrative.innerHTML = '<h5>Player Statements:</h5>'; // Clear and add a title
-        const statementList = document.createElement('ul');
-        statementList.classList.add('list-group');
-        for (const playerId in data.statements) {
-            const statementData = data.statements[playerId];
-            const listItem = document.createElement('li');
-            listItem.classList.add('list-group-item');
-            listItem.textContent = `${statementData.name}: "${statementData.statement}"`;
-            statementList.appendChild(listItem);
+        const playerStatementsDiv = document.getElementById('playerStatements');
+        const playerStatementList = document.getElementById('playerStatementList');
+
+        if (playerStatementsDiv && playerStatementList) {
+            playerStatementList.innerHTML = ''; // Clear previous statements
+            for (const playerId in data.statements) {
+                const statementData = data.statements[playerId];
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item');
+                listItem.textContent = `${statementData.name}: "${statementData.statement}"`;
+                playerStatementList.appendChild(listItem);
+            }
+            playerStatementsDiv.style.display = 'block'; // Show the statements section
         }
-        hostNarrative.appendChild(statementList);
-        hostNarrative.style.display = 'block'; // Ensure hostNarrative is visible
+        // Hide hostNarrative if it was showing the dilemma description
+        const hostNarrative = document.getElementById('hostNarrative');
+        if (hostNarrative) hostNarrative.style.display = 'none';
     });
 
     socket.on('voting_results', (data) => {

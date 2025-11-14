@@ -67,8 +67,13 @@
                 <!-- Player Statements Section -->
                 <div id="playerStatementsSection" class="floating-element" style="display: none;">
                     <h5>Your Statement</h5>
-                    <textarea id="playerStatementInput" class="form-control" rows="3"></textarea>
-                    <button id="submitStatementBtn" class="btn btn-primary mt-2">Submit Statement</button>
+                    <div id="statementInputArea">
+                        <textarea id="playerStatementInput" class="form-control" rows="3"></textarea>
+                        <button id="submitStatementBtn" class="btn btn-primary mt-2">Submit Statement</button>
+                    </div>
+                    <div id="statementSubmitted" style="display: none;">
+                        <p class="text-success">Statement Submitted</p>
+                    </div>
                 </div>
 
                 <!-- Statement Voting Section -->

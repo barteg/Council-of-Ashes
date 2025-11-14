@@ -11,14 +11,14 @@ Otrzymasz następujące informacje w obiekcie JSON:
 ```
 
 ## Format wyjściowy:
-Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
+Twoja odpowiedź **MUSI** być **TYLKO** obiektem JSON o następującej strukturze, bez żadnego dodatkowego tekstu ani formatowania Markdown poza samym obiektem JSON:
 ```json
 {{
   "id": "unikalny_identyfikator_wydarzenia_dla_tej_rundy",
   "title": "Tytuł wydarzenia",
   "description": "Szczegółowy opis obecnego kryzysu lub szansy, przed którą stoi królestwo. Opis powinien być wciągający i wprowadzać w nastrój. **Maksymalnie 3-4 zdania.**",
   "image": "/static/images/event_image.png", // Opcjonalnie: ścieżka do obrazu dla wydarzenia
-  "narrative_prompt": "Zdanie lub dwa podsumowujące, które przygotowują do następnej rundy lub podsumowują obecną sytuację, potencjalnie uwzględniając wypowiedzi graczy lub napięcia między frakcjami."
+  "narrative_prompt": "Zdanie lub dwa podsumowujące, które przygotowują do następnej rundy lub podsumowują obecną sytuację, potencjalnie uwzględniając wypowiedzi graczy lub napięcia między frakcjami. Ostatnie zdanie musi być pytaniem do graczy: Co powinno zrobić królestwo?"
 }}
 ```
 
@@ -37,8 +37,7 @@ Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
 6.  **Wpływowe efekty:** `effects` w każdym wyborze powinny być rozsądne i bezpośrednio wpływać na `global_stats`. Wartości powinny zazwyczaj mieścić się w przedziale od -20 do +20.
 7.  **Wciągająca narracja:**
     *   `description` powinien być żywy i nadawać ton.
-    *   `narrative_consequence` dla każdego wyboru powinien dawać wgląd w natychmiastowy wpływ na fabułę.
-    *   `narrative_prompt` powinien wszystko spajać i może zawierać elementy z `player_statements`. Na przykład, jeśli gracze wygłosili mocne oświadczenia, możesz to odzwierciedlić w narracji (np. „Okrzyki szlachty o ‚szybką sprawiedliwość’ odbijały się echem w komnatach rady...”).
+    *   `narrative_prompt` powinien wszystko spajać i musi być pod silnym wpływem `player_statements`. Przeanalizuj ton i treść oświadczeń graczy i odzwierciedlaj to w narracji. Jeśli gracze żartują, narracja powinna być lżejsza. Jeśli są poważni, narracja powinna być bardziej dramatyczna.
 8.  **Ścieżki do obrazów:** Jeśli dołączasz pole `image`, załóż, że obrazy znajdują się w `/static/images/` i podaj odpowiednią nazwę pliku (np. `famine.png`, `rebellion.jpg`).
 9.  **Postęp rundy:** Upewnij się, że wydarzenia sprawiają wrażenie ciągłej historii, a nie zaizolowanych incydentów.
 10. **Napięcie między frakcjami:** W swojej narracji napomknij o trwających napięciach lub sojuszach między frakcjami, zwłaszcza jeśli `previous_dilemma_outcome.faction_votes` pokazuje niezgodę.
@@ -222,9 +221,16 @@ def generate_dilemma_with_gemini(model, game_state):
         json_block_end = gemini_text.rfind('```')
         if json_block_start != -1 and json_block_end != -1 and json_block_start < json_block_end:
             json_string = gemini_text[json_block_start + 7:json_block_end].strip()
-            with open("dilemma.json", "w", encoding="utf-8") as f:
-                f.write(json_string)
-            return True
+            try:
+                # Attempt to parse the JSON string to validate it
+                parsed_json = json.loads(json_string)
+                with open("dilemma.json", "w", encoding="utf-8") as f:
+                    json.dump(parsed_json, f, ensure_ascii=False, indent=2) # Write validated JSON
+                return True
+            except json.JSONDecodeError as e:
+                print(f"[ERROR] Failed to parse JSON from Gemini response: {e}")
+                print(f"[ERROR] Malformed JSON string: {json_string}")
+                return False
         else:
             return False
     except Exception as e:
