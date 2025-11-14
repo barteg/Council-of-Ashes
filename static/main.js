@@ -160,7 +160,6 @@ const factionSelection = document.getElementById('factionSelection');
 
 const playerNameSpan = document.getElementById('playerName');
 const currentRoundSpan = document.getElementById('currentRound');
-const statInfluenceSpan = document.getElementById('statInfluence');
 
 // Host global stat elements
 const hostStatStability = document.getElementById('hostStatStability');
@@ -179,17 +178,6 @@ const nextRoundBtn = document.getElementById('nextRoundBtn');
 
 let playerChoice = null;
 let lastSubmittedStatement = ''; // New variable to store the last submitted statement
-
-function updatePersonalStats(playerData) {
-    if (playerData && playerData.personal_stats) {
-        const influence = playerData.personal_stats.Influence;
-        if (statInfluenceSpan) {
-            statInfluenceSpan.style.width = `${influence}%`;
-            statInfluenceSpan.setAttribute('aria-valuenow', influence);
-            statInfluenceSpan.textContent = `${influence}`; // Display number inside bar
-        }
-    }
-}
 
 if (nextRoundBtn) {
     nextRoundBtn.addEventListener('click', () => {
@@ -231,7 +219,6 @@ socket.on('game_started_for_player', (initial_game_state) => {
         // Initial update of player-specific stats and faction
         if (initial_game_state && initial_game_state.players && initial_game_state.players[playerId]) {
             playerNameSpan.textContent = initial_game_state.players[playerId].name;
-            updatePersonalStats(initial_game_state.players[playerId]);
         }
     }
 });
@@ -290,28 +277,6 @@ socket.on('game_event', async (data) => {
         if (document.getElementById('gameArea')) {
             console.log('[DEBUG] Player Dilemma Object:', dilemma);
             dilemmaTitle.textContent = dilemma.title;
-
-            // Update current kingdom stats display
-            const globalStats = data.global_stats;
-            const currentStatStability = document.getElementById('currentStatStability');
-            const currentStatEconomy = document.getElementById('currentStatEconomy');
-            const currentStatFaith = document.getElementById('currentStatFaith');
-
-            if (currentStatStability) {
-                currentStatStability.style.width = `${globalStats.Stability}%`;
-                currentStatStability.setAttribute('aria-valuenow', globalStats.Stability);
-                currentStatStability.textContent = `${globalStats.Stability}`;
-            }
-            if (currentStatEconomy) {
-                currentStatEconomy.style.width = `${globalStats.Economy}%`;
-                currentStatEconomy.setAttribute('aria-valuenow', globalStats.Economy);
-                currentStatEconomy.textContent = `${globalStats.Economy}`;
-            }
-            if (currentStatFaith) {
-                currentStatFaith.style.width = `${globalStats.Faith}%`;
-                currentStatFaith.setAttribute('aria-valuenow', globalStats.Faith);
-                currentStatFaith.textContent = `${globalStats.Faith}`;
-            }
 
             const dilemmaSection = document.getElementById('dilemmaSection');
             const playerStatementsSection = document.getElementById('playerStatementsSection');
@@ -445,7 +410,6 @@ if (gameId && playerId) {
 
         // Update player stats with the new data from the server
         if (data.players && data.players[playerId]) {
-            updatePersonalStats(data.players[playerId]);
         }
 
         const narrativeOutputElement = document.getElementById('narrativeOutput');
@@ -557,10 +521,8 @@ if (gameId && playerId) {
             // This is a name update, update the player list in the voting status
             if (data.players[playerId]) {
                 playerNameSpan.textContent = data.players[playerId].name;
-                updatePersonalStats(data.players[playerId]);
             }
         } else if (data.player_id === playerId) {
-            updatePersonalStats(data.data);
         }
     });
 
@@ -647,7 +609,6 @@ if (gameId && playerId) {
         if (game_state.players && game_state.players[playerId]) {
             const player = game_state.players[playerId];
             if (playerNameSpan) playerNameSpan.textContent = player.name;
-            updatePersonalStats(player);
 
             // Update faction name
             const factionNameSpan = document.getElementById('factionName');

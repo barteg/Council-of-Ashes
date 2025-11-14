@@ -229,6 +229,10 @@ def generate_dilemma_with_gemini(model, game_state):
                 with open("dilemma.json", "w", encoding="utf-8") as f:
                     json.dump(parsed_json, f, ensure_ascii=False, indent=2) # Write validated JSON
                 return True
+            except json.JSONDecodeError as e:
+                print(f"[ERROR] Failed to parse JSON from Gemini response: {e}")
+                print(f"[ERROR] Malformed JSON string: {json_string}")
+                return False
         else:
             return False
     except Exception as e:
