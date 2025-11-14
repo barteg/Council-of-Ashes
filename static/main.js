@@ -727,6 +727,7 @@ if (gameId && playerId) {
         }
 
         // Host specific UI updates
+        console.log("hostControl element:", hostControl);
         if (document.getElementById('hostControl')) {
             if (hostControl) hostControl.style.display = 'block';
             
@@ -1000,8 +1001,7 @@ if (createGameBtn) {
             for (const playerId in data.vote_counts) {
                 const voteCount = data.vote_counts[playerId];
                 const statementData = all_statements[playerId];
-                const statementText = `${statementData.name}: "${statementData.statement}"`;
-
+                                    const statementText = `${statementData.statement}`; // Changed this line
                 const listItem = document.createElement('li');
                 listItem.classList.add('list-group-item');
                 listItem.innerHTML = `${statementText} - ${voteCount} votes`;
@@ -1012,5 +1012,7 @@ if (createGameBtn) {
             }
             statementVoteCounts.appendChild(voteList);
         }
+        const playerStatementsDiv = document.getElementById('playerStatements');
+        if (playerStatementsDiv) playerStatementsDiv.style.display = 'none'; // Hide player statements
     });
 }
