@@ -282,6 +282,7 @@ def create_game(data):
         },
     )
     # Emit game_state_sync to the host
+    print(f"[DEBUG] Emitting game_state_sync to host {request.sid}")
     emit("game_state_sync", game)
 
 
