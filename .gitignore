@@ -24,3 +24,7 @@ stable-diffusion-webui/
 # Temporary game files
 dilemma.json
 outcome.json
+
+# TTS model and audio directories
+tts/
+tts_models/

@@ -329,17 +329,19 @@ socket.on('game_event', async (data) => {
                 nextRoundBtn.disabled = false;
             }
 
-            // Reset statement input for new round or pre-fill if already submitted
-            if (playerStatementInput && submitStatementBtn) {
-                if (lastSubmittedStatement) {
-                    playerStatementInput.value = lastSubmittedStatement;
-                    playerStatementInput.disabled = true;
-                    submitStatementBtn.disabled = true;
-                } else {
-                    playerStatementInput.value = '';
-                    playerStatementInput.disabled = false;
-                    submitStatementBtn.disabled = false;
-                }
+            lastSubmittedStatement = ''; // Reset for the new round
+
+            // Reset statement input for new round
+            const statementInputArea = document.getElementById('statementInputArea');
+            const statementSubmitted = document.getElementById('statementSubmitted');
+            if (playerStatementInput) {
+                playerStatementInput.value = '';
+            }
+            if (statementInputArea) {
+                statementInputArea.style.display = 'block';
+            }
+            if (statementSubmitted) {
+                statementSubmitted.style.display = 'none';
             }
         }
     }
@@ -364,9 +366,12 @@ if (gameId && playerId) {
             if (statement) {
                 socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement', statement: statement });
                 lastSubmittedStatement = statement; // Store the submitted statement
-                playerStatementInput.value = statement; // Display the submitted statement
-                playerStatementInput.disabled = true;
-                submitStatementBtn.disabled = true;
+                
+                const statementInputArea = document.getElementById('statementInputArea');
+                const statementSubmitted = document.getElementById('statementSubmitted');
+
+                if(statementInputArea) statementInputArea.style.display = 'none';
+                if(statementSubmitted) statementSubmitted.style.display = 'block';
             }
         });
     }

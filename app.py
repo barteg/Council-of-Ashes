@@ -305,8 +305,8 @@ def join_game(data):
                 emit("error", {"message": "Invalid player ID for reconnection."}, room=request.sid)
                 return
 
-        elif player_name and faction_id: # New player joining via QR code
-            print(f"[DEBUG] New player '{player_name}' is joining faction '{faction_id}'.")
+        elif player_name: # New player joining via QR code, ignore faction_id
+            print(f"[DEBUG] New player '{player_name}' is joining.")
             assigned_player_id = None
             for pid, player_data in game["players"].items():
                 if player_data["action_status"] == "empty":
@@ -314,13 +314,27 @@ def join_game(data):
                     break
             
             if assigned_player_id:
-                print(f"[DEBUG] Assigning new player to slot: {assigned_player_id}")
+                # Find the faction with the fewest players
+                min_players = float('inf')
+                least_populated_factions = []
+                for f_id, f_data in game["factions"].items():
+                    num_players_in_faction = len(f_data["players"])
+                    if num_players_in_faction < min_players:
+                        min_players = num_players_in_faction
+                        least_populated_factions = [f_id]
+                    elif num_players_in_faction == min_players:
+                        least_populated_factions.append(f_id)
+                
+                # Randomly choose from the least populated factions
+                chosen_faction = random.choice(least_populated_factions)
+
+                print(f"[DEBUG] Assigning new player to slot: {assigned_player_id} in faction {chosen_faction}")
                 game["players"][assigned_player_id]["sid"] = request.sid
                 game["players"][assigned_player_id]["name"] = player_name
-                game["players"][assigned_player_id]["faction"] = faction_id
+                game["players"][assigned_player_id]["faction"] = chosen_faction
                 game["players"][assigned_player_id]["action_status"] = "joined"
                 
-                game["factions"][faction_id]["players"].append(assigned_player_id)
+                game["factions"][chosen_faction]["players"].append(assigned_player_id)
 
                 emit("player_assigned", {"player_id": assigned_player_id}, room=request.sid)
                 print(f"[DEBUG] Emitted 'player_assigned' to {assigned_player_id}")

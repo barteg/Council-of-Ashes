@@ -37,8 +37,7 @@ Twoja odpowiedź **MUSI** być **TYLKO** obiektem JSON o następującej struktur
 6.  **Wpływowe efekty:** `effects` w każdym wyborze powinny być rozsądne i bezpośrednio wpływać na `global_stats`. Wartości powinny zazwyczaj mieścić się w przedziale od -20 do +20.
 7.  **Wciągająca narracja:**
     *   `description` powinien być żywy i nadawać ton.
-    *   `narrative_consequence` dla każdego wyboru powinien dawać wgląd w natychmiastowy wpływ na fabułę.
-    *   `narrative_prompt` powinien wszystko spajać i może zawierać elementy z `player_statements`. Na przykład, jeśli gracze wygłosili mocne oświadczenia, możesz to odzwierciedlić w narracji (np. „Okrzyki szlachty o ‚szybką sprawiedliwość’ odbijały się echem w komnatach rady...”).
+    *   `narrative_prompt` powinien wszystko spajać i musi być pod silnym wpływem `player_statements`. Przeanalizuj ton i treść oświadczeń graczy i odzwierciedlaj to w narracji. Jeśli gracze żartują, narracja powinna być lżejsza. Jeśli są poważni, narracja powinna być bardziej dramatyczna.
 8.  **Ścieżki do obrazów:** Jeśli dołączasz pole `image`, załóż, że obrazy znajdują się w `/static/images/` i podaj odpowiednią nazwę pliku (np. `famine.png`, `rebellion.jpg`).
 9.  **Postęp rundy:** Upewnij się, że wydarzenia sprawiają wrażenie ciągłej historii, a nie zaizolowanych incydentów.
 10. **Napięcie między frakcjami:** W swojej narracji napomknij o trwających napięciach lub sojuszach między frakcjami, zwłaszcza jeśli `previous_dilemma_outcome.faction_votes` pokazuje niezgodę.
