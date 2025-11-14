@@ -360,13 +360,16 @@ if (gameId && playerId) {
 
     const toggleFactionBtn = document.getElementById('toggleFactionBtn');
     const factionNameSpan = document.getElementById('factionName');
-    if (toggleFactionBtn && factionNameSpan) {
+    const factionObjectivesSection = document.getElementById('factionObjectivesSection');
+    if (toggleFactionBtn && factionNameSpan && factionObjectivesSection) {
         toggleFactionBtn.addEventListener('click', () => {
             if (factionNameSpan.style.display === 'none') {
                 factionNameSpan.style.display = 'inline';
+                factionObjectivesSection.style.display = 'block';
                 toggleFactionBtn.textContent = 'Hide Faction';
             } else {
                 factionNameSpan.style.display = 'none';
+                factionObjectivesSection.style.display = 'none';
                 toggleFactionBtn.textContent = 'Show Faction';
             }
         });
@@ -724,9 +727,15 @@ if (gameId && playerId) {
         if (document.getElementById('hostControl')) {
             if (hostControl) hostControl.style.display = 'block';
             
+            console.log("Updating faction objectives for host");
             const factionObjectivesHostSection = document.getElementById('factionObjectivesHostSection');
             const factionObjectiveHostList = document.getElementById('factionObjectiveHostList');
+            console.log("factionObjectivesHostSection:", factionObjectivesHostSection);
+            console.log("factionObjectiveHostList:", factionObjectiveHostList);
+            console.log("game_state.factions:", game_state.factions);
+
             if (factionObjectivesHostSection && factionObjectiveHostList && game_state.factions) {
+                console.log("All conditions met, rendering host objectives");
                 factionObjectivesHostSection.style.display = 'block';
                 factionObjectiveHostList.innerHTML = ''; // Clear previous objectives
 
@@ -913,6 +922,7 @@ if (createGameBtn) {
     });
 
     socket.on('comments_received', async (data) => {
+        console.log('Comments received event fired');
         console.log('Comments received:', data);
         showLoadingScreen(false);
         const playerCommentsDisplay = document.getElementById('playerCommentsDisplay');

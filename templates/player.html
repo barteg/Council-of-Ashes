@@ -24,6 +24,16 @@
     <div class="container mt-4">
         <div class="text-right">
             <h5 id="playerName"></h5>
+            <div>
+                <span id="factionName" style="display: none;"></span>
+                <div id="factionObjectivesSection" style="display: none;">
+                    <h6>Faction Objectives:</h6>
+                    <ul id="factionObjectiveList" class="list-group">
+                        <!-- Objectives will be populated here -->
+                    </ul>
+                </div>
+                <button id="toggleFactionBtn" class="btn btn-sm btn-secondary">Show Faction</button>
+            </div>
             <p><strong>Round:</strong> <span id="currentRound">{{ current_round }}</span></p>
         </div>
 
