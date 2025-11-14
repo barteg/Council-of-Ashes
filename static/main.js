@@ -743,7 +743,7 @@ if (gameId && playerId) {
 
                     const factionProgressDiv = document.createElement('div');
                     factionProgressDiv.classList.add('mb-2');
-                    factionProgressDiv.innerHTML = `<h6>${factionId}: ${completedObjectives}/${totalObjectives}</h6>`;
+                    factionProgressDiv.innerHTML = `<h6>${factionId}</h6>`;
                     factionObjectiveHostList.appendChild(factionProgressDiv);
                 }
             }
