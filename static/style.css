@@ -357,3 +357,8 @@ h1 {
     border-radius: 10px;
     transition: width 0.5s ease-in-out;
 }
+
+.host-control-wide {
+    width: 120%;
+    margin-left: -10%;
+}
