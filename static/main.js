@@ -647,15 +647,18 @@ if (gameId && playerId) {
                 factionObjectiveList.innerHTML = ''; // Clear previous objectives
 
                 const factionData = game_state.factions[player.faction];
+                let activeObjectiveFound = false;
                 factionData.objectives.forEach(objective => {
                     const listItem = document.createElement('li');
                     listItem.classList.add('list-group-item');
-                    listItem.textContent = objective.description;
                     if (objective.completed) {
-                        listItem.classList.add('list-group-item-success');
-                        listItem.innerHTML += ' &#10003;'; // Checkmark
+                        listItem.innerHTML = `<del>${objective.description}</del>`;
+                        factionObjectiveList.appendChild(listItem);
+                    } else if (!activeObjectiveFound) {
+                        listItem.textContent = objective.description;
+                        factionObjectiveList.appendChild(listItem);
+                        activeObjectiveFound = true;
                     }
-                    factionObjectiveList.appendChild(listItem);
                 });
             }
         }
