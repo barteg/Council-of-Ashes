@@ -363,10 +363,6 @@ if (gameId && playerId) {
     if (submitStatementBtn) {
         submitStatementBtn.addEventListener('click', () => {
             const statement = playerStatementInput.value;
-<<<<<<< HEAD
-    if (submitStatementBtn) {
-        submitStatementBtn.addEventListener('click', () => {
-            const statement = playerStatementInput.value;
             if (statement) {
                 socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement', statement: statement });
                 lastSubmittedStatement = statement; // Store the submitted statement
@@ -377,8 +373,6 @@ if (gameId && playerId) {
                 if(statementInputArea) statementInputArea.style.display = 'none';
                 if(statementSubmitted) statementSubmitted.style.display = 'block';
             }
-        });
-    }
         });
     }
 
