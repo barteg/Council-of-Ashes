@@ -216,19 +216,34 @@ def create_game(data):
             "power": "Mistrzostwo Handlu",
             "players": [],
             "objectives": [
-                {"id": "econ_70", "type": "stat_target", "stat": "Economy", "target": 70, "completed": False, "description": "Zwiększ gospodarkę królestwa do 70 punktów."},
-                {"id": "unanimous_vote_1", "type": "unanimous_vote", "completed": False, "description": "Wszyscy członkowie twojej frakcji głosują tak samo w dylemacie."}
+                {"id": "econ_75", "type": "stat_target", "stat": "Economy", "target": 75, "completed": False, "description": "Zwiększ gospodarkę królestwa do 75 punktów (Złoty Wiek)."},
+                {"id": "unanimous_vote_1", "type": "unanimous_vote", "count": 1, "completed": False, "description": "Wszyscy członkowie twojej frakcji głosują tak samo w 1 dylemacie (Jedność Gildii)."},
+                {"id": "pass_econ_policies_3", "type": "policies_passed", "stat": "Economy", "count": 3, "completed": False, "description": "Pomyślnie przeprowadź 3 polityki, które pozytywnie wpływają na Gospodarkę (Mistrzowie Negocjacji)."},
+                {"id": "econ_sabotage_stab", "type": "stat_lower", "stat": "Stability", "amount": 15, "completed": False, "description": "Wpłyń na radę, aby obniżyć Stabilność królestwa o 15 punktów w jednej rundzie (Sabotaż Gospodarczy)."},
+                {"id": "winning_statement_2", "type": "winning_statement", "count": 2, "completed": False, "description": "Oświadczenie członka frakcji zostanie wybrane jako zwycięskie w 2 dylematach (Wpływowy Głos)."}
             ]
         },
         "Wysokie Kapłaństwo": {
             "power": "Boska Łaska",
             "players": [],
-            "objectives": [{"id": "faith_70", "type": "stat_target", "stat": "Faith", "target": 70, "completed": False, "description": "Zwiększ wiarę królestwa do 70 punktów."}]
+            "objectives": [
+                {"id": "faith_75", "type": "stat_target", "stat": "Faith", "target": 75, "completed": False, "description": "Zwiększ wiarę królestwa do 75 punktów (Era Wiary)."},
+                {"id": "unanimous_vote_1", "type": "unanimous_vote", "count": 1, "completed": False, "description": "Wszyscy członkowie twojej frakcji głosują tak samo w 1 dylemacie (Jedność Wiary)."},
+                {"id": "pass_faith_policies_3", "type": "policies_passed", "stat": "Faith", "count": 3, "completed": False, "description": "Pomyślnie przeprowadź 3 polityki, które pozytywnie wpływają na Wiarę (Głos Bogów)."},
+                {"id": "faith_purge_econ", "type": "stat_lower", "stat": "Economy", "amount": 15, "completed": False, "description": "Wpłyń na radę, aby obniżyć Gospodarkę królestwa o 15 punktów w jednej rundzie (Czystka Niewiernych)."},
+                {"id": "winning_statement_2", "type": "winning_statement", "count": 2, "completed": False, "description": "Oświadczenie członka frakcji zostanie wybrane jako zwycięskie w 2 dylematach (Proroczy Głos)."}
+            ]
         },
         "Gwardia Królewska": {
             "power": "Utrzymanie Porządku",
             "players": [],
-            "objectives": [{"id": "stab_70", "type": "stat_target", "stat": "Stability", "target": 70, "completed": False, "description": "Zwiększ stabilność królestwa do 70 punktów."}]
+            "objectives": [
+                {"id": "stab_75", "type": "stat_target", "stat": "Stability", "target": 75, "completed": False, "description": "Zwiększ stabilność królestwa do 75 punktów (Królestwo w Pokoju)."},
+                {"id": "unanimous_vote_1", "type": "unanimous_vote", "count": 1, "completed": False, "description": "Wszyscy członkowie twojej frakcji głosują tak samo w 1 dylemacie (Żelazna Dyscyplina)."},
+                {"id": "pass_stab_policies_3", "type": "policies_passed", "stat": "Stability", "count": 3, "completed": False, "description": "Pomyślnie przeprowadź 3 polityki, które pozytywnie wpływają na Stabilność (Prawo i Porządek)."},
+                {"id": "show_of_force_faith", "type": "stat_lower", "stat": "Faith", "amount": 15, "completed": False, "description": "Wpłyń na radę, aby obniżyć Wiarę królestwa o 15 punktów w jednej rundzie (Pokaz Siły)."},
+                {"id": "winning_statement_2", "type": "winning_statement", "count": 2, "completed": False, "description": "Oświadczenie członka frakcji zostanie wybrane jako zwycięskie w 2 dylematach (Głos Autorytetu)."}
+            ]
         },
     }
     
@@ -268,6 +283,9 @@ def create_game(data):
         "event_history": [],
         "gemini_output": {},
         "next_round_votes": [],
+        "policies_passed_counts": {faction_id: {stat: 0 for stat in ["Stability", "Economy", "Faith"]} for faction_id in factions},
+        "winning_statement_counts": {faction_id: 0 for faction_id in factions},
+        "unanimous_vote_counts": {faction_id: 0 for faction_id in factions},
         "join_url": join_url, # Store join URL in game state
     }
     games[game_id] = game
@@ -543,6 +561,9 @@ def resolve_dilemma(game_id, player_comments=None):
     policy_effects = {}
     narrative_consequence = "The council's indecision led to stagnation."
 
+    # Store initial global stats for comparison with stat_lower objectives
+    initial_global_stats = game["global_stats"].copy()
+
     if evaluation_result:
         chosen_policy = evaluation_result.get("chosen_policy", chosen_policy)
         policy_effects = evaluation_result.get("effects", policy_effects)
@@ -552,36 +573,42 @@ def resolve_dilemma(game_id, player_comments=None):
             game["global_stats"][stat] += change
             game["global_stats"][stat] = max(0, min(100, game["global_stats"][stat]))
 
+            # Update policies_passed objectives
+            if change > 0: # Only count policies that positively affect a stat
+                for faction_id in game["factions"]:
+                    for objective in game["factions"][faction_id]["objectives"]:
+                        if objective["type"] == "policies_passed" and objective["stat"] == stat:
+                            game["policies_passed_counts"][faction_id][stat] += 1
+                            print(f"[DEBUG] Faction {faction_id} policies_passed for {stat}: {game['policies_passed_counts'][faction_id][stat]}")
+
     # Check for objective completion
     winning_faction = None
     for faction_id, faction_data in game["factions"].items():
         all_objectives_completed = True
         for objective in faction_data["objectives"]:
-                if not objective["completed"]:
-                    if objective["type"] == "stat_target":
-                        if game["global_stats"][objective["stat"]] >= objective["target"]:
-                            objective["completed"] = True
-                            print(f"[DEBUG] Faction {faction_id} completed objective: {objective['description']}")
-                    elif objective["type"] == "unanimous_vote":
-                        # Check if all faction members voted for the same statement
-                        faction_players = [p_id for p_id in game["players"] if game["players"][p_id]["faction"] == faction_id]
-                        
-                        if len(faction_players) > 1: # Only check if there's more than one player in the faction
-                            first_player_vote = game["players"][faction_players[0]].get("statement_vote")
-                            if first_player_vote: # Only check if the first player actually voted
-                                all_voted_same = True
-                                for p_id in faction_players[1:]:
-                                    if game["players"][p_id].get("statement_vote") != first_player_vote:
-                                        all_voted_same = False
-                                        break
-                                if all_voted_same:
-                                    objective["completed"] = True
-                                    print(f"[DEBUG] Faction {faction_id} completed objective: {objective['description']}")
-                    # Add other objective types here
-                    else:
-                        all_objectives_completed = False # If any objective is not completed, and not stat_target
+            if not objective["completed"]:
+                if objective["type"] == "stat_target":
+                    if game["global_stats"][objective["stat"]] >= objective["target"]:
+                        objective["completed"] = True
+                        print(f"[DEBUG] Faction {faction_id} completed objective: {objective['description']}")
+                elif objective["type"] == "unanimous_vote":
+                    if game["unanimous_vote_counts"][faction_id] >= objective["count"]:
+                        objective["completed"] = True
+                        print(f"[DEBUG] Faction {faction_id} completed objective: {objective['description']}")
+                elif objective["type"] == "policies_passed":
+                    if game["policies_passed_counts"][faction_id][objective["stat"]] >= objective["count"]:
+                        objective["completed"] = True
+                        print(f"[DEBUG] Faction {faction_id} completed objective: {objective['description']}")
+                elif objective["type"] == "stat_lower":
+                    if initial_global_stats[objective["stat"]] - game["global_stats"][objective["stat"]] >= objective["amount"]:
+                        objective["completed"] = True
+                        print(f"[DEBUG] Faction {faction_id} completed objective: {objective['description']}")
+                elif objective["type"] == "winning_statement":
+                    if game["winning_statement_counts"][faction_id] >= objective["count"]:
+                        objective["completed"] = True
+                        print(f"[DEBUG] Faction {faction_id} completed objective: {objective['description']}")
                 
-                if not objective["completed"]: # If any objective is not completed, then all_objectives_completed is false
+                if not objective["completed"]:
                     all_objectives_completed = False
                     break
         
@@ -746,6 +773,26 @@ def handle_player_action(data):
                 "name": game["players"][winning_player_id]["name"],
             }
             game["winning_statement"] = winning_statement # Store winning statement in game
+
+            # Update winning_statement objectives
+            winning_faction_id = game["players"][winning_player_id]["faction"]
+            if winning_faction_id:
+                game["winning_statement_counts"][winning_faction_id] += 1
+                print(f"[DEBUG] Faction {winning_faction_id} winning_statement count: {game['winning_statement_counts'][winning_faction_id]}")
+
+            # Update unanimous_vote objectives
+            for faction_id, faction_data in game["factions"].items():
+                faction_players = [p_id for p_id in game["players"] if game["players"][p_id]["faction"] == faction_id and game["players"][p_id].get("statement_vote")]
+                if faction_players: # Only check if there are players in the faction who voted
+                    first_player_vote = game["players"][faction_players[0]].get("statement_vote")
+                    all_voted_same = True
+                    for p_id in faction_players[1:]:
+                        if game["players"][p_id].get("statement_vote") != first_player_vote:
+                            all_voted_same = False
+                            break
+                    if all_voted_same:
+                        game["unanimous_vote_counts"][faction_id] += 1
+                        print(f"[DEBUG] Faction {faction_id} unanimous_vote count: {game['unanimous_vote_counts'][faction_id]}")
 
             # Emit voting results to the host
             emit(
