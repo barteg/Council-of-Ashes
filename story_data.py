@@ -229,12 +229,42 @@ def generate_dilemma_with_gemini(model, game_state):
                 with open("dilemma.json", "w", encoding="utf-8") as f:
                     json.dump(parsed_json, f, ensure_ascii=False, indent=2) # Write validated JSON
                 return True
-            except json.JSONDecodeError as e:
-                print(f"[ERROR] Failed to parse JSON from Gemini response: {e}")
-                print(f"[ERROR] Malformed JSON string: {json_string}")
-                return False
         else:
             return False
     except Exception as e:
         print(f"Error calling Gemini API: {e}")
         return False
+
+MODERATION_PROMPT_STATIC = """Jesteś moderatorem w grze symulacyjnej politycznej „Rada Popiołów”. Twoim zadaniem jest analiza wypowiedzi gracza i ustalenie, czy łamie ona zasady gry.
+
+Zasady są następujące:
+1. Gracze nie mogą wprost ujawniać przynależności do frakcji.
+2. Gracze nie mogą wprost koordynować głosów ani strategii gry w swoich wypowiedziach.
+3. Gracze nie mogą odnosić się do mechanik gry, takich jak „statystyki globalne”, „punkty” czy „cele”.
+
+Przeanalizuj poniższą wypowiedź i odpowiedz obiektem JSON zawierającym dwa pola:
+- „is_valid”: wartość logiczna (prawda lub fałsz) wskazująca, czy wypowiedź jest prawidłowa.
+- „reason”: ciąg znaków wyjaśniający, dlaczego wypowiedź jest nieprawidłowa (jeśli dotyczy).
+
+Wypowiedź gracza:
+„{player_input}”
+"""
+
+def validate_player_input_with_gemini(model, player_input):
+    prompt = MODERATION_PROMPT_STATIC.format(player_input=player_input)
+    try:
+        response = model.generate_content(prompt)
+        if not response.candidates:
+            return {"is_valid": False, "reason": "Nie udało się zweryfikować wypowiedzi."}
+
+        candidate = response.candidates[0]
+        if candidate.finish_reason != 'STOP':
+            return {"is_valid": False, "reason": "Nie udało się zweryfikować wypowiedzi."}
+
+        gemini_text = candidate.content.parts[0].text
+        
+        # The response should be a JSON object, so we can parse it directly
+        return json.loads(gemini_text)
+    except Exception as e:
+        print(f"Error calling Gemini API for input validation: {e}")
+        return {"is_valid": False, "reason": "Wystąpił błąd podczas walidacji wypowiedzi."}

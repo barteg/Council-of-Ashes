@@ -12,6 +12,7 @@ from story_data import (
     EVENT_GENERATION_PROMPT_STATIC,
     OUTCOME_NARRATIVE_PROMPT_STATIC,
     evaluate_player_statements_with_gemini,
+    validate_player_input_with_gemini,
 )
 import io
 
@@ -715,6 +716,12 @@ def handle_player_action(data):
         if game["state"] != "DILEMMA":
             return
         statement = data.get("statement")
+        
+        validation_result = validate_player_input_with_gemini(model, statement)
+        if not validation_result["is_valid"]:
+            emit("error", {"message": f"Invalid statement: {validation_result['reason']}"}, room=request.sid)
+            return
+
         game["players"][player_id]["statement"] = statement
         game["players"][player_id]["action_status"] = (
             "done"  # Player submitted statement
@@ -816,6 +823,12 @@ def handle_player_action(data):
         comment = data.get(
             "comment", ""
         )  # Get comment, default to empty string if not provided
+
+        validation_result = validate_player_input_with_gemini(model, comment)
+        if not validation_result["is_valid"]:
+            emit("error", {"message": f"Invalid comment: {validation_result['reason']}"}, room=request.sid)
+            return
+
         game["players"][player_id]["comment"] = comment
         game["players"][player_id]["action_status"] = "done"
 
