@@ -41,6 +41,7 @@ Twoja odpowiedź **MUSI** być **TYLKO** obiektem JSON o następującej struktur
 8.  **Ścieżki do obrazów:** Jeśli dołączasz pole `image`, załóż, że obrazy znajdują się w `/static/images/` i podaj odpowiednią nazwę pliku (np. `famine.png`, `rebellion.jpg`).
 9.  **Postęp rundy:** Upewnij się, że wydarzenia sprawiają wrażenie ciągłej historii, a nie zaizolowanych incydentów.
 10. **Napięcie między frakcjami:** W swojej narracji napomknij o trwających napięciach lub sojuszach między frakcjami, zwłaszcza jeśli `previous_dilemma_outcome.faction_votes` pokazuje niezgodę.
+11. **NIGDY nie podawaj dokładnych liczb obecnych statystyk. Ogranicz się do stwierdzeń typu „wzrosło/zmalało”.**
 """
 
 # Static part of the Gemini prompt for outcome narrative generation
@@ -80,6 +81,7 @@ Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
 7.  **Odzwierciedlaj statystyki:** **MUSISZ** jasno i **DOKŁADNIE** wskazać, jak zmieniły się `global_stats` i co to oznacza dla królestwa, łącząc to z działaniami graczy. **NIGDY nie wymyślaj ani nie zmieniaj wartości liczbowych statystyk.** Twoim zadaniem jest interpretowanie znaczenia tych liczb dla królestwa, a nie ich generowanie. Używaj tylko tych liczb, które zostały podane w `game_state`.
 8.  **Zapowiadaj:** Daj subtelną wskazówkę, co może nastąpić dalej, wynikającą z obecnych wydarzeń.
 9.  **Wciągający ton:** Utrzymuj dramatyczny i wciągający ton odpowiedni dla politycznej gry strategicznej.
+10. **NIGDY nie podawaj dokładnych liczb obecnych statystyk. Ogranicz się do stwierdzeń typu „wzrosło/zmalało”.**
 """
 
 # --- Gemini API Interaction ---
