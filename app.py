@@ -212,9 +212,24 @@ def create_game(data):
 
     players = {}
     factions = {
-        "Syndykat Kupiecki": {"power": "Mistrzostwo Handlu", "players": []},
-        "Wysokie Kapłaństwo": {"power": "Boska Łaska", "players": []},
-        "Gwardia Królewska": {"power": "Utrzymanie Porządku", "players": []},
+        "Syndykat Kupiecki": {
+            "power": "Mistrzostwo Handlu",
+            "players": [],
+            "objectives": [
+                {"id": "econ_70", "type": "stat_target", "stat": "Economy", "target": 70, "completed": False, "description": "Zwiększ gospodarkę królestwa do 70 punktów."},
+                {"id": "unanimous_vote_1", "type": "unanimous_vote", "completed": False, "description": "Wszyscy członkowie twojej frakcji głosują tak samo w dylemacie."}
+            ]
+        },
+        "Wysokie Kapłaństwo": {
+            "power": "Boska Łaska",
+            "players": [],
+            "objectives": [{"id": "faith_70", "type": "stat_target", "stat": "Faith", "target": 70, "completed": False, "description": "Zwiększ wiarę królestwa do 70 punktów."}]
+        },
+        "Gwardia Królewska": {
+            "power": "Utrzymanie Porządku",
+            "players": [],
+            "objectives": [{"id": "stab_70", "type": "stat_target", "stat": "Stability", "target": 70, "completed": False, "description": "Zwiększ stabilność królestwa do 70 punktów."}]
+        },
     }
     
     # Pre-populate player slots with default data
@@ -532,6 +547,53 @@ def resolve_dilemma(game_id, player_comments=None):
         for stat, change in policy_effects.items():
             game["global_stats"][stat] += change
             game["global_stats"][stat] = max(0, min(100, game["global_stats"][stat]))
+
+    # Check for objective completion
+    winning_faction = None
+    for faction_id, faction_data in game["factions"].items():
+        all_objectives_completed = True
+        for objective in faction_data["objectives"]:
+                if not objective["completed"]:
+                    if objective["type"] == "stat_target":
+                        if game["global_stats"][objective["stat"]] >= objective["target"]:
+                            objective["completed"] = True
+                            print(f"[DEBUG] Faction {faction_id} completed objective: {objective['description']}")
+                    elif objective["type"] == "unanimous_vote":
+                        # Check if all faction members voted for the same statement
+                        faction_players = [p_id for p_id in game["players"] if game["players"][p_id]["faction"] == faction_id]
+                        
+                        if len(faction_players) > 1: # Only check if there's more than one player in the faction
+                            first_player_vote = game["players"][faction_players[0]].get("statement_vote")
+                            if first_player_vote: # Only check if the first player actually voted
+                                all_voted_same = True
+                                for p_id in faction_players[1:]:
+                                    if game["players"][p_id].get("statement_vote") != first_player_vote:
+                                        all_voted_same = False
+                                        break
+                                if all_voted_same:
+                                    objective["completed"] = True
+                                    print(f"[DEBUG] Faction {faction_id} completed objective: {objective['description']}")
+                    # Add other objective types here
+                    else:
+                        all_objectives_completed = False # If any objective is not completed, and not stat_target
+                
+                if not objective["completed"]: # If any objective is not completed, then all_objectives_completed is false
+                    all_objectives_completed = False
+                    break
+        
+        if all_objectives_completed:
+            winning_faction = faction_id
+            break
+
+    if winning_faction:
+        game["state"] = "GAME_OVER"
+        emit(
+            "game_over",
+            {"winner": {"name": winning_faction}, "reason": f"The {winning_faction} has achieved its objectives!"},
+            room=game_id,
+            broadcast=True,
+        )
+        return
 
     # Check for lose condition (kingdom collapse)
     if any(stat <= 0 for stat in game["global_stats"].values()):
