@@ -252,7 +252,7 @@ def create_game(data):
     # Generate a single join URL
     join_url = f"/join/{game_id}"
 
-    games[game_id] = {
+    game = {
         "host_sid": request.sid,
         "players": players,
         "factions": factions,
@@ -270,6 +270,7 @@ def create_game(data):
         "next_round_votes": [],
         "join_url": join_url, # Store join URL in game state
     }
+    games[game_id] = game
     join_room(game_id)
     emit(
         "game_created",
