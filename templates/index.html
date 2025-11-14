@@ -50,8 +50,19 @@
 
         <div id="hostControl" class="floating-element mb-4" style="display: none;">
             <div class="row">
-                <!-- Left Column: Game State & Narrative -->
-                <div class="col-md-8">
+                <!-- New Left Column: Faction Progress -->
+                <div class="col-md-3">
+                    <!-- Faction Objectives Host Section -->
+                    <div id="factionObjectivesHostSection" class="floating-element mb-4" style="display: none;">
+                        <h5>Faction Objectives:</h5>
+                        <div id="factionObjectiveHostList">
+                            <!-- Faction objectives will be listed here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Middle Column: Game State & Narrative -->
+                <div class="col-md-6">
                     <div class="floating-element mb-4">
                         <h5>Narrative:</h5>
                         <p id="hostNarrative"></p>
@@ -79,14 +90,6 @@
                         </div>
                     </div>
 
-                    <!-- Faction Objectives Host Section -->
-                    <div id="factionObjectivesHostSection" class="floating-element mb-4" style="display: none;">
-                        <h5>Faction Objectives:</h5>
-                        <div id="factionObjectiveHostList">
-                            <!-- Faction objectives will be listed here -->
-                        </div>
-                    </div>
-
                     <div id="statementVotingResultsDisplay" class="floating-element mb-4" style="display: none;">
                         <h5>Statement Voting Results:</h5>
                         <div id="statementVoteCounts"></div>
@@ -107,7 +110,7 @@
                 </div>
 
                 <!-- Right Column: Player Management & Controls -->
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <!-- Player Comments Display -->
                     <div id="playerCommentsDisplay" class="floating-element mb-4" style="display: none;">
                         <h5>Player Comments:</h5>

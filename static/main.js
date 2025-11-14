@@ -727,19 +727,12 @@ if (gameId && playerId) {
         }
 
         // Host specific UI updates
-        console.log("hostControl element:", hostControl);
         if (document.getElementById('hostControl')) {
             if (hostControl) hostControl.style.display = 'block';
             
-            console.log("Updating faction objectives for host");
             const factionObjectivesHostSection = document.getElementById('factionObjectivesHostSection');
             const factionObjectiveHostList = document.getElementById('factionObjectiveHostList');
-            console.log("factionObjectivesHostSection:", factionObjectivesHostSection);
-            console.log("factionObjectiveHostList:", factionObjectiveHostList);
-            console.log("game_state.factions:", game_state.factions);
-
             if (factionObjectivesHostSection && factionObjectiveHostList && game_state.factions) {
-                console.log("All conditions met, rendering host objectives");
                 factionObjectivesHostSection.style.display = 'block';
                 factionObjectiveHostList.innerHTML = ''; // Clear previous objectives
 
