@@ -280,6 +280,8 @@ def create_game(data):
             "factions": factions,
         },
     )
+    # Emit game_state_sync to the host
+    emit("game_state_sync", game)
 
 
 @socketio.on("join_game")
