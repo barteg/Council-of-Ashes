@@ -225,7 +225,7 @@ socket.on('game_event', async (data) => {
             document.getElementById('hostNarrative').textContent = dilemma.description;
             
             try {
-                await playNarration(dilemma.description); // AI NARRATOR
+                await playNarration(dilemma.narrative_prompt); // AI NARRATOR
             } catch (error) {
                 console.error("Failed to play narration:", error);
             } finally {
@@ -355,6 +355,20 @@ if (gameId && playerId) {
             socket.emit('player_ready', { game_id: gameId, player_id: playerId });
             readyBtn.textContent = 'Waiting for other players...';
             readyBtn.disabled = true;
+        });
+    }
+
+    const toggleFactionBtn = document.getElementById('toggleFactionBtn');
+    const factionNameSpan = document.getElementById('factionName');
+    if (toggleFactionBtn && factionNameSpan) {
+        toggleFactionBtn.addEventListener('click', () => {
+            if (factionNameSpan.style.display === 'none') {
+                factionNameSpan.style.display = 'inline';
+                toggleFactionBtn.textContent = 'Hide Faction';
+            } else {
+                factionNameSpan.style.display = 'none';
+                toggleFactionBtn.textContent = 'Show Faction';
+            }
         });
     }
 
@@ -608,6 +622,39 @@ if (gameId && playerId) {
             const player = game_state.players[playerId];
             if (playerNameSpan) playerNameSpan.textContent = player.name;
             updatePersonalStats(player);
+
+            // Update faction name
+            const factionNameSpan = document.getElementById('factionName');
+            if (factionNameSpan && player.faction) {
+                factionNameSpan.textContent = `Faction: ${player.faction}`;
+            }
+
+            // Update faction objectives
+            console.log("Updating faction objectives for player");
+            const factionObjectivesSection = document.getElementById('factionObjectivesSection');
+            const factionObjectiveList = document.getElementById('factionObjectiveList');
+            console.log("factionObjectivesSection:", factionObjectivesSection);
+            console.log("factionObjectiveList:", factionObjectiveList);
+            console.log("player.faction:", player.faction);
+            console.log("game_state.factions:", game_state.factions);
+
+            if (factionObjectivesSection && factionObjectiveList && player.faction && game_state.factions[player.faction]) {
+                console.log("All conditions met, rendering objectives");
+                factionObjectivesSection.style.display = 'block';
+                factionObjectiveList.innerHTML = ''; // Clear previous objectives
+
+                const factionData = game_state.factions[player.faction];
+                factionData.objectives.forEach(objective => {
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('list-group-item');
+                    listItem.textContent = objective.description;
+                    if (objective.completed) {
+                        listItem.classList.add('list-group-item-success');
+                        listItem.innerHTML += ' &#10003;'; // Checkmark
+                    }
+                    factionObjectiveList.appendChild(listItem);
+                });
+            }
         }
         if (currentRoundSpan) currentRoundSpan.textContent = game_state.current_round;
 
@@ -676,7 +723,24 @@ if (gameId && playerId) {
         // Host specific UI updates
         if (document.getElementById('hostControl')) {
             if (hostControl) hostControl.style.display = 'block';
-            // Additional host-specific elements might need to be shown/hidden
+            
+            const factionObjectivesHostSection = document.getElementById('factionObjectivesHostSection');
+            const factionObjectiveHostList = document.getElementById('factionObjectiveHostList');
+            if (factionObjectivesHostSection && factionObjectiveHostList && game_state.factions) {
+                factionObjectivesHostSection.style.display = 'block';
+                factionObjectiveHostList.innerHTML = ''; // Clear previous objectives
+
+                for (const factionId in game_state.factions) {
+                    const factionData = game_state.factions[factionId];
+                    const completedObjectives = factionData.objectives.filter(obj => obj.completed).length;
+                    const totalObjectives = factionData.objectives.length;
+
+                    const factionProgressDiv = document.createElement('div');
+                    factionProgressDiv.classList.add('mb-2');
+                    factionProgressDiv.innerHTML = `<h6>${factionId}: ${completedObjectives}/${totalObjectives}</h6>`;
+                    factionObjectiveHostList.appendChild(factionProgressDiv);
+                }
+            }
         }
     });
 }
