@@ -938,7 +938,7 @@ if (createGameBtn) {
             if (statementVotingResultsDisplay) statementVotingResultsDisplay.style.display = 'none'; // Hide statement voting results
             if (playerStatementsDiv) playerStatementsDiv.style.display = 'none'; // Hide player statements
             playerCommentsDisplay.style.display = 'block'; // Show comments section
-            commentList.innerHTML = '<h5>Player Comments:</h5>'; // Clear and add a title
+            commentList.innerHTML = ''; // Clear and add a title
 
             for (const pid in data.comments) {
                 const commentData = data.comments[pid];
