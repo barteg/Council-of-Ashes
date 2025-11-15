@@ -12,16 +12,16 @@ function showLoadingScreen(isPlayerView = false) {
     const loadingMessage = document.getElementById('loadingMessage');
 
     const funnyMessages = [
-        "Reticulating splines...",
-        "Generating witty dialog...",
-        "Sharpening pitchforks...",
-        "Consulting the elder gods...",
-        "Polishing the monocles...",
-        "Herding cats...",
-        "Counting to infinity (twice)...",
-        "Brewing coffee...",
-        "Definitely not stealing your data...",
-        "Convincing the hamsters to run faster..."
+        "Retikulacja splajnów...",
+        "Generowanie dowcipnych dialogów...",
+        "Ostrzenie wideł...",
+        "Konsultowanie się ze starszymi bogami...",
+        "Polerowanie monokli...",
+        "Zaganianie kotów...",
+        "Liczenie do nieskończoności (dwa razy)...",
+        "Parzenie kawy...",
+        "Zdecydowanie nie kradniemy twoich danych...",
+        "Przekonywanie chomików do szybszego biegu..."
     ];
 
     if (loadingMessage) {
@@ -142,7 +142,7 @@ function updateHostFactionObjectives(factions) {
             factionDiv.classList.add('floating-element', 'mb-4');
             factionDiv.innerHTML = `
                 <h5>${factionId}</h5>
-                <p>${completedObjectives} / ${totalObjectives} objectives completed</p>
+                <p>${completedObjectives} / ${totalObjectives} celów ukończonych</p>
             `;
             factionObjectivesContainer.appendChild(factionDiv);
         }
@@ -342,7 +342,7 @@ if (gameId && playerId) {
     if (readyBtn) {
         readyBtn.addEventListener('click', () => {
             socket.emit('player_ready', { game_id: gameId, player_id: playerId });
-            readyBtn.textContent = 'Waiting for other players...';
+            readyBtn.textContent = 'Oczekiwanie na innych graczy...';
             readyBtn.disabled = true;
         });
     }
@@ -355,11 +355,11 @@ if (gameId && playerId) {
             if (factionNameSpan.style.display === 'none') {
                 factionNameSpan.style.display = 'inline';
                 factionObjectivesSection.style.display = 'block';
-                toggleFactionBtn.textContent = 'Hide Faction';
+                toggleFactionBtn.textContent = 'Ukryj Frakcję';
             } else {
                 factionNameSpan.style.display = 'none';
                 factionObjectivesSection.style.display = 'none';
-                toggleFactionBtn.textContent = 'Show Faction';
+                toggleFactionBtn.textContent = 'Pokaż Frakcję';
             }
         });
     }
@@ -570,11 +570,11 @@ if (gameId && playerId) {
         const winnerInfo = document.getElementById('winnerInfo');
 
         if (data.winner) {
-            winnerInfo.textContent = `${data.winner.name} has achieved total domination!`;
+            winnerInfo.textContent = `${data.winner.name} osiągnął całkowitą dominację!`;
         } else if (data.reason) {
             winnerInfo.textContent = data.reason;
         } else {
-            winnerInfo.textContent = 'The game has ended.';
+            winnerInfo.textContent = 'Gra się zakończyła.';
         }
         gameOverScreen.style.display = 'block';
     });
@@ -614,7 +614,7 @@ if (gameId && playerId) {
             // Update faction name
             const factionNameSpan = document.getElementById('factionName');
             if (factionNameSpan && player.faction) {
-                factionNameSpan.textContent = `Faction: ${player.faction}`;
+                factionNameSpan.textContent = `Frakcja: ${player.faction}`;
             }
 
             // Update faction objectives
@@ -859,7 +859,7 @@ if (createGameBtn) {
             if (statementVotingResultsDisplay && data.statement_vote_counts && data.players) {
                 statementVotingResultsDisplay.style.display = 'block';
                 const statementVoteCountsDiv = document.getElementById('statementVoteCounts');
-                statementVoteCountsDiv.innerHTML = '<h6>Statement Vote Distribution:</h6>';
+                statementVoteCountsDiv.innerHTML = '<h6>Rozkład Głosów na Oświadczenia:</h6>';
                 const statementVoteList = document.createElement('ul');
                 statementVoteList.classList.add('list-group');
 
@@ -868,7 +868,7 @@ if (createGameBtn) {
                 for (const pid in data.players) {
                     playerInfo[pid] = {
                         name: data.players[pid].name,
-                        statement: data.players[pid].statement || 'No statement submitted'
+                        statement: data.players[pid].statement || 'Brak oświadczenia'
                     };
                 }
 
@@ -876,7 +876,7 @@ if (createGameBtn) {
                     const votes = data.statement_vote_counts[pid];
                     const listItem = document.createElement('li');
                     listItem.classList.add('list-group-item');
-                    let statementText = `${playerInfo[pid].name}: "${playerInfo[pid].statement}" - ${votes} votes`;
+                    let statementText = `${playerInfo[pid].name}: "${playerInfo[pid].statement}" - ${votes} głosów`;
                     listItem.innerHTML = statementText;
                     statementVoteList.appendChild(listItem);
                 }
@@ -973,7 +973,7 @@ if (createGameBtn) {
                                     const statementText = `${statementData.statement}`; // Changed this line
                 const listItem = document.createElement('li');
                 listItem.classList.add('list-group-item');
-                listItem.innerHTML = `${statementText} - ${voteCount} votes`;
+                listItem.innerHTML = `${statementText} - ${voteCount} głosów`;
                 if (data.winning_statement.player_id === playerId) {
                     listItem.classList.add('list-group-item-success');
                 }

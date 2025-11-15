@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Game - Council of Ashes</title>
+    <title>Dołącz do Gry - Rada Popiołów</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -12,12 +12,12 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="floating-element text-center">
-                    <h1 class="mb-4">Join Game</h1>
-                    <p>Enter your name to join the game.</p>
+                    <h1 class="mb-4">Dołącz do Gry</h1>
+                    <p>Wpisz swoje imię, aby dołączyć do gry.</p>
                     <div class="form-group">
-                        <input type="text" id="playerNameInput" class="form-control" placeholder="Your Name" required>
+                        <input type="text" id="playerNameInput" class="form-control" placeholder="Twoje Imię" required>
                     </div>
-                    <button id="joinGameBtn" class="btn btn-primary btn-block">Join Game</button>
+                    <button id="joinGameBtn" class="btn btn-primary btn-block">Dołącz do Gry</button>
                     <p id="errorMessage" class="text-danger mt-3" style="display: none;"></p>
                 </div>
             </div>
@@ -48,7 +48,7 @@
             if (playerName) {
                 socket.emit('join_game', { game_id: gameId, player_name: playerName });
             } else {
-                errorMessage.textContent = "Please enter your name.";
+                errorMessage.textContent = "Proszę podać swoje imię.";
                 errorMessage.style.display = 'block';
             }
         });

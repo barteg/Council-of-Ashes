@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Controller - Game {{ game_id }}</title>
+    <title>Kontroler Gracza - Gra {{ game_id }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
@@ -27,14 +27,14 @@
             <div>
                 <span id="factionName" style="display: none;"></span>
                 <div id="factionObjectivesSection" style="display: none;">
-                    <h6>Faction Objectives:</h6>
+                    <h6>Cele Frakcji:</h6>
                     <ul id="factionObjectiveList" class="list-group">
                         <!-- Objectives will be populated here -->
                     </ul>
                 </div>
-                <button id="toggleFactionBtn" class="btn btn-sm btn-secondary">Show Faction</button>
+                <button id="toggleFactionBtn" class="btn btn-sm btn-secondary">Pokaż Frakcję</button>
             </div>
-            <p><strong>Round:</strong> <span id="currentRound">{{ current_round }}</span></p>
+            <p><strong>Runda:</strong> <span id="currentRound">{{ current_round }}</span></p>
         </div>
 
         <div id="gameArea" style="display: none;">
@@ -42,26 +42,26 @@
                 <!-- Dilemma Section -->
                 <div id="dilemmaSection" class="floating-element" style="display: none;">
                     <h2 id="dilemmaTitle"></h2>
-                    <img id="dilemmaImage" src="" alt="Dilemma Image" class="img-fluid mb-3" style="display: none;">
+                    <img id="dilemmaImage" src="" alt="Obrazek Dylematu" class="img-fluid mb-3" style="display: none;">
                     <p id="dilemmaDescription"></p>
-                    <small class="form-text text-muted" style="display: none;">Double-click your choice to confirm.</small>
+                    <small class="form-text text-muted" style="display: none;">Kliknij dwukrotnie, aby potwierdzić wybór.</small>
                 </div>
 
                 <!-- Player Statements Section -->
                 <div id="playerStatementsSection" class="floating-element" style="display: none;">
-                    <h5>Your Statement</h5>
+                    <h5>Twoje Oświadczenie</h5>
                     <div id="statementInputArea">
                         <textarea id="playerStatementInput" class="form-control" rows="3"></textarea>
-                        <button id="submitStatementBtn" class="btn btn-primary mt-2">Submit Statement</button>
+                        <button id="submitStatementBtn" class="btn btn-primary mt-2">Zatwierdź Oświadczenie</button>
                     </div>
                     <div id="statementSubmitted" style="display: none;">
-                        <p class="text-success">Statement Submitted</p>
+                        <p class="text-success">Oświadczenie Zatwierdzone</p>
                     </div>
                 </div>
 
                 <!-- Faction Objectives Section -->
                 <div id="factionObjectivesSection" class="floating-element" style="display: none;">
-                    <h5>Your Faction Objectives:</h5>
+                    <h5>Twoje Cele Frakcji:</h5>
                     <ul id="factionObjectiveList" class="list-group">
                         <!-- Objectives will be listed here -->
                     </ul>
@@ -69,7 +69,7 @@
 
                 <!-- Statement Voting Section -->
                 <div id="statementVoteSection" class="floating-element" style="display: none;">
-                    <h5>Vote for a Statement</h5>
+                    <h5>Głosuj na Oświadczenie</h5>
                     <ul id="statementVoteList" class="list-group">
                         <!-- Statements for voting will be rendered here -->
                     </ul>
@@ -77,7 +77,7 @@
 
                 <!-- Player Statement Results Section -->
                 <div id="playerStatementResultsSection" class="floating-element" style="display: none;">
-                    <h5>Statement Voting Results</h5>
+                    <h5>Wyniki Oświadczeń Graczy</h5>
                     <div id="statementResultsList" class="list-group">
                         <!-- Statement voting results will be rendered here -->
                     </div>
@@ -85,15 +85,15 @@
                 
                 <!-- Comment Phase Section -->
                 <div id="commentPhaseSection" class="floating-element" style="display: none;">
-                    <h5>Your Comment on the Results</h5>
+                    <h5>Twój Komentarz do Wyników</h5>
                     <textarea id="playerCommentInput" class="form-control" rows="3"></textarea>
-                    <button id="submitCommentBtn" class="btn btn-primary mt-2">Submit Comment</button>
+                    <button id="submitCommentBtn" class="btn btn-primary mt-2">Zatwierdź Komentarz</button>
                 </div>
 
                 <!-- Narrative Output and Next Round Button -->
                 <div id="narrativeOutput" class="floating-element" style="display: none;">
                     <p id="narrativeText"></p>
-                    <button id="nextRoundBtn" class="btn btn-primary mt-3" style="display: none;">Next Event</button>
+                    <button id="nextRoundBtn" class="btn btn-primary mt-3" style="display: none;">Następne Wydarzenie</button>
                 </div>
             </div>
         </div>
@@ -104,8 +104,8 @@
         </div>
 
         <div id="waitingRoom" class="text-center">
-            <h2>Waiting Room</h2>
-            <button id="readyBtn" class="btn btn-primary mt-3">Ready</button>
+            <h2>Poczekalnia</h2>
+            <button id="readyBtn" class="btn btn-primary mt-3">Gotowy</button>
         </div>
     </div>
 
@@ -127,7 +127,7 @@
     <div id="notification-container" style="position: fixed; bottom: 10px; right: 10px; z-index: 1050;"></div>
 
     <div id="reconnectingIndicator" style="display: none; position: fixed; top: 10px; right: 10px; background-color: #ffc107; color: #343a40; padding: 5px 10px; border-radius: 5px; z-index: 10000;">
-        Reconnecting...
+        Ponowne łączenie...
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
