@@ -235,7 +235,7 @@ socket.on('game_event', async (data) => {
             document.getElementById('hostNarrative').textContent = dilemma.description;
             
             try {
-                await playNarration(dilemma.narrative_prompt); // AI NARRATOR
+                await playNarration(dilemma.description); // AI NARRATOR
             } catch (error) {
                 console.error("Failed to play narration:", error);
             } finally {
@@ -277,6 +277,7 @@ socket.on('game_event', async (data) => {
         if (document.getElementById('gameArea')) {
             console.log('[DEBUG] Player Dilemma Object:', dilemma);
             dilemmaTitle.textContent = dilemma.title;
+            dilemmaDescription.textContent = dilemma.description;
 
             const dilemmaSection = document.getElementById('dilemmaSection');
             const playerStatementsSection = document.getElementById('playerStatementsSection');
@@ -627,7 +628,6 @@ if (gameId && playerId) {
 
             if (factionObjectivesSection && factionObjectiveList && player.faction && game_state.factions[player.faction]) {
                 console.log("All conditions met, rendering objectives");
-                factionObjectivesSection.style.display = 'block';
                 factionObjectiveList.innerHTML = ''; // Clear previous objectives
 
                 const factionData = game_state.factions[player.faction];
@@ -753,11 +753,19 @@ function updatePlayerStatusOnHost(player, playerId) {
 
 // For the host page (index.html)
 const createGameBtn = document.getElementById('createGameBtn');
+const backgroundMusic = document.getElementById('backgroundMusic');
+
+if (backgroundMusic) {
+    backgroundMusic.volume = 0.05; // Set volume to a quiet level
+}
 
 if (createGameBtn) {
     createGameBtn.addEventListener('click', () => {
         const numPlayers = document.getElementById('numPlayers').value;
         socket.emit('create_game', { num_players: parseInt(numPlayers) });
+        if (backgroundMusic) {
+            backgroundMusic.play().catch(e => console.error("Error playing background music:", e));
+        }
     });
 
     socket.on('game_created', (data) => {
