@@ -4,3 +4,4 @@ google-generativeai
 eventlet
 TTS
 torchcodec
+requests

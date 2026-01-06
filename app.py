@@ -6,6 +6,7 @@ import random
 import string
 import json
 import socket
+from local_llm import LocalLLMClient
 from story_data import (
     call_gemini_for_outcome_narrative,
     generate_dilemma_with_gemini,
@@ -32,13 +33,19 @@ torch.serialization.add_safe_globals(
 )
 # ----------------------------------------------
 
-# Securely get the API key from the environment
+# LLM Configuration
 api_key = os.getenv("GEMINI_API_KEY")
 
-if not api_key:
-    raise ValueError("GEMINI_API_KEY environment variable not set!")
-
-model = genai.GenerativeModel("gemini-2.5-flash")
+if os.getenv("USE_LOCAL_LLM", "false").lower() == "true":
+    print("[LLM] Using Local LLM for narrative generation.")
+    model = LocalLLMClient()
+elif api_key:
+    print("[LLM] Using Gemini API for narrative generation.")
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-2.5-flash")
+else:
+    print("[LLM] WARNING: No LLM configured (GEMINI_API_KEY missing). Defaulting to Local LLM.")
+    model = LocalLLMClient()
 
 # --- Coqui XTTS v2 Setup ---
 # Determine the device to use
