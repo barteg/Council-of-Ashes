@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  game_app:
+    build: .
+    container_name: council_of_ashes_game
+    ports:
+      - "5000:5000"
+    environment:
+      # You MUST set these environment variables in your .env file or directly here for production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
+    # Mount the tts_models directory as a volume for easier access and potential updates during development
+    # In a production deployment, it might be copied directly into the image to avoid external dependencies.
+    volumes:
+      - .:/app
+    # Ensure the TTS service starts correctly
+    # command: bash -c "python app.py"
+    # The default CMD in Dockerfile is sufficient.

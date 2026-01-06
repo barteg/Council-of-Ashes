@@ -73,7 +73,11 @@ Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
 ## Wskazówki:
 
 1.  **Zwięzłość jest najważniejsza:** Twoim najważniejszym zadaniem jest pisanie krótko. **MUSISZ** ograniczyć `outcome_narrative` do maksymalnie 4-5 zdań. Nie pisz więcej.
-2.  **Narracja napędzana przez graczy:** Cała narracja **MUSI** być zbudowana wokół `player_statements` i `player_comments`. To one są głównym motorem opowieści.
+2.  **Narracja napędzana przez graczy i KARTY AKCJI:** Każde oświadczenie gracza ma przypisaną **Kartę Akcji** (np. Dyplomacja, Szantaż, Demagogia, Sabotaż). **MUSISZ** odzwierciedlić to w opisie zachowania postaci.
+    *   **Dyplomacja:** Opisz gładką, ugodową mowę.
+    *   **Szantaż:** Opisz groźby, wyciąganie brudnych sekretów lub zastraszanie.
+    *   **Demagogia:** Opisz płomienne, populistyczne przemówienie, które porywa tłum, ale może siać nienawiść.
+    *   **Sabotaż:** Opisz działania dywersyjne, chaos lub uciszanie przeciwników.
 3.  **Waga oświadczeń:** `player_statements` mają większą wagę i powinny kształtować kluczowe wydarzenia i decyzje w narracji.
 4.  **Komentarze jako atmosfera:** `player_comments` powinny informować o atmosferze gry, nastrojach między graczami i ogólnym tonie narracji. Użyj ich, aby pokazać reakcje i emocje.
 5.  **Bezpośrednie cytaty:** W narracji używaj bezpośrednich cytatów z komentarzy i oświadczeń graczy, podając ich imiona. Na przykład: "Jak zauważył Gracz A, 'Musimy spalić ich świątynie!', co doprowadziło do..." lub "Komentarz Gracza B, 'Wtf', odzwierciedlał powszechne zaskoczenie...".
@@ -239,36 +243,3 @@ def generate_dilemma_with_gemini(model, game_state):
         print(f"Error calling Gemini API: {e}")
         return False
 
-MODERATION_PROMPT_STATIC = """Jesteś moderatorem w grze symulacyjnej politycznej „Rada Popiołów”. Twoim zadaniem jest analiza wypowiedzi gracza i ustalenie, czy łamie ona zasady gry.
-
-Zasady są następujące:
-1. Gracze nie mogą wprost ujawniać przynależności do frakcji.
-2. Gracze nie mogą wprost koordynować głosów ani strategii gry w swoich wypowiedziach.
-3. Gracze nie mogą odnosić się do mechanik gry, takich jak „statystyki globalne”, „punkty” czy „cele”.
-
-Przeanalizuj poniższą wypowiedź i odpowiedz obiektem JSON zawierającym dwa pola:
-- „is_valid”: wartość logiczna (prawda lub fałsz) wskazująca, czy wypowiedź jest prawidłowa.
-- „reason”: ciąg znaków wyjaśniający, dlaczego wypowiedź jest nieprawidłowa (jeśli dotyczy).
-
-Wypowiedź gracza:
-„{player_input}”
-"""
-
-def validate_player_input_with_gemini(model, player_input):
-    prompt = MODERATION_PROMPT_STATIC.format(player_input=player_input)
-    try:
-        response = model.generate_content(prompt)
-        if not response.candidates:
-            return {"is_valid": False, "reason": "Nie udało się zweryfikować wypowiedzi."}
-
-        candidate = response.candidates[0]
-        if candidate.finish_reason != 'STOP':
-            return {"is_valid": False, "reason": "Nie udało się zweryfikować wypowiedzi."}
-
-        gemini_text = candidate.content.parts[0].text
-        
-        # The response should be a JSON object, so we can parse it directly
-        return json.loads(gemini_text)
-    except Exception as e:
-        print(f"Error calling Gemini API for input validation: {e}")
-        return {"is_valid": False, "reason": "Wystąpił błąd podczas walidacji wypowiedzi."}

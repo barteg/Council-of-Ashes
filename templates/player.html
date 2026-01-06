@@ -47,15 +47,44 @@
                     <small class="form-text text-muted" style="display: none;">Kliknij dwukrotnie, aby potwierdzić wybór.</small>
                 </div>
 
-                <!-- Player Statements Section -->
+                <!-- Player Statements Section (Action Cards) -->
                 <div id="playerStatementsSection" class="floating-element" style="display: none;">
-                    <h5>Twoje Oświadczenie</h5>
+                    <h5>Wybierz Swoją Akcję</h5>
+                    
+                    <!-- Step A: Action Card Selection -->
+                    <div id="actionCardSelection" class="mb-3">
+                        <div class="btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-primary active">
+                                <input type="radio" name="actionCard" value="Diplomacy" autocomplete="off" checked> Dyplomacja (+2 Wpływów)
+                            </label>
+                            <label class="btn btn-outline-danger">
+                                <input type="radio" name="actionCard" value="Blackmail" autocomplete="off"> Szantaż (Kradnij 3 Wpływy)
+                            </label>
+                            <label class="btn btn-outline-warning">
+                                <input type="radio" name="actionCard" value="Demagoguery" autocomplete="off"> Demagogia (+1 Stat, +1 Spite)
+                            </label>
+                            <label class="btn btn-outline-dark">
+                                <input type="radio" name="actionCard" value="Sabotage" autocomplete="off"> Sabotaż (Koszt 3 Spite)
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Target Selection (Hidden by default) -->
+                    <div id="targetSelectionArea" class="form-group" style="display: none;">
+                        <label for="targetPlayerSelect">Wybierz Cel:</label>
+                        <select class="form-control" id="targetPlayerSelect">
+                            <!-- Options populated by JS -->
+                        </select>
+                    </div>
+
+                    <!-- Step B: Text Input -->
                     <div id="statementInputArea">
-                        <textarea id="playerStatementInput" class="form-control" rows="3"></textarea>
-                        <button id="submitStatementBtn" class="btn btn-primary mt-2">Zatwierdź Oświadczenie</button>
+                        <label for="playerStatementInput">Twoje Słowa:</label>
+                        <textarea id="playerStatementInput" class="form-control" rows="3" placeholder="Wpisz swoje oświadczenie..."></textarea>
+                        <button id="submitStatementBtn" class="btn btn-primary mt-2">Zatwierdź Akcję</button>
                     </div>
                     <div id="statementSubmitted" style="display: none;">
-                        <p class="text-success">Oświadczenie Zatwierdzone</p>
+                        <p class="text-success">Akcja Zatwierdzona</p>
                     </div>
                 </div>
 

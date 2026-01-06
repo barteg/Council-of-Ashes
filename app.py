@@ -12,7 +12,6 @@ from story_data import (
     EVENT_GENERATION_PROMPT_STATIC,
     OUTCOME_NARRATIVE_PROMPT_STATIC,
     evaluate_player_statements_with_gemini,
-    validate_player_input_with_gemini,
 )
 import io
 
@@ -52,12 +51,14 @@ print("[TTS] Loading Coqui XTTS v2 model...")
 try:
     model_name = "tts_models/multilingual/multi-dataset/xtts_v2"
     config_path = os.path.join(
-        os.path.expanduser("~"),
-        ".local/share/tts/",
-        model_name.replace("/", "--"),
+        "tts_models",
+        "tts_models--multilingual--multi-dataset--xtts_v2",
         "config.json",
     )
-    model_path = os.path.dirname(config_path)
+    model_path = os.path.join(
+        "tts_models",
+        "tts_models--multilingual--multi-dataset--xtts_v2"
+    )
 
     if not os.path.exists(config_path):
         print(f"[TTS] Model config not found at {config_path}")
@@ -103,6 +104,34 @@ if not app.config["SECRET_KEY"]:
 socketio = SocketIO(app, ping_interval=25, ping_timeout=60)
 
 games = {}
+
+GAMES_FILE = "games_data.json"
+
+def save_games():
+    try:
+        # Create a copy of games to avoid modifying the original while iterating or if we need to filter
+        # For now, we assume everything in 'games' is serializable.
+        with open(GAMES_FILE, "w") as f:
+            json.dump(games, f, indent=4)
+        print(f"[PERSISTENCE] Games saved to {GAMES_FILE}")
+    except Exception as e:
+        print(f"[PERSISTENCE] Error saving games: {e}")
+
+def load_games():
+    global games
+    if os.path.exists(GAMES_FILE):
+        try:
+            with open(GAMES_FILE, "r") as f:
+                games = json.load(f)
+            print(f"[PERSISTENCE] Loaded {len(games)} games from {GAMES_FILE}")
+        except Exception as e:
+            print(f"[PERSISTENCE] Error loading games: {e}")
+            games = {}
+    else:
+        print("[PERSISTENCE] No existing games file found. Starting with empty games.")
+        games = {}
+
+load_games()
 
 
 def generate_game_id():
@@ -259,10 +288,12 @@ def create_game(data):
             "faction": None,
             "choice": None,
             "statements": [],
-            "personal_stats": {"Influence": 50},
+            "personal_stats": {"Influence": 50, "Spite": 0},
             "ready": False,
             "shamed": False,
             "action_status": "empty", # New status for empty slots
+            "current_action": None,
+            "action_target": None,
         }
 
     # Generate a single join URL
@@ -299,10 +330,9 @@ def create_game(data):
             "players": players,
             "factions": factions,
         },
+        room=request.sid,
     )
-    # Emit game_state_sync to the host
-    print(f"[DEBUG] Emitting game_state_sync to host {request.sid}")
-    emit("game_state_sync", game)
+    save_games()
 
 
 @socketio.on("join_game")
@@ -402,6 +432,8 @@ def join_game(data):
         else:
             emit("error", {"message": "Invalid join request."}, room=request.sid)
             return
+            
+        save_games()
     except Exception as e:
         print(f"[ERROR] Exception in join_game handler: {e}")
         import traceback
@@ -425,6 +457,8 @@ def start_game_logic(game_id):
             player["choice"] = None
             player.pop("statement", None)
             player.pop("statement_vote", None)
+            player["current_action"] = None
+            player["action_target"] = None
             player["action_status"] = "waiting"  # Reset action status
             print(f"[DEBUG] Reset player {player_id} for new round.")
 
@@ -468,6 +502,7 @@ def start_game_logic(game_id):
             room=game_id,
             broadcast=True,
         )
+        save_games()
         print("[DEBUG] start_game_logic completed successfully.")
     except Exception as e:
         print(f"[ERROR] Exception in start_game_logic: {e}")
@@ -513,6 +548,8 @@ def player_ready(data):
             start_game_logic(game_id)
         else:
             print("[DEBUG] Not all players are ready or not all slots are filled.")
+        
+        save_games()
     except Exception as e:
         print(f"[ERROR] Exception in player_ready handler: {e}")
         import traceback
@@ -538,13 +575,19 @@ def resolve_dilemma(game_id, player_comments=None):
 
     # Use the winning statement if it exists, otherwise use all statements
     if "winning_statement" in game:
+        # winning_statement already has action_card if set in submit_vote
         player_statements_for_gemini = [game["winning_statement"]]
     else:
         player_statements_for_gemini = []
         for player_id, player_data in game["players"].items():
             if "statement" in player_data:
                 player_statements_for_gemini.append(
-                    {"player_id": player_id, "statement": player_data["statement"], "name": player_data["name"]}
+                    {
+                        "player_id": player_id, 
+                        "statement": player_data["statement"], 
+                        "name": player_data["name"],
+                        "action_card": player_data.get("current_action")
+                    }
                 )
 
     # Call Gemini to evaluate player statements and determine policy/effects
@@ -619,6 +662,7 @@ def resolve_dilemma(game_id, player_comments=None):
 
     if winning_faction:
         game["state"] = "GAME_OVER"
+        save_games()
         emit(
             "game_over",
             {"winner": {"name": winning_faction}, "reason": f"The {winning_faction} has achieved its objectives!"},
@@ -627,27 +671,70 @@ def resolve_dilemma(game_id, player_comments=None):
         )
         return
 
-    # Check for lose condition (kingdom collapse)
-    if any(stat <= 0 for stat in game["global_stats"].values()):
-        game["state"] = "GAME_OVER"
+    # Check for kingdom collapse (The Shaming Logic)
+    collapsed_stats = [stat for stat, val in game["global_stats"].items() if val <= 0]
+    
+    if collapsed_stats:
+        print(f"[GAME] Kingdom Stability Collapse detected! Stats: {collapsed_stats}")
+        
+        # 1. Global Penalty: All players lose 50% Influence
+        for pid, p in game["players"].items():
+            p["personal_stats"]["Influence"] = int(p["personal_stats"]["Influence"] * 0.5)
+            
+        # 2. The Guilty: Identify players who voted for the option that caused the crash.
+        # However, in this system, players vote on *policy* (via dilemmas).
+        # But wait, `resolve_dilemma` calculates the policy based on *statements*.
+        # Players didn't vote on the policy directly in this version?
+        # Let's re-read the flow. 
+        # 1. Players submit statements (Declaration).
+        # 2. Players vote on statements.
+        # 3. Winning statement is used to generate the policy.
+        # So the "Guilty" party is effectively the person who made the winning statement 
+        # AND anyone who voted for them?
+        # The prompt says: "Identify players who voted for the option that caused the crash."
+        # In the current code (Gemini generation), the "policy" is derived from the winning statement.
+        # So the "option" is the winning statement.
+        # Thus, the Guilty are: The Winning Player + Anyone who voted for the Winning Player.
+        
+        guilty_players = []
+        winning_stmt_player = game.get("winning_statement", {}).get("player_id")
+        
+        if winning_stmt_player:
+             guilty_players.append(winning_stmt_player)
+             for pid, p in game["players"].items():
+                 if p.get("statement_vote") == winning_stmt_player:
+                     guilty_players.append(pid)
+        
+        guilty_players = list(set(guilty_players)) # Deduplicate
+        
+        for pid in guilty_players:
+            if pid in game["players"]:
+                 game["players"][pid]["personal_stats"]["Influence"] = 0
+                 game["players"][pid]["shamed"] = True # Mark as shamed for UI
+                 print(f"[GAME] {pid} is GUILTY! Influence reset to 0.")
+
+        # 3. Reset the stat to 1
+        for stat in collapsed_stats:
+            game["global_stats"][stat] = 1
+
         emit(
-            "game_over",
-            {"winner": None, "reason": "The kingdom has collapsed!"},
-            room=game_id,
-            broadcast=True,
+            "kingdom_collapse", 
+            {"collapsed_stats": collapsed_stats, "guilty_players": guilty_players},
+            room=game_id, 
+            broadcast=True
         )
-        return
 
     # Player influence logic (simplified for now, can be expanded later)
     # For now, players who submitted statements gain a small amount of influence
-    for player_id, player_data in game["players"].items():
-        if "statement" in player_data:
-            player_data["personal_stats"]["Influence"] = min(
-                100, player_data["personal_stats"]["Influence"] + 2
-            )
-        player_data["personal_stats"]["Influence"] = max(
-            0, min(100, player_data["personal_stats"]["Influence"])
-        )
+    # (Removed this because scoring is now handled in voting resolution)
+    # for player_id, player_data in game["players"].items():
+    #     if "statement" in player_data:
+    #         player_data["personal_stats"]["Influence"] = min(
+    #             100, player_data["personal_stats"]["Influence"] + 2
+    #         )
+    #     player_data["personal_stats"]["Influence"] = max(
+    #         0, min(100, player_data["personal_stats"]["Influence"])
+    #     )
 
     # Generate outcome narrative using the determined policy and effects
     if call_gemini_for_outcome_narrative(
@@ -694,11 +781,13 @@ def resolve_dilemma(game_id, player_comments=None):
 
     if winner:
         game["state"] = "GAME_OVER"
+        save_games()
         emit("game_over", {"winner": winner}, room=game_id, broadcast=True)
         return
 
     game["dilemma_active"] = False
     game["current_dilemma"] = None
+    save_games()
 
 
 @socketio.on("player_action")
@@ -716,13 +805,27 @@ def handle_player_action(data):
         if game["state"] != "DILEMMA":
             return
         statement = data.get("statement")
-        
-        validation_result = validate_player_input_with_gemini(model, statement)
-        if not validation_result["is_valid"]:
-            emit("error", {"message": f"Invalid statement: {validation_result['reason']}"}, room=request.sid)
+        action_card = data.get("action_card")
+        target_player_id = data.get("target_player_id")
+
+        if "statement" in game["players"][player_id]:
+            emit("error", {"message": "You have already submitted a statement for this round."}, room=request.sid)
             return
 
+        # Sabotage Cost Check
+        if action_card == "Sabotage":
+            if game["players"][player_id]["personal_stats"]["Spite"] < 3:
+                 emit("error", {"message": "Not enough Spite for Sabotage!"}, room=request.sid)
+                 return
+            # Deduct Spite immediately or later? 
+            # Let's deduct later during resolution to be safe, or reserve it.
+            # But simpler to deduct now or check only. Let's strictly check now and deduct in resolution
+            # to avoid double deduction if logic reruns, BUT ensuring they have it is key.
+            # Actually, standard pattern is verify -> lock in.
+        
         game["players"][player_id]["statement"] = statement
+        game["players"][player_id]["current_action"] = action_card
+        game["players"][player_id]["action_target"] = target_player_id
         game["players"][player_id]["action_status"] = (
             "done"  # Player submitted statement
         )
@@ -737,7 +840,7 @@ def handle_player_action(data):
 
         if all_players_submitted:
             statements = {
-                pid: {"statement": p["statement"], "name": f"Player {idx + 1}"}
+                pid: {"statement": p["statement"], "name": f"Player {idx + 1}", "action_card": p.get("current_action")}
                 for idx, (pid, p) in enumerate(game["players"].items())
                 if "statement" in p
             }
@@ -766,14 +869,88 @@ def handle_player_action(data):
         all_players_voted = all("statement_vote" in p for p in game["players"].values())
 
         if all_players_voted:
-            # Tally votes
-            vote_counts = {}
-            for p in game["players"].values():
-                vote = p["statement_vote"]
-                vote_counts[vote] = vote_counts.get(vote, 0) + 1
+            # --- Spite System: Resolution Phase ---
             
-            # Find the winning statement
-            winning_player_id = max(vote_counts, key=vote_counts.get)
+            # 1. Identify Sabotage Targets (Votes received by these players will be voided)
+            sabotaged_players = []
+            for pid, p in game["players"].items():
+                if p.get("current_action") == "Sabotage" and p.get("action_target"):
+                    target = p["action_target"]
+                    # Verify cost again just in case
+                    if p["personal_stats"]["Spite"] >= 3:
+                        sabotaged_players.append(target)
+                        p["personal_stats"]["Spite"] -= 3 # Pay the cost
+                        print(f"[GAME] Player {pid} sabotaged {target}!")
+
+            # 2. Tally Votes
+            vote_counts = {pid: 0 for pid in game["players"]}
+            for p in game["players"].values():
+                vote = p["statement_vote"] # Who they voted for
+                if vote:
+                     # If the person they voted for is sabotaged, the vote doesn't count towards the total
+                     if vote not in sabotaged_players:
+                        vote_counts[vote] += 1
+                     else:
+                        print(f"[GAME] Vote for {vote} nullified by Sabotage.")
+            
+            # 3. Determine Winner
+            # Handle tie: Randomly pick among top
+            max_votes = -1
+            winners = []
+            for pid, count in vote_counts.items():
+                if count > max_votes:
+                    max_votes = count
+                    winners = [pid]
+                elif count == max_votes:
+                    winners.append(pid)
+            
+            winning_player_id = random.choice(winners) if winners else None
+            
+            # 4. Apply Effects
+            for pid, p in game["players"].items():
+                action = p.get("current_action")
+                target = p.get("action_target")
+                votes_received = vote_counts.get(pid, 0)
+                
+                # A. Winner Bonus
+                if pid == winning_player_id:
+                    p["personal_stats"]["Influence"] += 4
+                    print(f"[GAME] {pid} wins the debate! (+4 Infl)")
+
+                # B. Fail Forward (Losers with 0 votes)
+                # Only if they didn't win (in case of 0-0-0 tie where winner has 0)
+                if votes_received == 0 and pid != winning_player_id:
+                    p["personal_stats"]["Spite"] += 1
+                    print(f"[GAME] {pid} received 0 votes. (+1 Spite)")
+
+                # C. Card Effects
+                if action == "Diplomacy":
+                    p["personal_stats"]["Influence"] += 2
+                    print(f"[GAME] {pid} used Diplomacy. (+2 Infl)")
+                
+                elif action == "Blackmail" and target:
+                    # Steal 3 Influence
+                    target_p = game["players"].get(target)
+                    if target_p:
+                        amount = min(3, target_p["personal_stats"]["Influence"])
+                        target_p["personal_stats"]["Influence"] -= amount
+                        p["personal_stats"]["Influence"] += amount
+                        print(f"[GAME] {pid} blackmailed {target}. Stole {amount} Infl.")
+
+                elif action == "Demagoguery":
+                    # +1 to Random Stat, +1 Spite
+                    stat_to_boost = random.choice(["Stability", "Economy", "Faith"])
+                    game["global_stats"][stat_to_boost] = min(100, game["global_stats"][stat_to_boost] + 1)
+                    p["personal_stats"]["Spite"] += 1
+                    print(f"[GAME] {pid} used Demagoguery. ({stat_to_boost} +1, +1 Spite)")
+                
+                # Sabotage cost already paid
+                
+                # Clamp stats
+                p["personal_stats"]["Influence"] = max(0, p["personal_stats"]["Influence"]) # No cap for now? Rules say 60 to win.
+                p["personal_stats"]["Spite"] = max(0, p["personal_stats"]["Spite"])
+
+            # Find the winning statement for the record
             winning_statement = {
                 "player_id": winning_player_id,
                 "statement": game["players"][winning_player_id]["statement"],
@@ -822,12 +999,15 @@ def handle_player_action(data):
             return
         comment = data.get(
             "comment", ""
-        )  # Get comment, default to empty string if not provided
+        )
+        if "comment" in game["players"][player_id]:
+            emit("error", {"message": "You have already submitted a comment for this round."}, room=request.sid)
+            return  # Get comment, default to empty string if not provided
 
-        validation_result = validate_player_input_with_gemini(model, comment)
-        if not validation_result["is_valid"]:
-            emit("error", {"message": f"Invalid comment: {validation_result['reason']}"}, room=request.sid)
-            return
+        # validation_result = validate_player_input_with_gemini(model, comment)
+        # if not validation_result["is_valid"]:
+        #     emit("error", {"message": f"Invalid comment: {validation_result['reason']}"}, room=request.sid)
+        #     return
 
         game["players"][player_id]["comment"] = comment
         game["players"][player_id]["action_status"] = "done"
@@ -955,6 +1135,8 @@ def handle_player_action(data):
                 player["choice"] = None
                 player.pop("statement", None)
                 player.pop("statement_vote", None)
+                player["current_action"] = None
+                player["action_target"] = None
                 player["action_status"] = "waiting"  # Reset action status for new round
 
             game_state_for_gemini = {
@@ -1001,6 +1183,8 @@ def handle_player_action(data):
                 room=game_id,
                 broadcast=True,
             )
+    
+    save_games()
 
 
 @socketio.on("disconnect")

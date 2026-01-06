@@ -1,4 +1,4 @@
-const socket = io('http://10.0.1.38:5000');
+const socket = io();
 
 let audioQueue = [];
 let isPlaying = false;
@@ -219,6 +219,20 @@ socket.on('game_started_for_player', (initial_game_state) => {
         // Initial update of player-specific stats and faction
         if (initial_game_state && initial_game_state.players && initial_game_state.players[playerId]) {
             playerNameSpan.textContent = initial_game_state.players[playerId].name;
+            
+            // Populate Target Dropdown
+            const targetPlayerSelect = document.getElementById('targetPlayerSelect');
+            if (targetPlayerSelect) {
+                targetPlayerSelect.innerHTML = '';
+                for (const pid in initial_game_state.players) {
+                    if (pid !== playerId && initial_game_state.players[pid].action_status !== 'empty') {
+                        const option = document.createElement('option');
+                        option.value = pid;
+                        option.textContent = initial_game_state.players[pid].name;
+                        targetPlayerSelect.appendChild(option);
+                    }
+                }
+            }
         }
     }
 });
@@ -366,18 +380,66 @@ if (gameId && playerId) {
 
     const playerStatementInput = document.getElementById('playerStatementInput'); // Re-declare for scope
     const submitStatementBtn = document.getElementById('submitStatementBtn'); // Re-declare for scope
+    
+    // Action Card Logic
+    const actionCardRadios = document.querySelectorAll('input[name="actionCard"]');
+    const targetSelectionArea = document.getElementById('targetSelectionArea');
+    
+    if (actionCardRadios.length > 0) {
+        actionCardRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const action = e.target.value;
+                const placeholders = {
+                    "Diplomacy": "Wpisz ugodowe oświadczenie...",
+                    "Blackmail": "Wpisz swoją groźbę...",
+                    "Demagoguery": "Wpisz płomienne przemówienie...",
+                    "Sabotage": "Opisz swoje działania dywersyjne..."
+                };
+                if (playerStatementInput) {
+                    playerStatementInput.placeholder = placeholders[action] || "Wpisz swoje oświadczenie...";
+                }
+
+                if (targetSelectionArea) {
+                    if (action === "Blackmail" || action === "Sabotage") {
+                        targetSelectionArea.style.display = 'block';
+                    } else {
+                        targetSelectionArea.style.display = 'none';
+                    }
+                }
+            });
+        });
+    }
+
     if (submitStatementBtn) {
         submitStatementBtn.addEventListener('click', () => {
             const statement = playerStatementInput.value;
+            const selectedActionRadio = document.querySelector('input[name="actionCard"]:checked');
+            const actionCard = selectedActionRadio ? selectedActionRadio.value : "Diplomacy"; // Default to Diplomacy
+            const targetPlayerSelect = document.getElementById('targetPlayerSelect');
+            const targetPlayerId = targetPlayerSelect ? targetPlayerSelect.value : null;
+
             if (statement) {
-                socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_statement', statement: statement });
+                socket.emit('player_action', { 
+                    game_id: gameId, 
+                    player_id: playerId, 
+                    action: 'submit_statement', 
+                    statement: statement,
+                    action_card: actionCard,
+                    target_player_id: targetPlayerId
+                });
                 lastSubmittedStatement = statement; // Store the submitted statement
                 
                 const statementInputArea = document.getElementById('statementInputArea');
                 const statementSubmitted = document.getElementById('statementSubmitted');
+                const actionCardSelection = document.getElementById('actionCardSelection'); // Hide cards too
+                const targetSelectionArea = document.getElementById('targetSelectionArea');
 
                 if(statementInputArea) statementInputArea.style.display = 'none';
+                if(actionCardSelection) actionCardSelection.style.display = 'none';
+                if(targetSelectionArea) targetSelectionArea.style.display = 'none';
                 if(statementSubmitted) statementSubmitted.style.display = 'block';
+            } else {
+                alert("Proszę wpisać treść oświadczenia.");
             }
         });
     }
@@ -644,6 +706,25 @@ if (gameId && playerId) {
                         activeObjectiveFound = true;
                     }
                 });
+            }
+            
+            // Populate Target Dropdown (Update)
+            const targetPlayerSelect = document.getElementById('targetPlayerSelect');
+            if (targetPlayerSelect) {
+                 // Save current selection if any
+                 const currentSelection = targetPlayerSelect.value;
+                 targetPlayerSelect.innerHTML = '';
+                 for (const pid in game_state.players) {
+                    if (pid !== playerId && game_state.players[pid].action_status !== 'empty') {
+                        const option = document.createElement('option');
+                        option.value = pid;
+                        option.textContent = game_state.players[pid].name;
+                        targetPlayerSelect.appendChild(option);
+                    }
+                }
+                if (currentSelection) {
+                    targetPlayerSelect.value = currentSelection;
+                }
             }
         }
         if (currentRoundSpan) currentRoundSpan.textContent = game_state.current_round;
