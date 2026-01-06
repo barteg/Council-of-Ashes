@@ -321,6 +321,16 @@ socket.on('game_event', async (data) => {
             }
             if (playerStatementsSection) { // Ensure playerStatementsSection is initially hidden
                 playerStatementsSection.style.display = 'block'; // Show statement input immediately
+                
+                // CRITICAL FIX: Unhide the internal sections that were hidden after submission
+                const actionCardSelection = document.getElementById('actionCardSelection');
+                const statementInputArea = document.getElementById('statementInputArea');
+                const statementSubmitted = document.getElementById('statementSubmitted');
+                
+                if (actionCardSelection) actionCardSelection.style.display = 'block';
+                if (statementInputArea) statementInputArea.style.display = 'block';
+                if (statementSubmitted) statementSubmitted.style.display = 'none';
+
                 console.log(`[DEBUG] dilemma_prompt: playerStatementsSection.style.display after setting: ${playerStatementsSection.style.display}`);
             }
             if (statementVoteSection) { // Ensure statementVoteSection is initially hidden
@@ -584,6 +594,13 @@ if (gameId && playerId) {
             // This is a name update, update the player list in the voting status
             if (data.players[playerId]) {
                 playerNameSpan.textContent = data.players[playerId].name;
+                
+                // Update Stats
+                const influenceVal = document.getElementById('influenceVal');
+                const spiteVal = document.getElementById('spiteVal');
+                const pStats = data.players[playerId].personal_stats;
+                if (influenceVal && pStats) influenceVal.textContent = pStats.Influence;
+                if (spiteVal && pStats) spiteVal.textContent = pStats.Spite;
             }
         } else if (data.player_id === playerId) {
         }
@@ -672,6 +689,12 @@ if (gameId && playerId) {
         if (game_state.players && game_state.players[playerId]) {
             const player = game_state.players[playerId];
             if (playerNameSpan) playerNameSpan.textContent = player.name;
+            
+            // Update Stats
+            const influenceVal = document.getElementById('influenceVal');
+            const spiteVal = document.getElementById('spiteVal');
+            if (influenceVal && player.personal_stats) influenceVal.textContent = player.personal_stats.Influence;
+            if (spiteVal && player.personal_stats) spiteVal.textContent = player.personal_stats.Spite;
 
             // Update faction name
             const factionNameSpan = document.getElementById('factionName');

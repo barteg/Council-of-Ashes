@@ -1,0 +1,240 @@
+{
+    "VTPW": {
+        "host_sid": "Vf32-nNtFefZAzLNAAAB",
+        "players": {
+            "player_1": {
+                "id": "player_1",
+                "sid": "fEt0MpesYPlZJKqiAAAH",
+                "name": "gooner",
+                "avatar": "/static/avatars/avatar1.png",
+                "faction": "Wysokie Kap\u0142a\u0144stwo",
+                "choice": null,
+                "statements": [],
+                "personal_stats": {
+                    "Influence": 54,
+                    "Spite": 0
+                },
+                "ready": true,
+                "shamed": false,
+                "action_status": "waiting",
+                "current_action": null,
+                "action_target": null
+            }
+        },
+        "factions": {
+            "Syndykat Kupiecki": {
+                "power": "Mistrzostwo Handlu",
+                "players": [],
+                "objectives": [
+                    {
+                        "id": "econ_75",
+                        "type": "stat_target",
+                        "stat": "Economy",
+                        "target": 75,
+                        "completed": false,
+                        "description": "Zwi\u0119ksz gospodark\u0119 kr\u00f3lestwa do 75 punkt\u00f3w (Z\u0142oty Wiek)."
+                    },
+                    {
+                        "id": "unanimous_vote_1",
+                        "type": "unanimous_vote",
+                        "count": 1,
+                        "completed": false,
+                        "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (Jedno\u015b\u0107 Gildii)."
+                    },
+                    {
+                        "id": "pass_econ_policies_3",
+                        "type": "policies_passed",
+                        "stat": "Economy",
+                        "count": 3,
+                        "completed": false,
+                        "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Gospodark\u0119 (Mistrzowie Negocjacji)."
+                    },
+                    {
+                        "id": "econ_sabotage_stab",
+                        "type": "stat_lower",
+                        "stat": "Stability",
+                        "amount": 15,
+                        "completed": false,
+                        "description": "Wp\u0142y\u0144 na rad\u0119, aby obni\u017cy\u0107 Stabilno\u015b\u0107 kr\u00f3lestwa o 15 punkt\u00f3w w jednej rundzie (Sabota\u017c Gospodarczy)."
+                    },
+                    {
+                        "id": "winning_statement_2",
+                        "type": "winning_statement",
+                        "count": 2,
+                        "completed": false,
+                        "description": "O\u015bwiadczenie cz\u0142onka frakcji zostanie wybrane jako zwyci\u0119skie w 2 dylematach (Wp\u0142ywowy G\u0142os)."
+                    }
+                ]
+            },
+            "Wysokie Kap\u0142a\u0144stwo": {
+                "power": "Boska \u0141aska",
+                "players": [
+                    "player_1"
+                ],
+                "objectives": [
+                    {
+                        "id": "faith_75",
+                        "type": "stat_target",
+                        "stat": "Faith",
+                        "target": 75,
+                        "completed": false,
+                        "description": "Zwi\u0119ksz wiar\u0119 kr\u00f3lestwa do 75 punkt\u00f3w (Era Wiary)."
+                    },
+                    {
+                        "id": "unanimous_vote_1",
+                        "type": "unanimous_vote",
+                        "count": 1,
+                        "completed": false,
+                        "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (Jedno\u015b\u0107 Wiary)."
+                    },
+                    {
+                        "id": "pass_faith_policies_3",
+                        "type": "policies_passed",
+                        "stat": "Faith",
+                        "count": 3,
+                        "completed": false,
+                        "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Wiar\u0119 (G\u0142os Bog\u00f3w)."
+                    },
+                    {
+                        "id": "faith_purge_econ",
+                        "type": "stat_lower",
+                        "stat": "Economy",
+                        "amount": 15,
+                        "completed": false,
+                        "description": "Wp\u0142y\u0144 na rad\u0119, aby obni\u017cy\u0107 Gospodark\u0119 kr\u00f3lestwa o 15 punkt\u00f3w w jednej rundzie (Czystka Niewiernych)."
+                    },
+                    {
+                        "id": "winning_statement_2",
+                        "type": "winning_statement",
+                        "count": 2,
+                        "completed": false,
+                        "description": "O\u015bwiadczenie cz\u0142onka frakcji zostanie wybrane jako zwyci\u0119skie w 2 dylematach (Proroczy G\u0142os)."
+                    }
+                ]
+            },
+            "Gwardia Kr\u00f3lewska": {
+                "power": "Utrzymanie Porz\u0105dku",
+                "players": [],
+                "objectives": [
+                    {
+                        "id": "stab_75",
+                        "type": "stat_target",
+                        "stat": "Stability",
+                        "target": 75,
+                        "completed": false,
+                        "description": "Zwi\u0119ksz stabilno\u015b\u0107 kr\u00f3lestwa do 75 punkt\u00f3w (Kr\u00f3lestwo w Pokoju)."
+                    },
+                    {
+                        "id": "unanimous_vote_1",
+                        "type": "unanimous_vote",
+                        "count": 1,
+                        "completed": false,
+                        "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (\u017belazna Dyscyplina)."
+                    },
+                    {
+                        "id": "pass_stab_policies_3",
+                        "type": "policies_passed",
+                        "stat": "Stability",
+                        "count": 3,
+                        "completed": false,
+                        "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Stabilno\u015b\u0107 (Prawo i Porz\u0105dek)."
+                    },
+                    {
+                        "id": "show_of_force_faith",
+                        "type": "stat_lower",
+                        "stat": "Faith",
+                        "amount": 15,
+                        "completed": false,
+                        "description": "Wp\u0142y\u0144 na rad\u0119, aby obni\u017cy\u0107 Wiar\u0119 kr\u00f3lestwa o 15 punkt\u00f3w w jednej rundzie (Pokaz Si\u0142y)."
+                    },
+                    {
+                        "id": "winning_statement_2",
+                        "type": "winning_statement",
+                        "count": 2,
+                        "completed": false,
+                        "description": "O\u015bwiadczenie cz\u0142onka frakcji zostanie wybrane jako zwyci\u0119skie w 2 dylematach (G\u0142os Autorytetu)."
+                    }
+                ]
+            }
+        },
+        "state": "DILEMMA",
+        "dilemma_active": true,
+        "current_dilemma": {
+            "id": "round_3_gniew_ludu_i_bogow",
+            "title": "Gniew Ludu i Bog\u00f3w",
+            "description": "Kr\u00f3lestwo pogr\u0105\u017cone jest w g\u0142\u0119bokim kryzysie. Po bezprecedensowym dekrecie z poprzedniej rundy, ludno\u015b\u0107 odwr\u00f3ci\u0142a si\u0119 od Ko\u015bcio\u0142a i korony, widz\u0105c w nim blu\u017anierstwo i absurd. Ulice miast i wiosek hucz\u0105 od niezadowolenia, a kap\u0142ani alarmuj\u0105 o masowej apostazji i rosn\u0105cym gniewie niebios. Stabilno\u015b\u0107 chwieje si\u0119 w posadach, a wiara, niegdy\u015b filar kr\u00f3lestwa, upad\u0142a.",
+            "image": "/static/images/unrest.png",
+            "narrative_prompt": "Cie\u0144 blu\u017anierstwa rzucony na kr\u00f3lestwo g\u0119stnieje, a szeptana na targowiskach i w \u015bwi\u0105tyniach pogarda dla w\u0142adzy zamienia si\u0119 w otwarty sprzeciw. Niegdy\u015b niewzruszeni obywatele czuj\u0105 si\u0119 zdradzeni, a puste \u015bwi\u0105tynie wo\u0142aj\u0105 o odpowied\u017a. Co powinno zrobi\u0107 kr\u00f3lestwo?"
+        },
+        "global_stats": {
+            "Stability": 36,
+            "Economy": 44,
+            "Faith": 15
+        },
+        "current_round": 3,
+        "event_history": [
+            {
+                "round": 1,
+                "policy_chosen": "Oficjalne uznanie spermy za \u017ar\u00f3d\u0142o po\u017cywienia i jej powszechne w\u0142\u0105czenie do diety kr\u00f3lestwa.",
+                "effects": {
+                    "Stability": -18,
+                    "Economy": 5,
+                    "Faith": -20
+                },
+                "faction_votes": {},
+                "outcome_narrative": "Wprowadzenie polityki uznaj\u0105cej sperm\u0119 za po\u017cywienie wstrz\u0105sn\u0119\u0142o posadami kr\u00f3lestwa. Gooner, podpieraj\u0105c si\u0119 rzekomym \"nowym odkryciem lekarzy\", demagogicznie obiecywa\u0142, \u017ce \"od teraz wszyscy j\u0105 jedz\u0105 i nikt nie g\u0142oduje\", co spotka\u0142o si\u0119 z przera\u017ceniem ludu, a jego komentarz \"spermastycznie\ud83d\ude0b\" jedynie pog\u0142\u0119bi\u0142 niesmak. Wiara gwa\u0142townie zmala\u0142a, a stabilno\u015b\u0107 kr\u00f3lestwa znacz\u0105co spad\u0142a, pogr\u0105\u017caj\u0105c spo\u0142ecze\u0144stwo w zam\u0119cie i buncie przeciwko tak absurdalnym dekretom. Mimo to, ekonomia odnotowa\u0142a niewielki wzrost, by\u0107 mo\u017ce kosztem moralno\u015bci i \u0142adu spo\u0142ecznego. Kr\u00f3lestwo znalaz\u0142o si\u0119 na kraw\u0119dzi chaosu, z ludem rozdartym mi\u0119dzy g\u0142odem a obrzydzeniem.",
+                "global_stats_after": {
+                    "Stability": 36,
+                    "Economy": 44,
+                    "Faith": 15
+                }
+            }
+        ],
+        "gemini_output": {
+            "id": "round_3_gniew_ludu_i_bogow",
+            "title": "Gniew Ludu i Bog\u00f3w",
+            "description": "Kr\u00f3lestwo pogr\u0105\u017cone jest w g\u0142\u0119bokim kryzysie. Po bezprecedensowym dekrecie z poprzedniej rundy, ludno\u015b\u0107 odwr\u00f3ci\u0142a si\u0119 od Ko\u015bcio\u0142a i korony, widz\u0105c w nim blu\u017anierstwo i absurd. Ulice miast i wiosek hucz\u0105 od niezadowolenia, a kap\u0142ani alarmuj\u0105 o masowej apostazji i rosn\u0105cym gniewie niebios. Stabilno\u015b\u0107 chwieje si\u0119 w posadach, a wiara, niegdy\u015b filar kr\u00f3lestwa, upad\u0142a.",
+            "image": "/static/images/unrest.png",
+            "narrative_prompt": "Cie\u0144 blu\u017anierstwa rzucony na kr\u00f3lestwo g\u0119stnieje, a szeptana na targowiskach i w \u015bwi\u0105tyniach pogarda dla w\u0142adzy zamienia si\u0119 w otwarty sprzeciw. Niegdy\u015b niewzruszeni obywatele czuj\u0105 si\u0119 zdradzeni, a puste \u015bwi\u0105tynie wo\u0142aj\u0105 o odpowied\u017a. Co powinno zrobi\u0107 kr\u00f3lestwo?"
+        },
+        "next_round_votes": [],
+        "policies_passed_counts": {
+            "Syndykat Kupiecki": {
+                "Stability": 0,
+                "Economy": 1,
+                "Faith": 0
+            },
+            "Wysokie Kap\u0142a\u0144stwo": {
+                "Stability": 0,
+                "Economy": 0,
+                "Faith": 0
+            },
+            "Gwardia Kr\u00f3lewska": {
+                "Stability": 0,
+                "Economy": 0,
+                "Faith": 0
+            }
+        },
+        "winning_statement_counts": {
+            "Syndykat Kupiecki": 0,
+            "Wysokie Kap\u0142a\u0144stwo": 1,
+            "Gwardia Kr\u00f3lewska": 0
+        },
+        "unanimous_vote_counts": {
+            "Syndykat Kupiecki": 0,
+            "Wysokie Kap\u0142a\u0144stwo": 1,
+            "Gwardia Kr\u00f3lewska": 0
+        },
+        "join_url": "/join/VTPW",
+        "winning_statement": {
+            "player_id": "player_1",
+            "statement": "Nowe odkycie lekarzy! Sperma okazuje sie by\u0107 najlepszym zrodlem energii i witamin. Od teraz wszyscy j\u0105 jedz\u0105 i nikt nie gloduje.",
+            "name": "gooner"
+        },
+        "last_outcome_narrative_data": {
+            "outcome_narrative": "Wprowadzenie polityki uznaj\u0105cej sperm\u0119 za po\u017cywienie wstrz\u0105sn\u0119\u0142o posadami kr\u00f3lestwa. Gooner, podpieraj\u0105c si\u0119 rzekomym \"nowym odkryciem lekarzy\", demagogicznie obiecywa\u0142, \u017ce \"od teraz wszyscy j\u0105 jedz\u0105 i nikt nie g\u0142oduje\", co spotka\u0142o si\u0119 z przera\u017ceniem ludu, a jego komentarz \"spermastycznie\ud83d\ude0b\" jedynie pog\u0142\u0119bi\u0142 niesmak. Wiara gwa\u0142townie zmala\u0142a, a stabilno\u015b\u0107 kr\u00f3lestwa znacz\u0105co spad\u0142a, pogr\u0105\u017caj\u0105c spo\u0142ecze\u0144stwo w zam\u0119cie i buncie przeciwko tak absurdalnym dekretom. Mimo to, ekonomia odnotowa\u0142a niewielki wzrost, by\u0107 mo\u017ce kosztem moralno\u015bci i \u0142adu spo\u0142ecznego. Kr\u00f3lestwo znalaz\u0142o si\u0119 na kraw\u0119dzi chaosu, z ludem rozdartym mi\u0119dzy g\u0142odem a obrzydzeniem.",
+            "next_event_hint": "W cieniu rosn\u0105cego oburzenia, szemrane zak\u0105tki kr\u00f3lestwa zaczynaj\u0105 szepta\u0107 o spisku i zmianie w\u0142adzy.",
+            "kingdom_status_summary": "Kr\u00f3lestwo balansuje na kraw\u0119dzi upadku, z mocno os\u0142abion\u0105 stabilno\u015bci\u0105 i niemal ca\u0142kowicie zniszczon\u0105 wiar\u0105, co sprawia, \u017ce nawet umiarkowany wzrost gospodarczy wydaje si\u0119 bez znaczenia w obliczu nadchodz\u0105cej katastrofy."
+        }
+    }
+}
