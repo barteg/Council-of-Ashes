@@ -58,26 +58,36 @@
                     <!-- Step A: Action Card Selection -->
                     <div id="actionCardSelection" class="mb-3">
                         <div class="btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-outline-primary active">
-                                <input type="radio" name="actionCard" value="Diplomacy" autocomplete="off" checked> Dyplomacja (+2 Wpływów)
+                            <label class="btn btn-outline-primary active" id="btnDiplomacy">
+                                <input type="radio" name="actionCard" value="Diplomacy" autocomplete="off" checked> Dyplomacja (+2 Infl)
                             </label>
-                            <label class="btn btn-outline-danger">
-                                <input type="radio" name="actionCard" value="Blackmail" autocomplete="off"> Szantaż (Kradnij 3 Wpływy)
+                            <label class="btn btn-outline-danger" id="btnBlackmail">
+                                <input type="radio" name="actionCard" value="Blackmail" autocomplete="off"> Szantaż (Kradnij 3 Infl)
                             </label>
-                            <label class="btn btn-outline-warning">
-                                <input type="radio" name="actionCard" value="Demagoguery" autocomplete="off"> Demagogia (+1 Stat, +1 Spite)
+                            <label class="btn btn-outline-warning" id="btnDemagoguery">
+                                <input type="radio" name="actionCard" value="Demagoguery" autocomplete="off"> Demagogia (-1 Stat, +5 Infl)
                             </label>
-                            <label class="btn btn-outline-dark">
-                                <input type="radio" name="actionCard" value="Sabotage" autocomplete="off"> Sabotaż (Koszt 3 Spite)
+                            <label class="btn btn-outline-dark" id="btnSabotage">
+                                <input type="radio" name="actionCard" value="Sabotage" autocomplete="off"> Sabotaż (Blokuj Akcję, Koszt 3 Spite)
                             </label>
                         </div>
                     </div>
 
-                    <!-- Target Selection (Hidden by default) -->
+                    <!-- Target Selection (Player) -->
                     <div id="targetSelectionArea" class="form-group" style="display: none;">
-                        <label for="targetPlayerSelect">Wybierz Cel:</label>
+                        <label for="targetPlayerSelect">Wybierz Gracza (Cel):</label>
                         <select class="form-control" id="targetPlayerSelect">
                             <!-- Options populated by JS -->
+                        </select>
+                    </div>
+
+                    <!-- Target Selection (Stat) -->
+                    <div id="targetStatSelectionArea" class="form-group" style="display: none;">
+                        <label for="targetStatSelect">Poświęć Statystykę:</label>
+                        <select class="form-control" id="targetStatSelect">
+                            <option value="Economy">Gospodarka</option>
+                            <option value="Stability">Stabilność</option>
+                            <option value="Faith">Wiara</option>
                         </select>
                     </div>
 

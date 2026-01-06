@@ -73,7 +73,8 @@ Twoja odpowiedź **MUSI** być obiektem JSON o następującej strukturze:
 ## Wskazówki:
 
 1.  **Zwięzłość jest najważniejsza:** Twoim najważniejszym zadaniem jest pisanie krótko. **MUSISZ** ograniczyć `outcome_narrative` do maksymalnie 4-5 zdań. Nie pisz więcej.
-2.  **Narracja napędzana przez graczy i KARTY AKCJI:** Każde oświadczenie gracza ma przypisaną **Kartę Akcji** (np. Dyplomacja, Szantaż, Demagogia, Sabotaż). **MUSISZ** odzwierciedlić to w opisie zachowania postaci.
+2.  **Narracja napędzana przez graczy i KARTY AKCJI:** Każde oświadczenie gracza ma przypisaną **Kartę Akcji** i status `was_blocked`.
+    *   **Jeśli `was_blocked` jest `true`:** Opisz, jak postać próbuje działać, ale zostaje powstrzymana przez sabotażystów, szpiegów lub chaos. Jej akcja NIE dochodzi do skutku.
     *   **Dyplomacja:** Opisz gładką, ugodową mowę.
     *   **Szantaż:** Opisz groźby, wyciąganie brudnych sekretów lub zastraszanie.
     *   **Demagogia:** Opisz płomienne, populistyczne przemówienie, które porywa tłum, ale może siać nienawiść.

@@ -459,6 +459,7 @@ def start_game_logic(game_id):
             player.pop("statement_vote", None)
             player["current_action"] = None
             player["action_target"] = None
+            player["action_target_stat"] = None
             player["action_status"] = "waiting"  # Reset action status
             print(f"[DEBUG] Reset player {player_id} for new round.")
 
@@ -586,7 +587,8 @@ def resolve_dilemma(game_id, player_comments=None):
                         "player_id": player_id, 
                         "statement": player_data["statement"], 
                         "name": player_data["name"],
-                        "action_card": player_data.get("current_action")
+                        "action_card": player_data.get("current_action"),
+                        "was_blocked": player_data.get("was_blocked", False) # Pass blocked status
                     }
                 )
 
@@ -816,6 +818,7 @@ def handle_player_action(data):
         statement = data.get("statement")
         action_card = data.get("action_card")
         target_player_id = data.get("target_player_id")
+        target_stat = data.get("target_stat") # New
 
         if "statement" in game["players"][player_id]:
             emit("error", {"message": "You have already submitted a statement for this round."}, room=request.sid)
@@ -835,6 +838,7 @@ def handle_player_action(data):
         game["players"][player_id]["statement"] = statement
         game["players"][player_id]["current_action"] = action_card
         game["players"][player_id]["action_target"] = target_player_id
+        game["players"][player_id]["action_target_stat"] = target_stat # Store this
         game["players"][player_id]["action_status"] = (
             "done"  # Player submitted statement
         )
@@ -879,31 +883,76 @@ def handle_player_action(data):
 
         if all_players_voted:
             # --- Spite System: Resolution Phase ---
+            print(f"[GAME] Resolving Action Phase for Game {game_id}")
             
-            # 1. Identify Sabotage Targets (Votes received by these players will be voided)
-            sabotaged_players = []
+            # --- STEP A: SABOTAGE (Priority 1) ---
+            blocked_players = []
+            sabotage_log = []
+
             for pid, p in game["players"].items():
                 if p.get("current_action") == "Sabotage" and p.get("action_target"):
                     target = p["action_target"]
-                    # Verify cost again just in case
+                    # Verify cost
                     if p["personal_stats"]["Spite"] >= 3:
-                        sabotaged_players.append(target)
                         p["personal_stats"]["Spite"] -= 3 # Pay the cost
+                        blocked_players.append(target)
+                        sabotage_log.append(f"{pid} sabotaged {target}")
                         print(f"[GAME] Player {pid} sabotaged {target}!")
+            
+            # --- STEP B: ACTION EFFECTS (Priority 2) ---
+            action_log = []
+            
+            for pid, p in game["players"].items():
+                if pid in blocked_players:
+                    print(f"[GAME] {pid}'s action was BLOCKED by Sabotage.")
+                    action_log.append(f"{pid} was blocked.")
+                    continue # Skip their card effect
+                
+                action = p.get("current_action")
+                target_pid = p.get("action_target")
+                target_stat = p.get("action_target_stat")
+                
+                if action == "Diplomacy":
+                    p["personal_stats"]["Influence"] += 2
+                    print(f"[GAME] {pid} used Diplomacy. (+2 Infl)")
+                    action_log.append(f"{pid} used Diplomacy.")
 
+                elif action == "Blackmail" and target_pid:
+                    target_p = game["players"].get(target_pid)
+                    if target_p:
+                        amount = min(3, target_p["personal_stats"]["Influence"])
+                        target_p["personal_stats"]["Influence"] -= amount
+                        p["personal_stats"]["Influence"] += amount
+                        target_p["personal_stats"]["Spite"] += 1 # Compensation
+                        print(f"[GAME] {pid} blackmailed {target_pid}. Stole {amount} Infl. Target gets +1 Spite.")
+                        action_log.append(f"{pid} blackmailed {target_pid}.")
+
+                elif action == "Demagoguery" and target_stat:
+                    if target_stat in game["global_stats"]:
+                        game["global_stats"][target_stat] -= 1
+                        p["personal_stats"]["Influence"] += 5
+                        print(f"[GAME] {pid} used Demagoguery on {target_stat}. (-1 Stat, +5 Infl)")
+                        action_log.append(f"{pid} incited against {target_stat}.")
+                        
+                        # Check "The Shaming" immediately
+                        if game["global_stats"][target_stat] <= 0:
+                            print(f"[GAME] THE SHAMING TRIGGERED by {pid} via Demagoguery!")
+                            p["personal_stats"]["Influence"] = 0
+                            p["shamed"] = True
+                            game["global_stats"][target_stat] = 1 # Reset stat
+                            emit("kingdom_collapse", 
+                                {"collapsed_stats": [target_stat], "guilty_players": [pid]}, 
+                                room=game_id, broadcast=True)
+
+            # --- STEP C: VOTING POINTS (Priority 3) ---
             # 2. Tally Votes
             vote_counts = {pid: 0 for pid in game["players"]}
             for p in game["players"].values():
                 vote = p["statement_vote"] # Who they voted for
                 if vote:
-                     # If the person they voted for is sabotaged, the vote doesn't count towards the total
-                     if vote not in sabotaged_players:
-                        vote_counts[vote] += 1
-                     else:
-                        print(f"[GAME] Vote for {vote} nullified by Sabotage.")
+                    vote_counts[vote] += 1
             
             # 3. Determine Winner
-            # Handle tie: Randomly pick among top
             max_votes = -1
             winners = []
             for pid, count in vote_counts.items():
@@ -915,11 +964,13 @@ def handle_player_action(data):
             
             winning_player_id = random.choice(winners) if winners else None
             
-            # 4. Apply Effects
+            # 4. Apply Voting Effects
             for pid, p in game["players"].items():
-                action = p.get("current_action")
-                target = p.get("action_target")
                 votes_received = vote_counts.get(pid, 0)
+                
+                # Vote Points (+1 per vote)
+                # Sabotage does NOT block this.
+                p["personal_stats"]["Influence"] += votes_received
                 
                 # A. Winner Bonus
                 if pid == winning_player_id:
@@ -927,36 +978,12 @@ def handle_player_action(data):
                     print(f"[GAME] {pid} wins the debate! (+4 Infl)")
 
                 # B. Fail Forward (Losers with 0 votes)
-                # Only if they didn't win (in case of 0-0-0 tie where winner has 0)
                 if votes_received == 0 and pid != winning_player_id:
                     p["personal_stats"]["Spite"] += 1
                     print(f"[GAME] {pid} received 0 votes. (+1 Spite)")
 
-                # C. Card Effects
-                if action == "Diplomacy":
-                    p["personal_stats"]["Influence"] += 2
-                    print(f"[GAME] {pid} used Diplomacy. (+2 Infl)")
-                
-                elif action == "Blackmail" and target:
-                    # Steal 3 Influence
-                    target_p = game["players"].get(target)
-                    if target_p:
-                        amount = min(3, target_p["personal_stats"]["Influence"])
-                        target_p["personal_stats"]["Influence"] -= amount
-                        p["personal_stats"]["Influence"] += amount
-                        print(f"[GAME] {pid} blackmailed {target}. Stole {amount} Infl.")
-
-                elif action == "Demagoguery":
-                    # +1 to Random Stat, +1 Spite
-                    stat_to_boost = random.choice(["Stability", "Economy", "Faith"])
-                    game["global_stats"][stat_to_boost] = min(100, game["global_stats"][stat_to_boost] + 1)
-                    p["personal_stats"]["Spite"] += 1
-                    print(f"[GAME] {pid} used Demagoguery. ({stat_to_boost} +1, +1 Spite)")
-                
-                # Sabotage cost already paid
-                
                 # Clamp stats
-                p["personal_stats"]["Influence"] = max(0, p["personal_stats"]["Influence"]) # No cap for now? Rules say 60 to win.
+                p["personal_stats"]["Influence"] = max(0, p["personal_stats"]["Influence"])
                 p["personal_stats"]["Spite"] = max(0, p["personal_stats"]["Spite"])
 
             # Find the winning statement for the record
@@ -964,8 +991,17 @@ def handle_player_action(data):
                 "player_id": winning_player_id,
                 "statement": game["players"][winning_player_id]["statement"],
                 "name": game["players"][winning_player_id]["name"],
+                "action_card": game["players"][winning_player_id].get("current_action"),
+                "was_blocked": winning_player_id in blocked_players # Record if blocked for narrative
             }
-            game["winning_statement"] = winning_statement # Store winning statement in game
+            game["winning_statement"] = winning_statement 
+            
+            # Store 'blocked' status in player object temporarily for narrative generation? 
+            # Or just rely on re-deriving it? Better to store in game state if needed.
+            # Actually, we need to pass this 'blocked' info to Gemini.
+            # Update player objects with 'was_blocked' flag for this round
+            for pid in game["players"]:
+                game["players"][pid]["was_blocked"] = (pid in blocked_players)
 
             # Update winning_statement objectives
             winning_faction_id = game["players"][winning_player_id]["faction"]
@@ -976,7 +1012,7 @@ def handle_player_action(data):
             # Update unanimous_vote objectives
             for faction_id, faction_data in game["factions"].items():
                 faction_players = [p_id for p_id in game["players"] if game["players"][p_id]["faction"] == faction_id and game["players"][p_id].get("statement_vote")]
-                if faction_players: # Only check if there are players in the faction who voted
+                if faction_players: 
                     first_player_vote = game["players"][faction_players[0]].get("statement_vote")
                     all_voted_same = True
                     for p_id in faction_players[1:]:
@@ -1146,6 +1182,7 @@ def handle_player_action(data):
                 player.pop("statement_vote", None)
                 player["current_action"] = None
                 player["action_target"] = None
+                player["action_target_stat"] = None
                 player["action_status"] = "waiting"  # Reset action status for new round
 
             game_state_for_gemini = {

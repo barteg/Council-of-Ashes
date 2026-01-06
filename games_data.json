@@ -242,7 +242,7 @@
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "r98KgCNY0LoDA02sAAAP",
+                "sid": "-BDPuCpVUBp4epDXAAAV",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
                 "faction": "Syndykat Kupiecki",
@@ -254,11 +254,12 @@
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "done",
+                "action_status": "joined",
                 "current_action": "Demagoguery",
                 "action_target": "",
                 "statement": "Niech b\u0119d\u0105 nagrody za zwalczanie tego. tym samym zwi\u0119kszaj\u0105c gospodark\u0119 pa\u0144swa, niech to bedzie zysk dla wszystkich ",
-                "statement_vote": "player_1"
+                "statement_vote": "player_1",
+                "comment": ""
             }
         },
         "factions": {
@@ -273,14 +274,14 @@
                         "type": "stat_target",
                         "stat": "Economy",
                         "target": 75,
-                        "completed": false,
+                        "completed": true,
                         "description": "Zwi\u0119ksz gospodark\u0119 kr\u00f3lestwa do 75 punkt\u00f3w (Z\u0142oty Wiek)."
                     },
                     {
                         "id": "unanimous_vote_1",
                         "type": "unanimous_vote",
                         "count": 1,
-                        "completed": false,
+                        "completed": true,
                         "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (Jedno\u015b\u0107 Gildii)."
                     },
                     {
@@ -288,7 +289,7 @@
                         "type": "policies_passed",
                         "stat": "Economy",
                         "count": 3,
-                        "completed": false,
+                        "completed": true,
                         "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Gospodark\u0119 (Mistrzowie Negocjacji)."
                     },
                     {
@@ -407,8 +408,8 @@
             "narrative_prompt": "Mimo bogactwa, rozwijaj\u0105cy si\u0119 handel sta\u0142 si\u0119 aren\u0105 walki, gdzie silniejsi bezwzgl\u0119dnie wykorzystuj\u0105 s\u0142abszych. Lud domaga si\u0119 porz\u0105dku, ale ka\u017cdy krok w kierunku regulacji mo\u017ce zagrozi\u0107 ledwo co odzyskanej prosperity gospodarczej. Co powinno zrobi\u0107 kr\u00f3lestwo?"
         },
         "global_stats": {
-            "Stability": 45,
-            "Economy": 69,
+            "Stability": 50,
+            "Economy": 79,
             "Faith": 49
         },
         "current_round": 7,
@@ -473,7 +474,7 @@
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
                 "Stability": 0,
-                "Economy": 2,
+                "Economy": 3,
                 "Faith": 0
             },
             "Wysokie Kap\u0142a\u0144stwo": {
@@ -482,7 +483,7 @@
                 "Faith": 0
             },
             "Gwardia Kr\u00f3lewska": {
-                "Stability": 1,
+                "Stability": 2,
                 "Economy": 0,
                 "Faith": 0
             }
@@ -508,5 +509,216 @@
             "next_event_hint": "Wzrost gospodarczy, okupiony chaosem, nieuchronnie prowadzi do nowych podzia\u0142\u00f3w i napi\u0119\u0107 spo\u0142ecznych.",
             "kingdom_status_summary": "Kr\u00f3lestwo balansuje na kraw\u0119dzi niestabilno\u015bci, z dynamiczn\u0105, lecz niekontrolowan\u0105 gospodark\u0105, podczas gdy wiara ludu pozostaje umiarkowana."
         }
+    },
+    "CSQA": {
+        "host_sid": "LRbVVNKyugMtA-eLAAAB",
+        "players": {
+            "player_1": {
+                "id": "player_1",
+                "sid": "U7PiIoN98vP4ENusAAAL",
+                "name": "gooner",
+                "avatar": "/static/avatars/avatar1.png",
+                "faction": "Gwardia Kr\u00f3lewska",
+                "choice": null,
+                "statements": [],
+                "personal_stats": {
+                    "Influence": 50,
+                    "Spite": 0
+                },
+                "ready": true,
+                "shamed": false,
+                "action_status": "joined",
+                "current_action": null,
+                "action_target": null
+            }
+        },
+        "factions": {
+            "Syndykat Kupiecki": {
+                "power": "Mistrzostwo Handlu",
+                "players": [],
+                "objectives": [
+                    {
+                        "id": "econ_75",
+                        "type": "stat_target",
+                        "stat": "Economy",
+                        "target": 75,
+                        "completed": false,
+                        "description": "Zwi\u0119ksz gospodark\u0119 kr\u00f3lestwa do 75 punkt\u00f3w (Z\u0142oty Wiek)."
+                    },
+                    {
+                        "id": "unanimous_vote_1",
+                        "type": "unanimous_vote",
+                        "count": 1,
+                        "completed": false,
+                        "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (Jedno\u015b\u0107 Gildii)."
+                    },
+                    {
+                        "id": "pass_econ_policies_3",
+                        "type": "policies_passed",
+                        "stat": "Economy",
+                        "count": 3,
+                        "completed": false,
+                        "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Gospodark\u0119 (Mistrzowie Negocjacji)."
+                    },
+                    {
+                        "id": "econ_sabotage_stab",
+                        "type": "stat_lower",
+                        "stat": "Stability",
+                        "amount": 15,
+                        "completed": false,
+                        "description": "Wp\u0142y\u0144 na rad\u0119, aby obni\u017cy\u0107 Stabilno\u015b\u0107 kr\u00f3lestwa o 15 punkt\u00f3w w jednej rundzie (Sabota\u017c Gospodarczy)."
+                    },
+                    {
+                        "id": "winning_statement_2",
+                        "type": "winning_statement",
+                        "count": 2,
+                        "completed": false,
+                        "description": "O\u015bwiadczenie cz\u0142onka frakcji zostanie wybrane jako zwyci\u0119skie w 2 dylematach (Wp\u0142ywowy G\u0142os)."
+                    }
+                ]
+            },
+            "Wysokie Kap\u0142a\u0144stwo": {
+                "power": "Boska \u0141aska",
+                "players": [],
+                "objectives": [
+                    {
+                        "id": "faith_75",
+                        "type": "stat_target",
+                        "stat": "Faith",
+                        "target": 75,
+                        "completed": false,
+                        "description": "Zwi\u0119ksz wiar\u0119 kr\u00f3lestwa do 75 punkt\u00f3w (Era Wiary)."
+                    },
+                    {
+                        "id": "unanimous_vote_1",
+                        "type": "unanimous_vote",
+                        "count": 1,
+                        "completed": false,
+                        "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (Jedno\u015b\u0107 Wiary)."
+                    },
+                    {
+                        "id": "pass_faith_policies_3",
+                        "type": "policies_passed",
+                        "stat": "Faith",
+                        "count": 3,
+                        "completed": false,
+                        "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Wiar\u0119 (G\u0142os Bog\u00f3w)."
+                    },
+                    {
+                        "id": "faith_purge_econ",
+                        "type": "stat_lower",
+                        "stat": "Economy",
+                        "amount": 15,
+                        "completed": false,
+                        "description": "Wp\u0142y\u0144 na rad\u0119, aby obni\u017cy\u0107 Gospodark\u0119 kr\u00f3lestwa o 15 punkt\u00f3w w jednej rundzie (Czystka Niewiernych)."
+                    },
+                    {
+                        "id": "winning_statement_2",
+                        "type": "winning_statement",
+                        "count": 2,
+                        "completed": false,
+                        "description": "O\u015bwiadczenie cz\u0142onka frakcji zostanie wybrane jako zwyci\u0119skie w 2 dylematach (Proroczy G\u0142os)."
+                    }
+                ]
+            },
+            "Gwardia Kr\u00f3lewska": {
+                "power": "Utrzymanie Porz\u0105dku",
+                "players": [
+                    "player_1"
+                ],
+                "objectives": [
+                    {
+                        "id": "stab_75",
+                        "type": "stat_target",
+                        "stat": "Stability",
+                        "target": 75,
+                        "completed": false,
+                        "description": "Zwi\u0119ksz stabilno\u015b\u0107 kr\u00f3lestwa do 75 punkt\u00f3w (Kr\u00f3lestwo w Pokoju)."
+                    },
+                    {
+                        "id": "unanimous_vote_1",
+                        "type": "unanimous_vote",
+                        "count": 1,
+                        "completed": false,
+                        "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (\u017belazna Dyscyplina)."
+                    },
+                    {
+                        "id": "pass_stab_policies_3",
+                        "type": "policies_passed",
+                        "stat": "Stability",
+                        "count": 3,
+                        "completed": false,
+                        "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Stabilno\u015b\u0107 (Prawo i Porz\u0105dek)."
+                    },
+                    {
+                        "id": "show_of_force_faith",
+                        "type": "stat_lower",
+                        "stat": "Faith",
+                        "amount": 15,
+                        "completed": false,
+                        "description": "Wp\u0142y\u0144 na rad\u0119, aby obni\u017cy\u0107 Wiar\u0119 kr\u00f3lestwa o 15 punkt\u00f3w w jednej rundzie (Pokaz Si\u0142y)."
+                    },
+                    {
+                        "id": "winning_statement_2",
+                        "type": "winning_statement",
+                        "count": 2,
+                        "completed": false,
+                        "description": "O\u015bwiadczenie cz\u0142onka frakcji zostanie wybrane jako zwyci\u0119skie w 2 dylematach (G\u0142os Autorytetu)."
+                    }
+                ]
+            }
+        },
+        "state": "DILEMMA",
+        "dilemma_active": true,
+        "current_dilemma": {
+            "id": "round_1_zwiastuny_zmian",
+            "title": "Zwiastuny Zmian",
+            "description": "Zima nadesz\u0142a wcze\u015bnie i jest wyj\u0105tkowo surowa, dziesi\u0105tkuj\u0105c zbiory i gro\u017c\u0105c niedoborem \u017cywno\u015bci w ca\u0142ym kr\u00f3lestwie. Na p\u00f3\u0142nocnych rubie\u017cach rozesz\u0142y si\u0119 niepokoj\u0105ce wie\u015bci o koczowniczych plemionach, kt\u00f3rych g\u0142\u00f3d mo\u017ce pchn\u0105\u0107 ich do naje\u017ad\u017aczych rajd\u00f3w. Panuje og\u00f3lny niepok\u00f3j, a Rada Popio\u0142\u00f3w musi zadecydowa\u0107, jak zareagowa\u0107 na te zwiastuny zmian.",
+            "image": "/static/images/winter_border_threat.png",
+            "narrative_prompt": "W obliczu nadci\u0105gaj\u0105cego ch\u0142odu i pog\u0142osek z granic, po raz pierwszy zbiera si\u0119 Rada Popio\u0142\u00f3w. Musz\u0105 szybko podj\u0105\u0107 decyzj\u0119, kt\u00f3ra ukszta\u0142tuje przysz\u0142o\u015b\u0107 kr\u00f3lestwa. Co powinno zrobi\u0107 kr\u00f3lestwo?"
+        },
+        "global_stats": {
+            "Stability": 43,
+            "Economy": 44,
+            "Faith": 55
+        },
+        "current_round": 1,
+        "event_history": [],
+        "gemini_output": {
+            "id": "round_1_zwiastuny_zmian",
+            "title": "Zwiastuny Zmian",
+            "description": "Zima nadesz\u0142a wcze\u015bnie i jest wyj\u0105tkowo surowa, dziesi\u0105tkuj\u0105c zbiory i gro\u017c\u0105c niedoborem \u017cywno\u015bci w ca\u0142ym kr\u00f3lestwie. Na p\u00f3\u0142nocnych rubie\u017cach rozesz\u0142y si\u0119 niepokoj\u0105ce wie\u015bci o koczowniczych plemionach, kt\u00f3rych g\u0142\u00f3d mo\u017ce pchn\u0105\u0107 ich do naje\u017ad\u017aczych rajd\u00f3w. Panuje og\u00f3lny niepok\u00f3j, a Rada Popio\u0142\u00f3w musi zadecydowa\u0107, jak zareagowa\u0107 na te zwiastuny zmian.",
+            "image": "/static/images/winter_border_threat.png",
+            "narrative_prompt": "W obliczu nadci\u0105gaj\u0105cego ch\u0142odu i pog\u0142osek z granic, po raz pierwszy zbiera si\u0119 Rada Popio\u0142\u00f3w. Musz\u0105 szybko podj\u0105\u0107 decyzj\u0119, kt\u00f3ra ukszta\u0142tuje przysz\u0142o\u015b\u0107 kr\u00f3lestwa. Co powinno zrobi\u0107 kr\u00f3lestwo?"
+        },
+        "next_round_votes": [],
+        "policies_passed_counts": {
+            "Syndykat Kupiecki": {
+                "Stability": 0,
+                "Economy": 0,
+                "Faith": 0
+            },
+            "Wysokie Kap\u0142a\u0144stwo": {
+                "Stability": 0,
+                "Economy": 0,
+                "Faith": 0
+            },
+            "Gwardia Kr\u00f3lewska": {
+                "Stability": 0,
+                "Economy": 0,
+                "Faith": 0
+            }
+        },
+        "winning_statement_counts": {
+            "Syndykat Kupiecki": 0,
+            "Wysokie Kap\u0142a\u0144stwo": 0,
+            "Gwardia Kr\u00f3lewska": 0
+        },
+        "unanimous_vote_counts": {
+            "Syndykat Kupiecki": 0,
+            "Wysokie Kap\u0142a\u0144stwo": 0,
+            "Gwardia Kr\u00f3lewska": 0
+        },
+        "join_url": "/join/CSQA"
     }
 }

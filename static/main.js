@@ -394,7 +394,45 @@ if (gameId && playerId) {
     // Action Card Logic
     const actionCardRadios = document.querySelectorAll('input[name="actionCard"]');
     const targetSelectionArea = document.getElementById('targetSelectionArea');
+    const targetStatSelectionArea = document.getElementById('targetStatSelectionArea');
     
+    // Function to check Sabotage availability based on Spite
+    function updateSabotageAvailability() {
+        const spiteValEl = document.getElementById('spiteVal');
+        const btnSabotage = document.getElementById('btnSabotage');
+        const radioSabotage = document.querySelector('input[value="Sabotage"]');
+        
+        if (spiteValEl && btnSabotage && radioSabotage) {
+            const currentSpite = parseInt(spiteValEl.textContent) || 0;
+            if (currentSpite < 3) {
+                btnSabotage.classList.add('disabled');
+                btnSabotage.style.opacity = '0.5';
+                btnSabotage.title = "Wymaga 3 Spite";
+                radioSabotage.disabled = true;
+                if (radioSabotage.checked) {
+                    // Reset to Diplomacy if currently selected but disabled
+                    document.querySelector('input[value="Diplomacy"]').click();
+                    document.querySelector('input[value="Diplomacy"]').checked = true;
+                    // Manually trigger change event to update UI
+                    document.querySelector('input[value="Diplomacy"]').dispatchEvent(new Event('change'));
+                }
+            } else {
+                btnSabotage.classList.remove('disabled');
+                btnSabotage.style.opacity = '1';
+                btnSabotage.title = "";
+                radioSabotage.disabled = false;
+            }
+        }
+    }
+
+    // Call this whenever stats update
+    const observer = new MutationObserver(updateSabotageAvailability);
+    const spiteValEl = document.getElementById('spiteVal');
+    if (spiteValEl) {
+        observer.observe(spiteValEl, { childList: true, characterData: true, subtree: true });
+    }
+
+
     if (actionCardRadios.length > 0) {
         actionCardRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
@@ -409,12 +447,13 @@ if (gameId && playerId) {
                     playerStatementInput.placeholder = placeholders[action] || "Wpisz swoje oświadczenie...";
                 }
 
-                if (targetSelectionArea) {
-                    if (action === "Blackmail" || action === "Sabotage") {
-                        targetSelectionArea.style.display = 'block';
-                    } else {
-                        targetSelectionArea.style.display = 'none';
-                    }
+                if (targetSelectionArea) targetSelectionArea.style.display = 'none';
+                if (targetStatSelectionArea) targetStatSelectionArea.style.display = 'none';
+
+                if (action === "Blackmail" || action === "Sabotage") {
+                    if (targetSelectionArea) targetSelectionArea.style.display = 'block';
+                } else if (action === "Demagoguery") {
+                    if (targetStatSelectionArea) targetStatSelectionArea.style.display = 'block';
                 }
             });
         });
@@ -427,6 +466,8 @@ if (gameId && playerId) {
             const actionCard = selectedActionRadio ? selectedActionRadio.value : "Diplomacy"; // Default to Diplomacy
             const targetPlayerSelect = document.getElementById('targetPlayerSelect');
             const targetPlayerId = targetPlayerSelect ? targetPlayerSelect.value : null;
+            const targetStatSelect = document.getElementById('targetStatSelect');
+            const targetStat = targetStatSelect ? targetStatSelect.value : null;
 
             if (statement) {
                 socket.emit('player_action', { 
@@ -435,7 +476,8 @@ if (gameId && playerId) {
                     action: 'submit_statement', 
                     statement: statement,
                     action_card: actionCard,
-                    target_player_id: targetPlayerId
+                    target_player_id: targetPlayerId,
+                    target_stat: targetStat
                 });
                 lastSubmittedStatement = statement; // Store the submitted statement
                 
@@ -443,10 +485,12 @@ if (gameId && playerId) {
                 const statementSubmitted = document.getElementById('statementSubmitted');
                 const actionCardSelection = document.getElementById('actionCardSelection'); // Hide cards too
                 const targetSelectionArea = document.getElementById('targetSelectionArea');
+                const targetStatSelectionArea = document.getElementById('targetStatSelectionArea');
 
                 if(statementInputArea) statementInputArea.style.display = 'none';
                 if(actionCardSelection) actionCardSelection.style.display = 'none';
                 if(targetSelectionArea) targetSelectionArea.style.display = 'none';
+                if(targetStatSelectionArea) targetStatSelectionArea.style.display = 'none';
                 if(statementSubmitted) statementSubmitted.style.display = 'block';
             } else {
                 alert("Proszę wpisać treść oświadczenia.");
