@@ -4,7 +4,7 @@
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "fEt0MpesYPlZJKqiAAAH",
+                "sid": null,
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
                 "faction": "Wysokie Kap\u0142a\u0144stwo",
@@ -16,7 +16,7 @@
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "waiting",
+                "action_status": "joined",
                 "current_action": null,
                 "action_target": null
             }
@@ -235,6 +235,278 @@
             "outcome_narrative": "Wprowadzenie polityki uznaj\u0105cej sperm\u0119 za po\u017cywienie wstrz\u0105sn\u0119\u0142o posadami kr\u00f3lestwa. Gooner, podpieraj\u0105c si\u0119 rzekomym \"nowym odkryciem lekarzy\", demagogicznie obiecywa\u0142, \u017ce \"od teraz wszyscy j\u0105 jedz\u0105 i nikt nie g\u0142oduje\", co spotka\u0142o si\u0119 z przera\u017ceniem ludu, a jego komentarz \"spermastycznie\ud83d\ude0b\" jedynie pog\u0142\u0119bi\u0142 niesmak. Wiara gwa\u0142townie zmala\u0142a, a stabilno\u015b\u0107 kr\u00f3lestwa znacz\u0105co spad\u0142a, pogr\u0105\u017caj\u0105c spo\u0142ecze\u0144stwo w zam\u0119cie i buncie przeciwko tak absurdalnym dekretom. Mimo to, ekonomia odnotowa\u0142a niewielki wzrost, by\u0107 mo\u017ce kosztem moralno\u015bci i \u0142adu spo\u0142ecznego. Kr\u00f3lestwo znalaz\u0142o si\u0119 na kraw\u0119dzi chaosu, z ludem rozdartym mi\u0119dzy g\u0142odem a obrzydzeniem.",
             "next_event_hint": "W cieniu rosn\u0105cego oburzenia, szemrane zak\u0105tki kr\u00f3lestwa zaczynaj\u0105 szepta\u0107 o spisku i zmianie w\u0142adzy.",
             "kingdom_status_summary": "Kr\u00f3lestwo balansuje na kraw\u0119dzi upadku, z mocno os\u0142abion\u0105 stabilno\u015bci\u0105 i niemal ca\u0142kowicie zniszczon\u0105 wiar\u0105, co sprawia, \u017ce nawet umiarkowany wzrost gospodarczy wydaje si\u0119 bez znaczenia w obliczu nadchodz\u0105cej katastrofy."
+        }
+    },
+    "OWJU": {
+        "host_sid": "-a6vWrmJCgTp5WUiAAAB",
+        "players": {
+            "player_1": {
+                "id": "player_1",
+                "sid": "r98KgCNY0LoDA02sAAAP",
+                "name": "gooner",
+                "avatar": "/static/avatars/avatar1.png",
+                "faction": "Syndykat Kupiecki",
+                "choice": null,
+                "statements": [],
+                "personal_stats": {
+                    "Influence": 66,
+                    "Spite": 2
+                },
+                "ready": true,
+                "shamed": false,
+                "action_status": "done",
+                "current_action": "Demagoguery",
+                "action_target": "",
+                "statement": "Niech b\u0119d\u0105 nagrody za zwalczanie tego. tym samym zwi\u0119kszaj\u0105c gospodark\u0119 pa\u0144swa, niech to bedzie zysk dla wszystkich ",
+                "statement_vote": "player_1"
+            }
+        },
+        "factions": {
+            "Syndykat Kupiecki": {
+                "power": "Mistrzostwo Handlu",
+                "players": [
+                    "player_1"
+                ],
+                "objectives": [
+                    {
+                        "id": "econ_75",
+                        "type": "stat_target",
+                        "stat": "Economy",
+                        "target": 75,
+                        "completed": false,
+                        "description": "Zwi\u0119ksz gospodark\u0119 kr\u00f3lestwa do 75 punkt\u00f3w (Z\u0142oty Wiek)."
+                    },
+                    {
+                        "id": "unanimous_vote_1",
+                        "type": "unanimous_vote",
+                        "count": 1,
+                        "completed": false,
+                        "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (Jedno\u015b\u0107 Gildii)."
+                    },
+                    {
+                        "id": "pass_econ_policies_3",
+                        "type": "policies_passed",
+                        "stat": "Economy",
+                        "count": 3,
+                        "completed": false,
+                        "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Gospodark\u0119 (Mistrzowie Negocjacji)."
+                    },
+                    {
+                        "id": "econ_sabotage_stab",
+                        "type": "stat_lower",
+                        "stat": "Stability",
+                        "amount": 15,
+                        "completed": false,
+                        "description": "Wp\u0142y\u0144 na rad\u0119, aby obni\u017cy\u0107 Stabilno\u015b\u0107 kr\u00f3lestwa o 15 punkt\u00f3w w jednej rundzie (Sabota\u017c Gospodarczy)."
+                    },
+                    {
+                        "id": "winning_statement_2",
+                        "type": "winning_statement",
+                        "count": 2,
+                        "completed": false,
+                        "description": "O\u015bwiadczenie cz\u0142onka frakcji zostanie wybrane jako zwyci\u0119skie w 2 dylematach (Wp\u0142ywowy G\u0142os)."
+                    }
+                ]
+            },
+            "Wysokie Kap\u0142a\u0144stwo": {
+                "power": "Boska \u0141aska",
+                "players": [],
+                "objectives": [
+                    {
+                        "id": "faith_75",
+                        "type": "stat_target",
+                        "stat": "Faith",
+                        "target": 75,
+                        "completed": false,
+                        "description": "Zwi\u0119ksz wiar\u0119 kr\u00f3lestwa do 75 punkt\u00f3w (Era Wiary)."
+                    },
+                    {
+                        "id": "unanimous_vote_1",
+                        "type": "unanimous_vote",
+                        "count": 1,
+                        "completed": false,
+                        "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (Jedno\u015b\u0107 Wiary)."
+                    },
+                    {
+                        "id": "pass_faith_policies_3",
+                        "type": "policies_passed",
+                        "stat": "Faith",
+                        "count": 3,
+                        "completed": false,
+                        "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Wiar\u0119 (G\u0142os Bog\u00f3w)."
+                    },
+                    {
+                        "id": "faith_purge_econ",
+                        "type": "stat_lower",
+                        "stat": "Economy",
+                        "amount": 15,
+                        "completed": false,
+                        "description": "Wp\u0142y\u0144 na rad\u0119, aby obni\u017cy\u0107 Gospodark\u0119 kr\u00f3lestwa o 15 punkt\u00f3w w jednej rundzie (Czystka Niewiernych)."
+                    },
+                    {
+                        "id": "winning_statement_2",
+                        "type": "winning_statement",
+                        "count": 2,
+                        "completed": false,
+                        "description": "O\u015bwiadczenie cz\u0142onka frakcji zostanie wybrane jako zwyci\u0119skie w 2 dylematach (Proroczy G\u0142os)."
+                    }
+                ]
+            },
+            "Gwardia Kr\u00f3lewska": {
+                "power": "Utrzymanie Porz\u0105dku",
+                "players": [],
+                "objectives": [
+                    {
+                        "id": "stab_75",
+                        "type": "stat_target",
+                        "stat": "Stability",
+                        "target": 75,
+                        "completed": false,
+                        "description": "Zwi\u0119ksz stabilno\u015b\u0107 kr\u00f3lestwa do 75 punkt\u00f3w (Kr\u00f3lestwo w Pokoju)."
+                    },
+                    {
+                        "id": "unanimous_vote_1",
+                        "type": "unanimous_vote",
+                        "count": 1,
+                        "completed": false,
+                        "description": "Wszyscy cz\u0142onkowie twojej frakcji g\u0142osuj\u0105 tak samo w 1 dylemacie (\u017belazna Dyscyplina)."
+                    },
+                    {
+                        "id": "pass_stab_policies_3",
+                        "type": "policies_passed",
+                        "stat": "Stability",
+                        "count": 3,
+                        "completed": false,
+                        "description": "Pomy\u015blnie przeprowad\u017a 3 polityki, kt\u00f3re pozytywnie wp\u0142ywaj\u0105 na Stabilno\u015b\u0107 (Prawo i Porz\u0105dek)."
+                    },
+                    {
+                        "id": "show_of_force_faith",
+                        "type": "stat_lower",
+                        "stat": "Faith",
+                        "amount": 15,
+                        "completed": false,
+                        "description": "Wp\u0142y\u0144 na rad\u0119, aby obni\u017cy\u0107 Wiar\u0119 kr\u00f3lestwa o 15 punkt\u00f3w w jednej rundzie (Pokaz Si\u0142y)."
+                    },
+                    {
+                        "id": "winning_statement_2",
+                        "type": "winning_statement",
+                        "count": 2,
+                        "completed": false,
+                        "description": "O\u015bwiadczenie cz\u0142onka frakcji zostanie wybrane jako zwyci\u0119skie w 2 dylematach (G\u0142os Autorytetu)."
+                    }
+                ]
+            }
+        },
+        "state": "COMMENT_PHASE",
+        "dilemma_active": true,
+        "current_dilemma": {
+            "id": "round_7_cien_bezprawia_na_szlakach",
+            "title": "Cie\u0144 Bezprawia na Z\u0142otych Szlakach",
+            "description": "Gospodarka kr\u00f3lestwa kwitnie dzi\u0119ki niczym nieskr\u0119powanemu handlowi, lecz w cieniu tej prosperity narasta bezprawie. Na g\u0142\u00f3wnych szlakach handlowych grasuj\u0105 zuchwali bandyci, a w miastach powstaj\u0105 pot\u0119\u017cne kartele kupieckie, bezkarnie dyktuj\u0105ce ceny i terroryzuj\u0105ce mniejszych rzemie\u015blnik\u00f3w. Chaos i nieporz\u0105dek, b\u0119d\u0105ce cen\u0105 za wolno\u015b\u0107, zaczynaj\u0105 d\u0142awi\u0107 codzienne \u017cycie, podkopuj\u0105c zaufanie do w\u0142adzy.",
+            "image": "/static/images/banditry_cartels.png",
+            "narrative_prompt": "Mimo bogactwa, rozwijaj\u0105cy si\u0119 handel sta\u0142 si\u0119 aren\u0105 walki, gdzie silniejsi bezwzgl\u0119dnie wykorzystuj\u0105 s\u0142abszych. Lud domaga si\u0119 porz\u0105dku, ale ka\u017cdy krok w kierunku regulacji mo\u017ce zagrozi\u0107 ledwo co odzyskanej prosperity gospodarczej. Co powinno zrobi\u0107 kr\u00f3lestwo?"
+        },
+        "global_stats": {
+            "Stability": 45,
+            "Economy": 69,
+            "Faith": 49
+        },
+        "current_round": 7,
+        "event_history": [
+            {
+                "round": 1,
+                "policy_chosen": "Konfiskata maj\u0105tk\u00f3w odpowiedzialnych urz\u0119dnik\u00f3w w celu zrekompensowania brak\u00f3w zbo\u017cowych.",
+                "effects": {
+                    "Stability": 5,
+                    "Economy": -10,
+                    "Faith": 0
+                },
+                "faction_votes": {},
+                "outcome_narrative": "Konfiskata maj\u0105tk\u00f3w skorumpowanych urz\u0119dnik\u00f3w, maj\u0105ca zrekompensowa\u0107 braki zbo\u017cowe, zyska\u0142a natychmiastowe poparcie, szczeg\u00f3lnie po tym, jak gooner zagrzmia\u0142, \u201eniech politycy zap\u0142ac\u0105 za braki w zbo\u017cu!\u201d, wyra\u017anie zadowolony z obrotu spraw, m\u00f3wi\u0105c \u201eto ja!\u201d. Chocia\u017c polityka ta zwi\u0119kszy\u0142a stabilno\u015b\u0107 kr\u00f3lestwa, daj\u0105c ludowi poczucie sprawiedliwo\u015bci, jednocze\u015bnie drastycznie os\u0142abi\u0142a gospodark\u0119, uderzaj\u0105c w podstawy handlu i zaufania. Wiara pozosta\u0142a niewzruszona wobec tych gwa\u0142townych zmian. Kr\u00f3lestwo kupi\u0142o spok\u00f3j kosztem przysz\u0142ej prosperity.",
+                "global_stats_after": {
+                    "Stability": 59,
+                    "Economy": 43,
+                    "Faith": 49
+                }
+            },
+            {
+                "round": 3,
+                "policy_chosen": "W odpowiedzi na wezwanie do uwolnienia handlu, kr\u00f3lestwo wprowadza ca\u0142kowit\u0105 deregulacj\u0119 dzia\u0142alno\u015bci kupieckiej, znosz\u0105c wszelkie ograniczenia i monopole.",
+                "effects": {
+                    "Stability": -5,
+                    "Economy": 15,
+                    "Faith": 0
+                },
+                "faction_votes": {},
+                "outcome_narrative": "W odpowiedzi na p\u0142omienne wezwania gooner'a, by \"kupcy mogli sprzeda\u0107 WSZYSTKO\" i jego entuzjastyczne \"jestem za\", kr\u00f3lestwo uchyli\u0142o wszelkie regulacje handlowe. Ta radykalna deregulacja b\u0142yskawicznie pobudzi\u0142a gospodark\u0119, kt\u00f3ra odnotowa\u0142a znaczny wzrost. Jednak\u017ce, wraz z wolno\u015bci\u0105 handlu, nadesz\u0142a r\u00f3wnie\u017c niestabilno\u015b\u0107, sprawiaj\u0105c, \u017ce porz\u0105dek w kr\u00f3lestwie uleg\u0142 os\u0142abieniu. Wiara ludu pozosta\u0142a niewzruszona wobec tych dynamicznych zmian, podczas gdy anarchia rynkowa zacz\u0119\u0142a dominowa\u0107 w miastach. Kr\u00f3lestwo zyska\u0142o na bogactwie, lecz za cen\u0119 spokoju i kontroli.",
+                "global_stats_after": {
+                    "Stability": 54,
+                    "Economy": 58,
+                    "Faith": 49
+                }
+            },
+            {
+                "round": 5,
+                "policy_chosen": "Kr\u00f3lestwo wprowadza polityk\u0119 powszechnego dost\u0119pu do zawodu kupca, znosz\u0105c wszelkie pozosta\u0142e bariery wej\u015bcia i promuj\u0105c r\u00f3wne szanse w handlu.",
+                "effects": {
+                    "Stability": -10,
+                    "Economy": 10,
+                    "Faith": 0
+                },
+                "faction_votes": {},
+                "outcome_narrative": "P\u0142omienne wezwanie goonera, by \"teraz KA\u017bDY m\u00f3g\u0142 sprzeda\u0107 i zosta\u0107 kupcem\", rezonowa\u0142o w ca\u0142ym kr\u00f3lestwie, porywaj\u0105c t\u0142umy wizj\u0105 r\u00f3wnych szans. Kr\u00f3lestwo, pod presj\u0105 tej demagogii, zliberalizowa\u0142o dost\u0119p do handlu, co spotka\u0142o si\u0119 z jego zadowoleniem, gdy\u017c sam \"chcia\u0142by by\u0107 kupcem w tych czasach\". Cho\u0107 gospodarka kr\u00f3lestwa odnotowa\u0142a znaczny wzrost, otwieraj\u0105c nowe perspektywy dla wielu, to jednocze\u015bnie stabilno\u015b\u0107 pa\u0144stwa drastycznie spad\u0142a. Wiara ludu pozosta\u0142a niewzruszona, lecz wolny rynek przyni\u00f3s\u0142 za sob\u0105 nieporz\u0105dek i poczucie chaosu w coraz bardziej niepewnym kr\u00f3lestwie.",
+                "global_stats_after": {
+                    "Stability": 44,
+                    "Economy": 69,
+                    "Faith": 49
+                }
+            }
+        ],
+        "gemini_output": {
+            "id": "round_7_cien_bezprawia_na_szlakach",
+            "title": "Cie\u0144 Bezprawia na Z\u0142otych Szlakach",
+            "description": "Gospodarka kr\u00f3lestwa kwitnie dzi\u0119ki niczym nieskr\u0119powanemu handlowi, lecz w cieniu tej prosperity narasta bezprawie. Na g\u0142\u00f3wnych szlakach handlowych grasuj\u0105 zuchwali bandyci, a w miastach powstaj\u0105 pot\u0119\u017cne kartele kupieckie, bezkarnie dyktuj\u0105ce ceny i terroryzuj\u0105ce mniejszych rzemie\u015blnik\u00f3w. Chaos i nieporz\u0105dek, b\u0119d\u0105ce cen\u0105 za wolno\u015b\u0107, zaczynaj\u0105 d\u0142awi\u0107 codzienne \u017cycie, podkopuj\u0105c zaufanie do w\u0142adzy.",
+            "image": "/static/images/banditry_cartels.png",
+            "narrative_prompt": "Mimo bogactwa, rozwijaj\u0105cy si\u0119 handel sta\u0142 si\u0119 aren\u0105 walki, gdzie silniejsi bezwzgl\u0119dnie wykorzystuj\u0105 s\u0142abszych. Lud domaga si\u0119 porz\u0105dku, ale ka\u017cdy krok w kierunku regulacji mo\u017ce zagrozi\u0107 ledwo co odzyskanej prosperity gospodarczej. Co powinno zrobi\u0107 kr\u00f3lestwo?"
+        },
+        "next_round_votes": [],
+        "policies_passed_counts": {
+            "Syndykat Kupiecki": {
+                "Stability": 0,
+                "Economy": 2,
+                "Faith": 0
+            },
+            "Wysokie Kap\u0142a\u0144stwo": {
+                "Stability": 0,
+                "Economy": 0,
+                "Faith": 0
+            },
+            "Gwardia Kr\u00f3lewska": {
+                "Stability": 1,
+                "Economy": 0,
+                "Faith": 0
+            }
+        },
+        "winning_statement_counts": {
+            "Syndykat Kupiecki": 4,
+            "Wysokie Kap\u0142a\u0144stwo": 0,
+            "Gwardia Kr\u00f3lewska": 0
+        },
+        "unanimous_vote_counts": {
+            "Syndykat Kupiecki": 4,
+            "Wysokie Kap\u0142a\u0144stwo": 0,
+            "Gwardia Kr\u00f3lewska": 0
+        },
+        "join_url": "/join/OWJU",
+        "winning_statement": {
+            "player_id": "player_1",
+            "statement": "Niech b\u0119d\u0105 nagrody za zwalczanie tego. tym samym zwi\u0119kszaj\u0105c gospodark\u0119 pa\u0144swa, niech to bedzie zysk dla wszystkich ",
+            "name": "gooner"
+        },
+        "last_outcome_narrative_data": {
+            "outcome_narrative": "P\u0142omienne wezwanie goonera, by \"teraz KA\u017bDY m\u00f3g\u0142 sprzeda\u0107 i zosta\u0107 kupcem\", rezonowa\u0142o w ca\u0142ym kr\u00f3lestwie, porywaj\u0105c t\u0142umy wizj\u0105 r\u00f3wnych szans. Kr\u00f3lestwo, pod presj\u0105 tej demagogii, zliberalizowa\u0142o dost\u0119p do handlu, co spotka\u0142o si\u0119 z jego zadowoleniem, gdy\u017c sam \"chcia\u0142by by\u0107 kupcem w tych czasach\". Cho\u0107 gospodarka kr\u00f3lestwa odnotowa\u0142a znaczny wzrost, otwieraj\u0105c nowe perspektywy dla wielu, to jednocze\u015bnie stabilno\u015b\u0107 pa\u0144stwa drastycznie spad\u0142a. Wiara ludu pozosta\u0142a niewzruszona, lecz wolny rynek przyni\u00f3s\u0142 za sob\u0105 nieporz\u0105dek i poczucie chaosu w coraz bardziej niepewnym kr\u00f3lestwie.",
+            "next_event_hint": "Wzrost gospodarczy, okupiony chaosem, nieuchronnie prowadzi do nowych podzia\u0142\u00f3w i napi\u0119\u0107 spo\u0142ecznych.",
+            "kingdom_status_summary": "Kr\u00f3lestwo balansuje na kraw\u0119dzi niestabilno\u015bci, z dynamiczn\u0105, lecz niekontrolowan\u0105 gospodark\u0105, podczas gdy wiara ludu pozostaje umiarkowana."
         }
     }
 }

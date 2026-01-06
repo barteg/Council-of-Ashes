@@ -737,7 +737,7 @@ def resolve_dilemma(game_id, player_comments=None):
     #     )
 
     # Generate outcome narrative using the determined policy and effects
-    if call_gemini_for_outcome_narrative(
+    gemini_success = call_gemini_for_outcome_narrative(
         model,
         game_state={
             "current_round": game["current_round"],
@@ -749,10 +749,19 @@ def resolve_dilemma(game_id, player_comments=None):
         faction_votes={}, # No faction votes in this new system
         player_statements=player_statements_for_gemini,
         player_comments=player_comments,
-    ):
-        with open("outcome.json", "r", encoding="utf-8") as f:
-            outcome_narrative_data = json.load(f)
+    )
+
+    if gemini_success:
+        try:
+            with open("outcome.json", "r", encoding="utf-8") as f:
+                outcome_narrative_data = json.load(f)
+        except json.JSONDecodeError as e:
+            print(f"[ERROR] Failed to load outcome.json despite success flag: {e}")
+            outcome_narrative_data = None
     else:
+        outcome_narrative_data = None
+
+    if not outcome_narrative_data:
         outcome_narrative_data = {
             "outcome_narrative": "Pisarze nie są w stanie zapisać wydarzeń tej rady. Wynik został utracony dla czasu.",
             "next_event_hint": "Przyszłość jest niepewna.",

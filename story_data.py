@@ -120,9 +120,16 @@ def call_gemini_for_outcome_narrative(model, game_state, chosen_policy, policy_e
         json_block_end = gemini_text.rfind('```')
         if json_block_start != -1 and json_block_end != -1 and json_block_start < json_block_end:
             json_string = gemini_text[json_block_start + 7:json_block_end].strip()
-            with open("outcome.json", "w", encoding="utf-8") as f:
-                f.write(json_string)
-            return True
+            try:
+                # Validate JSON before writing
+                parsed_json = json.loads(json_string)
+                with open("outcome.json", "w", encoding="utf-8") as f:
+                    json.dump(parsed_json, f, ensure_ascii=False, indent=2)
+                return True
+            except json.JSONDecodeError as e:
+                print(f"[ERROR] Failed to parse JSON from Gemini outcome response: {e}")
+                print(f"[ERROR] Malformed JSON string: {json_string}")
+                return False
         else:
             return False
     except Exception as e:
