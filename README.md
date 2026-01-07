@@ -83,7 +83,7 @@ If you vote for a policy that causes a Kingdom Stat to hit 0, you are **Exiled**
 
 This project is built with:
 *   **Backend:** Python (Flask, Flask-SocketIO) for real-time game state management.
-*   **AI Engine:** Google Gemini (`gemini-2.5-flash`) for:
+*   **AI Engine:** Local LLM (via **Ollama**, default `qwen2.5:3b`) or Google Gemini for:
     *   Generating context-aware dilemmas.
     *   Interpreting player decisions to craft dynamic narrative outcomes.
 *   **Frontend:** HTML/JS/CSS (Jinja2 Templates) for responsive mobile/desktop UIs.
@@ -99,11 +99,20 @@ This project is built with:
     ```bash
     pip install -r requirements.txt
     ```
-2.  **Set API Key:**
-    Export your Gemini API key:
+2.  **Setup Local LLM (Default):**
+    *   Install [Ollama](https://ollama.com/).
+    *   Pull the default model:
+        ```bash
+        ollama pull qwen2.5:3b
+        ```
+    *   Ensure Ollama is running (`ollama serve`).
+
+    *Alternatively, to use Google Gemini:*
     ```bash
     export GEMINI_API_KEY="your_api_key_here"
+    export USE_LOCAL_LLM="false"
     ```
+
 3.  **Run the Server:**
     ```bash
     python app.py

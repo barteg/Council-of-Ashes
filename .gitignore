@@ -28,3 +28,4 @@ outcome.json
 # TTS model and audio directories
 tts/
 tts_models/
+models/

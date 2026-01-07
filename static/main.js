@@ -5,6 +5,8 @@ let isPlaying = false;
 let currentAudio = null;
 let loadingTimeout;
 
+let loadingSafetyTimeout;
+
 function showLoadingScreen(isPlayerView = false) {
     const loadingOverlay = document.getElementById('loadingOverlay');
     const progressBar = document.getElementById('loadingProgressBar');
@@ -40,6 +42,14 @@ function showLoadingScreen(isPlayerView = false) {
     if (loadingOverlay) loadingOverlay.style.display = 'flex';
 
     clearTimeout(loadingTimeout);
+    clearTimeout(loadingSafetyTimeout); // Clear any existing safety timeout
+
+    // Safety timeout: 30 seconds max loading time
+    loadingSafetyTimeout = setTimeout(() => {
+        console.warn("Loading timed out (safety mechanism).");
+        completeLoading(isPlayerView);
+        alert("Operacja trwa zbyt długo. Sprawdź połączenie lub spróbuj odświeżyć stronę.");
+    }, 30000);
 
     function animateProgress() {
         const increment = Math.random() * 5 + 1; // Random increment between 1 and 6
@@ -64,6 +74,7 @@ function showLoadingScreen(isPlayerView = false) {
 
 function completeLoading(isPlayerView = false) {
     clearTimeout(loadingTimeout);
+    clearTimeout(loadingSafetyTimeout); // Clear safety timeout
     const progressBar = document.getElementById('loadingProgressBar');
     const progressText = document.getElementById('loadingProgressText');
     const loadingOverlay = document.getElementById('loadingOverlay');
@@ -87,12 +98,21 @@ function playNarration(text) {
             return;
         }
 
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => {
+            controller.abort();
+            console.warn('TTS request timed out.');
+            resolve(); // Resolve anyway to unblock UI
+        }, 10000); // 10 second timeout
+
         fetch('/api/tts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: text }),
+            signal: controller.signal
         })
         .then(response => {
+            clearTimeout(timeoutId);
             if (!response.ok) throw new Error('Network response was not ok');
             return response.blob();
         })
@@ -107,8 +127,14 @@ function playNarration(text) {
             resolve(); // Resolve the promise once audio is ready and starts playing
         })
         .catch(error => {
-            console.error('Error fetching TTS audio:', error);
-            reject(error); // Reject the promise on error
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError') {
+                console.warn('TTS fetch aborted due to timeout.');
+            } else {
+                console.error('Error fetching TTS audio:', error);
+            }
+            // Resolve anyway to ensure UI unblocks
+            resolve(); 
         });
     });
 }

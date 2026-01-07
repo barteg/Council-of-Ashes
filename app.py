@@ -1,4 +1,10 @@
+import eventlet
+eventlet.monkey_patch()
+
 import os
+# Suppress TensorFlow info/warning messages
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+
 import google.generativeai as genai
 from flask import Flask, render_template, request, jsonify, send_file
 from flask_socketio import SocketIO, emit, join_room, leave_room
@@ -33,19 +39,36 @@ torch.serialization.add_safe_globals(
 )
 # ----------------------------------------------
 
+class MockCandidate:
+    def __init__(self):
+        self.content = type('obj', (object,), {'parts': [type('obj', (object,), {'text': '{"id": "mock_event", "title": "Mock Event", "description": "No LLM configured. Please set GEMINI_API_KEY.", "choices": [{"text": "OK", "effects": {}}], "narrative_prompt": "Configure LLM."}'})]})
+        self.finish_reason = 'STOP'
+        self.safety_ratings = []
+
+class MockResponse:
+    def __init__(self):
+        self.candidates = [MockCandidate()]
+        self.prompt_feedback = "Mock Feedback"
+
+class MockModel:
+    def generate_content(self, prompt):
+        print("[LLM] MockModel generating content...")
+        return MockResponse()
+
 # LLM Configuration
 api_key = os.getenv("GEMINI_API_KEY")
+use_local = os.getenv("USE_LOCAL_LLM", "true").lower() == "true" # Default to using local LLM
 
-if os.getenv("USE_LOCAL_LLM", "false").lower() == "true":
+if use_local:
     print("[LLM] Using Local LLM for narrative generation.")
-    model = LocalLLMClient()
+    model = LocalLLMClient(model_name="qwen2.5:3b")
 elif api_key:
     print("[LLM] Using Gemini API for narrative generation.")
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-2.5-flash")
 else:
-    print("[LLM] WARNING: No LLM configured (GEMINI_API_KEY missing). Defaulting to Local LLM.")
-    model = LocalLLMClient()
+    print("[LLM] WARNING: No LLM configured (GEMINI_API_KEY missing). Using MockModel to prevent hangs.")
+    model = MockModel()
 
 # --- Coqui XTTS v2 Setup ---
 # Determine the device to use
@@ -138,7 +161,9 @@ def load_games():
         print("[PERSISTENCE] No existing games file found. Starting with empty games.")
         games = {}
 
-load_games()
+# load_games() # Disabled to prevent loading old/incompatible game states.
+print("[PERSISTENCE] Automatic loading of games disabled to ensure clean state.")
+games = {}
 
 
 def generate_game_id():
@@ -1300,5 +1325,11 @@ if __name__ == "__main__":
         IP = "127.0.0.1"
     finally:
         s.close()
-    print(f"Starting server on http://{IP}:{port}")
+    
+    print("\n" + "="*50)
+    print(f"🚀 GAME SERVER STARTED!")
+    print(f"📱 Local:   http://localhost:{port}")
+    print(f"🔗 Network: http://{IP}:{port}")
+    print("="*50 + "\n")
+    
     socketio.run(app, host=host, port=port)
