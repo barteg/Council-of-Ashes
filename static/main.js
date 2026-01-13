@@ -358,14 +358,40 @@ socket.on('game_event', async (data) => {
                 
                 // CRITICAL FIX: Unhide the internal sections that were hidden after submission
                 const actionCardSelection = document.getElementById('actionCardSelection');
-                const statementInputArea = document.getElementById('statementInputArea');
+                const playerInputSection = document.getElementById('playerInputSection');
                 const statementSubmitted = document.getElementById('statementSubmitted');
                 
                 if (actionCardSelection) actionCardSelection.style.display = 'block';
-                if (statementInputArea) statementInputArea.style.display = 'block';
+                if (playerInputSection) playerInputSection.style.display = 'block';
                 if (statementSubmitted) statementSubmitted.style.display = 'none';
 
                 console.log(`[DEBUG] dilemma_prompt: playerStatementsSection.style.display after setting: ${playerStatementsSection.style.display}`);
+
+                // Render Suggestions
+                const suggestionsContainer = document.getElementById('statementSuggestions');
+                if (suggestionsContainer) {
+                    suggestionsContainer.innerHTML = ''; // Clear previous
+                    if (dilemma.choices && dilemma.choices.length > 0) {
+                        dilemma.choices.forEach(choice => {
+                            const btn = document.createElement('button');
+                            btn.classList.add('btn', 'btn-outline-secondary', 'btn-sm');
+                            btn.textContent = choice.text;
+                            btn.title = choice.type; // Tooltip
+                            btn.style.marginRight = '5px';
+                            btn.style.marginBottom = '5px';
+                            btn.onclick = (e) => {
+                                e.preventDefault(); // Prevent form submission if inside form
+                                if (playerStatementInput) {
+                                    playerStatementInput.value = choice.text;
+                                    // Optional: Flash effect to show it was applied
+                                    playerStatementInput.classList.add('bg-light');
+                                    setTimeout(() => playerStatementInput.classList.remove('bg-light'), 200);
+                                }
+                            };
+                            suggestionsContainer.appendChild(btn);
+                        });
+                    }
+                }
             }
             if (statementVoteSection) { // Ensure statementVoteSection is initially hidden
                 statementVoteSection.style.display = 'none';
@@ -379,13 +405,13 @@ socket.on('game_event', async (data) => {
             lastSubmittedStatement = ''; // Reset for the new round
 
             // Reset statement input for new round
-            const statementInputArea = document.getElementById('statementInputArea');
+            const playerInputSection = document.getElementById('playerInputSection');
             const statementSubmitted = document.getElementById('statementSubmitted');
             if (playerStatementInput) {
                 playerStatementInput.value = '';
             }
-            if (statementInputArea) {
-                statementInputArea.style.display = 'block';
+            if (playerInputSection) {
+                playerInputSection.style.display = 'block';
             }
             if (statementSubmitted) {
                 statementSubmitted.style.display = 'none';
@@ -557,13 +583,13 @@ if (gameId && playerId) {
                 });
                 lastSubmittedStatement = statement; // Store the submitted statement
                 
-                const statementInputArea = document.getElementById('statementInputArea');
+                const playerInputSection = document.getElementById('playerInputSection');
                 const statementSubmitted = document.getElementById('statementSubmitted');
                 const actionCardSelection = document.getElementById('actionCardSelection'); // Hide cards too
                 const targetSelectionArea = document.getElementById('targetSelectionArea');
                 const targetStatSelectionArea = document.getElementById('targetStatSelectionArea');
 
-                if(statementInputArea) statementInputArea.style.display = 'none';
+                if(playerInputSection) playerInputSection.style.display = 'none';
                 if(actionCardSelection) actionCardSelection.style.display = 'none';
                 if(targetSelectionArea) targetSelectionArea.style.display = 'none';
                 if(targetStatSelectionArea) targetStatSelectionArea.style.display = 'none';

@@ -92,9 +92,15 @@
                     </div>
 
                     <!-- Step B: Text Input -->
-                    <div id="statementInputArea">
-                        <label for="playerStatementInput">Twoje Słowa:</label>
-                        <textarea id="playerStatementInput" class="form-control" rows="3" placeholder="Wpisz swoje oświadczenie..."></textarea>
+            <div id="playerInputSection" class="floating-element" style="display: none;">
+                <label for="playerStatementInput" class="form-label">Twoje Słowa:</label>
+                
+                <!-- Suggestions Container -->
+                <div id="statementSuggestions" class="d-flex flex-wrap gap-2 mb-2">
+                    <!-- Buttons will be injected here via JS -->
+                </div>
+
+                <textarea class="form-control mb-3" id="playerStatementInput" rows="3" placeholder="Wpisz swoje oświadczenie..."></textarea>
                         <button id="submitStatementBtn" class="btn btn-primary mt-2">Zatwierdź Akcję</button>
                     </div>
                     <div id="statementSubmitted" style="display: none;">
