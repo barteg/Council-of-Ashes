@@ -159,7 +159,6 @@ def resolve_dilemma(game_id, player_comments=None):
             "game_over",
             {"winner": {"name": winning_faction}, "reason": f"The {winning_faction} has achieved its objectives!"},
             room=game_id,
-            broadcast=True,
         )
         return
 
@@ -191,7 +190,6 @@ def resolve_dilemma(game_id, player_comments=None):
             "kingdom_collapse", 
             {"collapsed_stats": collapsed_stats, "guilty_players": guilty_players},
             room=game_id, 
-            broadcast=True
         )
 
     # Narrative Generation
@@ -252,7 +250,7 @@ def resolve_dilemma(game_id, player_comments=None):
         "global_stats": game["global_stats"],
         "current_round": game["current_round"],
         "players": game["players"]
-    }, room=game_id, broadcast=True)
+    }, room=game_id)
 
     game["state"] = "OUTCOME_DISPLAYED"
 
@@ -357,6 +355,28 @@ def handle_player_action(data):
         shadow_type = data.get("shadow_type")
         target = data.get("target")
         payload = data.get("payload")
+        player = game["players"][player_id]
+        
+        # Define Costs
+        spite_cost = 0
+        influence_cost = 0
+        
+        if shadow_type == "gambler": influence_cost = 5
+        elif shadow_type == "curse": spite_cost = 3
+        elif shadow_type == "censor": spite_cost = 2
+        elif shadow_type == "silence": spite_cost = 3
+        
+        # Check Costs
+        if player["personal_stats"]["Spite"] < spite_cost:
+            emit("error", {"message": f"Za mało Spite! Potrzebujesz {spite_cost}."}, room=request.sid)
+            return
+        if player["personal_stats"]["Influence"] < influence_cost:
+            emit("error", {"message": f"Za mało Influence! Potrzebujesz {influence_cost}."}, room=request.sid)
+            return
+            
+        # Deduct Costs
+        player["personal_stats"]["Spite"] -= spite_cost
+        player["personal_stats"]["Influence"] -= influence_cost
         
         effect = {
             "source": player_id,
@@ -373,12 +393,12 @@ def handle_player_action(data):
              target_p = game["players"].get(target)
              if target_p and target_p["personal_stats"]["Influence"] > 0:
                  target_p["personal_stats"]["Influence"] -= 1
-                 game["players"][player_id]["personal_stats"]["Influence"] += 1
+                 player["personal_stats"]["Influence"] += 1
         elif shadow_type == "toast":
              target_p = game["players"].get(target)
              if target_p:
                  target_p["personal_stats"]["Influence"] += 1
-                 game["players"][player_id]["personal_stats"]["Influence"] += 1
+                 player["personal_stats"]["Influence"] += 1
         
         emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
         return

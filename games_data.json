@@ -1,17 +1,17 @@
 {
-    "IUTX": {
-        "host_sid": "5qSmbhmUE5NYpFodAAAD",
+    "MCVT": {
+        "host_sid": "7Rk6jiwLkFoxWqiRAAAF",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "zdaSbKUEvsXmdP3rAAAt",
+                "sid": "Zl_Rq2AGtWy-Cat8AAAT",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
                 "faction": "Gwardia Kr\u00f3lewska",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 50,
+                    "Influence": 55,
                     "Spite": 0
                 },
                 "ready": true,
@@ -20,7 +20,15 @@
                 "current_action": null,
                 "action_target": null,
                 "action_target_stat": null,
-                "statement": "stworzy\u0107 now\u0105 religi\u0119, gdzie to Kr\u00f3l i Gwiardia reprezentuj\u0105 si\u0142y natury. Finansowo wesprze\u0107 potrzebujacych tak by nikt sie nie dowiedzia\u0142."
+                "statement": "Niech G\u0142odni jedz\u0105 bezdomnych",
+                "predicted_effect": {
+                    "Stability": -15,
+                    "Economy": 5,
+                    "Faith": -15
+                },
+                "statement_vote": "player_1",
+                "was_blocked": false,
+                "comment": "co na to kosciol?"
             }
         },
         "factions": {
@@ -159,34 +167,51 @@
                 ]
             }
         },
-        "state": "VOTING_PHASE",
+        "state": "SHADOW_PHASE",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "event_round_1_faith_crisis",
-            "title": "G\u0142osy z Rynsztoka",
-            "description": "\u015awi\u0105tynie w dzielnicy portowej stoj\u0105 puste, a ich mury zbrykano b\u0142otem i krwi\u0105 szczur\u00f3w. Ludzie odwracaj\u0105 si\u0119 od milcz\u0105cych bog\u00f3w, szukaj\u0105c pocieszenia w ciemnych zau\u0142kach, gdzie szerz\u0105 si\u0119 zakazane kulty. Cho\u0107 stra\u017c wci\u0105\u017c panuje nad g\u0142\u00f3wnymi traktami, strach przed nieznanym parali\u017cuje handel. \"Po co nam bogowie, kt\u00f3rzy nie potrafi\u0105 zes\u0142a\u0107 deszczu ani chleba?\" \u2013 krzyczy jednooki \u017cebrak pod bram\u0105 katedry.",
+            "id": "event_round_1_famine_riots",
+            "title": "G\u0142\u00f3d u Bram",
+            "description": "Zapasy zbo\u017ca gnij\u0105 w wilgotnych spichlerzach, a szczury s\u0105 jedynym sytym stworzeniem w mie\u015bcie. Na targowiskach wybuchaj\u0105 krwawe b\u00f3jki o ostatnie bochenki sple\u015bnia\u0142ego chleba, podczas gdy stra\u017c miejska bezradnie patrzy na narastaj\u0105cy chaos. 'Dzieci jedz\u0105 b\u0142oto, panie, a wy siedzicie w cieple!' krzyczy zdesperowana matka, ciskaj\u0105c kamieniem w mury pa\u0142acu. Cie\u0144 buntu pada na Rad\u0119, gdy g\u0142\u00f3d odbiera ludziom resztki rozs\u0105dku.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Duchowe fundamenty kr\u00f3lestwa kruszej\u0105 na naszych oczach; w jaki spos\u00f3b Rada zamierza przywr\u00f3ci\u0107 porz\u0105dek w sercach poddanych?"
+            "narrative_prompt": "Jak Rada zamierza nakarmi\u0107 miasto, gdy spichlerze s\u0105 puste, a lud \u017c\u0105da chleba?"
         },
         "global_stats": {
-            "Stability": 55,
-            "Economy": 46,
-            "Faith": 37
+            "Stability": 22,
+            "Economy": 50,
+            "Faith": 18
         },
         "current_round": 1,
-        "event_history": [],
+        "event_history": [
+            {
+                "round": 1,
+                "policy_chosen": "Dekret o Utylizacji Bezdomnych",
+                "effects": {
+                    "Stability": -15,
+                    "Economy": 10,
+                    "Faith": -20
+                },
+                "faction_votes": {},
+                "outcome_narrative": "Pisarze nie s\u0105 w stanie zapisa\u0107 wydarze\u0144 tej rady.",
+                "global_stats_after": {
+                    "Stability": 22,
+                    "Economy": 50,
+                    "Faith": 18
+                }
+            }
+        ],
         "gemini_output": {
-            "id": "event_round_1_faith_crisis",
-            "title": "G\u0142osy z Rynsztoka",
-            "description": "\u015awi\u0105tynie w dzielnicy portowej stoj\u0105 puste, a ich mury zbrykano b\u0142otem i krwi\u0105 szczur\u00f3w. Ludzie odwracaj\u0105 si\u0119 od milcz\u0105cych bog\u00f3w, szukaj\u0105c pocieszenia w ciemnych zau\u0142kach, gdzie szerz\u0105 si\u0119 zakazane kulty. Cho\u0107 stra\u017c wci\u0105\u017c panuje nad g\u0142\u00f3wnymi traktami, strach przed nieznanym parali\u017cuje handel. \"Po co nam bogowie, kt\u00f3rzy nie potrafi\u0105 zes\u0142a\u0107 deszczu ani chleba?\" \u2013 krzyczy jednooki \u017cebrak pod bram\u0105 katedry.",
+            "id": "event_round_1_famine_riots",
+            "title": "G\u0142\u00f3d u Bram",
+            "description": "Zapasy zbo\u017ca gnij\u0105 w wilgotnych spichlerzach, a szczury s\u0105 jedynym sytym stworzeniem w mie\u015bcie. Na targowiskach wybuchaj\u0105 krwawe b\u00f3jki o ostatnie bochenki sple\u015bnia\u0142ego chleba, podczas gdy stra\u017c miejska bezradnie patrzy na narastaj\u0105cy chaos. 'Dzieci jedz\u0105 b\u0142oto, panie, a wy siedzicie w cieple!' krzyczy zdesperowana matka, ciskaj\u0105c kamieniem w mury pa\u0142acu. Cie\u0144 buntu pada na Rad\u0119, gdy g\u0142\u00f3d odbiera ludziom resztki rozs\u0105dku.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Duchowe fundamenty kr\u00f3lestwa kruszej\u0105 na naszych oczach; w jaki spos\u00f3b Rada zamierza przywr\u00f3ci\u0107 porz\u0105dek w sercach poddanych?"
+            "narrative_prompt": "Jak Rada zamierza nakarmi\u0107 miasto, gdy spichlerze s\u0105 puste, a lud \u017c\u0105da chleba?"
         },
         "next_round_votes": [],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
                 "Stability": 0,
-                "Economy": 0,
+                "Economy": 1,
                 "Faith": 0
             },
             "Wysokie Kap\u0142a\u0144stwo": {
@@ -203,13 +228,33 @@
         "winning_statement_counts": {
             "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 0
+            "Gwardia Kr\u00f3lewska": 1
         },
         "unanimous_vote_counts": {
             "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 0
+            "Gwardia Kr\u00f3lewska": 1
         },
-        "join_url": "/join/IUTX"
+        "join_url": "/join/MCVT",
+        "winning_statement": {
+            "player_id": "player_1",
+            "statement": "Niech G\u0142odni jedz\u0105 bezdomnych",
+            "name": "gooner",
+            "was_blocked": false
+        },
+        "shadow_effects": [
+            {
+                "source": "player_1",
+                "type": "gambler",
+                "target": "",
+                "payload": "",
+                "round": 1
+            }
+        ],
+        "last_outcome_narrative_data": {
+            "outcome_narrative": "Pisarze nie s\u0105 w stanie zapisa\u0107 wydarze\u0144 tej rady.",
+            "next_event_hint": "Przysz\u0142o\u015b\u0107 jest niepewna.",
+            "kingdom_status_summary": "Kr\u00f3lestwo jest w stanie ci\u0105g\u0142ych zmian."
+        }
     }
 }

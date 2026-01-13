@@ -1199,12 +1199,12 @@ function previewPlayerStats(baseStats, effect) {
 
 
     const shadowActions = [
-        { id: 'curse', title: 'Klątwa', desc: 'Zmuś gracza do użycia słowa.', cost: 0, input: 'word' },
-        { id: 'gambler', title: 'Hazardzista', desc: 'Obstaw kto wygra (2x Infl).', cost: 5, input: 'bet' },
-        { id: 'censor', title: 'Cenzura', desc: 'Zabroń użycia litery.', cost: 2, input: 'letter' },
-        { id: 'pickpocket', title: 'Kradzież', desc: 'Ukradnij 1 Influence.', cost: 0, input: 'target' },
-        { id: 'silence', title: 'Cisza', desc: 'Zablokuj komentarze.', cost: 3, input: 'target' },
-        { id: 'toast', title: 'Toast', desc: '+1 Infl dla obu.', cost: 0, input: 'target' }
+        { id: 'curse', title: 'Klątwa', desc: 'Zmuś gracza do użycia słowa.', cost: 3, currency: 'Spite', input: 'word' },
+        { id: 'gambler', title: 'Hazardzista', desc: 'Obstaw kto wygra (Nagroda: 10 Infl).', cost: 5, currency: 'Influence', input: 'bet' },
+        { id: 'censor', title: 'Cenzura', desc: 'Zabroń użycia litery.', cost: 2, currency: 'Spite', input: 'letter' },
+        { id: 'pickpocket', title: 'Kradzież', desc: 'Ukradnij 1 Influence.', cost: 0, currency: 'Spite', input: 'target' },
+        { id: 'silence', title: 'Cisza', desc: 'Zablokuj komentarze.', cost: 3, currency: 'Spite', input: 'target' },
+        { id: 'toast', title: 'Toast', desc: '+1 Infl dla obu.', cost: 0, currency: 'Spite', input: 'target' }
     ];
 
     let currentShadowAction = null;
@@ -1229,7 +1229,7 @@ function previewPlayerStats(baseStats, effect) {
                     <div class='tarot-face tarot-back'>
                         <div class='tarot-title'>${action.title}</div>
                         <div class='tarot-desc'>${action.desc}</div>
-                        ${action.cost > 0 ? `<div class='tarot-cost'>Koszt: ${action.cost} Spite</div>` : ''}
+                        ${action.cost > 0 ? `<div class='tarot-cost'>Koszt: ${action.cost} ${action.currency}</div>` : ''}
                     </div>
                 `;
                 
@@ -1257,8 +1257,15 @@ function previewPlayerStats(baseStats, effect) {
         inputDiv.style.display = 'block';
         title.textContent = action.title;
         
-        textInput.style.display = (action.input === 'word' || action.input === 'letter' || action.input === 'bet') ? 'block' : 'none';
-        playerSelect.style.display = (action.input !== 'bet') ? 'block' : 'none';
+        const placeholders = {
+            'word': 'Wpisz przeklęte słowo...',
+            'letter': 'Wpisz zakazaną literę...',
+            'bet': 'Wybierz gracza, na którego stawiasz.'
+        };
+        
+        textInput.placeholder = placeholders[action.input] || 'Wpisz treść...';
+        textInput.style.display = (action.input === 'word' || action.input === 'letter') ? 'block' : 'none';
+        playerSelect.style.display = (action.input !== 'none') ? 'block' : 'none';
         
         playerSelect.innerHTML = '';
         const sourceSelect = document.getElementById('targetPlayerSelect');
