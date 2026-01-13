@@ -23,20 +23,6 @@ EVENT_GENERATION_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów
   "title": "Krótki, Konkretny Tytuł",
   "description": "Opis problemu (max 3-4 zdania). Opisz co się dzieje, kto cierpi i co grozi królestwu.",
   "image": "/static/images/placeholder.png",
-  "choices": [
-    {{
-      "text": "Opcja 1: Agresywna/Siłowa",
-      "type": "Force"
-    }},
-    {{
-      "text": "Opcja 2: Dyplomatyczna/Handlowa",
-      "type": "Diplomacy"
-    }},
-    {{
-      "text": "Opcja 3: Podstępna/Mistyczna",
-      "type": "Subterfuge"
-    }}
-  ],
   "narrative_prompt": "Jedno zdanie podsumowujące problem, kończące się pytaniem do Rady."
 }}
 ```

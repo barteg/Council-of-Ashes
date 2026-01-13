@@ -287,6 +287,7 @@ socket.on('game_event', async (data) => {
             console.log('[DEBUG] Host Dilemma Description:', dilemma.description);
             document.getElementById('hostNarrative').textContent = dilemma.description;
             
+            /*
             try {
                 await playNarration(dilemma.description); // AI NARRATOR
             } catch (error) {
@@ -294,6 +295,8 @@ socket.on('game_event', async (data) => {
             } finally {
                 completeLoading(false);
             }
+            */
+            completeLoading(false); // Ensure loading completes
 
             // Update host global stats progress bars
             const globalStats = data.global_stats;
@@ -369,32 +372,6 @@ socket.on('game_event', async (data) => {
                 if (statementSubmitted) statementSubmitted.style.display = 'none';
 
                 console.log(`[DEBUG] dilemma_prompt: playerStatementsSection.style.display after setting: ${playerStatementsSection.style.display}`);
-
-                // Render Suggestions
-                const suggestionsContainer = document.getElementById('statementSuggestions');
-                if (suggestionsContainer) {
-                    suggestionsContainer.innerHTML = ''; // Clear previous
-                    if (dilemma.choices && dilemma.choices.length > 0) {
-                        dilemma.choices.forEach(choice => {
-                            const btn = document.createElement('button');
-                            btn.classList.add('btn', 'btn-outline-secondary', 'btn-sm');
-                            btn.textContent = choice.text;
-                            btn.title = choice.type; // Tooltip
-                            btn.style.marginRight = '5px';
-                            btn.style.marginBottom = '5px';
-                            btn.onclick = (e) => {
-                                e.preventDefault(); // Prevent form submission if inside form
-                                if (playerStatementInput) {
-                                    playerStatementInput.value = choice.text;
-                                    // Optional: Flash effect to show it was applied
-                                    playerStatementInput.classList.add('bg-light');
-                                    setTimeout(() => playerStatementInput.classList.remove('bg-light'), 200);
-                                }
-                            };
-                            suggestionsContainer.appendChild(btn);
-                        });
-                    }
-                }
             }
             if (statementVoteSection) { // Ensure statementVoteSection is initially hidden
                 statementVoteSection.style.display = 'none';
@@ -527,6 +504,7 @@ if (gameId && playerId) {
         if (gameArea) gameArea.style.display = 'block'; // Ensure gameArea is visible
         narrativeText.textContent = data.outcome; // Set text content
         
+        /*
         try {
             await playNarration(data.outcome); // AI NARRATOR
         } catch (error) {
@@ -534,6 +512,8 @@ if (gameId && playerId) {
         } finally {
             completeLoading(true);
         }
+        */
+        completeLoading(true);
 
         if (narrativeText) narrativeText.style.setProperty('display', 'block', 'important'); // Ensure the narrative text is visible
         currentRoundSpan.textContent = data.current_round;
@@ -1160,13 +1140,16 @@ if (createGameBtn) {
             if (hostNarrative) {
                 hostNarrative.textContent = data.outcome; // Assuming outcome is passed in data
                 hostNarrative.style.display = 'block';
-                try {
-                    await playNarration(data.outcome); // AI NARRATOR
-                } catch (error) {
-                    console.error("Failed to play narration:", error);
-                } finally {
-                    completeLoading(false);
-                }
+        /*
+        try {
+            await playNarration(data.outcome); // AI NARRATOR
+        } catch (error) {
+            console.error("Failed to play narration:", error);
+        } finally {
+            completeLoading(false); // Host loading
+        }
+        */
+        completeLoading(false);
             }
         }
     });

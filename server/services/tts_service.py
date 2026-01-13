@@ -17,32 +17,9 @@ class TTSService:
         self.load_model()
 
     def load_model(self):
-        print(f"[TTS] Using device: {self.device}")
-        print("[TTS] Loading Coqui XTTS v2 model...")
-        try:
-            model_name = "tts_models/multilingual/multi-dataset/xtts_v2"
-            config_path = os.path.join(
-                "tts_models",
-                "tts_models--multilingual--multi-dataset--xtts_v2",
-                "config.json",
-            )
-            model_path = os.path.join(
-                "tts_models",
-                "tts_models--multilingual--multi-dataset--xtts_v2"
-            )
-
-            if not os.path.exists(config_path):
-                print(f"[TTS] Model config not found at {config_path}")
-                self.model = None
-            else:
-                self.model = TTS(model_path=model_path, config_path=config_path).to(self.device)
-                print("[TTS] Coqui XTTS v2 model loaded successfully.")
-        except Exception as e:
-            print(f"[TTS] Error loading Coqui XTTS model: {e}")
-            self.model = None
-
-        if not os.path.exists("tts"):
-            os.makedirs("tts")
+        print("[TTS] TTS is disabled by configuration to improve speed.")
+        self.model = None
+        # Original loading logic commented out/removed
 
     def generate_audio(self, text, output_file):
         if not self.model:

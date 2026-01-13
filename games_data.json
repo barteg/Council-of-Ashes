@@ -1,26 +1,25 @@
 {
-    "FGET": {
-        "host_sid": "yNzhpUmEcus5JT0lAAAF",
+    "DXBK": {
+        "host_sid": "hWEeKmcxqLkOzDQ7AAAD",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "dzydDnH_oMPihyZ7AAAL",
+                "sid": "49WyN6YUTnNZi78QAAAU",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
-                "faction": "Wysokie Kap\u0142a\u0144stwo",
+                "faction": "Gwardia Kr\u00f3lewska",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 57,
+                    "Influence": 55,
                     "Spite": 0
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "joined",
-                "current_action": "Diplomacy",
-                "action_target": "",
-                "action_target_stat": "Economy",
-                "statement": "Ludzie wybrani przez Boga (\u017bydzi) oddaj\u0105 swoje dorobki biedakom, sta\u0107 ich",
+                "action_status": "waiting",
+                "current_action": null,
+                "action_target": null,
+                "action_target_stat": null,
                 "was_blocked": false
             }
         },
@@ -71,9 +70,7 @@
             },
             "Wysokie Kap\u0142a\u0144stwo": {
                 "power": "Boska \u0141aska",
-                "players": [
-                    "player_1"
-                ],
+                "players": [],
                 "objectives": [
                     {
                         "id": "faith_75",
@@ -117,7 +114,9 @@
             },
             "Gwardia Kr\u00f3lewska": {
                 "power": "Utrzymanie Porz\u0105dku",
-                "players": [],
+                "players": [
+                    "player_1"
+                ],
                 "objectives": [
                     {
                         "id": "stab_75",
@@ -160,53 +159,73 @@
                 ]
             }
         },
-        "state": "OUTCOME_DISPLAYED",
-        "dilemma_active": false,
-        "current_dilemma": null,
-        "global_stats": {
-            "Stability": 43,
-            "Economy": 31,
-            "Faith": 65
+        "state": "DILEMMA",
+        "dilemma_active": true,
+        "current_dilemma": {
+            "id": "event_smoldering_ruins",
+            "title": "Dogasaj\u0105ce Zgliszcza",
+            "description": "G\u0119sty, gryz\u0105cy dym ze spalonych \u015bwi\u0105ty\u0144 wci\u0105\u017c dusi miasto, parali\u017cuj\u0105c targowiska i zmuszaj\u0105c kupc\u00f3w do ucieczki. W\u015br\u00f3d poczernia\u0142ych ruin szabrownicy, niczym stado s\u0119p\u00f3w, walcz\u0105 o resztki stopionego z\u0142ota i relikwii. Ocalali kap\u0142ani, z twarzami umazanymi popio\u0142em, stoj\u0105 u bram pa\u0142acu, \u017c\u0105daj\u0105c sprawiedliwo\u015bci lub gro\u017c\u0105c kl\u0105tw\u0105.",
+            "image": "/static/images/placeholder.png",
+            "choices": [
+                {
+                    "text": "Wybij szabrownik\u00f3w co do nogi, by da\u0107 przyk\u0142ad surowego prawa.",
+                    "type": "Force"
+                },
+                {
+                    "text": "U\u017cyj resztek skarbca, by op\u0142aci\u0107 odbudow\u0119 i u\u0142agodzi\u0107 kler.",
+                    "type": "Diplomacy"
+                },
+                {
+                    "text": "Rozpu\u015b\u0107 wie\u015bci, \u017ce to opozycja zleci\u0142a kradzie\u017c relikwii.",
+                    "type": "Subterfuge"
+                }
+            ],
+            "narrative_prompt": "Czy Rada ugnie si\u0119 pod gro\u017ab\u0105 kl\u0105twy, czy utopi chaos we krwi?"
         },
-        "current_round": 1,
+        "global_stats": {
+            "Stability": 50,
+            "Economy": 43,
+            "Faith": 35
+        },
+        "current_round": 3,
         "event_history": [
             {
                 "round": 1,
-                "policy_chosen": "\u015awi\u0119ta Ja\u0142mu\u017cna Wybranych",
+                "policy_chosen": "Wojskowa Dezinformacja",
                 "effects": {
-                    "Stability": 5,
-                    "Economy": -10,
-                    "Faith": 15
+                    "Stability": 10,
+                    "Economy": -5,
+                    "Faith": -15
                 },
                 "faction_votes": {},
-                "outcome_narrative": "Wysokie Kap\u0142a\u0144stwo wys\u0142a\u0142o swoich gorliwych wyznawc\u00f3w, by odebrali maj\u0105tki wskazanym grupom. Sta\u0142o si\u0119 to po s\u0142owach goonera, kt\u00f3ry rzek\u0142: 'Ludzie wybrani przez Boga (\u017bydzi) oddaj\u0105 swoje dorobki biedakom, sta\u0107 ich'. Rada przyj\u0119\u0142a to milczeniem. Cho\u0107 biedni wiwatowali, otrzymuj\u0105c ja\u0142mu\u017cn\u0119, bogaci kupcy w panice zacz\u0119li ukrywa\u0107 swoje towary i z\u0142oto. W kr\u00f3lestwie panuje teraz religijne uniesienie, ale handel powoli zamiera.",
+                "outcome_narrative": "Agenci Gwardii Kr\u00f3lewskiej wmieszali si\u0119 w t\u0142um, s\u0105cz\u0105c do uszu mieszka\u0144c\u00f3w truj\u0105ce k\u0142amstwa. Sta\u0142o si\u0119 to po s\u0142owach gooner, kt\u00f3ry rzek\u0142: 'Opcja 3: Rozpu\u015b\u0107 plotk\u0119, \u017ce za zaraz\u0119 odpowiadaj\u0105 przekl\u0119ci heretycy, by odwr\u00f3ci\u0107 gniew ludu od Rady i skierowa\u0107 go na fanatyk\u00f3w.' Rada przyj\u0119\u0142a to milczeniem. Rozw\u015bcieczony mot\u0142och rzuci\u0142 si\u0119 jednak nie tylko na heretyk\u00f3w, ale i na niewinnych kap\u0142an\u00f3w, pl\u0105druj\u0105c \u015bwi\u0119te miejsca. Cho\u0107 gro\u017aba buntu wobec Rady min\u0119\u0142a, dym z p\u0142on\u0105cych \u015bwi\u0105ty\u0144 dusi handel w ca\u0142ym mie\u015bcie.",
                 "global_stats_after": {
-                    "Stability": 43,
-                    "Economy": 31,
-                    "Faith": 65
+                    "Stability": 50,
+                    "Economy": 43,
+                    "Faith": 35
                 }
             }
         ],
         "gemini_output": {
-            "id": "dilemma_unrest_low_stability",
-            "title": "Cienie na Bruku",
-            "description": "Stra\u017cnicy miejscy odmawiaj\u0105 wchodzenia do Dolnych Dzielnic po zmroku, gdzie biedota zbroi si\u0119 w kamienie i pochodnie. Kupcy zamykaj\u0105 kramy, boj\u0105c si\u0119 grabie\u017cy, a plotki o s\u0142abo\u015bci Rady kr\u0105\u017c\u0105 g\u0142o\u015bniej ni\u017c monety. Porz\u0105dek wisi na w\u0142osku, a zapach dymu zwiastuje po\u017cog\u0119.",
+            "id": "event_smoldering_ruins",
+            "title": "Dogasaj\u0105ce Zgliszcza",
+            "description": "G\u0119sty, gryz\u0105cy dym ze spalonych \u015bwi\u0105ty\u0144 wci\u0105\u017c dusi miasto, parali\u017cuj\u0105c targowiska i zmuszaj\u0105c kupc\u00f3w do ucieczki. W\u015br\u00f3d poczernia\u0142ych ruin szabrownicy, niczym stado s\u0119p\u00f3w, walcz\u0105 o resztki stopionego z\u0142ota i relikwii. Ocalali kap\u0142ani, z twarzami umazanymi popio\u0142em, stoj\u0105 u bram pa\u0142acu, \u017c\u0105daj\u0105c sprawiedliwo\u015bci lub gro\u017c\u0105c kl\u0105tw\u0105.",
             "image": "/static/images/placeholder.png",
             "choices": [
                 {
-                    "text": "Wyprowadzi\u0107 wojsko na ulice i zaprowadzi\u0107 porz\u0105dek si\u0142\u0105.",
+                    "text": "Wybij szabrownik\u00f3w co do nogi, by da\u0107 przyk\u0142ad surowego prawa.",
                     "type": "Force"
                 },
                 {
-                    "text": "Rozda\u0107 resztki zapas\u00f3w \u017cywno\u015bci, by uciszy\u0107 gniew ludu.",
+                    "text": "U\u017cyj resztek skarbca, by op\u0142aci\u0107 odbudow\u0119 i u\u0142agodzi\u0107 kler.",
                     "type": "Diplomacy"
                 },
                 {
-                    "text": "Wys\u0142a\u0107 agent\u00f3w, by sk\u0142\u00f3cili przyw\u00f3dc\u00f3w buntu mi\u0119dzy sob\u0105.",
+                    "text": "Rozpu\u015b\u0107 wie\u015bci, \u017ce to opozycja zleci\u0142a kradzie\u017c relikwii.",
                     "type": "Subterfuge"
                 }
             ],
-            "narrative_prompt": "Miasto wstrzymuje oddech w oczekiwaniu na decyzj\u0119 Rady: czy poleje si\u0119 krew, czy z\u0142oto?"
+            "narrative_prompt": "Czy Rada ugnie si\u0119 pod gro\u017ab\u0105 kl\u0105twy, czy utopi chaos we krwi?"
         },
         "next_round_votes": [],
         "policies_passed_counts": {
@@ -218,7 +237,7 @@
             "Wysokie Kap\u0142a\u0144stwo": {
                 "Stability": 0,
                 "Economy": 0,
-                "Faith": 1
+                "Faith": 0
             },
             "Gwardia Kr\u00f3lewska": {
                 "Stability": 1,
@@ -228,26 +247,25 @@
         },
         "winning_statement_counts": {
             "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 1,
-            "Gwardia Kr\u00f3lewska": 0
+            "Wysokie Kap\u0142a\u0144stwo": 0,
+            "Gwardia Kr\u00f3lewska": 1
         },
         "unanimous_vote_counts": {
             "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 1,
-            "Gwardia Kr\u00f3lewska": 0
+            "Wysokie Kap\u0142a\u0144stwo": 0,
+            "Gwardia Kr\u00f3lewska": 1
         },
-        "join_url": "/join/FGET",
+        "join_url": "/join/DXBK",
         "winning_statement": {
             "player_id": "player_1",
-            "statement": "Ludzie wybrani przez Boga (\u017bydzi) oddaj\u0105 swoje dorobki biedakom, sta\u0107 ich",
+            "statement": "Opcja 3: Rozpu\u015b\u0107 plotk\u0119, \u017ce za zaraz\u0119 odpowiadaj\u0105 przekl\u0119ci heretycy, by odwr\u00f3ci\u0107 gniew ludu od Rady i skierowa\u0107 go na fanatyk\u00f3w.",
             "name": "gooner",
-            "action_card": "Diplomacy",
             "was_blocked": false
         },
         "last_outcome_narrative_data": {
-            "outcome_narrative": "Wysokie Kap\u0142a\u0144stwo wys\u0142a\u0142o swoich gorliwych wyznawc\u00f3w, by odebrali maj\u0105tki wskazanym grupom. Sta\u0142o si\u0119 to po s\u0142owach goonera, kt\u00f3ry rzek\u0142: 'Ludzie wybrani przez Boga (\u017bydzi) oddaj\u0105 swoje dorobki biedakom, sta\u0107 ich'. Rada przyj\u0119\u0142a to milczeniem. Cho\u0107 biedni wiwatowali, otrzymuj\u0105c ja\u0142mu\u017cn\u0119, bogaci kupcy w panice zacz\u0119li ukrywa\u0107 swoje towary i z\u0142oto. W kr\u00f3lestwie panuje teraz religijne uniesienie, ale handel powoli zamiera.",
-            "next_event_hint": "Puste stragany na rynkach mog\u0105 wkr\u00f3tce doprowadzi\u0107 do zamieszek g\u0142odowych.",
-            "kingdom_status_summary": "Ulice wype\u0142niaj\u0105 modlitwy, lecz sakiewki obywateli \u015bwiec\u0105 pustkami."
+            "outcome_narrative": "Agenci Gwardii Kr\u00f3lewskiej wmieszali si\u0119 w t\u0142um, s\u0105cz\u0105c do uszu mieszka\u0144c\u00f3w truj\u0105ce k\u0142amstwa. Sta\u0142o si\u0119 to po s\u0142owach gooner, kt\u00f3ry rzek\u0142: 'Opcja 3: Rozpu\u015b\u0107 plotk\u0119, \u017ce za zaraz\u0119 odpowiadaj\u0105 przekl\u0119ci heretycy, by odwr\u00f3ci\u0107 gniew ludu od Rady i skierowa\u0107 go na fanatyk\u00f3w.' Rada przyj\u0119\u0142a to milczeniem. Rozw\u015bcieczony mot\u0142och rzuci\u0142 si\u0119 jednak nie tylko na heretyk\u00f3w, ale i na niewinnych kap\u0142an\u00f3w, pl\u0105druj\u0105c \u015bwi\u0119te miejsca. Cho\u0107 gro\u017aba buntu wobec Rady min\u0119\u0142a, dym z p\u0142on\u0105cych \u015bwi\u0105ty\u0144 dusi handel w ca\u0142ym mie\u015bcie.",
+            "next_event_hint": "Popio\u0142y spalonych o\u0142tarzy przykrywaj\u0105 ulice, a cisza w ko\u015bcio\u0142ach zwiastuje nieszcz\u0119\u015bcie.",
+            "kingdom_status_summary": "W\u0142adza Rady jest bezpieczna, lecz gospodarka kuleje, a wiara upad\u0142a w gruzy."
         }
     }
 }
