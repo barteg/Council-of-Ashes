@@ -1323,3 +1323,29 @@ function previewPlayerStats(baseStats, effect) {
         }
     });
 
+
+    // Share Game via Native API (AirDrop, etc)
+    const shareGameBtn = document.getElementById('shareGameBtn');
+    if (shareGameBtn) {
+        shareGameBtn.addEventListener('click', () => {
+            const joinUrl = `${window.location.origin}/join/${gameId}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Dołącz do Rady Popiołów',
+                    text: 'Zapraszam do mrocznej gry politycznej!',
+                    url: joinUrl
+                }).then(() => console.log('Successful share'))
+                  .catch((error) => console.log('Error sharing', error));
+            } else {
+                // Fallback: Copy to clipboard
+                const el = document.createElement('textarea');
+                el.value = joinUrl;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                alert('Link dołączania skopiowany do schowka!');
+            }
+        });
+    }
+

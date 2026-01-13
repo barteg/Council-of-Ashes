@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Rada Popiołów">
+    <link rel="manifest" href="/static/manifest.json">
+    
     <title>Kontroler Gracza - Gra {{ game_id }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/style.css">
@@ -160,6 +165,7 @@
                 <p>Pokaż ten kod innym, aby dołączyli:</p>
                 <div id="joinQrCode" class="d-flex justify-content-center mb-2"></div>
                 <p><strong>ID Gry:</strong> <span id="gameIdDisplay"></span></p>
+                <button id="shareGameBtn" class="btn btn-outline-info btn-block mb-3">Udostępnij Link (AirDrop)</button>
                 <hr>
             </div>
 
