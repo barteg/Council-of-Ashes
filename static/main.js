@@ -678,11 +678,10 @@ if (gameId && playerId) {
                 if (submitCommentBtn) {
                     submitCommentBtn.onclick = () => { // Use onclick to prevent multiple listeners
                         const comment = playerCommentInput.value;
-                        showLoadingScreen(true);
+                        // Loading screen removed to allow Shadow Phase interaction
                         socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_comment', comment: comment });
                         playerCommentInput.value = '';
                         commentPhaseSection.style.display = 'none'; // Hide comment section after submission
-                        // Optionally show a "waiting for other players" message
                     };
                 }
             } else {

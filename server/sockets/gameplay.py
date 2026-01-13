@@ -155,7 +155,7 @@ def resolve_dilemma(game_id, player_comments=None):
     if winning_faction:
         game["state"] = "GAME_OVER"
         game_manager.save_games()
-        emit(
+        socketio.emit(
             "game_over",
             {"winner": {"name": winning_faction}, "reason": f"The {winning_faction} has achieved its objectives!"},
             room=game_id,
@@ -187,7 +187,7 @@ def resolve_dilemma(game_id, player_comments=None):
         for stat in collapsed_stats:
             game["global_stats"][stat] = 1
 
-        emit(
+        socketio.emit(
             "kingdom_collapse", 
             {"collapsed_stats": collapsed_stats, "guilty_players": guilty_players},
             room=game_id, 
@@ -239,7 +239,7 @@ def resolve_dilemma(game_id, player_comments=None):
     # Emit results after AI generation
     all_comments = {pid: {"comment": p.get("comment", ""), "name": p["name"]} for pid, p in game["players"].items() if p.get("comment")}
     
-    emit("comments_received", {
+    socketio.emit("comments_received", {
         "comments": all_comments,
         "outcome": outcome_narrative_data["outcome_narrative"],
         "global_stats": game["global_stats"],
@@ -247,7 +247,7 @@ def resolve_dilemma(game_id, player_comments=None):
         "players": game["players"]
     }, room=game_id)
 
-    emit("dilemma_resolved", {
+    socketio.emit("dilemma_resolved", {
         "outcome": outcome_narrative_data["outcome_narrative"],
         "global_stats": game["global_stats"],
         "current_round": game["current_round"],
@@ -266,7 +266,7 @@ def resolve_dilemma(game_id, player_comments=None):
     if winner:
         game["state"] = "GAME_OVER"
         game_manager.save_games()
-        emit("game_over", {"winner": winner}, room=game_id, broadcast=True)
+        socketio.emit("game_over", {"winner": winner}, room=game_id, broadcast=True)
         return
 
     game["dilemma_active"] = False
@@ -487,6 +487,15 @@ def handle_player_action(data):
             
             winning_player_id = random.choice(winners) if winners else None
             
+            # Check Gambler Bets
+            prev_round = game["current_round"] - 1
+            bets = [e for e in game.get("shadow_effects", []) if e["round"] == prev_round and e["type"] == "gambler"]
+            
+            for bet in bets:
+                if bet["payload"] == winning_player_id:
+                    if bet["source"] in game["players"]:
+                        game["players"][bet["source"]]["personal_stats"]["Influence"] += 10
+
             # Apply Influence
             for pid, p in game["players"].items():
                 votes_rec = vote_counts.get(pid, 0)
@@ -528,7 +537,16 @@ def handle_player_action(data):
 
     elif action == "submit_comment":
         if game["state"] != "COMMENT_PHASE": return
-        comment = data.get("comment", "")
+        
+        # Check Silence
+        prev_round = game["current_round"] - 1
+        is_silenced = any(e["type"] == "silence" and e["target"] == player_id and e["round"] == prev_round for e in game.get("shadow_effects", []))
+        
+        if is_silenced:
+             comment = "..."
+        else:
+             comment = data.get("comment", "")
+
         if "comment" in game["players"][player_id]: return
 
         game["players"][player_id]["comment"] = comment
