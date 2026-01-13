@@ -1,13 +1,13 @@
 {
-    "LRLX": {
-        "host_sid": "2WdnAMyZs89IRqDwAAAB",
+    "FGET": {
+        "host_sid": "yNzhpUmEcus5JT0lAAAF",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "8XE45YDxZe0lk5CCAAAF",
-                "name": "g",
+                "sid": "dzydDnH_oMPihyZ7AAAL",
+                "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
-                "faction": "Gwardia Kr\u00f3lewska",
+                "faction": "Wysokie Kap\u0142a\u0144stwo",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
@@ -16,11 +16,11 @@
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "done",
+                "action_status": "joined",
                 "current_action": "Diplomacy",
                 "action_target": "",
                 "action_target_stat": "Economy",
-                "statement": "Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105.",
+                "statement": "Ludzie wybrani przez Boga (\u017bydzi) oddaj\u0105 swoje dorobki biedakom, sta\u0107 ich",
                 "was_blocked": false
             }
         },
@@ -71,7 +71,9 @@
             },
             "Wysokie Kap\u0142a\u0144stwo": {
                 "power": "Boska \u0141aska",
-                "players": [],
+                "players": [
+                    "player_1"
+                ],
                 "objectives": [
                     {
                         "id": "faith_75",
@@ -115,9 +117,7 @@
             },
             "Gwardia Kr\u00f3lewska": {
                 "power": "Utrzymanie Porz\u0105dku",
-                "players": [
-                    "player_1"
-                ],
+                "players": [],
                 "objectives": [
                     {
                         "id": "stab_75",
@@ -164,49 +164,49 @@
         "dilemma_active": false,
         "current_dilemma": null,
         "global_stats": {
-            "Stability": 47,
+            "Stability": 43,
             "Economy": 31,
-            "Faith": 54
+            "Faith": 65
         },
         "current_round": 1,
         "event_history": [
             {
                 "round": 1,
-                "policy_chosen": "Zbrojna Konfiskata",
+                "policy_chosen": "\u015awi\u0119ta Ja\u0142mu\u017cna Wybranych",
                 "effects": {
-                    "Stability": -5,
-                    "Economy": -15,
-                    "Faith": 0
+                    "Stability": 5,
+                    "Economy": -10,
+                    "Faith": 15
                 },
                 "faction_votes": {},
-                "outcome_narrative": "\u017bo\u0142nierze Gwardii Kr\u00f3lewskiej wywa\u017cyli drzwi magazyn\u00f3w i si\u0142\u0105 przej\u0119li zapasy. Sta\u0142o si\u0119 to po rozkazie g, kt\u00f3ry rzek\u0142: 'Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105'. Rada przyj\u0119\u0142a to milczeniem, gdy\u017c nikt nie \u015bmia\u0142 protestowa\u0107. Okaza\u0142o si\u0119 jednak, \u017ce w panice kupcy zniszczyli cz\u0119\u015b\u0107 w\u0142asnych towar\u00f3w, by nie odda\u0107 ich wojsku. Teraz na targowiskach hula wiatr, a skarbiec \u015bwieci pustkami.",
+                "outcome_narrative": "Wysokie Kap\u0142a\u0144stwo wys\u0142a\u0142o swoich gorliwych wyznawc\u00f3w, by odebrali maj\u0105tki wskazanym grupom. Sta\u0142o si\u0119 to po s\u0142owach goonera, kt\u00f3ry rzek\u0142: 'Ludzie wybrani przez Boga (\u017bydzi) oddaj\u0105 swoje dorobki biedakom, sta\u0107 ich'. Rada przyj\u0119\u0142a to milczeniem. Cho\u0107 biedni wiwatowali, otrzymuj\u0105c ja\u0142mu\u017cn\u0119, bogaci kupcy w panice zacz\u0119li ukrywa\u0107 swoje towary i z\u0142oto. W kr\u00f3lestwie panuje teraz religijne uniesienie, ale handel powoli zamiera.",
                 "global_stats_after": {
-                    "Stability": 47,
+                    "Stability": 43,
                     "Economy": 31,
-                    "Faith": 54
+                    "Faith": 65
                 }
             }
         ],
         "gemini_output": {
-            "id": "event_round_1_trade_blockade",
-            "title": "Blokada Cechu Kupc\u00f3w",
-            "description": "Cech Kupc\u00f3w zablokowa\u0142 bramy miasta, domagaj\u0105c si\u0119 natychmiastowej sp\u0142aty kr\u00f3lewskich d\u0142ug\u00f3w, co wywindowa\u0142o ceny \u017cywno\u015bci. W biednych dzielnicach zaczynaj\u0105 si\u0119 rozruchy, a stra\u017c donosi o pierwszych spl\u0105drowanych straganach. Skarbiec nie jest pe\u0142ny, ale gniew ludu ro\u015bnie szybciej ni\u017c odsetki.",
+            "id": "dilemma_unrest_low_stability",
+            "title": "Cienie na Bruku",
+            "description": "Stra\u017cnicy miejscy odmawiaj\u0105 wchodzenia do Dolnych Dzielnic po zmroku, gdzie biedota zbroi si\u0119 w kamienie i pochodnie. Kupcy zamykaj\u0105 kramy, boj\u0105c si\u0119 grabie\u017cy, a plotki o s\u0142abo\u015bci Rady kr\u0105\u017c\u0105 g\u0142o\u015bniej ni\u017c monety. Porz\u0105dek wisi na w\u0142osku, a zapach dymu zwiastuje po\u017cog\u0119.",
             "image": "/static/images/placeholder.png",
             "choices": [
                 {
-                    "text": "Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105.",
+                    "text": "Wyprowadzi\u0107 wojsko na ulice i zaprowadzi\u0107 porz\u0105dek si\u0142\u0105.",
                     "type": "Force"
                 },
                 {
-                    "text": "Ugnijcie si\u0119 i sp\u0142a\u0107cie d\u0142ug z ostatnich rezerw skarbca.",
+                    "text": "Rozda\u0107 resztki zapas\u00f3w \u017cywno\u015bci, by uciszy\u0107 gniew ludu.",
                     "type": "Diplomacy"
                 },
                 {
-                    "text": "Sfa\u0142szujcie dowody na zdrad\u0119 Cechmistrza, by uniewa\u017cni\u0107 d\u0142ug.",
+                    "text": "Wys\u0142a\u0107 agent\u00f3w, by sk\u0142\u00f3cili przyw\u00f3dc\u00f3w buntu mi\u0119dzy sob\u0105.",
                     "type": "Subterfuge"
                 }
             ],
-            "narrative_prompt": "Z\u0142oto czy krew \u2013 co pop\u0142ynie dzi\u015b ulicami miasta, Rado?"
+            "narrative_prompt": "Miasto wstrzymuje oddech w oczekiwaniu na decyzj\u0119 Rady: czy poleje si\u0119 krew, czy z\u0142oto?"
         },
         "next_round_votes": [],
         "policies_passed_counts": {
@@ -218,36 +218,36 @@
             "Wysokie Kap\u0142a\u0144stwo": {
                 "Stability": 0,
                 "Economy": 0,
-                "Faith": 0
+                "Faith": 1
             },
             "Gwardia Kr\u00f3lewska": {
-                "Stability": 0,
+                "Stability": 1,
                 "Economy": 0,
                 "Faith": 0
             }
         },
         "winning_statement_counts": {
             "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Wysokie Kap\u0142a\u0144stwo": 1,
+            "Gwardia Kr\u00f3lewska": 0
         },
         "unanimous_vote_counts": {
             "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Wysokie Kap\u0142a\u0144stwo": 1,
+            "Gwardia Kr\u00f3lewska": 0
         },
-        "join_url": "/join/LRLX",
+        "join_url": "/join/FGET",
         "winning_statement": {
             "player_id": "player_1",
-            "statement": "Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105.",
-            "name": "g",
+            "statement": "Ludzie wybrani przez Boga (\u017bydzi) oddaj\u0105 swoje dorobki biedakom, sta\u0107 ich",
+            "name": "gooner",
             "action_card": "Diplomacy",
             "was_blocked": false
         },
         "last_outcome_narrative_data": {
-            "outcome_narrative": "\u017bo\u0142nierze Gwardii Kr\u00f3lewskiej wywa\u017cyli drzwi magazyn\u00f3w i si\u0142\u0105 przej\u0119li zapasy. Sta\u0142o si\u0119 to po rozkazie g, kt\u00f3ry rzek\u0142: 'Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105'. Rada przyj\u0119\u0142a to milczeniem, gdy\u017c nikt nie \u015bmia\u0142 protestowa\u0107. Okaza\u0142o si\u0119 jednak, \u017ce w panice kupcy zniszczyli cz\u0119\u015b\u0107 w\u0142asnych towar\u00f3w, by nie odda\u0107 ich wojsku. Teraz na targowiskach hula wiatr, a skarbiec \u015bwieci pustkami.",
-            "next_event_hint": "Brak towar\u00f3w rodzi gniew w\u015br\u00f3d g\u0142odnego posp\u00f3lstwa.",
-            "kingdom_status_summary": "Gospodarka jest w ruinie, a zaufanie do stra\u017cy spad\u0142o."
+            "outcome_narrative": "Wysokie Kap\u0142a\u0144stwo wys\u0142a\u0142o swoich gorliwych wyznawc\u00f3w, by odebrali maj\u0105tki wskazanym grupom. Sta\u0142o si\u0119 to po s\u0142owach goonera, kt\u00f3ry rzek\u0142: 'Ludzie wybrani przez Boga (\u017bydzi) oddaj\u0105 swoje dorobki biedakom, sta\u0107 ich'. Rada przyj\u0119\u0142a to milczeniem. Cho\u0107 biedni wiwatowali, otrzymuj\u0105c ja\u0142mu\u017cn\u0119, bogaci kupcy w panice zacz\u0119li ukrywa\u0107 swoje towary i z\u0142oto. W kr\u00f3lestwie panuje teraz religijne uniesienie, ale handel powoli zamiera.",
+            "next_event_hint": "Puste stragany na rynkach mog\u0105 wkr\u00f3tce doprowadzi\u0107 do zamieszek g\u0142odowych.",
+            "kingdom_status_summary": "Ulice wype\u0142niaj\u0105 modlitwy, lecz sakiewki obywateli \u015bwiec\u0105 pustkami."
         }
     }
 }
