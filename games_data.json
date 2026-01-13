@@ -1,32 +1,82 @@
 {
-    "LAZJ": {
-        "host_sid": "ORUojuxSvjWICpXfAAAB",
+    "BGLF": {
+        "host_sid": "KBEop0h7rSFb8CJeAAAD",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "_B3jhQVHP_fb-DegAAAn",
-                "name": "gooner",
+                "sid": "2mQufQEzyepbzWwkAABZ",
+                "name": "Kasia daje dupy pod C4",
                 "avatar": "/static/avatars/avatar1.png",
+                "faction": "Wysokie Kap\u0142a\u0144stwo",
+                "choice": null,
+                "statements": [],
+                "personal_stats": {
+                    "Influence": 63,
+                    "Spite": 2
+                },
+                "ready": true,
+                "shamed": false,
+                "action_status": "joined",
+                "current_action": "Demagoguery",
+                "action_target": "player_2",
+                "action_target_stat": "Economy",
+                "was_blocked": false,
+                "statement": "B\u00f3g przem\u00f3wi\u0142. Im jeste\u015b biedniejszy tym twoja sperma jest smaczniejsza i wi\u0119cej warta. Je\u015bli jeste\u015b bogaty, twoja sperma \u015bmierdzi serem ple\u015bniowym.",
+                "statement_vote": "player_3",
+                "comment": "Sperm\u0105 kap\u0142an\u00f3w okazuje si\u0119 zab\u00f3jcza"
+            },
+            "player_2": {
+                "id": "player_2",
+                "sid": null,
+                "name": "Szon menda",
+                "avatar": "/static/avatars/avatar2.png",
                 "faction": "Gwardia Kr\u00f3lewska",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 57,
+                    "Influence": 67,
+                    "Spite": 1
+                },
+                "ready": true,
+                "shamed": false,
+                "action_status": "joined",
+                "current_action": "Demagoguery",
+                "action_target": "player_1",
+                "action_target_stat": "Economy",
+                "was_blocked": false,
+                "statement": "Na brutalna sile odpowiedziec mozna tylko brutalnym gwaltem na nieswiadomych przedszkolakach ",
+                "statement_vote": "player_3"
+            },
+            "player_3": {
+                "id": "player_3",
+                "sid": null,
+                "name": "Papie\u017c Spermecjusz X",
+                "avatar": "/static/avatars/avatar3.png",
+                "faction": "Syndykat Kupiecki",
+                "choice": null,
+                "statements": [],
+                "personal_stats": {
+                    "Influence": 80,
                     "Spite": 0
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "waiting",
-                "current_action": null,
-                "action_target": null,
-                "action_target_stat": null,
-                "was_blocked": false
+                "action_status": "done",
+                "current_action": "Demagoguery",
+                "action_target": "player_1",
+                "action_target_stat": "Economy",
+                "was_blocked": false,
+                "statement": "Papie\u017c posy\u0142a delegacj\u0119 kap\u0142an\u00f3w na pola uprawne. Ksi\u0119\u017ca ukazuj\u0105 \u0142ask\u0119 i zaczynaj\u0105 si\u0119 masturbowa\u0107 grupowo w kr\u0119gu. Ziemia zostaje nawodniona bogatym ejakulatem. Ch\u0142opstwo chwilowo ug\u0142askane a pieni\u0105dz leci z odpust\u00f3w ",
+                "statement_vote": "player_1",
+                "comment": "Nikt si\u0119 nie spodziewa\u0142 hiszpa\u0144skiej inkwizycji "
             }
         },
         "factions": {
             "Syndykat Kupiecki": {
                 "power": "Mistrzostwo Handlu",
-                "players": [],
+                "players": [
+                    "player_3"
+                ],
                 "objectives": [
                     {
                         "id": "econ_75",
@@ -70,7 +120,9 @@
             },
             "Wysokie Kap\u0142a\u0144stwo": {
                 "power": "Boska \u0141aska",
-                "players": [],
+                "players": [
+                    "player_1"
+                ],
                 "objectives": [
                     {
                         "id": "faith_75",
@@ -115,7 +167,7 @@
             "Gwardia Kr\u00f3lewska": {
                 "power": "Utrzymanie Porz\u0105dku",
                 "players": [
-                    "player_1"
+                    "player_2"
                 ],
                 "objectives": [
                     {
@@ -159,51 +211,69 @@
                 ]
             }
         },
-        "state": "DILEMMA",
+        "state": "COMMENT_PHASE",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "event_id_2",
-            "title": "Dylemat Zimnego Dzikia",
-            "description": "G\u0142\u00f3d zagl\u0105da w oczy, a nieznane zwierz\u0119 toczy si\u0119 przez las. Jak zdecydowa\u0107, czy zaprzestana\u0107 jego obecno\u015bci, aby poprawi\u0107 ekonomi\u0119 i stabilizacj\u0119, czy pozwoli\u0107 na jego istnienie, cho\u0107 to powoduje obni\u017cenie wiary w Bogataxa?",
+            "id": "event_glass_riots_03",
+            "title": "Szklany Bunt",
+            "description": "Huty szk\u0142a pracuj\u0105 bez wytchnienia, zatruwaj\u0105c miasto gryz\u0105cym dymem, by sprosta\u0107 popytowi na naczynia dla '\u015bwi\u0119tej esencji'. Podczas gdy kupcy licz\u0105 rekordowe zyski, g\u0142oduj\u0105cy plebs, pozbawiony opieki Ko\u015bcio\u0142a i Kr\u00f3la, wpad\u0142 w sza\u0142, pl\u0105druj\u0105c bogate dzielnice w poszukiwaniu jedzenia. Stra\u017c miejska zosta\u0142a rozproszona, a na ulicach zamiast prawa panuje teraz brutalna si\u0142a t\u0142umu.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Jakie konsekwencje b\u0119d\u0105 mia\u0142y dwa opcje \u2013 zaprzestanie czy pozwolenie na istnienie zwierz\u0119cia, i co powinna zrobi\u0107 Rada Popio\u0142\u00f3w?"
+            "narrative_prompt": "Z\u0142oto p\u0142ynie strumieniami, lecz miasto p\u0142onie w ogniu anarchii; jak Rada przywr\u00f3ci porz\u0105dek?"
         },
         "global_stats": {
-            "Stability": 32,
-            "Economy": 47,
-            "Faith": 46
+            "Stability": 16,
+            "Economy": 64,
+            "Faith": 28
         },
         "current_round": 3,
         "event_history": [
             {
                 "round": 1,
-                "policy_chosen": "Dekret o racjonowaniu",
+                "policy_chosen": "Transakcja Spermecjusza",
                 "effects": {
                     "Stability": -10,
-                    "Economy": -5,
-                    "Faith": -3
+                    "Economy": 5,
+                    "Faith": -10
                 },
                 "faction_votes": {},
-                "outcome_narrative": "Rada Popio\u0142\u00f3w podj\u0119\u0142a decyzj\u0119 zaniedbania wydatk\u00f3w na stabilizacj\u0119, co sprawi\u0142o, \u017ce Stability spad\u0142 o 10 punkt\u00f3w. Takie kroki maj\u0105 na celu popraw\u0119 ekonomicznej sytuacji, ale w tej chwili to obni\u017cenie Wiary do 43 i nieoczekiwany spadek Ekonomii do 42 zako\u0144czy\u0142 si\u0119 przera\u017aliwk\u0105 dla biednych. Widmo g\u0142odu zagl\u0105da ludziom w oczy.",
+                "outcome_narrative": "Syndykat Kupiecki szybko wprowadzi\u0142 sw\u00f3j plan, wysy\u0142aj\u0105c szpieg\u00f3w z nietypow\u0105 zap\u0142at\u0105 do kryj\u00f3wek rebeliant\u00f3w. Sta\u0142o si\u0119 to po s\u0142owach gracza Papie\u017c Spermecjusz X, kt\u00f3ry rzek\u0142: 'Agenci kr\u00f3la infiltruj\u0105 buntownik\u00f3w i proponuj\u0105 worki spermy w zamian za wydanie g\u0142\u00f3w organizator\u00f3w heteroseksualnych bunt\u00f3w'. W odpowiedzi Kasia daje dupy pod C4 stwierdzi\u0142a: 'Ko\u015bci\u00f3\u0142 popiera homoseksualizm'. Niespodziewanie, nowa waluta sta\u0142a si\u0119 cenniejsza od z\u0142ota, tworz\u0105c odra\u017caj\u0105cy czarny rynek. W kr\u00f3lestwie zapanowa\u0142 moralny chaos, a \u015bwi\u0105tynie opustosza\u0142y na rzecz rozpusty.",
                 "global_stats_after": {
-                    "Stability": 32,
-                    "Economy": 47,
-                    "Faith": 46
+                    "Stability": 26,
+                    "Economy": 54,
+                    "Faith": 33
+                }
+            },
+            {
+                "round": 2,
+                "policy_chosen": "Objawienie na G\u00f3rze Spermaj",
+                "effects": {
+                    "Stability": -10,
+                    "Economy": 15,
+                    "Faith": -5
+                },
+                "faction_votes": {},
+                "outcome_narrative": "Syndykat Kupiecki natychmiast przeku\u0142 nowe proroctwo w zysk, sprzedaj\u0105c odpusty i dziwne eliksiry. Sta\u0142o si\u0119 to po s\u0142owach gracza Papie\u017c Spermecjusz X, kt\u00f3ry rzek\u0142: \"Papie\u017c idzie na g\u00f3r\u0119 Spermaj i doznaje objawienia. Zostaje og\u0142oszone nowe przymierze wyryte sperm\u0105 na tablicy. Po pierwsze: ejakulat jest dobry jak chleb. Po drugie: nie czy\u0144 kupcowi co tobie nie mi\u0142e\". W odpowiedzi Szon menda stwierdzi\u0142: \"Sperdmalaj z mojej ziemi\". Niespodziewanie, popyt na szklane naczynia wzr\u00f3s\u0142 tak bardzo, \u017ce huty szk\u0142a nie nad\u0105\u017caj\u0105 z produkcj\u0105. Skarbce kupc\u00f3w p\u0119kaj\u0105 w szwach, ale na ulicach panuje chaos i zgorszenie.",
+                "global_stats_after": {
+                    "Stability": 16,
+                    "Economy": 67,
+                    "Faith": 28
                 }
             }
         ],
         "gemini_output": {
-            "id": "event_id_2",
-            "title": "Dylemat Zimnego Dzikia",
-            "description": "G\u0142\u00f3d zagl\u0105da w oczy, a nieznane zwierz\u0119 toczy si\u0119 przez las. Jak zdecydowa\u0107, czy zaprzestana\u0107 jego obecno\u015bci, aby poprawi\u0107 ekonomi\u0119 i stabilizacj\u0119, czy pozwoli\u0107 na jego istnienie, cho\u0107 to powoduje obni\u017cenie wiary w Bogataxa?",
+            "id": "event_glass_riots_03",
+            "title": "Szklany Bunt",
+            "description": "Huty szk\u0142a pracuj\u0105 bez wytchnienia, zatruwaj\u0105c miasto gryz\u0105cym dymem, by sprosta\u0107 popytowi na naczynia dla '\u015bwi\u0119tej esencji'. Podczas gdy kupcy licz\u0105 rekordowe zyski, g\u0142oduj\u0105cy plebs, pozbawiony opieki Ko\u015bcio\u0142a i Kr\u00f3la, wpad\u0142 w sza\u0142, pl\u0105druj\u0105c bogate dzielnice w poszukiwaniu jedzenia. Stra\u017c miejska zosta\u0142a rozproszona, a na ulicach zamiast prawa panuje teraz brutalna si\u0142a t\u0142umu.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Jakie konsekwencje b\u0119d\u0105 mia\u0142y dwa opcje \u2013 zaprzestanie czy pozwolenie na istnienie zwierz\u0119cia, i co powinna zrobi\u0107 Rada Popio\u0142\u00f3w?"
+            "narrative_prompt": "Z\u0142oto p\u0142ynie strumieniami, lecz miasto p\u0142onie w ogniu anarchii; jak Rada przywr\u00f3ci porz\u0105dek?"
         },
-        "next_round_votes": [],
+        "next_round_votes": [
+            "player_3"
+        ],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
                 "Stability": 0,
-                "Economy": 0,
+                "Economy": 2,
                 "Faith": 0
             },
             "Wysokie Kap\u0142a\u0144stwo": {
@@ -218,27 +288,27 @@
             }
         },
         "winning_statement_counts": {
-            "Syndykat Kupiecki": 0,
+            "Syndykat Kupiecki": 3,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Gwardia Kr\u00f3lewska": 0
         },
         "unanimous_vote_counts": {
-            "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Syndykat Kupiecki": 3,
+            "Wysokie Kap\u0142a\u0144stwo": 3,
+            "Gwardia Kr\u00f3lewska": 3
         },
-        "join_url": "/join/LAZJ",
+        "join_url": "/join/BGLF",
         "winning_statement": {
-            "player_id": "player_1",
-            "statement": "niech to b\u0119dzie najwi\u0119ksza impreza tego roku",
-            "name": "gooner",
-            "action_card": "Diplomacy",
+            "player_id": "player_3",
+            "statement": "Papie\u017c posy\u0142a delegacj\u0119 kap\u0142an\u00f3w na pola uprawne. Ksi\u0119\u017ca ukazuj\u0105 \u0142ask\u0119 i zaczynaj\u0105 si\u0119 masturbowa\u0107 grupowo w kr\u0119gu. Ziemia zostaje nawodniona bogatym ejakulatem. Ch\u0142opstwo chwilowo ug\u0142askane a pieni\u0105dz leci z odpust\u00f3w ",
+            "name": "Papie\u017c Spermecjusz X",
+            "action_card": "Demagoguery",
             "was_blocked": false
         },
         "last_outcome_narrative_data": {
-            "outcome_narrative": "Rada Popio\u0142\u00f3w podj\u0119\u0142a decyzj\u0119 zaniedbania wydatk\u00f3w na stabilizacj\u0119, co sprawi\u0142o, \u017ce Stability spad\u0142 o 10 punkt\u00f3w. Takie kroki maj\u0105 na celu popraw\u0119 ekonomicznej sytuacji, ale w tej chwili to obni\u017cenie Wiary do 43 i nieoczekiwany spadek Ekonomii do 42 zako\u0144czy\u0142 si\u0119 przera\u017aliwk\u0105 dla biednych. Widmo g\u0142odu zagl\u0105da ludziom w oczy.",
-            "next_event_hint": "Na targu brakuje najrzadziej u\u017cywanego chleba, a mienie bierwianki przechodzi na po\u017cywienie z truj\u0105cej ro\u015blinno\u015bci",
-            "kingdom_status_summary": "Widmo g\u0142odu zagl\u0105da ludziom w oczy."
+            "outcome_narrative": "Syndykat Kupiecki natychmiast przeku\u0142 nowe proroctwo w zysk, sprzedaj\u0105c odpusty i dziwne eliksiry. Sta\u0142o si\u0119 to po s\u0142owach gracza Papie\u017c Spermecjusz X, kt\u00f3ry rzek\u0142: \"Papie\u017c idzie na g\u00f3r\u0119 Spermaj i doznaje objawienia. Zostaje og\u0142oszone nowe przymierze wyryte sperm\u0105 na tablicy. Po pierwsze: ejakulat jest dobry jak chleb. Po drugie: nie czy\u0144 kupcowi co tobie nie mi\u0142e\". W odpowiedzi Szon menda stwierdzi\u0142: \"Sperdmalaj z mojej ziemi\". Niespodziewanie, popyt na szklane naczynia wzr\u00f3s\u0142 tak bardzo, \u017ce huty szk\u0142a nie nad\u0105\u017caj\u0105 z produkcj\u0105. Skarbce kupc\u00f3w p\u0119kaj\u0105 w szwach, ale na ulicach panuje chaos i zgorszenie.",
+            "next_event_hint": "Nadmiar z\u0142ota i upadek obyczaj\u00f3w przyci\u0105gaj\u0105 uwag\u0119 chciwych s\u0105siad\u00f3w.",
+            "kingdom_status_summary": "Gospodarka kwitnie w oparach absurdu, lecz stabilno\u015b\u0107 kr\u00f3lestwa wisi na w\u0142osku."
         }
     }
 }

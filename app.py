@@ -12,7 +12,7 @@ import random
 import string
 import json
 import socket
-from local_llm import LocalLLMClient
+from local_llm import GeminiCLIClient
 from story_data import (
     call_gemini_for_outcome_narrative,
     generate_dilemma_with_gemini,
@@ -56,19 +56,8 @@ class MockModel:
         return MockResponse()
 
 # LLM Configuration
-api_key = os.getenv("GEMINI_API_KEY")
-use_local = os.getenv("USE_LOCAL_LLM", "true").lower() == "true" # Default to using local LLM
-
-if use_local:
-    print("[LLM] Using Local LLM for narrative generation.")
-    model = LocalLLMClient(model_name="qwen2.5:3b")
-elif api_key:
-    print("[LLM] Using Gemini API for narrative generation.")
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-2.5-flash")
-else:
-    print("[LLM] WARNING: No LLM configured (GEMINI_API_KEY missing). Using MockModel to prevent hangs.")
-    model = MockModel()
+print("[LLM] Using Gemini CLI for narrative generation.")
+model = GeminiCLIClient()
 
 # --- Coqui XTTS v2 Setup ---
 # Determine the device to use
@@ -606,23 +595,24 @@ def resolve_dilemma(game_id, player_comments=None):
     if not game:
         return
 
-    # Use the winning statement if it exists, otherwise use all statements
-    if "winning_statement" in game:
-        # winning_statement already has action_card if set in submit_vote
-        player_statements_for_gemini = [game["winning_statement"]]
-    else:
-        player_statements_for_gemini = []
-        for player_id, player_data in game["players"].items():
-            if "statement" in player_data:
-                player_statements_for_gemini.append(
-                    {
-                        "player_id": player_id, 
-                        "statement": player_data["statement"], 
-                        "name": player_data["name"],
-                        "action_card": player_data.get("current_action"),
-                        "was_blocked": player_data.get("was_blocked", False) # Pass blocked status
-                    }
-                )
+    # Prepare all player statements for Gemini, marking the winner
+    player_statements_for_gemini = []
+    winning_player_id = game.get("winning_statement", {}).get("player_id")
+
+    for player_id, player_data in game["players"].items():
+        if "statement" in player_data and player_data["statement"]:
+            is_winner = (player_id == winning_player_id)
+            player_statements_for_gemini.append(
+                {
+                    "player_id": player_id,
+                    "statement": player_data["statement"],
+                    "name": player_data["name"],
+                    "faction": player_data.get("faction"), # Important: Pass Faction ID
+                    "action_card": player_data.get("current_action"),
+                    "was_blocked": player_data.get("was_blocked", False),
+                    "is_winner": is_winner # Important: Mark the winner
+                }
+            )
 
     # Call Gemini to evaluate player statements and determine policy/effects
     evaluation_result = evaluate_player_statements_with_gemini(
@@ -630,7 +620,7 @@ def resolve_dilemma(game_id, player_comments=None):
         game_state={
             "current_round": game["current_round"],
             "global_stats": game["global_stats"],
-            "event_history": game["event_history"],
+            # "event_history": game["event_history"], # Removed to prevent hallucination of old events
         },
         player_statements=player_statements_for_gemini,
     )
@@ -776,7 +766,7 @@ def resolve_dilemma(game_id, player_comments=None):
         game_state={
             "current_round": game["current_round"],
             "global_stats": game["global_stats"],
-            "event_history": game["event_history"],
+            # "event_history": game["event_history"], # Removed to prevent hallucination of old events
         },
         chosen_policy=chosen_policy,
         policy_effects=policy_effects,
@@ -907,6 +897,9 @@ def handle_player_action(data):
             return
         voted_for_player_id = data.get("voted_for_player_id")
         if voted_for_player_id:
+            if voted_for_player_id == player_id:
+                emit("error", {"message": "Nie możesz głosować na własne oświadczenie!"}, room=request.sid)
+                return
             game["players"][player_id]["statement_vote"] = voted_for_player_id
             game["players"][player_id]["action_status"] = "done"
             emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)

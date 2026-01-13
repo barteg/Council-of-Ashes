@@ -2,13 +2,14 @@ import json
 import google.generativeai as genai
 
 # Static part of the Gemini prompt for event generation
-EVENT_GENERATION_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów”. Twoim zadaniem jest tworzenie krótkich, klimatycznych dylematów.
+EVENT_GENERATION_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów”. Twoim zadaniem jest tworzenie krótkich, konkretnych dylematów politycznych w świecie Dark Fantasy.
 
 ## Zasady (Ściśle przestrzegaj):
 1.  **Długość:** Opis sytuacji (`description`) na max 3-4 zdania.
-2.  **Klimat:** Dark fantasy. Używaj opisów sensorycznych (zapach, dźwięk, chłód).
-3.  **Statystyki:** NIGDY nie używaj liczb. Opisuj stan królestwa przez wydarzenia (np. "Głód zagląda w oczy" zamiast "Ekonomia niska").
-4.  **Dylemat:** Stwórz nieoczywisty wybór. Unikaj prostego "dobro vs zło".
+2.  **Styl:** Konkretny, surowy, kronikarski. Unikaj poezji i kwiecistego języka. Skup się na faktach i zagrożeniach.
+3.  **Klimat:** Dark fantasy (brud, chłód, głód, korupcja).
+4.  **Statystyki:** NIGDY nie używaj liczb. Opisuj stan królestwa przez widoczne skutki (np. "Spichlerze świecą pustkami" zamiast "Niska Ekonomia").
+5.  **Dylemat:** Stwórz realny problem wymagający decyzji.
 
 ## Wejście:
 ```json
@@ -19,30 +20,35 @@ EVENT_GENERATION_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów
 ```json
 {{
   "id": "event_id",
-  "title": "Krótki Tytuł",
-  "description": "Opis dylematu (max 3-4 zdania). Skup się na atmosferze i konkretnym problemie.",
+  "title": "Krótki, Konkretny Tytuł",
+  "description": "Opis problemu (max 3-4 zdania). Opisz co się dzieje, kto cierpi i co grozi królestwu.",
   "image": "/static/images/placeholder.png",
-  "narrative_prompt": "Jedno zdanie podsumowania kończące się pytaniem do Rady."
+  "narrative_prompt": "Jedno zdanie podsumowujące problem, kończące się pytaniem do Rady."
 }}
 ```
 
-## Interpretacja Statystyk (0-100) - Użyj jako inspiracji, NIE CYTUJ LICZB:
-*   **0-20:** Katastrofa, upadek.
-*   **21-40:** Kryzys, bieda, niepokoje.
-*   **41-60:** Stabilizacja, drobne problemy.
-*   **61-80:** Rozwój, dobrobyt.
-*   **81-100:** Potęga, złoty wiek.
+## Interpretacja Statystyk (0-100) - Użyj jako tła:
+*   **0-20:** Katastrofa, głód, anarchia.
+*   **21-40:** Bieda, zamieszki, strach.
+*   **41-60:** Stabilność, przeciętność.
+*   **61-80:** Rozwój, bogactwo.
+*   **81-100:** Potęga, dominacja.
 """
 
 # Static part of the Gemini prompt for outcome narrative generation
-OUTCOME_NARRATIVE_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów”. Opisz skutki decyzji Rady.
+OUTCOME_NARRATIVE_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów”. Twoim zadaniem jest opisanie skutków decyzji Rady w sposób logiczny i gramatycznie poprawny.
 
-## Zasady (Ściśle przestrzegaj):
-1.  **Długość:** Maksymalnie 3-4 zdania. Bądź zwięzły.
-2.  **Cytaty:** Zacytuj zwycięskie `statement` i wymień imię autora.
-3.  **Reakcje:** Odnieś się do 1-2 `player_comments`, wymieniając imiona graczy.
-4.  **Abstrakcja Statystyk:** NIGDY nie używaj liczb. Opisz zmiany obrazowo (np. wzrost Wiary -> "Świątynie pękają w szwach", spadek Ekonomii -> "Na targu brakuje chleba").
-5.  **Świat:** Dodaj jedno zdanie dające wgląd w życie zwykłych ludzi lub tło fabularne świata (backstory).
+## Instrukcje Językowe (PRIORYTET):
+1.  Pisz w języku **POLSKIM**. Dbaj o poprawną odmianę (przypadki, rodzaje).
+2.  Używaj **krótkich, prostych zdań**. Lepiej napisać prosto i poprawnie, niż skomplikowanie i z błędami.
+3.  Nie wymyślaj słów (nie używaj "situación", "niszczeniona"). Pisz naturalnie.
+
+## Struktura Historii (Napisz płynny tekst w 5 krokach):
+1.  **Krok 1 (Kontekst):** Opisz, jak frakcja zwycięzcy wprowadza zmiany (np. "Kupcy przekupili urzędników...", "Kapłani wyszli na ulice...", "Gwardia użyła siły...").
+2.  **Krok 2 (Przyczyna):** Napisz wprost: "Stało się to po słowach [Name], który rzekł: '[Statement]'."
+3.  **Krok 3 (Reakcja):** Zacytuj komentarz innego gracza: "W odpowiedzi [Name] stwierdził: '[Comment]'." (Jeśli komentarz jest pusty, napisz: "Rada przyjęła to milczeniem.").
+4.  **Krok 4 (Twist):** Dodaj jeden krótki, zaskakujący skutek tej decyzji.
+5.  **Krok 5 (Skutek):** Opisz stan królestwa (bieda, strach, bunty) bez używania liczb.
 
 ## Wejście:
 ```json
@@ -59,9 +65,9 @@ OUTCOME_NARRATIVE_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołó
 ## Format wyjściowy (JSON):
 ```json
 {{
-  "outcome_narrative": "Tekst narracji spełniający powyższe zasady.",
-  "next_event_hint": "Krótka, tajemnicza zapowiedź przyszłych problemów.",
-  "kingdom_status_summary": "Jedno zdanie o nastrojach w królestwie (np. 'Widmo głodu zagląda ludziom w oczy')."
+  "outcome_narrative": "Tu wpisz historię. Pamiętaj o poprawnej polszczyźnie.",
+  "next_event_hint": "Krótka zapowiedź zagrożenia...",
+  "kingdom_status_summary": "Krótki opis nastrojów..."
 }}
 ```
 """
@@ -125,12 +131,20 @@ def call_gemini_for_outcome_narrative(model, game_state, chosen_policy, policy_e
 
 
 # Static part of the Gemini prompt for statement evaluation
-STATEMENT_EVALUATION_PROMPT_STATIC = """Jesteś Mistrzem Gry w „Radzie Popiołów”. Przetłumacz oświadczenie gracza na politykę i efekty.
+STATEMENT_EVALUATION_PROMPT_STATIC = """Jesteś Mistrzem Gry w „Radzie Popiołów”. Twoim zadaniem jest urzeczywistnienie wybranego oświadczenia (statement), biorąc pod uwagę KTO je wygłosił.
 
-## Zasady:
-1.  **Polityka:** Zwięzła nazwa (np. "Dekret o racjonowaniu").
-2.  **Efekty:** Liczbowe zmiany (-20 do +20) dla Stability, Economy, Faith. Logiczne i wynikające z treści.
-3.  **Narracja:** Krótki opis skutków (1-2 zdania). BEZ LICZB w tekście. Użyj opisu świata (np. "Ludzie protestują").
+## 1. Interpretacja Frakcyjna (JAK to się dzieje?):
+*   **Syndykat Kupiecki:** Rynek, pieniądz, przekupstwo, zmiany cen.
+*   **Wysokie Kapłaństwo:** Wiara, omeny, cuda, histeria, klątwy.
+*   **Gwardia Królewska:** Prawo, siła, wojsko, aresztowania.
+
+## 2. Reguła Kanonu (Dosłowność):
+*   **Bierz tekst gracza DOSŁOWNIE.**
+*   Jeśli gracz pisze wulgarnie lub absurdalnie -> To się dzieje naprawdę.
+*   Nie cenzuruj.
+
+## 3. Bezpieczeństwo:
+*   Jedyny wyjątek: "Koniec Świata" (interpretuj lokalnie, np. pożar).
 
 ## Wejście:
 ```json
@@ -143,13 +157,13 @@ STATEMENT_EVALUATION_PROMPT_STATIC = """Jesteś Mistrzem Gry w „Radzie Popioł
 ## Format wyjściowy (JSON):
 ```json
 {{
-  "chosen_policy": "Nazwa polityki (1 zdanie)",
+  "chosen_policy": "Tu wpisz nazwę wydarzenia (krótko)",
   "effects": {{
     "Stability": 0,
     "Economy": 0,
     "Faith": 0
   }},
-  "narrative_consequence": "Opis skutków (max 2 zdania, bez liczb)."
+  "narrative_consequence": "Tu wpisz opis skutków (zgodnie ze stylem frakcji)..."
 }}
 ```
 """

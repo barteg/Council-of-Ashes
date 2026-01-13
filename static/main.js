@@ -244,7 +244,15 @@ socket.on('game_started_for_player', (initial_game_state) => {
 
         // Initial update of player-specific stats and faction
         if (initial_game_state && initial_game_state.players && initial_game_state.players[playerId]) {
-            playerNameSpan.textContent = initial_game_state.players[playerId].name;
+            const player = initial_game_state.players[playerId];
+            playerNameSpan.textContent = player.name;
+            currentFactionId = player.faction; // Store faction ID globally
+
+            // Apply Asymmetric UI
+            const labelElement = document.querySelector('label[for="playerStatementInput"]');
+            if (playerStatementInput) playerStatementInput.placeholder = getFactionPlaceholder(currentFactionId);
+            if (labelElement) labelElement.textContent = getFactionLabel(currentFactionId);
+
             
             // Populate Target Dropdown
             const targetPlayerSelect = document.getElementById('targetPlayerSelect');
@@ -459,18 +467,60 @@ if (gameId && playerId) {
     }
 
 
+    
+    let currentFactionId = null;
+
+    function getFactionPlaceholder(factionId) {
+        if (!factionId) return "Wpisz swoje oświadczenie...";
+        
+        // Map faction names (IDs) to specific prompts
+        if (factionId === "Wysokie Kapłaństwo") {
+            return "Ogłoś jakie omeny lub cuda zsyłają bogowie..."; // Prophecy & Nature
+        } else if (factionId === "Gwardia Królewska") {
+            return "Jakie prawo lub karę wprowadzasz w życie?"; // Law & Order
+        } else if (factionId === "Syndykat Kupiecki") {
+            return "Jak reaguje lud? Co szepczą na targowiskach?"; // Voice of the People
+        } else {
+            return "Wpisz swoje oświadczenie...";
+        }
+    }
+
+    function getFactionLabel(factionId) {
+         if (!factionId) return "Twoje Słowa:";
+        
+        if (factionId === "Wysokie Kapłaństwo") {
+            return "Proroctwo i Natura:";
+        } else if (factionId === "Gwardia Królewska") {
+            return "Prawo i Porządek:";
+        } else if (factionId === "Syndykat Kupiecki") {
+            return "Głos Ludu:";
+        } else {
+            return "Twoje Słowa:";
+        }
+    }
+
     if (actionCardRadios.length > 0) {
         actionCardRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 const action = e.target.value;
-                const placeholders = {
-                    "Diplomacy": "Wpisz ugodowe oświadczenie...",
-                    "Blackmail": "Wpisz swoją groźbę...",
-                    "Demagoguery": "Wpisz płomienne przemówienie...",
-                    "Sabotage": "Opisz swoje działania dywersyjne..."
-                };
+                const labelElement = document.querySelector('label[for="playerStatementInput"]');
+
                 if (playerStatementInput) {
-                    playerStatementInput.placeholder = placeholders[action] || "Wpisz swoje oświadczenie...";
+                    if (action === "Diplomacy") {
+                        // Use Asymmetric Faction Prompts
+                        playerStatementInput.placeholder = getFactionPlaceholder(currentFactionId);
+                        if (labelElement) labelElement.textContent = getFactionLabel(currentFactionId);
+                    } else {
+                        // Use Standard Action Prompts
+                        if (labelElement) labelElement.textContent = "Twoje Słowa:"; // Reset label for generic actions
+                        
+                        const placeholders = {
+                            "Blackmail": "Wpisz swoją groźbę...",
+                            "Demagoguery": "Wpisz płomienne przemówienie...",
+                            "Sabotage": "Opisz swoje działania dywersyjne..."
+                        };
+                        playerStatementInput.placeholder = placeholders[action] || "Wpisz swoje oświadczenie...";
+                    }
                 }
 
                 if (targetSelectionArea) targetSelectionArea.style.display = 'none';
@@ -606,6 +656,8 @@ if (gameId && playerId) {
                 statementVoteList.innerHTML = ''; // Clear previous statements
 
                 for (const aPlayerId in data.statements) {
+                    if (aPlayerId === playerId) continue; // Prevent voting for oneself
+
                     const statementData = data.statements[aPlayerId];
                     const listItem = document.createElement('li');
                     listItem.classList.add('list-group-item', 'list-group-item-action');
@@ -759,6 +811,12 @@ if (gameId && playerId) {
         if (game_state.players && game_state.players[playerId]) {
             const player = game_state.players[playerId];
             if (playerNameSpan) playerNameSpan.textContent = player.name;
+            currentFactionId = player.faction; // Sync faction ID
+
+             // Apply Asymmetric UI
+            const labelElement = document.querySelector('label[for="playerStatementInput"]');
+            if (playerStatementInput && getFactionPlaceholder) playerStatementInput.placeholder = getFactionPlaceholder(currentFactionId);
+            if (labelElement && getFactionLabel) labelElement.textContent = getFactionLabel(currentFactionId);
             
             // Update Stats
             const influenceVal = document.getElementById('influenceVal');
