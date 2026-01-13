@@ -560,11 +560,7 @@ if (gameId && playerId) {
 
         if (data.phase === 'VOTING_PHASE') {
             const statementVoteSection = document.getElementById('statementVoteSection');
-            const statementVoteList = document.getElementById('statementVoteList');
-            const submitVoteBtn = document.getElementById('submitVoteBtn');
-            const sabotageVoteBtn = document.getElementById('sabotageVoteBtn');
-            let selectedVoteTarget = null;
-
+            
             // Hide other sections
             if (playerStatementsSection) playerStatementsSection.style.display = 'none';
             if (dilemmaSection) dilemmaSection.style.display = 'none';
@@ -573,89 +569,8 @@ if (gameId && playerId) {
             const commentPhaseSection = document.getElementById('commentPhaseSection');
             if (commentPhaseSection) commentPhaseSection.style.display = 'none';
 
-            if (statementVoteSection) {
-                statementVoteSection.style.display = 'block';
-                statementVoteList.innerHTML = ''; // Clear previous statements
-                if (submitVoteBtn) submitVoteBtn.style.display = 'none';
-                if (sabotageVoteBtn) sabotageVoteBtn.style.display = 'none';
-
-                for (const aPlayerId in data.statements) {
-                    // Self-voting is now allowed
-                    const statementData = data.statements[aPlayerId];
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('list-group-item', 'list-group-item-action');
-                    listItem.textContent = `${statementData.name}: "${statementData.statement}"`;
-                    listItem.dataset.playerId = aPlayerId;
-                    
-                    listItem.addEventListener('click', (event) => {
-                        // Highlight
-                        const items = statementVoteList.querySelectorAll('.list-group-item');
-                        items.forEach(el => el.classList.remove('active'));
-                        event.currentTarget.classList.add('active');
-                        
-                        selectedVoteTarget = event.currentTarget.dataset.playerId;
-                        if (submitVoteBtn) submitVoteBtn.style.display = 'block';
-
-                        // Sabotage Logic
-                        if (sabotageVoteBtn) {
-                            const spiteValEl = document.getElementById('spiteVal');
-                            const currentSpite = parseInt(spiteValEl ? spiteValEl.textContent : 0) || 0;
-                            if (currentSpite >= 3) {
-                                sabotageVoteBtn.style.display = 'block';
-                            } else {
-                                sabotageVoteBtn.style.display = 'none';
-                            }
-                        }
-
-                        // Preview Effect
-                        const effect = statementData.predicted_effect;
-                        if (effect) {
-                             previewPlayerStats(clientGlobalStats, effect);
-                        }
-                    });
-                    
-                    listItem.addEventListener('dblclick', (event) => {
-                        const votedForPlayerId = event.currentTarget.dataset.playerId;
-                        showLoadingScreen(true);
-                        socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_vote', voted_for_player_id: votedForPlayerId });
-                        statementVoteSection.style.display = 'none';
-                    });
-                    
-                    statementVoteList.appendChild(listItem);
-                }
-                
-                if (submitVoteBtn) {
-                    const newBtn = submitVoteBtn.cloneNode(true);
-                    submitVoteBtn.parentNode.replaceChild(newBtn, submitVoteBtn);
-                    
-                    newBtn.addEventListener('click', () => {
-                        if (selectedVoteTarget) {
-                            showLoadingScreen(true);
-                            socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_vote', voted_for_player_id: selectedVoteTarget });
-                            statementVoteSection.style.display = 'none';
-                        }
-                    });
-                }
-
-                if (sabotageVoteBtn) {
-                    const newSabBtn = sabotageVoteBtn.cloneNode(true);
-                    sabotageVoteBtn.parentNode.replaceChild(newSabBtn, sabotageVoteBtn);
-                    
-                    newSabBtn.addEventListener('click', () => {
-                        if (selectedVoteTarget) {
-                            showLoadingScreen(true);
-                            socket.emit('player_action', { 
-                                game_id: gameId, 
-                                player_id: playerId, 
-                                action: 'submit_vote', 
-                                voted_for_player_id: selectedVoteTarget,
-                                type: 'sabotage' 
-                            });
-                            statementVoteSection.style.display = 'none';
-                        }
-                    });
-                }
-            }
+            // Render Voting
+            renderVotingPhase(data.statements);
 
         } else if (data.phase === 'COMMENT_PHASE') {
             completeLoading(true);
@@ -918,6 +833,20 @@ if (gameId && playerId) {
                 dilemmaTitle.textContent = game_state.current_dilemma.title;
                 dilemmaDescription.textContent = game_state.current_dilemma.description;
             }
+        } else if (game_state.state === 'VOTING_PHASE') {
+            if (gameArea) gameArea.style.display = 'block';
+            if (mainContentArea) mainContentArea.style.display = 'block';
+            if (game_state.statements) {
+                renderVotingPhase(game_state.statements);
+            }
+        } else if (game_state.state === 'SHADOW_PHASE') {
+             if (gameArea) gameArea.style.display = 'block';
+             if (mainContentArea) mainContentArea.style.display = 'block';
+             const darkMarketSection = document.getElementById('darkMarketSection');
+             if (darkMarketSection) {
+                 darkMarketSection.style.display = 'block';
+                 renderDarkMarket();
+             }
         } else if (game_state.state === 'COMMENT_PHASE') {
             if (gameArea) gameArea.style.display = 'block';
             if (mainContentArea) mainContentArea.style.display = 'block';
@@ -1367,4 +1296,93 @@ function previewPlayerStats(baseStats, effect) {
              document.getElementById('tarotContainer').style.display = 'flex';
         });
     }
+
+
+function renderVotingPhase(statements) {
+    const statementVoteSection = document.getElementById('statementVoteSection');
+    const statementVoteList = document.getElementById('statementVoteList');
+    const submitVoteBtn = document.getElementById('submitVoteBtn');
+    const sabotageVoteBtn = document.getElementById('sabotageVoteBtn');
+    let selectedVoteTarget = null;
+
+    if (statementVoteSection && statements) {
+        statementVoteSection.style.display = 'block';
+        statementVoteList.innerHTML = ''; 
+        if (submitVoteBtn) submitVoteBtn.style.display = 'none';
+        if (sabotageVoteBtn) sabotageVoteBtn.style.display = 'none';
+
+        for (const aPlayerId in statements) {
+            const statementData = statements[aPlayerId];
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-group-item', 'list-group-item-action');
+            listItem.textContent = `${statementData.name}: "${statementData.statement}"`;
+            listItem.dataset.playerId = aPlayerId;
+            
+            listItem.addEventListener('click', (event) => {
+                const items = statementVoteList.querySelectorAll('.list-group-item');
+                items.forEach(el => el.classList.remove('active'));
+                event.currentTarget.classList.add('active');
+                
+                selectedVoteTarget = event.currentTarget.dataset.playerId;
+                if (submitVoteBtn) submitVoteBtn.style.display = 'block';
+
+                if (sabotageVoteBtn) {
+                    const spiteValEl = document.getElementById('spiteVal');
+                    const currentSpite = parseInt(spiteValEl ? spiteValEl.textContent : 0) || 0;
+                    if (currentSpite >= 3) {
+                        sabotageVoteBtn.style.display = 'block';
+                    } else {
+                        sabotageVoteBtn.style.display = 'none';
+                    }
+                }
+
+                const effect = statementData.predicted_effect;
+                if (effect) {
+                     previewPlayerStats(clientGlobalStats, effect);
+                }
+            });
+            
+            listItem.addEventListener('dblclick', (event) => {
+                const votedForPlayerId = event.currentTarget.dataset.playerId;
+                showLoadingScreen(true);
+                socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_vote', voted_for_player_id: votedForPlayerId });
+                statementVoteSection.style.display = 'none';
+            });
+            
+            statementVoteList.appendChild(listItem);
+        }
+        
+        if (submitVoteBtn) {
+            const newBtn = submitVoteBtn.cloneNode(true);
+            submitVoteBtn.parentNode.replaceChild(newBtn, submitVoteBtn);
+            
+            newBtn.addEventListener('click', () => {
+                if (selectedVoteTarget) {
+                    showLoadingScreen(true);
+                    socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_vote', voted_for_player_id: selectedVoteTarget });
+                    statementVoteSection.style.display = 'none';
+                }
+            });
+        }
+
+        if (sabotageVoteBtn) {
+            const newSabBtn = sabotageVoteBtn.cloneNode(true);
+            sabotageVoteBtn.parentNode.replaceChild(newSabBtn, sabotageVoteBtn);
+            
+            newSabBtn.addEventListener('click', () => {
+                if (selectedVoteTarget) {
+                    showLoadingScreen(true);
+                    socket.emit('player_action', { 
+                        game_id: gameId, 
+                        player_id: playerId, 
+                        action: 'submit_vote', 
+                        voted_for_player_id: selectedVoteTarget,
+                        type: 'sabotage' 
+                    });
+                    statementVoteSection.style.display = 'none';
+                }
+            });
+        }
+    }
+}
 

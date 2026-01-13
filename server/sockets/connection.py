@@ -54,7 +54,20 @@ def handle_join_game(data):
                                 room=game["players"][pid]["sid"],
                             )
 
-                emit("player_joined", game["players"], room=game["host_sid"])
+                emit("player_joined", game["players"], room=game_id)
+
+                # Reconstruct phase-specific data
+                statements = {}
+                if game["state"] == "VOTING_PHASE":
+                    statements = {
+                        pid: {
+                            "statement": p["statement"], 
+                            "name": p["name"],
+                            "predicted_effect": p.get("predicted_effect", {})
+                        }
+                        for pid, p in game["players"].items()
+                        if "statement" in p
+                    }
 
                 player_game_state = {
                     "global_stats": game["global_stats"],
@@ -64,9 +77,10 @@ def handle_join_game(data):
                     "state": game["state"],
                     "current_dilemma": game["current_dilemma"] if game["dilemma_active"] else None,
                     "last_outcome_narrative_data": game.get("last_outcome_narrative_data"),
+                    "statements": statements,
+                    "winning_statement": game.get("winning_statement"),
                 }
                 emit("game_state_sync", player_game_state, room=request.sid)
-                print(f"[DEBUG] Sent game_state_sync to reconnected player {player_id}")
 
             else:
                 emit("error", {"message": "Invalid player ID for reconnection."}, room=request.sid)

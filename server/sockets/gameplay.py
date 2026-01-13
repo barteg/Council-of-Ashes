@@ -422,17 +422,22 @@ def handle_player_action(data):
             predicted_effects = narrator.analyze_all_statements(statements_for_ai)
             if not predicted_effects:
                 predicted_effects = {} # Fallback
+            
+            # Store effects for persistence
+            for pid, effect in predicted_effects.items():
+                if pid in game["players"]:
+                    game["players"][pid]["predicted_effect"] = effect
 
             statements = {
                 pid: {
                     "statement": p["statement"], 
-                    "name": f"Player {idx + 1}", 
+                    "name": p["name"], 
                     "predicted_effect": predicted_effects.get(pid, {})
                 }
-                for idx, (pid, p) in enumerate(game["players"].items())
+                for pid, p in game["players"].items()
                 if "statement" in p
             }
-            emit("statements_submitted", {"statements": statements}, room=game["host_sid"])
+            emit("statements_submitted", {"statements": statements}, room=game_id)
             game["state"] = "VOTING_PHASE"
             emit("phase_change", {"phase": "VOTING_PHASE", "statements": statements}, room=game_id, broadcast=True)
 

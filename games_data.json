@@ -1,17 +1,17 @@
 {
-    "MWOK": {
-        "host_sid": "06eg6ejJ6UwU4oL-AAAB",
+    "IUTX": {
+        "host_sid": "5qSmbhmUE5NYpFodAAAD",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "3WoX2UuvrKz7VH4CAAAH",
+                "sid": "zdaSbKUEvsXmdP3rAAAt",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
                 "faction": "Gwardia Kr\u00f3lewska",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 55,
+                    "Influence": 50,
                     "Spite": 0
                 },
                 "ready": true,
@@ -20,10 +20,7 @@
                 "current_action": null,
                 "action_target": null,
                 "action_target_stat": null,
-                "statement": "kto zje ziarno, zostaje wrzucony do homoseksualnych loch\u00f3w",
-                "statement_vote": "player_1",
-                "was_blocked": false,
-                "comment": "zgwa\u0142c\u0119 wszystkich wi\u0119\u017ani\u00f3w"
+                "statement": "stworzy\u0107 now\u0105 religi\u0119, gdzie to Kr\u00f3l i Gwiardia reprezentuj\u0105 si\u0142y natury. Finansowo wesprze\u0107 potrzebujacych tak by nikt sie nie dowiedzia\u0142."
             }
         },
         "factions": {
@@ -162,45 +159,28 @@
                 ]
             }
         },
-        "state": "SHADOW_PHASE",
+        "state": "VOTING_PHASE",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "event_rot_01",
-            "title": "Zgni\u0142e \u017bniwa",
-            "description": "W spichlerzach ziarno czernieje od nieznanej ple\u015bni, a s\u0142odkawy od\u00f3r rozk\u0142adu unosi si\u0119 nad dzielnic\u0105 handlow\u0105. Cho\u0107 zbiory by\u0142y wystarczaj\u0105ce, zapasy topniej\u0105 w oczach, budz\u0105c panik\u0119 w\u015br\u00f3d kupc\u00f3w i g\u0142\u00f3d w\u015br\u00f3d biedoty. \"To ziarno jest przekl\u0119te, kto je zje, ten za\u015bnie na wieki,\" szepcze stara zielarka na targu, odstraszaj\u0105c kupuj\u0105cych. Widmo g\u0142odnej zimy zagl\u0105da w oczy mieszka\u0144com, a stabilno\u015b\u0107 kr\u00f3lestwa chwieje si\u0119 wraz z rosn\u0105cymi cenami chleba.",
+            "id": "event_round_1_faith_crisis",
+            "title": "G\u0142osy z Rynsztoka",
+            "description": "\u015awi\u0105tynie w dzielnicy portowej stoj\u0105 puste, a ich mury zbrykano b\u0142otem i krwi\u0105 szczur\u00f3w. Ludzie odwracaj\u0105 si\u0119 od milcz\u0105cych bog\u00f3w, szukaj\u0105c pocieszenia w ciemnych zau\u0142kach, gdzie szerz\u0105 si\u0119 zakazane kulty. Cho\u0107 stra\u017c wci\u0105\u017c panuje nad g\u0142\u00f3wnymi traktami, strach przed nieznanym parali\u017cuje handel. \"Po co nam bogowie, kt\u00f3rzy nie potrafi\u0105 zes\u0142a\u0107 deszczu ani chleba?\" \u2013 krzyczy jednooki \u017cebrak pod bram\u0105 katedry.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Zgnilizna trawi zapasy kr\u00f3lestwa; jak Rada zapobiegnie nadchodz\u0105cej kl\u0119sce g\u0142odu?"
+            "narrative_prompt": "Duchowe fundamenty kr\u00f3lestwa kruszej\u0105 na naszych oczach; w jaki spos\u00f3b Rada zamierza przywr\u00f3ci\u0107 porz\u0105dek w sercach poddanych?"
         },
         "global_stats": {
-            "Stability": 59,
-            "Economy": 35,
-            "Faith": 40
+            "Stability": 55,
+            "Economy": 46,
+            "Faith": 37
         },
         "current_round": 1,
-        "event_history": [
-            {
-                "round": 1,
-                "policy_chosen": "Dekret o Homoseksualnych Lochach",
-                "effects": {
-                    "Stability": 5,
-                    "Economy": -10,
-                    "Faith": -5
-                },
-                "faction_votes": {},
-                "outcome_narrative": "Gwardia Kr\u00f3lewska z brutaln\u0105 precyzj\u0105 wcieli\u0142a dekret w \u017cycie, zamykaj\u0105c spichlerze przed g\u0142oduj\u0105cym ludem. Sta\u0142o si\u0119 to po s\u0142owach gooner, kt\u00f3ry rzek\u0142: 'kto zje ziarno, zostaje wrzucony do loch\u00f3w'. Rada przyj\u0119\u0142a te s\u0142owa milczeniem, cho\u0107 w oczach wielu wida\u0107 by\u0142o przera\u017cenie. Niespodziewanie, przepe\u0142nione wi\u0119zienia sta\u0142y si\u0119 wyl\u0119garni\u0105 zarazy, kt\u00f3ra zacz\u0119\u0142a zagra\u017ca\u0107 nawet stra\u017cnikom. W kr\u00f3lestwie panuje atmosfera terroru, a obywatele boj\u0105 si\u0119 w\u0142asnego cienia.",
-                "global_stats_after": {
-                    "Stability": 59,
-                    "Economy": 35,
-                    "Faith": 40
-                }
-            }
-        ],
+        "event_history": [],
         "gemini_output": {
-            "id": "event_rot_01",
-            "title": "Zgni\u0142e \u017bniwa",
-            "description": "W spichlerzach ziarno czernieje od nieznanej ple\u015bni, a s\u0142odkawy od\u00f3r rozk\u0142adu unosi si\u0119 nad dzielnic\u0105 handlow\u0105. Cho\u0107 zbiory by\u0142y wystarczaj\u0105ce, zapasy topniej\u0105 w oczach, budz\u0105c panik\u0119 w\u015br\u00f3d kupc\u00f3w i g\u0142\u00f3d w\u015br\u00f3d biedoty. \"To ziarno jest przekl\u0119te, kto je zje, ten za\u015bnie na wieki,\" szepcze stara zielarka na targu, odstraszaj\u0105c kupuj\u0105cych. Widmo g\u0142odnej zimy zagl\u0105da w oczy mieszka\u0144com, a stabilno\u015b\u0107 kr\u00f3lestwa chwieje si\u0119 wraz z rosn\u0105cymi cenami chleba.",
+            "id": "event_round_1_faith_crisis",
+            "title": "G\u0142osy z Rynsztoka",
+            "description": "\u015awi\u0105tynie w dzielnicy portowej stoj\u0105 puste, a ich mury zbrykano b\u0142otem i krwi\u0105 szczur\u00f3w. Ludzie odwracaj\u0105 si\u0119 od milcz\u0105cych bog\u00f3w, szukaj\u0105c pocieszenia w ciemnych zau\u0142kach, gdzie szerz\u0105 si\u0119 zakazane kulty. Cho\u0107 stra\u017c wci\u0105\u017c panuje nad g\u0142\u00f3wnymi traktami, strach przed nieznanym parali\u017cuje handel. \"Po co nam bogowie, kt\u00f3rzy nie potrafi\u0105 zes\u0142a\u0107 deszczu ani chleba?\" \u2013 krzyczy jednooki \u017cebrak pod bram\u0105 katedry.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Zgnilizna trawi zapasy kr\u00f3lestwa; jak Rada zapobiegnie nadchodz\u0105cej kl\u0119sce g\u0142odu?"
+            "narrative_prompt": "Duchowe fundamenty kr\u00f3lestwa kruszej\u0105 na naszych oczach; w jaki spos\u00f3b Rada zamierza przywr\u00f3ci\u0107 porz\u0105dek w sercach poddanych?"
         },
         "next_round_votes": [],
         "policies_passed_counts": {
@@ -215,7 +195,7 @@
                 "Faith": 0
             },
             "Gwardia Kr\u00f3lewska": {
-                "Stability": 1,
+                "Stability": 0,
                 "Economy": 0,
                 "Faith": 0
             }
@@ -223,33 +203,13 @@
         "winning_statement_counts": {
             "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Gwardia Kr\u00f3lewska": 0
         },
         "unanimous_vote_counts": {
             "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Gwardia Kr\u00f3lewska": 0
         },
-        "join_url": "/join/MWOK",
-        "winning_statement": {
-            "player_id": "player_1",
-            "statement": "kto zje ziarno, zostaje wrzucony do homoseksualnych loch\u00f3w",
-            "name": "gooner",
-            "was_blocked": false
-        },
-        "last_outcome_narrative_data": {
-            "outcome_narrative": "Gwardia Kr\u00f3lewska z brutaln\u0105 precyzj\u0105 wcieli\u0142a dekret w \u017cycie, zamykaj\u0105c spichlerze przed g\u0142oduj\u0105cym ludem. Sta\u0142o si\u0119 to po s\u0142owach gooner, kt\u00f3ry rzek\u0142: 'kto zje ziarno, zostaje wrzucony do loch\u00f3w'. Rada przyj\u0119\u0142a te s\u0142owa milczeniem, cho\u0107 w oczach wielu wida\u0107 by\u0142o przera\u017cenie. Niespodziewanie, przepe\u0142nione wi\u0119zienia sta\u0142y si\u0119 wyl\u0119garni\u0105 zarazy, kt\u00f3ra zacz\u0119\u0142a zagra\u017ca\u0107 nawet stra\u017cnikom. W kr\u00f3lestwie panuje atmosfera terroru, a obywatele boj\u0105 si\u0119 w\u0142asnego cienia.",
-            "next_event_hint": "Zgni\u0142e powietrze z loch\u00f3w zaczyna zatruwa\u0107 studnie w mie\u015bcie.",
-            "kingdom_status_summary": "Strach d\u0142awi wszelki op\u00f3r, ale g\u0142\u00f3d wkr\u00f3tce mo\u017ce okaza\u0107 si\u0119 silniejszy."
-        },
-        "shadow_effects": [
-            {
-                "source": "player_1",
-                "type": "gambler",
-                "target": "",
-                "payload": "gooner",
-                "round": 1
-            }
-        ]
+        "join_url": "/join/IUTX"
     }
 }
