@@ -371,10 +371,8 @@ def handle_player_action(data):
         if game["state"] != "VOTING_PHASE": return
         voted_for = data.get("voted_for_player_id")
         
-        if voted_for == player_id:
-            emit("error", {"message": "Cannot vote for self."}, room=request.sid)
-            return
-
+        # Self-voting is now allowed per user request
+        
         game["players"][player_id]["statement_vote"] = voted_for
         game["players"][player_id]["action_status"] = "done"
         emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)

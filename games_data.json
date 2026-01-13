@@ -1,11 +1,11 @@
 {
-    "GAOT": {
-        "host_sid": "wBSR12z6thpek0DkAAAB",
+    "KSZV": {
+        "host_sid": "ZuXVQzxSsi7VUpbpAAAR",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "imjeSQsjROhAZ0B8AAAH",
-                "name": "gooner",
+                "sid": "97ZNpt9wbLlPekEoAAAV",
+                "name": "g",
                 "avatar": "/static/avatars/avatar1.png",
                 "faction": "Syndykat Kupiecki",
                 "choice": null,
@@ -16,11 +16,10 @@
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "done",
-                "current_action": "Diplomacy",
-                "action_target": "",
-                "action_target_stat": "Economy",
-                "statement": "ludzie zaczynaj\u0105 sra\u0107 na ulicach"
+                "action_status": "waiting",
+                "current_action": null,
+                "action_target": null,
+                "action_target_stat": null
             }
         },
         "factions": {
@@ -159,29 +158,17 @@
                 ]
             }
         },
-        "state": "VOTING_PHASE",
+        "state": "DILEMMA",
         "dilemma_active": true,
-        "current_dilemma": {
-            "id": "event_001_black_harvest",
-            "title": "Czarne \u017bniwa",
-            "description": "Zbiory na p\u00f3\u0142nocy zgni\u0142y na polach, pokryte dziwnym, oleistym nalotem, przez co spichlerze w stolicy \u015bwiec\u0105 pustkami. Ceny chleba osi\u0105gn\u0119\u0142y absurdalny poziom, zmuszaj\u0105c biedot\u0119 do \u017cywienia si\u0119 szczurami i odpadkami. Stra\u017c miejska donosi o rosn\u0105cym napi\u0119ciu i pierwszych zamieszkach g\u0142odowych pod murami pa\u0142acu.",
-            "image": "/static/images/placeholder.png",
-            "narrative_prompt": "W jaki spos\u00f3b Rada zamierza nakarmi\u0107 miasto, zanim g\u0142\u00f3d pchnie lud do otwartej rewolty?"
-        },
+        "current_dilemma": null,
         "global_stats": {
-            "Stability": 55,
-            "Economy": 42,
-            "Faith": 53
+            "Stability": 46,
+            "Economy": 50,
+            "Faith": 55
         },
         "current_round": 1,
         "event_history": [],
-        "gemini_output": {
-            "id": "event_001_black_harvest",
-            "title": "Czarne \u017bniwa",
-            "description": "Zbiory na p\u00f3\u0142nocy zgni\u0142y na polach, pokryte dziwnym, oleistym nalotem, przez co spichlerze w stolicy \u015bwiec\u0105 pustkami. Ceny chleba osi\u0105gn\u0119\u0142y absurdalny poziom, zmuszaj\u0105c biedot\u0119 do \u017cywienia si\u0119 szczurami i odpadkami. Stra\u017c miejska donosi o rosn\u0105cym napi\u0119ciu i pierwszych zamieszkach g\u0142odowych pod murami pa\u0142acu.",
-            "image": "/static/images/placeholder.png",
-            "narrative_prompt": "W jaki spos\u00f3b Rada zamierza nakarmi\u0107 miasto, zanim g\u0142\u00f3d pchnie lud do otwartej rewolty?"
-        },
+        "gemini_output": {},
         "next_round_votes": [],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
@@ -210,6 +197,6 @@
             "Wysokie Kap\u0142a\u0144stwo": 0,
             "Gwardia Kr\u00f3lewska": 0
         },
-        "join_url": "/join/GAOT"
+        "join_url": "/join/KSZV"
     }
 }

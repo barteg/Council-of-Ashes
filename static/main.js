@@ -682,7 +682,7 @@ if (gameId && playerId) {
                 statementVoteList.innerHTML = ''; // Clear previous statements
 
                 for (const aPlayerId in data.statements) {
-                    if (aPlayerId === playerId) continue; // Prevent voting for oneself
+                    // Self-voting is now allowed
 
                     const statementData = data.statements[aPlayerId];
                     const listItem = document.createElement('li');
