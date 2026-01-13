@@ -10,6 +10,7 @@ EVENT_GENERATION_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów
 3.  **Klimat:** Dark fantasy (brud, chłód, głód, korupcja).
 4.  **Statystyki:** NIGDY nie używaj liczb. Opisuj stan królestwa przez widoczne skutki (np. "Spichlerze świecą pustkami" zamiast "Niska Ekonomia").
 5.  **Dylemat:** Stwórz realny problem wymagający decyzji.
+6.  **Głosy:** Uwzględnij krótki cytat lub plotkę od konkretnego mieszkańca (np. "Żebrak krzyczy...", "Kupiec szepcze...").
 
 ## Wejście:
 ```json
@@ -49,6 +50,7 @@ OUTCOME_NARRATIVE_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołó
 3.  **Krok 3 (Reakcja):** Zacytuj komentarz innego gracza: "W odpowiedzi [Name] stwierdził: '[Comment]'." (Jeśli komentarz jest pusty, napisz: "Rada przyjęła to milczeniem.").
 4.  **Krok 4 (Twist):** Dodaj jeden krótki, zaskakujący skutek tej decyzji.
 5.  **Krok 5 (Skutek):** Opisz stan królestwa (bieda, strach, bunty) bez używania liczb.
+6.  **Głosy:** Skontrastuj oficjalną decyzję Rady z reakcją ulicy (krótki cytat/plotka).
 
 ## Wejście:
 ```json
@@ -151,9 +153,26 @@ class NarrativeService:
         return self._generate_and_parse(prompt, None, return_dict=True)
 
 
+    def _sanitize_game_state(self, game_state):
+        clean_state = {
+            "current_round": game_state.get("current_round"),
+            "global_stats": game_state.get("global_stats"),
+            "event_history": game_state.get("event_history", [])[-2:], 
+            "players": {}
+        }
+        for pid, p in game_state.get("players", {}).items():
+            clean_state["players"][pid] = {
+                "name": p.get("name"),
+                "faction": p.get("faction"),
+                "influence": p.get("personal_stats", {}).get("Influence"),
+                "spite": p.get("personal_stats", {}).get("Spite")
+            }
+        return clean_state
+
     def call_gemini_for_outcome_narrative(self, game_state, chosen_policy, policy_effects, faction_votes, player_statements, player_comments):
+        sanitized_state = self._sanitize_game_state(game_state)
         prompt = f"""{OUTCOME_NARRATIVE_PROMPT_STATIC.format(
-            game_state_json=json.dumps(game_state, indent=2),
+            game_state_json=json.dumps(sanitized_state, indent=2),
             chosen_policy=chosen_policy,
             policy_effects_json=json.dumps(policy_effects, indent=2),
             faction_votes_json=json.dumps(faction_votes, indent=2),
@@ -171,8 +190,9 @@ class NarrativeService:
         return self._generate_and_parse(prompt, None, return_dict=True)
 
     def generate_dilemma(self, game_state):
+        sanitized_state = self._sanitize_game_state(game_state)
         prompt = f"""{EVENT_GENERATION_PROMPT_STATIC.format(
-            game_state_json=json.dumps(game_state, indent=2)
+            game_state_json=json.dumps(sanitized_state, indent=2)
         )}"""
         return self._generate_and_parse(prompt, "dilemma.json")
 

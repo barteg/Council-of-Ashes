@@ -1,10 +1,10 @@
 {
-    "DXBK": {
-        "host_sid": "hWEeKmcxqLkOzDQ7AAAD",
+    "QAPK": {
+        "host_sid": "g7abREuJnm8ZukXWAAAD",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "49WyN6YUTnNZi78QAAAU",
+                "sid": "27B2Zoa_4UtC3t5LAAAd",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
                 "faction": "Gwardia Kr\u00f3lewska",
@@ -16,10 +16,11 @@
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "waiting",
+                "action_status": "joined",
                 "current_action": null,
                 "action_target": null,
                 "action_target_stat": null,
+                "statement": "ka\u017cdy przylapany na malowaniu obra\u017aliwych symboli zostaje seksualnym niewolnikiem",
                 "was_blocked": false
             }
         },
@@ -159,73 +160,39 @@
                 ]
             }
         },
-        "state": "DILEMMA",
-        "dilemma_active": true,
-        "current_dilemma": {
-            "id": "event_smoldering_ruins",
-            "title": "Dogasaj\u0105ce Zgliszcza",
-            "description": "G\u0119sty, gryz\u0105cy dym ze spalonych \u015bwi\u0105ty\u0144 wci\u0105\u017c dusi miasto, parali\u017cuj\u0105c targowiska i zmuszaj\u0105c kupc\u00f3w do ucieczki. W\u015br\u00f3d poczernia\u0142ych ruin szabrownicy, niczym stado s\u0119p\u00f3w, walcz\u0105 o resztki stopionego z\u0142ota i relikwii. Ocalali kap\u0142ani, z twarzami umazanymi popio\u0142em, stoj\u0105 u bram pa\u0142acu, \u017c\u0105daj\u0105c sprawiedliwo\u015bci lub gro\u017c\u0105c kl\u0105tw\u0105.",
-            "image": "/static/images/placeholder.png",
-            "choices": [
-                {
-                    "text": "Wybij szabrownik\u00f3w co do nogi, by da\u0107 przyk\u0142ad surowego prawa.",
-                    "type": "Force"
-                },
-                {
-                    "text": "U\u017cyj resztek skarbca, by op\u0142aci\u0107 odbudow\u0119 i u\u0142agodzi\u0107 kler.",
-                    "type": "Diplomacy"
-                },
-                {
-                    "text": "Rozpu\u015b\u0107 wie\u015bci, \u017ce to opozycja zleci\u0142a kradzie\u017c relikwii.",
-                    "type": "Subterfuge"
-                }
-            ],
-            "narrative_prompt": "Czy Rada ugnie si\u0119 pod gro\u017ab\u0105 kl\u0105twy, czy utopi chaos we krwi?"
-        },
+        "state": "OUTCOME_DISPLAYED",
+        "dilemma_active": false,
+        "current_dilemma": null,
         "global_stats": {
-            "Stability": 50,
-            "Economy": 43,
-            "Faith": 35
+            "Stability": 70,
+            "Economy": 51,
+            "Faith": 17
         },
-        "current_round": 3,
+        "current_round": 1,
         "event_history": [
             {
                 "round": 1,
-                "policy_chosen": "Wojskowa Dezinformacja",
+                "policy_chosen": "Dekret o Cielesnej Pokucie",
                 "effects": {
-                    "Stability": 10,
-                    "Economy": -5,
-                    "Faith": -15
+                    "Stability": 15,
+                    "Economy": 0,
+                    "Faith": -20
                 },
                 "faction_votes": {},
-                "outcome_narrative": "Agenci Gwardii Kr\u00f3lewskiej wmieszali si\u0119 w t\u0142um, s\u0105cz\u0105c do uszu mieszka\u0144c\u00f3w truj\u0105ce k\u0142amstwa. Sta\u0142o si\u0119 to po s\u0142owach gooner, kt\u00f3ry rzek\u0142: 'Opcja 3: Rozpu\u015b\u0107 plotk\u0119, \u017ce za zaraz\u0119 odpowiadaj\u0105 przekl\u0119ci heretycy, by odwr\u00f3ci\u0107 gniew ludu od Rady i skierowa\u0107 go na fanatyk\u00f3w.' Rada przyj\u0119\u0142a to milczeniem. Rozw\u015bcieczony mot\u0142och rzuci\u0142 si\u0119 jednak nie tylko na heretyk\u00f3w, ale i na niewinnych kap\u0142an\u00f3w, pl\u0105druj\u0105c \u015bwi\u0119te miejsca. Cho\u0107 gro\u017aba buntu wobec Rady min\u0119\u0142a, dym z p\u0142on\u0105cych \u015bwi\u0105ty\u0144 dusi handel w ca\u0142ym mie\u015bcie.",
+                "outcome_narrative": "Gwardia Kr\u00f3lewska bezwzgl\u0119dnie egzekwuje nowe, brutalne prawo na ulicach miasta. Decyzja ta zapad\u0142a po s\u0142owach radnego gooner, kt\u00f3ry rzek\u0142: 'ka\u017cdy przylapany na malowaniu obra\u017aliwych symboli zostaje seksualnym niewolnikiem'. Rada przyj\u0119\u0142a to ponurym milczeniem, nie znajduj\u0105c s\u0142\u00f3w sprzeciwu. Paradoksalnie, cho\u0107 mury miasta s\u0105 teraz czyste, w sercach ludzi zgas\u0142a ostatnia iskra nadziei i wiary. Ulice s\u0105 bezpieczne jak nigdy dot\u0105d, ale \u015bwi\u0105tynie \u015bwiec\u0105 pustkami, a mieszka\u0144cy odwracaj\u0105 wzrok od swoich obro\u0144c\u00f3w.",
                 "global_stats_after": {
-                    "Stability": 50,
-                    "Economy": 43,
-                    "Faith": 35
+                    "Stability": 70,
+                    "Economy": 51,
+                    "Faith": 17
                 }
             }
         ],
         "gemini_output": {
-            "id": "event_smoldering_ruins",
-            "title": "Dogasaj\u0105ce Zgliszcza",
-            "description": "G\u0119sty, gryz\u0105cy dym ze spalonych \u015bwi\u0105ty\u0144 wci\u0105\u017c dusi miasto, parali\u017cuj\u0105c targowiska i zmuszaj\u0105c kupc\u00f3w do ucieczki. W\u015br\u00f3d poczernia\u0142ych ruin szabrownicy, niczym stado s\u0119p\u00f3w, walcz\u0105 o resztki stopionego z\u0142ota i relikwii. Ocalali kap\u0142ani, z twarzami umazanymi popio\u0142em, stoj\u0105 u bram pa\u0142acu, \u017c\u0105daj\u0105c sprawiedliwo\u015bci lub gro\u017c\u0105c kl\u0105tw\u0105.",
+            "id": "evt_r1_faith_crisis",
+            "title": "Fa\u0142szywy Prorok",
+            "description": "Na rynkach pojawili si\u0119 biczownicy g\u0142osz\u0105cy, \u017ce bogowie opu\u015bcili miasto z powodu grzech\u00f3w Rady. T\u0142um, g\u0142odny duchowej pociechy, zaczyna s\u0142ucha\u0107 ich fanatycznych kaza\u0144 zamiast kap\u0142an\u00f3w. \u015awi\u0105tynie pustoszej\u0105, a na murach pojawiaj\u0105 si\u0119 blu\u017aniercze symbole.",
             "image": "/static/images/placeholder.png",
-            "choices": [
-                {
-                    "text": "Wybij szabrownik\u00f3w co do nogi, by da\u0107 przyk\u0142ad surowego prawa.",
-                    "type": "Force"
-                },
-                {
-                    "text": "U\u017cyj resztek skarbca, by op\u0142aci\u0107 odbudow\u0119 i u\u0142agodzi\u0107 kler.",
-                    "type": "Diplomacy"
-                },
-                {
-                    "text": "Rozpu\u015b\u0107 wie\u015bci, \u017ce to opozycja zleci\u0142a kradzie\u017c relikwii.",
-                    "type": "Subterfuge"
-                }
-            ],
-            "narrative_prompt": "Czy Rada ugnie si\u0119 pod gro\u017ab\u0105 kl\u0105twy, czy utopi chaos we krwi?"
+            "narrative_prompt": "Czy Rada ukarze heretyk\u00f3w, ryzykuj\u0105c gniew posp\u00f3lstwa, czy ukorzy si\u0119 przed now\u0105 wiar\u0105?"
         },
         "next_round_votes": [],
         "policies_passed_counts": {
@@ -255,17 +222,17 @@
             "Wysokie Kap\u0142a\u0144stwo": 0,
             "Gwardia Kr\u00f3lewska": 1
         },
-        "join_url": "/join/DXBK",
+        "join_url": "/join/QAPK",
         "winning_statement": {
             "player_id": "player_1",
-            "statement": "Opcja 3: Rozpu\u015b\u0107 plotk\u0119, \u017ce za zaraz\u0119 odpowiadaj\u0105 przekl\u0119ci heretycy, by odwr\u00f3ci\u0107 gniew ludu od Rady i skierowa\u0107 go na fanatyk\u00f3w.",
+            "statement": "ka\u017cdy przylapany na malowaniu obra\u017aliwych symboli zostaje seksualnym niewolnikiem",
             "name": "gooner",
             "was_blocked": false
         },
         "last_outcome_narrative_data": {
-            "outcome_narrative": "Agenci Gwardii Kr\u00f3lewskiej wmieszali si\u0119 w t\u0142um, s\u0105cz\u0105c do uszu mieszka\u0144c\u00f3w truj\u0105ce k\u0142amstwa. Sta\u0142o si\u0119 to po s\u0142owach gooner, kt\u00f3ry rzek\u0142: 'Opcja 3: Rozpu\u015b\u0107 plotk\u0119, \u017ce za zaraz\u0119 odpowiadaj\u0105 przekl\u0119ci heretycy, by odwr\u00f3ci\u0107 gniew ludu od Rady i skierowa\u0107 go na fanatyk\u00f3w.' Rada przyj\u0119\u0142a to milczeniem. Rozw\u015bcieczony mot\u0142och rzuci\u0142 si\u0119 jednak nie tylko na heretyk\u00f3w, ale i na niewinnych kap\u0142an\u00f3w, pl\u0105druj\u0105c \u015bwi\u0119te miejsca. Cho\u0107 gro\u017aba buntu wobec Rady min\u0119\u0142a, dym z p\u0142on\u0105cych \u015bwi\u0105ty\u0144 dusi handel w ca\u0142ym mie\u015bcie.",
-            "next_event_hint": "Popio\u0142y spalonych o\u0142tarzy przykrywaj\u0105 ulice, a cisza w ko\u015bcio\u0142ach zwiastuje nieszcz\u0119\u015bcie.",
-            "kingdom_status_summary": "W\u0142adza Rady jest bezpieczna, lecz gospodarka kuleje, a wiara upad\u0142a w gruzy."
+            "outcome_narrative": "Gwardia Kr\u00f3lewska bezwzgl\u0119dnie egzekwuje nowe, brutalne prawo na ulicach miasta. Decyzja ta zapad\u0142a po s\u0142owach radnego gooner, kt\u00f3ry rzek\u0142: 'ka\u017cdy przylapany na malowaniu obra\u017aliwych symboli zostaje seksualnym niewolnikiem'. Rada przyj\u0119\u0142a to ponurym milczeniem, nie znajduj\u0105c s\u0142\u00f3w sprzeciwu. Paradoksalnie, cho\u0107 mury miasta s\u0105 teraz czyste, w sercach ludzi zgas\u0142a ostatnia iskra nadziei i wiary. Ulice s\u0105 bezpieczne jak nigdy dot\u0105d, ale \u015bwi\u0105tynie \u015bwiec\u0105 pustkami, a mieszka\u0144cy odwracaj\u0105 wzrok od swoich obro\u0144c\u00f3w.",
+            "next_event_hint": "Bogowie mog\u0105 nie wybaczy\u0107 takiego upokorzenia swoich wyznawc\u00f3w.",
+            "kingdom_status_summary": "W kr\u00f3lestwie panuje \u017celazny porz\u0105dek, lecz wiara leg\u0142a w gruzach, a strach d\u0142awi wszelk\u0105 rado\u015b\u0107."
         }
     }
 }
