@@ -205,6 +205,7 @@ const nextRoundBtn = document.getElementById('nextRoundBtn');
 let playerChoice = null;
 let lastSubmittedStatement = ''; // New variable to store the last submitted statement
 let clientGlobalStats = { Stability: 50, Economy: 50, Faith: 50 };
+let isHost = false;
 
 if (nextRoundBtn) {
     nextRoundBtn.addEventListener('click', () => {
@@ -252,6 +253,7 @@ socket.on('game_started_for_player', (initial_game_state) => {
             const player = initial_game_state.players[playerId];
             playerNameSpan.textContent = player.name;
             currentFactionId = player.faction; // Store faction ID globally
+            isHost = player.is_host; // SYNC HOST STATUS
 
             // Apply Asymmetric UI
             const labelElement = document.querySelector('label[for="playerStatementInput"]');
@@ -528,7 +530,7 @@ if (gameId && playerId) {
         const nextRoundBtnElement = document.getElementById('nextRoundBtn');
 
         if (narrativeOutputElement) narrativeOutputElement.style.setProperty('display', 'block', 'important'); // Show narrativeOutput to display the button
-        if (nextRoundBtnElement) nextRoundBtnElement.style.setProperty('display', 'block', 'important'); // Show the Next Event button
+        if (nextRoundBtnElement) nextRoundBtnElement.style.setProperty('display', isHost ? 'block' : 'none', 'important'); // Show only for Host
         
 
         const dilemmaSection = document.getElementById('dilemmaSection');
@@ -798,6 +800,26 @@ if (gameId && playerId) {
             const player = game_state.players[playerId];
             if (playerNameSpan) playerNameSpan.textContent = player.name;
             currentFactionId = player.faction; // Sync faction ID
+            isHost = player.is_host; // SYNC HOST STATUS
+
+            // Mobile-Only: Render QR code for host
+            if (isHost && game_state.state === 'waiting') {
+                const hostJoinInfo = document.getElementById('hostJoinInfo');
+                const joinQrCodeDiv = document.getElementById('joinQrCode');
+                const gameIdDisplay = document.getElementById('gameIdDisplay');
+                
+                if (hostJoinInfo && joinQrCodeDiv) {
+                    hostJoinInfo.style.display = 'block';
+                    if (gameIdDisplay) gameIdDisplay.textContent = gameId;
+                    
+                    joinQrCodeDiv.innerHTML = '';
+                    const joinUrl = `${window.location.origin}/join/${gameId}`;
+                    const qr = qrcode(0, 'L');
+                    qr.addData(joinUrl);
+                    qr.make();
+                    joinQrCodeDiv.innerHTML = qr.createImgTag(4);
+                }
+            }
 
              // Apply Asymmetric UI
             const labelElement = document.querySelector('label[for="playerStatementInput"]');
@@ -987,7 +1009,13 @@ if (createGameBtn) {
     });
 
     socket.on('game_created', (data) => {
-        document.getElementById('gameIdDisplay').textContent = data.game_id;
+        if (data.game_id && data.player_id) {
+            // Mobile-Only: Redirect to player page
+            window.location.href = `/player/${data.game_id}/${data.player_id}`;
+            return;
+        }
+        // Fallback for Host Screen
+        if (document.getElementById('gameIdDisplay')) document.getElementById('gameIdDisplay').textContent = data.game_id;
         const joinQrCodeDiv = document.getElementById('joinQrCode');
         joinQrCodeDiv.innerHTML = ''; // Clear existing content
 
@@ -1259,4 +1287,39 @@ function previewPlayerStats(baseStats, effect) {
     updateStat('playerStatEconomy', 'valEconomy', baseStats.Economy, effect.Economy);
     updateStat('playerStatFaith', 'valFaith', baseStats.Faith, effect.Faith);
 }
+
+
+    // Full Mobile: Host Controls
+    socket.on('all_players_ready', () => {
+        if (isHost) {
+            const startGameBtn = document.getElementById('startGameBtn');
+            if (startGameBtn) startGameBtn.style.display = 'block';
+        }
+    });
+
+    const startGameBtn = document.getElementById('startGameBtn');
+    if (startGameBtn) {
+        startGameBtn.addEventListener('click', () => {
+            socket.emit('start_game', { game_id: gameId, player_id: playerId });
+            startGameBtn.style.display = 'none';
+        });
+    }
+
+
+    // Mobile-Only: Display all comments to all players
+    socket.on('comments_received', (data) => {
+        const publicCommentsSection = document.getElementById('publicCommentsSection');
+        const publicCommentList = document.getElementById('publicCommentList');
+        
+        if (publicCommentsSection && publicCommentList) {
+            publicCommentsSection.style.display = 'block';
+            publicCommentList.innerHTML = '';
+            for (const pid in data.comments) {
+                const item = document.createElement('li');
+                item.classList.add('list-group-item');
+                item.textContent = `${data.comments[pid].name}: ${data.comments[pid].comment}`;
+                publicCommentList.appendChild(item);
+            }
+        }
+    });
 

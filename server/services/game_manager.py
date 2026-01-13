@@ -99,6 +99,7 @@ class GameManager:
                 "action_status": "empty",
                 "current_action": None,
                 "action_target": None,
+                "is_host": (i == 0) # Player 1 is host
             }
 
         join_url = f"/join/{game_id}"

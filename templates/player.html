@@ -6,6 +6,7 @@
     <title>Kontroler Gracza - Gra {{ game_id }}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 </head>
 <body>
     <div id="loadingOverlay" class="loading-overlay" style="display: none;">
@@ -130,6 +131,14 @@
                     <button id="submitCommentBtn" class="btn btn-primary mt-2">Zatwierdź Komentarz</button>
                 </div>
 
+                <!-- Public Comments Display -->
+                <div id="publicCommentsSection" class="floating-element" style="display: none;">
+                    <h5>Głosy Rady:</h5>
+                    <ul id="publicCommentList" class="list-group">
+                        <!-- Populated by JS -->
+                    </ul>
+                </div>
+
                 <!-- Narrative Output and Next Round Button -->
                 <div id="narrativeOutput" class="floating-element" style="display: none;">
                     <p id="narrativeText"></p>
@@ -145,6 +154,16 @@
 
         <div id="waitingRoom" class="text-center">
             <h2>Poczekalnia</h2>
+            
+            <!-- Host-Only QR Section -->
+            <div id="hostJoinInfo" style="display: none;" class="mb-4">
+                <p>Pokaż ten kod innym, aby dołączyli:</p>
+                <div id="joinQrCode" class="d-flex justify-content-center mb-2"></div>
+                <p><strong>ID Gry:</strong> <span id="gameIdDisplay"></span></p>
+                <hr>
+            </div>
+
+            <button id="startGameBtn" class="btn btn-success mt-3" style="display: none;">Rozpocznij Grę</button>
             <button id="readyBtn" class="btn btn-primary mt-3">Gotowy</button>
         </div>
     </div>

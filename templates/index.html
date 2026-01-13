@@ -3,132 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rada Popiołów - Gospodarz</title>
+    <title>Rada Popiołów - Mobile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 </head>
 <body>
-    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
-        <div class="loading-content">
-            <p id="loadingMessage">Preparing event...</p>
-            <div class="progress-bar-container">
-                <div id="loadingProgressBar" class="progress-bar-fill"></div>
-            </div>
-            <p id="loadingProgressText">0%</p>
-        </div>
-    </div>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Rada Popiołów</h1>
 
-    <div class="container mt-4">
-        <h1 class="text-center">Rada Popiołów - Gospodarz</h1>
-
-        <div id="gameSetup" class="floating-element mb-4">
-            <h5>Stwórz Nową Grę</h5>
+        <div id="gameSetup" class="floating-element mb-4 p-4">
+            <h5 class="text-center">Zorganizuj Radę</h5>
+            <hr>
             <div class="form-group">
-                <label for="numPlayers">Liczba Graczy:</label>
+                <label for="numPlayers">Liczba Miejsc w Radzie:</label>
                 <input type="number" id="numPlayers" class="form-control" value="4" min="2" max="8">
             </div>
 
-            <button id="createGameBtn" class="btn btn-primary btn-block">Stwórz Nową Grę</button>
+            <button id="createGameBtn" class="btn btn-primary btn-block btn-lg">Stwórz Grę</button>
         </div>
 
-        <div id="lobbyControl" style="display: none;">
-            <div id="gameControlContainer" class="floating-element mb-4">
-                <h5 id="gameControlHeader">Kontrola Gry</h5>
-                <p id="gameIdContainer"><strong>ID Gry:</strong> <span id="gameIdDisplay"></span></p>
-                <h5 id="playerLinksHeader">Kod QR do Dołączenia do Gry:</h5>
-                <div id="joinQrCode" class="text-center"></div>
-            </div>
-
-            <div class="floating-element mb-4">
-                <h5 id="playerStatusHeader">Status Graczy:</h5>
-                <div id="playerStatus" class="list-group">
-                    <!-- Player status will be generated here -->
-                </div>
-            </div>
-        </div>
-
-        <div id="hostControl" class="floating-element mb-4 host-control-wide" style="display: none;">
-            <div class="row">
-                <!-- Faction Objectives Host Section -->
-                <div id="factionObjectivesContainer" class="col-md-3">
-                    <!-- Faction objectives will be dynamically generated here -->
-                </div>
-
-                <!-- Middle Column: Game State & Narrative -->
-                <div class="col-md-6">
-                    <div class="floating-element mb-4">
-                        <h5>Narracja:</h5>
-                        <p id="hostNarrative"></p>
-                    </div>
-
-                    <div class="floating-element mb-4">
-                        <h5>Statystyki Globalne:</h5>
-                        <div class="mb-2">
-                            <p class="mb-0"><strong>Stabilność:</strong></p>
-                            <div class="progress">
-                                <div id="hostStatStability" class="progress-bar bg-info" role="progressbar" style="width: 0%;" aria-valuenow="0" aria="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <p class="mb-0"><strong>Gospodarka:</strong></p>
-                            <div class="progress">
-                                <div id="hostStatEconomy" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <p class="mb-0"><strong>Wiara:</strong></p>
-                            <div class="progress">
-                                <div id="hostStatFaith" class="progress-bar bg-warning" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="statementVotingResultsDisplay" class="floating-element mb-4" style="display: none;">
-                        <h5>Wyniki Głosowania nad Oświadczeniami:</h5>
-                        <div id="statementVoteCounts"></div>
-                    </div>
-
-                    <div id="playerStatements" class="floating-element mb-4" style="display: none;">
-                        <h5>Oświadczenia Graczy</h5>
-                        <ul id="playerStatementList" class="list-group">
-                            <!-- Player statements will be listed here -->
-                        </ul>
-                    </div>
-                    
-                    <div id="introScreen" class="floating-element text-center" style="display: none;">
-                        <h4>Historia Zaczyna Się...</h4>
-                        <p id="introNarrative" class="lead"></p>
-                        <button id="beginGameBtn" class="btn btn-primary btn-lg mt-3">Rozpocznij</button>
-                    </div>
-                </div>
-
-                <!-- Right Column: Player Management & Controls -->
-                <div class="col-md-3">
-                    <!-- Player Comments Display -->
-                    <div id="playerCommentsDisplay" class="floating-element mb-4" style="display: none;">
-                        <h5>Komentarze Graczy:</h5>
-                        <ul id="commentList" class="list-group">
-                            <!-- Player comments will be listed here -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="hostGameArea" class="floating-element mb-4" style="display: none;">
-            <h5 id="gameStatusHeader">Status Gry</h5>
-        </div>
-
-        <!-- Game Over Screen -->
-        <div id="gameOverScreen" class="text-center floating-element" style="display: none;">
-            <h1>Koniec Gry</h1>
-            <h2 id="winnerInfo"></h2>
+        <div class="floating-element text-center p-4">
+            <h5>Dołącz do Rady</h5>
+            <p class="text-muted">Aby dołączyć, użyj linku lub kodu QR udostępnionego przez Gospodarza.</p>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
-    <audio id="backgroundMusic" src="/static/tts/medival_background_music.mp3" loop preload="auto" style="display: none;"></audio>
     <script src="/static/main.js?v={{ range(1, 1000000) | random }}"></script>
 </body>
 </html>

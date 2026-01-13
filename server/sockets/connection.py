@@ -10,16 +10,30 @@ def handle_create_game(data):
     game_id, game = game_manager.create_game(request.sid, num_players)
     
     join_room(game_id)
+    
+    # Auto-join creator as player_1 (the host)
+    player_id = "player_1"
+    game["players"][player_id]["sid"] = request.sid
+    game["players"][player_id]["name"] = "Gospodarz"
+    game["players"][player_id]["action_status"] = "joined"
+    
+    # Assign random faction
+    chosen_faction = random.choice(list(game["factions"].keys()))
+    game["players"][player_id]["faction"] = chosen_faction
+    game["factions"][chosen_faction]["players"].append(player_id)
+
     emit(
         "game_created",
         {
             "game_id": game_id,
+            "player_id": player_id,
             "join_url": game["join_url"],
             "players": game["players"],
             "factions": game["factions"],
         },
         room=request.sid,
     )
+    game_manager.save_games()
 
 @socketio.on("join_game")
 def handle_join_game(data):
@@ -54,7 +68,7 @@ def handle_join_game(data):
                                 room=game["players"][pid]["sid"],
                             )
 
-                emit("player_joined", game["players"], room=game["host_sid"])
+                emit("player_joined", game["players"], room=game_id)
 
                 player_game_state = {
                     "global_stats": game["global_stats"],
@@ -148,7 +162,7 @@ def handle_disconnect():
                     "player": game["players"][disconnected_player_id],
                     "player_id": disconnected_player_id,
                 },
-                room=game["host_sid"],
+                room=game_id,
             )
 
             for pid, p in game["players"].items():

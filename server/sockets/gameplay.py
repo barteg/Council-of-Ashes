@@ -269,18 +269,28 @@ def player_ready(data):
         emit(
             "player_ready_update",
             {"player": game["players"][player_id], "player_id": player_id},
-            room=game["host_sid"],
+            room=game_id,
         )
 
         joined_players = [p for p in game["players"].values() if p["action_status"] != "empty"]
         all_joined_ready = all(p["ready"] for p in joined_players)
         
         if len(joined_players) == len(game['players']) and all_joined_ready:
-            start_game_logic(game_id)
+            # Notify everyone that game is ready to start
+            emit("all_players_ready", room=game_id)
         
         game_manager.save_games()
     except Exception as e:
         print(f"[ERROR] player_ready: {e}")
+
+@socketio.on("start_game")
+def handle_start_game(data):
+    game_id = data.get("game_id")
+    player_id = data.get("player_id")
+    game = game_manager.get_game(game_id)
+    
+    if game and game["players"].get(player_id, {}).get("is_host"):
+        start_game_logic(game_id)
 
 @socketio.on("game_event")
 def handle_game_event(data):
@@ -368,7 +378,7 @@ def handle_player_action(data):
                 for idx, (pid, p) in enumerate(game["players"].items())
                 if "statement" in p
             }
-            emit("statements_submitted", {"statements": statements}, room=game["host_sid"])
+            emit("statements_submitted", {"statements": statements}, room=game_id)
             game["state"] = "VOTING_PHASE"
             emit("phase_change", {"phase": "VOTING_PHASE", "statements": statements}, room=game_id, broadcast=True)
 
@@ -458,7 +468,7 @@ def handle_player_action(data):
                     if all(game["players"][pid].get("statement_vote") == first_vote for pid in faction_players[1:]):
                         game["unanimous_vote_counts"][faction_id] += 1
 
-            emit("voting_results", {"vote_counts": vote_counts, "winning_statement": winning_statement}, room=game["host_sid"])
+            emit("voting_results", {"vote_counts": vote_counts, "winning_statement": winning_statement}, room=game_id)
             game["state"] = "COMMENT_PHASE"
             emit("phase_change", {"phase": "COMMENT_PHASE", "winning_statement": winning_statement}, room=game_id, broadcast=True)
 
@@ -485,7 +495,7 @@ def handle_player_action(data):
                 "global_stats": game["global_stats"],
                 "current_round": game["current_round"],
                 "players": game["players"]
-            }, room=game["host_sid"])
+            }, room=game_id)
 
             emit("dilemma_resolved", {
                 "outcome": outcome,
