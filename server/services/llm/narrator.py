@@ -124,9 +124,46 @@ STATEMENT_EVALUATION_PROMPT_STATIC = """Jesteś Mistrzem Gry w „Radzie Popioł
 ```
 """
 
+# Static part of the Gemini prompt for batch statement evaluation
+BATCH_EVALUATION_PROMPT = """Jesteś Mistrzem Gry. Przeanalizuj WSZYSTKIE oświadczenia graczy i przewiduj ich wpływ na statystyki.
+
+## Zasady:
+1.  Oceń każde oświadczenie osobno.
+2.  Zwróć wynik jako JSON, gdzie kluczem jest `player_id`.
+3.  Efekty muszą być liczbami całkowitymi (-20 do +20).
+
+## Wejście:
+```json
+{player_statements_json}
+```
+
+## Format wyjściowy (JSON):
+```json
+{{
+  "player_1": {{
+    "Stability": -5,
+    "Economy": 10,
+    "Faith": 0
+  }},
+  "player_2": {{
+    "Stability": 0,
+    "Economy": 0,
+    "Faith": 0
+  }}
+}}
+```
+"""
+
 class NarrativeService:
     def __init__(self, model):
         self.model = model
+
+    def analyze_all_statements(self, player_statements):
+        prompt = f"""{BATCH_EVALUATION_PROMPT.format(
+            player_statements_json=json.dumps(player_statements, indent=2)
+        )}"""
+        return self._generate_and_parse(prompt, None, return_dict=True)
+
 
     def call_gemini_for_outcome_narrative(self, game_state, chosen_policy, policy_effects, faction_votes, player_statements, player_comments):
         prompt = f"""{OUTCOME_NARRATIVE_PROMPT_STATIC.format(

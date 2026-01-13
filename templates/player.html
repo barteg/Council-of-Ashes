@@ -23,24 +23,32 @@
 
     <div class="container mt-4">
         <!-- New Mobile Global Stats -->
-        <div id="mobileGlobalStats" class="mb-3 p-2 bg-dark rounded text-white">
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <small>Stability</small>
-                <div class="progress flex-grow-1 ml-2" style="height: 8px;">
-                    <div id="playerStatStability" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
-                </div>
+        <div id="mobileGlobalStats" class="mb-3 p-2 rounded text-white" style="background-color: #222; border: 1px solid #444;">
+            <!-- Stability -->
+            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.9rem;">
+                <span>Stability</span>
+                <span id="valStability" class="font-weight-bold">50</span>
             </div>
-            <div class="d-flex justify-content-between align-items-center mb-1">
-                <small>Economy</small>
-                <div class="progress flex-grow-1 ml-2" style="height: 8px;">
-                    <div id="playerStatEconomy" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
-                </div>
+            <div class="progress mb-2" style="height: 6px; background-color: #333;">
+                <div id="playerStatStability" class="progress-bar" role="progressbar" style="width: 50%; background-color: #5bc0de;"></div>
             </div>
-            <div class="d-flex justify-content-between align-items-center">
-                <small>Faith</small>
-                <div class="progress flex-grow-1 ml-2" style="height: 8px;">
-                    <div id="playerStatFaith" class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
-                </div>
+
+            <!-- Economy -->
+            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.9rem;">
+                <span>Economy</span>
+                <span id="valEconomy" class="font-weight-bold">50</span>
+            </div>
+            <div class="progress mb-2" style="height: 6px; background-color: #333;">
+                <div id="playerStatEconomy" class="progress-bar" role="progressbar" style="width: 50%; background-color: #f0ad4e;"></div>
+            </div>
+
+            <!-- Faith -->
+            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.9rem;">
+                <span>Faith</span>
+                <span id="valFaith" class="font-weight-bold">50</span>
+            </div>
+            <div class="progress" style="height: 6px; background-color: #333;">
+                <div id="playerStatFaith" class="progress-bar" role="progressbar" style="width: 50%; background-color: #d9534f;"></div>
             </div>
         </div>
 

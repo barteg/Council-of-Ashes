@@ -204,6 +204,7 @@ const nextRoundBtn = document.getElementById('nextRoundBtn');
 
 let playerChoice = null;
 let lastSubmittedStatement = ''; // New variable to store the last submitted statement
+let clientGlobalStats = { Stability: 50, Economy: 50, Faith: 50 };
 
 if (nextRoundBtn) {
     nextRoundBtn.addEventListener('click', () => {
@@ -706,6 +707,12 @@ if (gameId && playerId) {
                         
                         selectedVoteTarget = event.currentTarget.dataset.playerId;
                         if (submitVoteBtn) submitVoteBtn.style.display = 'block';
+
+                        // Preview Effect
+                        const effect = statementData.predicted_effect;
+                        if (effect) {
+                             previewPlayerStats(clientGlobalStats, effect);
+                        }
                     });
                     
                     listItem.addEventListener('dblclick', (event) => {
@@ -1279,12 +1286,56 @@ if (createGameBtn) {
     });
 }
 function updatePlayerStatsBars(globalStats) {
+    // Update local cache
+    clientGlobalStats = { ...globalStats };
+
     const stabBar = document.getElementById('playerStatStability');
     const econBar = document.getElementById('playerStatEconomy');
     const faithBar = document.getElementById('playerStatFaith');
+    
+    const valStab = document.getElementById('valStability');
+    const valEcon = document.getElementById('valEconomy');
+    const valFaith = document.getElementById('valFaith');
 
     if (stabBar) stabBar.style.width = `${globalStats.Stability}%`;
     if (econBar) econBar.style.width = `${globalStats.Economy}%`;
     if (faithBar) faithBar.style.width = `${globalStats.Faith}%`;
+
+    if (valStab) valStab.textContent = globalStats.Stability;
+    if (valEcon) valEcon.textContent = globalStats.Economy;
+    if (valFaith) valFaith.textContent = globalStats.Faith;
+}
+
+function previewPlayerStats(baseStats, effect) {
+    if (!effect) effect = { Stability: 0, Economy: 0, Faith: 0 };
+
+    const updateStat = (barId, textId, base, change) => {
+        const bar = document.getElementById(barId);
+        const text = document.getElementById(textId);
+        
+        let newValue = base + (change || 0);
+        newValue = Math.max(0, Math.min(100, newValue)); // Clamp
+
+        if (bar) {
+            bar.style.width = `${newValue}%`;
+            // Add a transition effect via JS or rely on CSS
+            bar.style.transition = "width 0.3s ease-in-out"; 
+        }
+
+        if (text) {
+            if (change && change !== 0) {
+                const sign = change > 0 ? '+' : '';
+                text.textContent = `${base} (${sign}${change})`;
+                text.style.color = change > 0 ? '#5cb85c' : '#d9534f'; // Green or Red
+            } else {
+                text.textContent = base;
+                text.style.color = 'white';
+            }
+        }
+    };
+
+    updateStat('playerStatStability', 'valStability', baseStats.Stability, effect.Stability);
+    updateStat('playerStatEconomy', 'valEconomy', baseStats.Economy, effect.Economy);
+    updateStat('playerStatFaith', 'valFaith', baseStats.Faith, effect.Faith);
 }
 

@@ -1,13 +1,13 @@
 {
-    "FVGH": {
-        "host_sid": "okqNFM4wh33ecqjAAAAD",
+    "LRLX": {
+        "host_sid": "2WdnAMyZs89IRqDwAAAB",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "Do55JIlKOhMb1fFKAAAP",
+                "sid": "8XE45YDxZe0lk5CCAAAF",
                 "name": "g",
                 "avatar": "/static/avatars/avatar1.png",
-                "faction": "Syndykat Kupiecki",
+                "faction": "Gwardia Kr\u00f3lewska",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
@@ -16,20 +16,18 @@
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "joined",
+                "action_status": "done",
                 "current_action": "Diplomacy",
                 "action_target": "",
                 "action_target_stat": "Economy",
-                "statement": "Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.",
+                "statement": "Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105.",
                 "was_blocked": false
             }
         },
         "factions": {
             "Syndykat Kupiecki": {
                 "power": "Mistrzostwo Handlu",
-                "players": [
-                    "player_1"
-                ],
+                "players": [],
                 "objectives": [
                     {
                         "id": "econ_75",
@@ -117,7 +115,9 @@
             },
             "Gwardia Kr\u00f3lewska": {
                 "power": "Utrzymanie Porz\u0105dku",
-                "players": [],
+                "players": [
+                    "player_1"
+                ],
                 "objectives": [
                     {
                         "id": "stab_75",
@@ -164,49 +164,49 @@
         "dilemma_active": false,
         "current_dilemma": null,
         "global_stats": {
-            "Stability": 53,
-            "Economy": 44,
-            "Faith": 46
+            "Stability": 47,
+            "Economy": 31,
+            "Faith": 54
         },
         "current_round": 1,
         "event_history": [
             {
                 "round": 1,
-                "policy_chosen": "Krwawy Kontrakt",
+                "policy_chosen": "Zbrojna Konfiskata",
                 "effects": {
-                    "Stability": 15,
-                    "Economy": -10,
-                    "Faith": -5
+                    "Stability": -5,
+                    "Economy": -15,
+                    "Faith": 0
                 },
                 "faction_votes": {},
-                "outcome_narrative": "Syndykat Kupiecki zdecydowa\u0142 si\u0119 na brutalne rozwi\u0105zanie, wyprowadzaj\u0105c wojsko na ulice. Sta\u0142o si\u0119 to po s\u0142owach g, kt\u00f3ry rzek\u0142: 'Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.'. Rada przyj\u0119\u0142a to milczeniem, nie znajduj\u0105c s\u0142\u00f3w sprzeciwu. Cho\u0107 bunt zosta\u0142 zd\u0142awiony, \u017co\u0142nierze przy okazji zrujnowali targowiska i zniech\u0119cili wiernych do modlitw. W mie\u015bcie panuje teraz wymuszony spok\u00f3j, a mieszka\u0144cy boj\u0105 si\u0119 o sw\u00f3j dobytek.",
+                "outcome_narrative": "\u017bo\u0142nierze Gwardii Kr\u00f3lewskiej wywa\u017cyli drzwi magazyn\u00f3w i si\u0142\u0105 przej\u0119li zapasy. Sta\u0142o si\u0119 to po rozkazie g, kt\u00f3ry rzek\u0142: 'Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105'. Rada przyj\u0119\u0142a to milczeniem, gdy\u017c nikt nie \u015bmia\u0142 protestowa\u0107. Okaza\u0142o si\u0119 jednak, \u017ce w panice kupcy zniszczyli cz\u0119\u015b\u0107 w\u0142asnych towar\u00f3w, by nie odda\u0107 ich wojsku. Teraz na targowiskach hula wiatr, a skarbiec \u015bwieci pustkami.",
                 "global_stats_after": {
-                    "Stability": 53,
-                    "Economy": 44,
-                    "Faith": 46
+                    "Stability": 47,
+                    "Economy": 31,
+                    "Faith": 54
                 }
             }
         ],
         "gemini_output": {
-            "id": "event_round_1_unrest",
-            "title": "Widmo Rebelii",
-            "description": "Na ulicach Dolnego Miasta p\u0142on\u0105 barykady, a stra\u017c miejska cofa si\u0119 pod naporem w\u015bciek\u0142ego t\u0142umu. Obywatele, przera\u017ceni brakiem bezpiecze\u0144stwa, domagaj\u0105 si\u0119 g\u0142\u00f3w urz\u0119dnik\u00f3w odpowiedzialnych za ostatnie aresztowania. Dym gryzie w oczy, a krzyk buntu s\u0142ycha\u0107 ju\u017c pod murami pa\u0142acu. Je\u015bli nie przywr\u00f3cimy porz\u0105dku, chaos poch\u0142onie stolic\u0119.",
+            "id": "event_round_1_trade_blockade",
+            "title": "Blokada Cechu Kupc\u00f3w",
+            "description": "Cech Kupc\u00f3w zablokowa\u0142 bramy miasta, domagaj\u0105c si\u0119 natychmiastowej sp\u0142aty kr\u00f3lewskich d\u0142ug\u00f3w, co wywindowa\u0142o ceny \u017cywno\u015bci. W biednych dzielnicach zaczynaj\u0105 si\u0119 rozruchy, a stra\u017c donosi o pierwszych spl\u0105drowanych straganach. Skarbiec nie jest pe\u0142ny, ale gniew ludu ro\u015bnie szybciej ni\u017c odsetki.",
             "image": "/static/images/placeholder.png",
             "choices": [
                 {
-                    "text": "Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.",
+                    "text": "Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105.",
                     "type": "Force"
                 },
                 {
-                    "text": "Wyj\u015b\u0107 do ludu i obieca\u0107 sprawiedliwe procesy.",
+                    "text": "Ugnijcie si\u0119 i sp\u0142a\u0107cie d\u0142ug z ostatnich rezerw skarbca.",
                     "type": "Diplomacy"
                 },
                 {
-                    "text": "Skrytob\u00f3jczo wyeliminowa\u0107 przyw\u00f3dc\u00f3w buntu pod os\u0142on\u0105 nocy.",
+                    "text": "Sfa\u0142szujcie dowody na zdrad\u0119 Cechmistrza, by uniewa\u017cni\u0107 d\u0142ug.",
                     "type": "Subterfuge"
                 }
             ],
-            "narrative_prompt": "Cierpliwo\u015b\u0107 t\u0142umu si\u0119 ko\u0144czy; Rada musi zdecydowa\u0107, jak uciszy\u0107 ten wrzask."
+            "narrative_prompt": "Z\u0142oto czy krew \u2013 co pop\u0142ynie dzi\u015b ulicami miasta, Rado?"
         },
         "next_round_votes": [],
         "policies_passed_counts": {
@@ -221,33 +221,33 @@
                 "Faith": 0
             },
             "Gwardia Kr\u00f3lewska": {
-                "Stability": 1,
+                "Stability": 0,
                 "Economy": 0,
                 "Faith": 0
             }
         },
         "winning_statement_counts": {
-            "Syndykat Kupiecki": 1,
+            "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 0
+            "Gwardia Kr\u00f3lewska": 1
         },
         "unanimous_vote_counts": {
-            "Syndykat Kupiecki": 1,
+            "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 0
+            "Gwardia Kr\u00f3lewska": 1
         },
-        "join_url": "/join/FVGH",
+        "join_url": "/join/LRLX",
         "winning_statement": {
             "player_id": "player_1",
-            "statement": "Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.",
+            "statement": "Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105.",
             "name": "g",
             "action_card": "Diplomacy",
             "was_blocked": false
         },
         "last_outcome_narrative_data": {
-            "outcome_narrative": "Syndykat Kupiecki zdecydowa\u0142 si\u0119 na brutalne rozwi\u0105zanie, wyprowadzaj\u0105c wojsko na ulice. Sta\u0142o si\u0119 to po s\u0142owach g, kt\u00f3ry rzek\u0142: 'Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.'. Rada przyj\u0119\u0142a to milczeniem, nie znajduj\u0105c s\u0142\u00f3w sprzeciwu. Cho\u0107 bunt zosta\u0142 zd\u0142awiony, \u017co\u0142nierze przy okazji zrujnowali targowiska i zniech\u0119cili wiernych do modlitw. W mie\u015bcie panuje teraz wymuszony spok\u00f3j, a mieszka\u0144cy boj\u0105 si\u0119 o sw\u00f3j dobytek.",
-            "next_event_hint": "Zubo\u017cali kupcy mog\u0105 wkr\u00f3tce za\u017c\u0105da\u0107 odszkodowa\u0144.",
-            "kingdom_status_summary": "Porz\u0105dek przywr\u00f3cono si\u0142\u0105, lecz gospodarka krwawi."
+            "outcome_narrative": "\u017bo\u0142nierze Gwardii Kr\u00f3lewskiej wywa\u017cyli drzwi magazyn\u00f3w i si\u0142\u0105 przej\u0119li zapasy. Sta\u0142o si\u0119 to po rozkazie g, kt\u00f3ry rzek\u0142: 'Wybijcie bramy i zajmijcie towary kupc\u00f3w si\u0142\u0105'. Rada przyj\u0119\u0142a to milczeniem, gdy\u017c nikt nie \u015bmia\u0142 protestowa\u0107. Okaza\u0142o si\u0119 jednak, \u017ce w panice kupcy zniszczyli cz\u0119\u015b\u0107 w\u0142asnych towar\u00f3w, by nie odda\u0107 ich wojsku. Teraz na targowiskach hula wiatr, a skarbiec \u015bwieci pustkami.",
+            "next_event_hint": "Brak towar\u00f3w rodzi gniew w\u015br\u00f3d g\u0142odnego posp\u00f3lstwa.",
+            "kingdom_status_summary": "Gospodarka jest w ruinie, a zaufanie do stra\u017cy spad\u0142o."
         }
     }
 }

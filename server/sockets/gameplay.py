@@ -358,8 +358,25 @@ def handle_player_action(data):
         emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
 
         if all("statement" in p for p in game["players"].values()):
+            # Prepare statements for batch analysis
+            statements_for_ai = {
+                pid: p["statement"]
+                for pid, p in game["players"].items()
+                if "statement" in p
+            }
+            
+            # Predict effects using Gemini
+            predicted_effects = narrator.analyze_all_statements(statements_for_ai)
+            if not predicted_effects:
+                predicted_effects = {} # Fallback
+
             statements = {
-                pid: {"statement": p["statement"], "name": f"Player {idx + 1}", "action_card": p.get("current_action")}
+                pid: {
+                    "statement": p["statement"], 
+                    "name": f"Player {idx + 1}", 
+                    "action_card": p.get("current_action"),
+                    "predicted_effect": predicted_effects.get(pid, {})
+                }
                 for idx, (pid, p) in enumerate(game["players"].items())
                 if "statement" in p
             }
