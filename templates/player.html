@@ -22,6 +22,28 @@
     <div id="playerId" style="display: none;">{{ player_id }}</div>
 
     <div class="container mt-4">
+        <!-- New Mobile Global Stats -->
+        <div id="mobileGlobalStats" class="mb-3 p-2 bg-dark rounded text-white">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <small>Stability</small>
+                <div class="progress flex-grow-1 ml-2" style="height: 8px;">
+                    <div id="playerStatStability" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <small>Economy</small>
+                <div class="progress flex-grow-1 ml-2" style="height: 8px;">
+                    <div id="playerStatEconomy" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <small>Faith</small>
+                <div class="progress flex-grow-1 ml-2" style="height: 8px;">
+                    <div id="playerStatFaith" class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="text-right">
             <h5 id="playerName"></h5>
             <div id="playerStats" class="mb-2">
@@ -119,9 +141,10 @@
                 <!-- Statement Voting Section -->
                 <div id="statementVoteSection" class="floating-element" style="display: none;">
                     <h5>Które wydarzenie zdefiniuje rzeczywistość?</h5>
-                    <ul id="statementVoteList" class="list-group">
+                    <ul id="statementVoteList" class="list-group mb-3">
                         <!-- Statements for voting will be rendered here -->
                     </ul>
+                    <button id="submitVoteBtn" class="btn btn-success btn-block" style="display: none;">Potwierdź Głos</button>
                 </div>
 
                 <!-- Player Statement Results Section -->

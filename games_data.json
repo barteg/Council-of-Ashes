@@ -1,25 +1,27 @@
 {
-    "KSZV": {
-        "host_sid": "ZuXVQzxSsi7VUpbpAAAR",
+    "FVGH": {
+        "host_sid": "okqNFM4wh33ecqjAAAAD",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "97ZNpt9wbLlPekEoAAAV",
+                "sid": "Do55JIlKOhMb1fFKAAAP",
                 "name": "g",
                 "avatar": "/static/avatars/avatar1.png",
                 "faction": "Syndykat Kupiecki",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 50,
+                    "Influence": 57,
                     "Spite": 0
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "waiting",
-                "current_action": null,
-                "action_target": null,
-                "action_target_stat": null
+                "action_status": "joined",
+                "current_action": "Diplomacy",
+                "action_target": "",
+                "action_target_stat": "Economy",
+                "statement": "Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.",
+                "was_blocked": false
             }
         },
         "factions": {
@@ -158,17 +160,54 @@
                 ]
             }
         },
-        "state": "DILEMMA",
-        "dilemma_active": true,
+        "state": "OUTCOME_DISPLAYED",
+        "dilemma_active": false,
         "current_dilemma": null,
         "global_stats": {
-            "Stability": 46,
-            "Economy": 50,
-            "Faith": 55
+            "Stability": 53,
+            "Economy": 44,
+            "Faith": 46
         },
         "current_round": 1,
-        "event_history": [],
-        "gemini_output": {},
+        "event_history": [
+            {
+                "round": 1,
+                "policy_chosen": "Krwawy Kontrakt",
+                "effects": {
+                    "Stability": 15,
+                    "Economy": -10,
+                    "Faith": -5
+                },
+                "faction_votes": {},
+                "outcome_narrative": "Syndykat Kupiecki zdecydowa\u0142 si\u0119 na brutalne rozwi\u0105zanie, wyprowadzaj\u0105c wojsko na ulice. Sta\u0142o si\u0119 to po s\u0142owach g, kt\u00f3ry rzek\u0142: 'Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.'. Rada przyj\u0119\u0142a to milczeniem, nie znajduj\u0105c s\u0142\u00f3w sprzeciwu. Cho\u0107 bunt zosta\u0142 zd\u0142awiony, \u017co\u0142nierze przy okazji zrujnowali targowiska i zniech\u0119cili wiernych do modlitw. W mie\u015bcie panuje teraz wymuszony spok\u00f3j, a mieszka\u0144cy boj\u0105 si\u0119 o sw\u00f3j dobytek.",
+                "global_stats_after": {
+                    "Stability": 53,
+                    "Economy": 44,
+                    "Faith": 46
+                }
+            }
+        ],
+        "gemini_output": {
+            "id": "event_round_1_unrest",
+            "title": "Widmo Rebelii",
+            "description": "Na ulicach Dolnego Miasta p\u0142on\u0105 barykady, a stra\u017c miejska cofa si\u0119 pod naporem w\u015bciek\u0142ego t\u0142umu. Obywatele, przera\u017ceni brakiem bezpiecze\u0144stwa, domagaj\u0105 si\u0119 g\u0142\u00f3w urz\u0119dnik\u00f3w odpowiedzialnych za ostatnie aresztowania. Dym gryzie w oczy, a krzyk buntu s\u0142ycha\u0107 ju\u017c pod murami pa\u0142acu. Je\u015bli nie przywr\u00f3cimy porz\u0105dku, chaos poch\u0142onie stolic\u0119.",
+            "image": "/static/images/placeholder.png",
+            "choices": [
+                {
+                    "text": "Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.",
+                    "type": "Force"
+                },
+                {
+                    "text": "Wyj\u015b\u0107 do ludu i obieca\u0107 sprawiedliwe procesy.",
+                    "type": "Diplomacy"
+                },
+                {
+                    "text": "Skrytob\u00f3jczo wyeliminowa\u0107 przyw\u00f3dc\u00f3w buntu pod os\u0142on\u0105 nocy.",
+                    "type": "Subterfuge"
+                }
+            ],
+            "narrative_prompt": "Cierpliwo\u015b\u0107 t\u0142umu si\u0119 ko\u0144czy; Rada musi zdecydowa\u0107, jak uciszy\u0107 ten wrzask."
+        },
         "next_round_votes": [],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
@@ -182,21 +221,33 @@
                 "Faith": 0
             },
             "Gwardia Kr\u00f3lewska": {
-                "Stability": 0,
+                "Stability": 1,
                 "Economy": 0,
                 "Faith": 0
             }
         },
         "winning_statement_counts": {
-            "Syndykat Kupiecki": 0,
+            "Syndykat Kupiecki": 1,
             "Wysokie Kap\u0142a\u0144stwo": 0,
             "Gwardia Kr\u00f3lewska": 0
         },
         "unanimous_vote_counts": {
-            "Syndykat Kupiecki": 0,
+            "Syndykat Kupiecki": 1,
             "Wysokie Kap\u0142a\u0144stwo": 0,
             "Gwardia Kr\u00f3lewska": 0
         },
-        "join_url": "/join/KSZV"
+        "join_url": "/join/FVGH",
+        "winning_statement": {
+            "player_id": "player_1",
+            "statement": "Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.",
+            "name": "g",
+            "action_card": "Diplomacy",
+            "was_blocked": false
+        },
+        "last_outcome_narrative_data": {
+            "outcome_narrative": "Syndykat Kupiecki zdecydowa\u0142 si\u0119 na brutalne rozwi\u0105zanie, wyprowadzaj\u0105c wojsko na ulice. Sta\u0142o si\u0119 to po s\u0142owach g, kt\u00f3ry rzek\u0142: 'Wys\u0142a\u0107 ci\u0119\u017ck\u0105 piechot\u0119, by krwawo st\u0142umi\u0107 zamieszki.'. Rada przyj\u0119\u0142a to milczeniem, nie znajduj\u0105c s\u0142\u00f3w sprzeciwu. Cho\u0107 bunt zosta\u0142 zd\u0142awiony, \u017co\u0142nierze przy okazji zrujnowali targowiska i zniech\u0119cili wiernych do modlitw. W mie\u015bcie panuje teraz wymuszony spok\u00f3j, a mieszka\u0144cy boj\u0105 si\u0119 o sw\u00f3j dobytek.",
+            "next_event_hint": "Zubo\u017cali kupcy mog\u0105 wkr\u00f3tce za\u017c\u0105da\u0107 odszkodowa\u0144.",
+            "kingdom_status_summary": "Porz\u0105dek przywr\u00f3cono si\u0142\u0105, lecz gospodarka krwawi."
+        }
     }
 }

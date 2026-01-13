@@ -242,6 +242,10 @@ socket.on('game_started_for_player', (initial_game_state) => {
         gameArea.style.display = 'block';
         console.log(`[DEBUG] game_started_for_player: gameArea.style.display after setting: ${gameArea.style.display}`);
 
+        if (initial_game_state.global_stats) {
+            updatePlayerStatsBars(initial_game_state.global_stats);
+        }
+
         // Initial update of player-specific stats and faction
         if (initial_game_state && initial_game_state.players && initial_game_state.players[playerId]) {
             const player = initial_game_state.players[playerId];
@@ -292,8 +296,8 @@ socket.on('game_event', async (data) => {
 
             // Update host global stats progress bars
             const globalStats = data.global_stats;
-            console.log('[DEBUG] Host Global Stats:', globalStats); // Add this line
             if (globalStats) {
+                updatePlayerStatsBars(globalStats);
                 const hostStatStability = document.getElementById('hostStatStability');
                 const hostStatEconomy = document.getElementById('hostStatEconomy');
                 const hostStatFaith = document.getElementById('hostStatFaith');
@@ -627,6 +631,8 @@ if (gameId && playerId) {
         if (narrativeText) narrativeText.style.setProperty('display', 'block', 'important'); // Ensure the narrative text is visible
         currentRoundSpan.textContent = data.current_round;
 
+        if (data.global_stats) updatePlayerStatsBars(data.global_stats);
+
         // Update player stats with the new data from the server
         if (data.players && data.players[playerId]) {
         }
@@ -668,6 +674,8 @@ if (gameId && playerId) {
         if (data.phase === 'VOTING_PHASE') {
             const statementVoteSection = document.getElementById('statementVoteSection');
             const statementVoteList = document.getElementById('statementVoteList');
+            const submitVoteBtn = document.getElementById('submitVoteBtn');
+            let selectedVoteTarget = null;
 
             // Hide other sections
             if (playerStatementsSection) playerStatementsSection.style.display = 'none';
@@ -680,22 +688,48 @@ if (gameId && playerId) {
             if (statementVoteSection) {
                 statementVoteSection.style.display = 'block';
                 statementVoteList.innerHTML = ''; // Clear previous statements
+                if (submitVoteBtn) submitVoteBtn.style.display = 'none';
 
                 for (const aPlayerId in data.statements) {
                     // Self-voting is now allowed
-
                     const statementData = data.statements[aPlayerId];
                     const listItem = document.createElement('li');
                     listItem.classList.add('list-group-item', 'list-group-item-action');
                     listItem.textContent = `${statementData.name}: "${statementData.statement}"`;
                     listItem.dataset.playerId = aPlayerId;
+                    
                     listItem.addEventListener('click', (event) => {
+                        // Highlight
+                        const items = statementVoteList.querySelectorAll('.list-group-item');
+                        items.forEach(el => el.classList.remove('active'));
+                        event.currentTarget.classList.add('active');
+                        
+                        selectedVoteTarget = event.currentTarget.dataset.playerId;
+                        if (submitVoteBtn) submitVoteBtn.style.display = 'block';
+                    });
+                    
+                    listItem.addEventListener('dblclick', (event) => {
                         const votedForPlayerId = event.currentTarget.dataset.playerId;
                         showLoadingScreen(true);
                         socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_vote', voted_for_player_id: votedForPlayerId });
                         statementVoteSection.style.display = 'none';
                     });
+                    
                     statementVoteList.appendChild(listItem);
+                }
+                
+                if (submitVoteBtn) {
+                    // Remove old listeners to be safe (though this element is static, the phase handler runs multiple times)
+                    const newBtn = submitVoteBtn.cloneNode(true);
+                    submitVoteBtn.parentNode.replaceChild(newBtn, submitVoteBtn);
+                    
+                    newBtn.addEventListener('click', () => {
+                        if (selectedVoteTarget) {
+                            showLoadingScreen(true);
+                            socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_vote', voted_for_player_id: selectedVoteTarget });
+                            statementVoteSection.style.display = 'none';
+                        }
+                    });
                 }
             }
         } else if (data.phase === 'COMMENT_PHASE') {
@@ -815,6 +849,7 @@ if (gameId && playerId) {
 
         // Update global stats
         if (game_state.global_stats) {
+            updatePlayerStatsBars(game_state.global_stats);
             const globalStats = game_state.global_stats;
             if (hostStatStability) {
                 hostStatStability.style.width = `${globalStats.Stability}%`;
@@ -1243,3 +1278,13 @@ if (createGameBtn) {
         if (playerStatementsDiv) playerStatementsDiv.style.display = 'none'; // Hide player statements
     });
 }
+function updatePlayerStatsBars(globalStats) {
+    const stabBar = document.getElementById('playerStatStability');
+    const econBar = document.getElementById('playerStatEconomy');
+    const faithBar = document.getElementById('playerStatFaith');
+
+    if (stabBar) stabBar.style.width = `${globalStats.Stability}%`;
+    if (econBar) econBar.style.width = `${globalStats.Economy}%`;
+    if (faithBar) faithBar.style.width = `${globalStats.Faith}%`;
+}
+
