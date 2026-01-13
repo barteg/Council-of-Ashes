@@ -1,27 +1,24 @@
 {
-    "QAPK": {
-        "host_sid": "g7abREuJnm8ZukXWAAAD",
+    "OPNW": {
+        "host_sid": "xRJqj-Qg45mxIORAAAAD",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "27B2Zoa_4UtC3t5LAAAd",
-                "name": "gooner",
+                "sid": null,
+                "name": "Player 1 (Empty)",
                 "avatar": "/static/avatars/avatar1.png",
-                "faction": "Gwardia Kr\u00f3lewska",
+                "faction": null,
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 55,
+                    "Influence": 50,
                     "Spite": 0
                 },
-                "ready": true,
+                "ready": false,
                 "shamed": false,
-                "action_status": "joined",
+                "action_status": "empty",
                 "current_action": null,
-                "action_target": null,
-                "action_target_stat": null,
-                "statement": "ka\u017cdy przylapany na malowaniu obra\u017aliwych symboli zostaje seksualnym niewolnikiem",
-                "was_blocked": false
+                "action_target": null
             }
         },
         "factions": {
@@ -115,9 +112,7 @@
             },
             "Gwardia Kr\u00f3lewska": {
                 "power": "Utrzymanie Porz\u0105dku",
-                "players": [
-                    "player_1"
-                ],
+                "players": [],
                 "objectives": [
                     {
                         "id": "stab_75",
@@ -160,40 +155,17 @@
                 ]
             }
         },
-        "state": "OUTCOME_DISPLAYED",
+        "state": "waiting",
         "dilemma_active": false,
         "current_dilemma": null,
         "global_stats": {
-            "Stability": 70,
-            "Economy": 51,
-            "Faith": 17
+            "Stability": 51,
+            "Economy": 43,
+            "Faith": 36
         },
-        "current_round": 1,
-        "event_history": [
-            {
-                "round": 1,
-                "policy_chosen": "Dekret o Cielesnej Pokucie",
-                "effects": {
-                    "Stability": 15,
-                    "Economy": 0,
-                    "Faith": -20
-                },
-                "faction_votes": {},
-                "outcome_narrative": "Gwardia Kr\u00f3lewska bezwzgl\u0119dnie egzekwuje nowe, brutalne prawo na ulicach miasta. Decyzja ta zapad\u0142a po s\u0142owach radnego gooner, kt\u00f3ry rzek\u0142: 'ka\u017cdy przylapany na malowaniu obra\u017aliwych symboli zostaje seksualnym niewolnikiem'. Rada przyj\u0119\u0142a to ponurym milczeniem, nie znajduj\u0105c s\u0142\u00f3w sprzeciwu. Paradoksalnie, cho\u0107 mury miasta s\u0105 teraz czyste, w sercach ludzi zgas\u0142a ostatnia iskra nadziei i wiary. Ulice s\u0105 bezpieczne jak nigdy dot\u0105d, ale \u015bwi\u0105tynie \u015bwiec\u0105 pustkami, a mieszka\u0144cy odwracaj\u0105 wzrok od swoich obro\u0144c\u00f3w.",
-                "global_stats_after": {
-                    "Stability": 70,
-                    "Economy": 51,
-                    "Faith": 17
-                }
-            }
-        ],
-        "gemini_output": {
-            "id": "evt_r1_faith_crisis",
-            "title": "Fa\u0142szywy Prorok",
-            "description": "Na rynkach pojawili si\u0119 biczownicy g\u0142osz\u0105cy, \u017ce bogowie opu\u015bcili miasto z powodu grzech\u00f3w Rady. T\u0142um, g\u0142odny duchowej pociechy, zaczyna s\u0142ucha\u0107 ich fanatycznych kaza\u0144 zamiast kap\u0142an\u00f3w. \u015awi\u0105tynie pustoszej\u0105, a na murach pojawiaj\u0105 si\u0119 blu\u017aniercze symbole.",
-            "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Czy Rada ukarze heretyk\u00f3w, ryzykuj\u0105c gniew posp\u00f3lstwa, czy ukorzy si\u0119 przed now\u0105 wiar\u0105?"
-        },
+        "current_round": 0,
+        "event_history": [],
+        "gemini_output": {},
         "next_round_votes": [],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
@@ -207,7 +179,7 @@
                 "Faith": 0
             },
             "Gwardia Kr\u00f3lewska": {
-                "Stability": 1,
+                "Stability": 0,
                 "Economy": 0,
                 "Faith": 0
             }
@@ -215,24 +187,13 @@
         "winning_statement_counts": {
             "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Gwardia Kr\u00f3lewska": 0
         },
         "unanimous_vote_counts": {
             "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Gwardia Kr\u00f3lewska": 0
         },
-        "join_url": "/join/QAPK",
-        "winning_statement": {
-            "player_id": "player_1",
-            "statement": "ka\u017cdy przylapany na malowaniu obra\u017aliwych symboli zostaje seksualnym niewolnikiem",
-            "name": "gooner",
-            "was_blocked": false
-        },
-        "last_outcome_narrative_data": {
-            "outcome_narrative": "Gwardia Kr\u00f3lewska bezwzgl\u0119dnie egzekwuje nowe, brutalne prawo na ulicach miasta. Decyzja ta zapad\u0142a po s\u0142owach radnego gooner, kt\u00f3ry rzek\u0142: 'ka\u017cdy przylapany na malowaniu obra\u017aliwych symboli zostaje seksualnym niewolnikiem'. Rada przyj\u0119\u0142a to ponurym milczeniem, nie znajduj\u0105c s\u0142\u00f3w sprzeciwu. Paradoksalnie, cho\u0107 mury miasta s\u0105 teraz czyste, w sercach ludzi zgas\u0142a ostatnia iskra nadziei i wiary. Ulice s\u0105 bezpieczne jak nigdy dot\u0105d, ale \u015bwi\u0105tynie \u015bwiec\u0105 pustkami, a mieszka\u0144cy odwracaj\u0105 wzrok od swoich obro\u0144c\u00f3w.",
-            "next_event_hint": "Bogowie mog\u0105 nie wybaczy\u0107 takiego upokorzenia swoich wyznawc\u00f3w.",
-            "kingdom_status_summary": "W kr\u00f3lestwie panuje \u017celazny porz\u0105dek, lecz wiara leg\u0142a w gruzach, a strach d\u0142awi wszelk\u0105 rado\u015b\u0107."
-        }
+        "join_url": "/join/OPNW"
     }
 }

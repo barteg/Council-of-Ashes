@@ -122,6 +122,26 @@
                         <!-- Statement voting results will be rendered here -->
                     </div>
                 </div>
+
+                <!-- Dark Market Section -->
+                <div id="darkMarketSection" class="floating-element" style="display: none;">
+                    <h5>Mroczny Rynek</h5>
+                    <p class="small text-muted">Skryba pisze... Masz chwilę na działanie.</p>
+                    <div id="tarotContainer" class="tarot-container">
+                        <!-- Cards injected via JS -->
+                    </div>
+                    
+                    <!-- Input for specific actions (hidden initially) -->
+                    <div id="shadowActionInput" style="display: none;" class="mt-3">
+                        <h6 id="shadowActionTitle"></h6>
+                        <input type="text" id="shadowTextInput" class="form-control mb-2" placeholder="Słowo / Litera">
+                        <select id="shadowPlayerSelect" class="form-control mb-2" style="display: none;">
+                            <!-- Populated via JS -->
+                        </select>
+                        <button id="submitShadowActionBtn" class="btn btn-primary btn-block">Wykonaj</button>
+                        <button id="cancelShadowActionBtn" class="btn btn-secondary btn-block">Anuluj</button>
+                    </div>
+                </div>
                 
                 <!-- Comment Phase Section -->
                 <div id="commentPhaseSection" class="floating-element" style="display: none;">

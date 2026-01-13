@@ -688,6 +688,15 @@ if (gameId && playerId) {
             } else {
                 console.error('[DEBUG] commentPhaseSection not found during COMMENT_PHASE phase_change!');
             }
+        } else if (data.phase === 'SHADOW_PHASE') {
+            const commentPhaseSection = document.getElementById('commentPhaseSection');
+            const darkMarketSection = document.getElementById('darkMarketSection');
+            
+            if (commentPhaseSection) commentPhaseSection.style.display = 'none';
+            if (darkMarketSection) {
+                darkMarketSection.style.display = 'block';
+                renderDarkMarket();
+            }
         }
         console.log(`[DEBUG] phase_change: playerStatementsSection.style.display AFTER: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
         console.log(`[DEBUG] phase_change: statementVoteSection.style.display AFTER: ${statementVoteSection ? statementVoteSection.style.display : 'N/A'}`);
@@ -1259,4 +1268,104 @@ function previewPlayerStats(baseStats, effect) {
     updateStat('playerStatEconomy', 'valEconomy', baseStats.Economy, effect.Economy);
     updateStat('playerStatFaith', 'valFaith', baseStats.Faith, effect.Faith);
 }
+
+
+    const shadowActions = [
+        { id: 'curse', title: 'Klątwa', desc: 'Zmuś gracza do użycia słowa.', cost: 0, input: 'word' },
+        { id: 'gambler', title: 'Hazardzista', desc: 'Obstaw kto wygra (2x Infl).', cost: 5, input: 'bet' },
+        { id: 'censor', title: 'Cenzura', desc: 'Zabroń użycia litery.', cost: 2, input: 'letter' },
+        { id: 'pickpocket', title: 'Kradzież', desc: 'Ukradnij 1 Influence.', cost: 0, input: 'target' },
+        { id: 'silence', title: 'Cisza', desc: 'Zablokuj komentarze.', cost: 3, input: 'target' },
+        { id: 'toast', title: 'Toast', desc: '+1 Infl dla obu.', cost: 0, input: 'target' }
+    ];
+
+    let currentShadowAction = null;
+
+    function renderDarkMarket() {
+        const container = document.getElementById('tarotContainer');
+        const shadowActionInput = document.getElementById('shadowActionInput');
+        
+        if (container) {
+            container.style.display = 'flex';
+            container.innerHTML = '';
+            shadowActionInput.style.display = 'none';
+            
+            const shuffled = [...shadowActions].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 3);
+            
+            selected.forEach(action => {
+                const card = document.createElement('div');
+                card.className = 'tarot-card';
+                card.innerHTML = `
+                    <div class='tarot-face tarot-front'></div>
+                    <div class='tarot-face tarot-back'>
+                        <div class='tarot-title'>${action.title}</div>
+                        <div class='tarot-desc'>${action.desc}</div>
+                        ${action.cost > 0 ? `<div class='tarot-cost'>Koszt: ${action.cost} Spite</div>` : ''}
+                    </div>
+                `;
+                
+                card.onclick = () => {
+                    if (card.classList.contains('flipped')) {
+                        showShadowActionInput(action);
+                    } else {
+                        card.classList.add('flipped');
+                    }
+                };
+                container.appendChild(card);
+            });
+        }
+    }
+
+    function showShadowActionInput(action) {
+        currentShadowAction = action;
+        const container = document.getElementById('tarotContainer');
+        const inputDiv = document.getElementById('shadowActionInput');
+        const title = document.getElementById('shadowActionTitle');
+        const textInput = document.getElementById('shadowTextInput');
+        const playerSelect = document.getElementById('shadowPlayerSelect');
+        
+        container.style.display = 'none';
+        inputDiv.style.display = 'block';
+        title.textContent = action.title;
+        
+        textInput.style.display = (action.input === 'word' || action.input === 'letter' || action.input === 'bet') ? 'block' : 'none';
+        playerSelect.style.display = (action.input !== 'bet') ? 'block' : 'none';
+        
+        playerSelect.innerHTML = '';
+        const sourceSelect = document.getElementById('targetPlayerSelect');
+        if (sourceSelect) {
+            playerSelect.innerHTML = sourceSelect.innerHTML;
+        }
+    }
+
+    const submitShadowBtn = document.getElementById('submitShadowActionBtn');
+    if (submitShadowBtn) {
+        submitShadowBtn.addEventListener('click', () => {
+            if (!currentShadowAction) return;
+            
+            const target = document.getElementById('shadowPlayerSelect').value;
+            const text = document.getElementById('shadowTextInput').value;
+            
+            socket.emit('player_action', {
+                game_id: gameId,
+                player_id: playerId,
+                action: 'submit_shadow_action',
+                shadow_type: currentShadowAction.id,
+                target: target,
+                payload: text
+            });
+            
+            document.getElementById('darkMarketSection').style.display = 'none';
+            alert('Akcja przyjęta w cieniu...');
+        });
+    }
+    
+    const cancelShadowBtn = document.getElementById('cancelShadowActionBtn');
+    if (cancelShadowBtn) {
+        cancelShadowBtn.addEventListener('click', () => {
+             document.getElementById('shadowActionInput').style.display = 'none';
+             document.getElementById('tarotContainer').style.display = 'flex';
+        });
+    }
 

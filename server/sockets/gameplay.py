@@ -236,6 +236,26 @@ def resolve_dilemma(game_id, player_comments=None):
 
     game["last_outcome_narrative_data"] = outcome_narrative_data
 
+    # Emit results after AI generation
+    all_comments = {pid: {"comment": p.get("comment", ""), "name": p["name"]} for pid, p in game["players"].items() if p.get("comment")}
+    
+    emit("comments_received", {
+        "comments": all_comments,
+        "outcome": outcome_narrative_data["outcome_narrative"],
+        "global_stats": game["global_stats"],
+        "current_round": game["current_round"],
+        "players": game["players"]
+    }, room=game_id)
+
+    emit("dilemma_resolved", {
+        "outcome": outcome_narrative_data["outcome_narrative"],
+        "global_stats": game["global_stats"],
+        "current_round": game["current_round"],
+        "players": game["players"]
+    }, room=game_id, broadcast=True)
+
+    game["state"] = "OUTCOME_DISPLAYED"
+
     # Check Influence Win
     winner = None
     for pid, p in game["players"].items():
@@ -333,6 +353,36 @@ def handle_player_action(data):
         # But original code blocked it. I will stick to original logic.
         return
 
+    if action == "submit_shadow_action":
+        shadow_type = data.get("shadow_type")
+        target = data.get("target")
+        payload = data.get("payload")
+        
+        effect = {
+            "source": player_id,
+            "type": shadow_type,
+            "target": target,
+            "payload": payload,
+            "round": game["current_round"]
+        }
+        
+        game.setdefault("shadow_effects", []).append(effect)
+        
+        # Immediate Resolution
+        if shadow_type == "pickpocket":
+             target_p = game["players"].get(target)
+             if target_p and target_p["personal_stats"]["Influence"] > 0:
+                 target_p["personal_stats"]["Influence"] -= 1
+                 game["players"][player_id]["personal_stats"]["Influence"] += 1
+        elif shadow_type == "toast":
+             target_p = game["players"].get(target)
+             if target_p:
+                 target_p["personal_stats"]["Influence"] += 1
+                 game["players"][player_id]["personal_stats"]["Influence"] += 1
+        
+        emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
+        return
+
     if action == "submit_statement":
         if game["state"] != "DILEMMA": return
         statement = data.get("statement")
@@ -340,6 +390,20 @@ def handle_player_action(data):
         if "statement" in game["players"][player_id]:
             emit("error", {"message": "Already submitted."}, room=request.sid)
             return
+
+        # Enforce Shadow Effects
+        prev_round = game["current_round"] - 1
+        active_effects = [e for e in game.get("shadow_effects", []) if e["round"] == prev_round and e["target"] == player_id]
+        
+        for effect in active_effects:
+            if effect["type"] == "curse":
+                word = effect["payload"]
+                if word and word.lower() not in statement.lower():
+                    game["players"][player_id]["personal_stats"]["Influence"] = max(0, game["players"][player_id]["personal_stats"]["Influence"] - 3)
+            elif effect["type"] == "censor":
+                char = effect["payload"]
+                if char and char.lower() in statement.lower():
+                    game["players"][player_id]["personal_stats"]["Influence"] = max(0, game["players"][player_id]["personal_stats"]["Influence"] - 2)
 
         game["players"][player_id]["statement"] = statement
         game["players"][player_id]["action_status"] = "done"
@@ -474,32 +538,13 @@ def handle_player_action(data):
         if all("comment" in p for p in game["players"].values()):
             # Collect comments
             player_comments = [{"player_id": pid, "comment": p["comment"]} for pid, p in game["players"].items() if "comment" in p]
-            resolve_dilemma(game_id, player_comments)
-
-            all_comments = {pid: {"comment": p["comment"], "name": f"Player {idx+1}"} for idx, (pid, p) in enumerate(game["players"].items()) if "comment" in p}
-            outcome = game.get("last_outcome_narrative_data", {}).get("outcome_narrative", "...")
-
-            emit("comments_received", {
-                "comments": all_comments,
-                "outcome": outcome,
-                "global_stats": game["global_stats"],
-                "current_round": game["current_round"],
-                "players": game["players"]
-            }, room=game["host_sid"])
-
-            emit("dilemma_resolved", {
-                "outcome": outcome,
-                "global_stats": game["global_stats"],
-                "current_round": game["current_round"],
-                "players": game["players"]
-            }, room=game_id, broadcast=True)
-
-            # Cleanup
-            for pid in game["players"]:
-                game["players"][pid].pop("comment", None)
-                game["players"][pid].pop("statement_vote", None)
-
-            game["state"] = "OUTCOME_DISPLAYED"
+            
+            # Start Shadow Phase (Dark Market)
+            game["state"] = "SHADOW_PHASE"
+            emit("phase_change", {"phase": "SHADOW_PHASE"}, room=game_id, broadcast=True)
+            
+            # Run resolution in background to allow Shadow Actions while AI thinks
+            socketio.start_background_task(resolve_dilemma, game_id, player_comments)
 
     elif event_type == "next_round":
         if player_id not in game.get("next_round_votes", []):
