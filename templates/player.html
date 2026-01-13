@@ -81,46 +81,10 @@
                     <small class="form-text text-muted" style="display: none;">Kliknij dwukrotnie, aby potwierdzić wybór.</small>
                 </div>
 
-                <!-- Player Statements Section (Action Cards) -->
+                <!-- Player Statements Section (Action Cards Removed) -->
                 <div id="playerStatementsSection" class="floating-element" style="display: none;">
                     <h5>Wybierz Swoją Akcję</h5>
                     
-                    <!-- Step A: Action Card Selection -->
-                    <div id="actionCardSelection" class="mb-3">
-                        <div class="btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-outline-primary active" id="btnDiplomacy">
-                                <input type="radio" name="actionCard" value="Diplomacy" autocomplete="off" checked> Dyplomacja (+2 Infl)
-                            </label>
-                            <label class="btn btn-outline-danger" id="btnBlackmail">
-                                <input type="radio" name="actionCard" value="Blackmail" autocomplete="off"> Szantaż (Kradnij 3 Infl)
-                            </label>
-                            <label class="btn btn-outline-warning" id="btnDemagoguery">
-                                <input type="radio" name="actionCard" value="Demagoguery" autocomplete="off"> Demagogia (-1 Stat, +5 Infl)
-                            </label>
-                            <label class="btn btn-outline-dark" id="btnSabotage">
-                                <input type="radio" name="actionCard" value="Sabotage" autocomplete="off"> Sabotaż (Blokuj Akcję, Koszt 3 Spite)
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Target Selection (Player) -->
-                    <div id="targetSelectionArea" class="form-group" style="display: none;">
-                        <label for="targetPlayerSelect">Wybierz Gracza (Cel):</label>
-                        <select class="form-control" id="targetPlayerSelect">
-                            <!-- Options populated by JS -->
-                        </select>
-                    </div>
-
-                    <!-- Target Selection (Stat) -->
-                    <div id="targetStatSelectionArea" class="form-group" style="display: none;">
-                        <label for="targetStatSelect">Poświęć Statystykę:</label>
-                        <select class="form-control" id="targetStatSelect">
-                            <option value="Economy">Gospodarka</option>
-                            <option value="Stability">Stabilność</option>
-                            <option value="Faith">Wiara</option>
-                        </select>
-                    </div>
-
                     <!-- Step B: Text Input -->
             <div id="playerInputSection" class="floating-element" style="display: none;">
                 <label for="playerStatementInput" class="form-label">Twoje Słowa:</label>
@@ -153,6 +117,7 @@
                         <!-- Statements for voting will be rendered here -->
                     </ul>
                     <button id="submitVoteBtn" class="btn btn-success btn-block" style="display: none;">Potwierdź Głos</button>
+                    <button id="sabotageVoteBtn" class="btn btn-danger btn-block mt-2" style="display: none;">Sabotaż (Koszt: 3 Spite)</button>
                 </div>
 
                 <!-- Player Statement Results Section -->

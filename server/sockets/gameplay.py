@@ -336,23 +336,12 @@ def handle_player_action(data):
     if action == "submit_statement":
         if game["state"] != "DILEMMA": return
         statement = data.get("statement")
-        action_card = data.get("action_card")
-        target_player_id = data.get("target_player_id")
-        target_stat = data.get("target_stat")
 
         if "statement" in game["players"][player_id]:
             emit("error", {"message": "Already submitted."}, room=request.sid)
             return
 
-        # Spite Check
-        if action_card == "Sabotage" and game["players"][player_id]["personal_stats"]["Spite"] < 3:
-             emit("error", {"message": "Not enough Spite!"}, room=request.sid)
-             return
-
         game["players"][player_id]["statement"] = statement
-        game["players"][player_id]["current_action"] = action_card
-        game["players"][player_id]["action_target"] = target_player_id
-        game["players"][player_id]["action_target_stat"] = target_stat
         game["players"][player_id]["action_status"] = "done"
         
         emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
@@ -374,7 +363,6 @@ def handle_player_action(data):
                 pid: {
                     "statement": p["statement"], 
                     "name": f"Player {idx + 1}", 
-                    "action_card": p.get("current_action"),
                     "predicted_effect": predicted_effects.get(pid, {})
                 }
                 for idx, (pid, p) in enumerate(game["players"].items())
@@ -387,63 +375,46 @@ def handle_player_action(data):
     elif action == "submit_vote":
         if game["state"] != "VOTING_PHASE": return
         voted_for = data.get("voted_for_player_id")
+        vote_type = data.get("type", "vote")
         
-        # Self-voting is now allowed per user request
-        
-        game["players"][player_id]["statement_vote"] = voted_for
+        if vote_type == "sabotage":
+            if game["players"][player_id]["personal_stats"]["Spite"] >= 3:
+                game["players"][player_id]["personal_stats"]["Spite"] -= 3
+                game["players"][player_id]["statement_vote"] = {"target": voted_for, "type": "sabotage"}
+            else:
+                emit("error", {"message": "Not enough Spite!"}, room=request.sid)
+                return
+        else:
+            game["players"][player_id]["statement_vote"] = voted_for
+
         game["players"][player_id]["action_status"] = "done"
         emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
 
         if all("statement_vote" in p for p in game["players"].values()):
-            # --- Resolution ---
-            blocked_players = []
-            
-            # Sabotage
-            for pid, p in game["players"].items():
-                if p.get("current_action") == "Sabotage" and p.get("action_target"):
-                    target = p["action_target"]
-                    if p["personal_stats"]["Spite"] >= 3:
-                        p["personal_stats"]["Spite"] -= 3
-                        blocked_players.append(target)
-
-            # Actions
-            for pid, p in game["players"].items():
-                if pid in blocked_players: continue
-                
-                act = p.get("current_action")
-                target_pid = p.get("action_target")
-                target_stat = p.get("action_target_stat")
-                
-                if act == "Diplomacy":
-                    p["personal_stats"]["Influence"] += 2
-                elif act == "Blackmail" and target_pid:
-                    target_p = game["players"].get(target_pid)
-                    if target_p:
-                        amount = min(3, target_p["personal_stats"]["Influence"])
-                        target_p["personal_stats"]["Influence"] -= amount
-                        p["personal_stats"]["Influence"] += amount
-                        target_p["personal_stats"]["Spite"] += 1
-                elif act == "Demagoguery" and target_stat:
-                    if target_stat in game["global_stats"]:
-                        game["global_stats"][target_stat] -= 1
-                        p["personal_stats"]["Influence"] += 5
-                        if game["global_stats"][target_stat] <= 0:
-                            p["personal_stats"]["Influence"] = 0
-                            p["shamed"] = True
-                            game["global_stats"][target_stat] = 1
-                            emit("kingdom_collapse", 
-                                {"collapsed_stats": [target_stat], "guilty_players": [pid]}, 
-                                room=game_id, broadcast=True)
-
-            # Votes
+            # Resolution
             vote_counts = {pid: 0 for pid in game["players"]}
+            sabotage_counts = {pid: 0 for pid in game["players"]}
+
             for p in game["players"].values():
                 v = p["statement_vote"]
-                if v: vote_counts[v] += 1
+                if isinstance(v, dict) and v.get("type") == "sabotage":
+                    sabotage_counts[v["target"]] += 1
+                elif isinstance(v, str):
+                    vote_counts[v] += 1
+                elif isinstance(v, dict) and v.get("type") == "vote":
+                     vote_counts[v["target"]] += 1
             
+            # Determine Winner (Filter out sabotaged)
+            valid_candidates = [pid for pid in game["players"] if sabotage_counts[pid] == 0]
+            
+            if not valid_candidates:
+                 # Chaos: If everyone is sabotaged, anyone can win
+                 valid_candidates = list(game["players"].keys())
+
             max_votes = -1
             winners = []
-            for pid, count in vote_counts.items():
+            for pid in valid_candidates:
+                count = vote_counts[pid]
                 if count > max_votes:
                     max_votes = count
                     winners = [pid]
@@ -452,6 +423,7 @@ def handle_player_action(data):
             
             winning_player_id = random.choice(winners) if winners else None
             
+            # Apply Influence
             for pid, p in game["players"].items():
                 votes_rec = vote_counts.get(pid, 0)
                 p["personal_stats"]["Influence"] += votes_rec
@@ -468,12 +440,11 @@ def handle_player_action(data):
                 "player_id": winning_player_id,
                 "statement": game["players"][winning_player_id]["statement"],
                 "name": game["players"][winning_player_id]["name"],
-                "action_card": game["players"][winning_player_id].get("current_action"),
-                "was_blocked": winning_player_id in blocked_players
+                "was_blocked": sabotage_counts.get(winning_player_id, 0) > 0
             }
             game["winning_statement"] = winning_statement
             for pid in game["players"]:
-                game["players"][pid]["was_blocked"] = (pid in blocked_players)
+                game["players"][pid]["was_blocked"] = (sabotage_counts[pid] > 0)
 
             # Objectives update (Winning Statement & Unanimous Vote)
             winning_faction_id = game["players"][winning_player_id]["faction"]

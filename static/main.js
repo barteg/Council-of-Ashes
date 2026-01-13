@@ -362,11 +362,9 @@ socket.on('game_event', async (data) => {
                 playerStatementsSection.style.display = 'block'; // Show statement input immediately
                 
                 // CRITICAL FIX: Unhide the internal sections that were hidden after submission
-                const actionCardSelection = document.getElementById('actionCardSelection');
                 const playerInputSection = document.getElementById('playerInputSection');
                 const statementSubmitted = document.getElementById('statementSubmitted');
                 
-                if (actionCardSelection) actionCardSelection.style.display = 'block';
                 if (playerInputSection) playerInputSection.style.display = 'block';
                 if (statementSubmitted) statementSubmitted.style.display = 'none';
 
@@ -456,48 +454,7 @@ if (gameId && playerId) {
     const playerStatementInput = document.getElementById('playerStatementInput'); // Re-declare for scope
     const submitStatementBtn = document.getElementById('submitStatementBtn'); // Re-declare for scope
     
-    // Action Card Logic
-    const actionCardRadios = document.querySelectorAll('input[name="actionCard"]');
-    const targetSelectionArea = document.getElementById('targetSelectionArea');
-    const targetStatSelectionArea = document.getElementById('targetStatSelectionArea');
-    
-    // Function to check Sabotage availability based on Spite
-    function updateSabotageAvailability() {
-        const spiteValEl = document.getElementById('spiteVal');
-        const btnSabotage = document.getElementById('btnSabotage');
-        const radioSabotage = document.querySelector('input[value="Sabotage"]');
-        
-        if (spiteValEl && btnSabotage && radioSabotage) {
-            const currentSpite = parseInt(spiteValEl.textContent) || 0;
-            if (currentSpite < 3) {
-                btnSabotage.classList.add('disabled');
-                btnSabotage.style.opacity = '0.5';
-                btnSabotage.title = "Wymaga 3 Spite";
-                radioSabotage.disabled = true;
-                if (radioSabotage.checked) {
-                    // Reset to Diplomacy if currently selected but disabled
-                    document.querySelector('input[value="Diplomacy"]').click();
-                    document.querySelector('input[value="Diplomacy"]').checked = true;
-                    // Manually trigger change event to update UI
-                    document.querySelector('input[value="Diplomacy"]').dispatchEvent(new Event('change'));
-                }
-            } else {
-                btnSabotage.classList.remove('disabled');
-                btnSabotage.style.opacity = '1';
-                btnSabotage.title = "";
-                radioSabotage.disabled = false;
-            }
-        }
-    }
-
-    // Call this whenever stats update
-    const observer = new MutationObserver(updateSabotageAvailability);
-    const spiteValEl = document.getElementById('spiteVal');
-    if (spiteValEl) {
-        observer.observe(spiteValEl, { childList: true, characterData: true, subtree: true });
-    }
-
-
+    // Action Card Logic Removed
     
     let currentFactionId = null;
 
@@ -530,74 +487,23 @@ if (gameId && playerId) {
         }
     }
 
-    if (actionCardRadios.length > 0) {
-        actionCardRadios.forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                const action = e.target.value;
-                const labelElement = document.querySelector('label[for="playerStatementInput"]');
-
-                if (playerStatementInput) {
-                    if (action === "Diplomacy") {
-                        // Use Asymmetric Faction Prompts
-                        playerStatementInput.placeholder = getFactionPlaceholder(currentFactionId);
-                        if (labelElement) labelElement.textContent = getFactionLabel(currentFactionId);
-                    } else {
-                        // Use Standard Action Prompts
-                        if (labelElement) labelElement.textContent = "Twoje Słowa:"; // Reset label for generic actions
-                        
-                        const placeholders = {
-                            "Blackmail": "Wpisz swoją groźbę...",
-                            "Demagoguery": "Wpisz płomienne przemówienie...",
-                            "Sabotage": "Opisz swoje działania dywersyjne..."
-                        };
-                        playerStatementInput.placeholder = placeholders[action] || "Wpisz swoje oświadczenie...";
-                    }
-                }
-
-                if (targetSelectionArea) targetSelectionArea.style.display = 'none';
-                if (targetStatSelectionArea) targetStatSelectionArea.style.display = 'none';
-
-                if (action === "Blackmail" || action === "Sabotage") {
-                    if (targetSelectionArea) targetSelectionArea.style.display = 'block';
-                } else if (action === "Demagoguery") {
-                    if (targetStatSelectionArea) targetStatSelectionArea.style.display = 'block';
-                }
-            });
-        });
-    }
-
     if (submitStatementBtn) {
         submitStatementBtn.addEventListener('click', () => {
             const statement = playerStatementInput.value;
-            const selectedActionRadio = document.querySelector('input[name="actionCard"]:checked');
-            const actionCard = selectedActionRadio ? selectedActionRadio.value : "Diplomacy"; // Default to Diplomacy
-            const targetPlayerSelect = document.getElementById('targetPlayerSelect');
-            const targetPlayerId = targetPlayerSelect ? targetPlayerSelect.value : null;
-            const targetStatSelect = document.getElementById('targetStatSelect');
-            const targetStat = targetStatSelect ? targetStatSelect.value : null;
 
             if (statement) {
                 socket.emit('player_action', { 
                     game_id: gameId, 
                     player_id: playerId, 
                     action: 'submit_statement', 
-                    statement: statement,
-                    action_card: actionCard,
-                    target_player_id: targetPlayerId,
-                    target_stat: targetStat
+                    statement: statement
                 });
-                lastSubmittedStatement = statement; // Store the submitted statement
+                lastSubmittedStatement = statement; 
                 
                 const playerInputSection = document.getElementById('playerInputSection');
                 const statementSubmitted = document.getElementById('statementSubmitted');
-                const actionCardSelection = document.getElementById('actionCardSelection'); // Hide cards too
-                const targetSelectionArea = document.getElementById('targetSelectionArea');
-                const targetStatSelectionArea = document.getElementById('targetStatSelectionArea');
 
                 if(playerInputSection) playerInputSection.style.display = 'none';
-                if(actionCardSelection) actionCardSelection.style.display = 'none';
-                if(targetSelectionArea) targetSelectionArea.style.display = 'none';
-                if(targetStatSelectionArea) targetStatSelectionArea.style.display = 'none';
                 if(statementSubmitted) statementSubmitted.style.display = 'block';
             } else {
                 alert("Proszę wpisać treść oświadczenia.");
@@ -676,6 +582,7 @@ if (gameId && playerId) {
             const statementVoteSection = document.getElementById('statementVoteSection');
             const statementVoteList = document.getElementById('statementVoteList');
             const submitVoteBtn = document.getElementById('submitVoteBtn');
+            const sabotageVoteBtn = document.getElementById('sabotageVoteBtn');
             let selectedVoteTarget = null;
 
             // Hide other sections
@@ -690,6 +597,7 @@ if (gameId && playerId) {
                 statementVoteSection.style.display = 'block';
                 statementVoteList.innerHTML = ''; // Clear previous statements
                 if (submitVoteBtn) submitVoteBtn.style.display = 'none';
+                if (sabotageVoteBtn) sabotageVoteBtn.style.display = 'none';
 
                 for (const aPlayerId in data.statements) {
                     // Self-voting is now allowed
@@ -707,6 +615,17 @@ if (gameId && playerId) {
                         
                         selectedVoteTarget = event.currentTarget.dataset.playerId;
                         if (submitVoteBtn) submitVoteBtn.style.display = 'block';
+
+                        // Sabotage Logic
+                        if (sabotageVoteBtn) {
+                            const spiteValEl = document.getElementById('spiteVal');
+                            const currentSpite = parseInt(spiteValEl ? spiteValEl.textContent : 0) || 0;
+                            if (currentSpite >= 3) {
+                                sabotageVoteBtn.style.display = 'block';
+                            } else {
+                                sabotageVoteBtn.style.display = 'none';
+                            }
+                        }
 
                         // Preview Effect
                         const effect = statementData.predicted_effect;
@@ -726,7 +645,6 @@ if (gameId && playerId) {
                 }
                 
                 if (submitVoteBtn) {
-                    // Remove old listeners to be safe (though this element is static, the phase handler runs multiple times)
                     const newBtn = submitVoteBtn.cloneNode(true);
                     submitVoteBtn.parentNode.replaceChild(newBtn, submitVoteBtn);
                     
@@ -738,7 +656,27 @@ if (gameId && playerId) {
                         }
                     });
                 }
+
+                if (sabotageVoteBtn) {
+                    const newSabBtn = sabotageVoteBtn.cloneNode(true);
+                    sabotageVoteBtn.parentNode.replaceChild(newSabBtn, sabotageVoteBtn);
+                    
+                    newSabBtn.addEventListener('click', () => {
+                        if (selectedVoteTarget) {
+                            showLoadingScreen(true);
+                            socket.emit('player_action', { 
+                                game_id: gameId, 
+                                player_id: playerId, 
+                                action: 'submit_vote', 
+                                voted_for_player_id: selectedVoteTarget,
+                                type: 'sabotage' 
+                            });
+                            statementVoteSection.style.display = 'none';
+                        }
+                    });
+                }
             }
+
         } else if (data.phase === 'COMMENT_PHASE') {
             completeLoading(true);
             const commentPhaseSection = document.getElementById('commentPhaseSection');
