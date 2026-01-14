@@ -362,9 +362,8 @@ def handle_player_action(data):
         influence_cost = 0
         
         if shadow_type == "gambler": influence_cost = 5
-        elif shadow_type == "curse": spite_cost = 3
-        elif shadow_type == "censor": spite_cost = 2
-        elif shadow_type == "silence": spite_cost = 3
+        elif shadow_type == "veto": spite_cost = 1
+        # Curse and Censor are now 0 Spite
         
         # Check Costs
         if player["personal_stats"]["Spite"] < spite_cost:
@@ -387,18 +386,6 @@ def handle_player_action(data):
         }
         
         game.setdefault("shadow_effects", []).append(effect)
-        
-        # Immediate Resolution
-        if shadow_type == "pickpocket":
-             target_p = game["players"].get(target)
-             if target_p and target_p["personal_stats"]["Influence"] > 0:
-                 target_p["personal_stats"]["Influence"] -= 1
-                 player["personal_stats"]["Influence"] += 1
-        elif shadow_type == "toast":
-             target_p = game["players"].get(target)
-             if target_p:
-                 target_p["personal_stats"]["Influence"] += 1
-                 player["personal_stats"]["Influence"] += 1
         
         emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
         return
@@ -512,9 +499,12 @@ def handle_player_action(data):
             
             winning_player_id = random.choice(winners) if winners else None
             
-            # Check Gambler Bets
+            # Check Shadow Effects from previous round
             prev_round = game["current_round"] - 1
-            bets = [e for e in game.get("shadow_effects", []) if e["round"] == prev_round and e["type"] == "gambler"]
+            shadow_effects = game.get("shadow_effects", [])
+            
+            bets = [e for e in shadow_effects if e["round"] == prev_round and e["type"] == "gambler"]
+            vetoes = [e["target"] for e in shadow_effects if e["round"] == prev_round and e["type"] == "veto"]
             
             for bet in bets:
                 if bet["payload"] == winning_player_id:
@@ -523,6 +513,10 @@ def handle_player_action(data):
 
             # Apply Influence
             for pid, p in game["players"].items():
+                if pid in vetoes:
+                    print(f"[GAME] {pid} is VETOED. 0 points.")
+                    continue
+
                 votes_rec = vote_counts.get(pid, 0)
                 p["personal_stats"]["Influence"] += votes_rec
                 

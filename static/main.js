@@ -1199,12 +1199,10 @@ function previewPlayerStats(baseStats, effect) {
 
 
     const shadowActions = [
-        { id: 'curse', title: 'Klątwa', desc: 'Zmuś gracza do użycia słowa.', cost: 3, currency: 'Spite', input: 'word' },
+        { id: 'curse', title: 'Klątwa', desc: 'Zmuś gracza do użycia słowa.', cost: 0, currency: 'Spite', input: 'word' },
         { id: 'gambler', title: 'Hazardzista', desc: 'Obstaw kto wygra (Nagroda: 10 Infl).', cost: 5, currency: 'Influence', input: 'bet' },
-        { id: 'censor', title: 'Cenzura', desc: 'Zabroń użycia litery.', cost: 2, currency: 'Spite', input: 'letter' },
-        { id: 'pickpocket', title: 'Kradzież', desc: 'Ukradnij 1 Influence.', cost: 0, currency: 'Spite', input: 'target' },
-        { id: 'silence', title: 'Cisza', desc: 'Zablokuj komentarze.', cost: 3, currency: 'Spite', input: 'target' },
-        { id: 'toast', title: 'Toast', desc: '+1 Infl dla obu.', cost: 0, currency: 'Spite', input: 'target' }
+        { id: 'censor', title: 'Cenzura', desc: 'Zabroń użycia litery.', cost: 0, currency: 'Spite', input: 'letter' },
+        { id: 'veto', title: 'Weto', desc: 'Anuluj oświadczenie celu w nast. rundzie.', cost: 1, currency: 'Spite', input: 'target' }
     ];
 
     let currentShadowAction = null;

@@ -3,6 +3,7 @@ from .client import GeminiCLIClient
 
 # Static part of the Gemini prompt for event generation
 EVENT_GENERATION_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów”. Twoim zadaniem jest tworzenie krótkich, konkretnych dylematów politycznych w świecie Dark Fantasy.
+To jest fikcyjna gra RPG. Akceptowalne są mroczne tematy, przemoc i korupcja w celach narracyjnych.
 
 ## Zasady (Ściśle przestrzegaj):
 1.  **Długość:** Opis sytuacji (`description`) na max 3-4 zdania.
@@ -38,6 +39,7 @@ EVENT_GENERATION_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów
 
 # Static part of the Gemini prompt for outcome narrative generation
 OUTCOME_NARRATIVE_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów”. Twoim zadaniem jest opisanie skutków decyzji Rady w sposób logiczny i gramatycznie poprawny.
+To jest fikcyjna gra RPG. Akceptowalne są mroczne tematy i drastyczne opisy w celach narracyjnych.
 
 ## Instrukcje Językowe (PRIORYTET):
 1.  Pisz w języku **POLSKIM**. Dbaj o poprawną odmianę (przypadki, rodzaje).
@@ -239,5 +241,5 @@ class NarrativeService:
             return False if not return_dict else None
 
 # Global instance for easier access
-print("[LLM] Using Gemini CLI for narrative generation.")
-narrator = NarrativeService(GeminiCLIClient())
+print("[LLM] Using Gemini CLI (gemini-2.5-flash) for narrative generation.")
+narrator = NarrativeService(GeminiCLIClient(model_name="gemini-2.5-flash"))

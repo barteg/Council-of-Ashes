@@ -1,34 +1,32 @@
 {
-    "MCVT": {
-        "host_sid": "7Rk6jiwLkFoxWqiRAAAF",
+    "KBTL": {
+        "host_sid": "fILKYMZ5GyLAshfSAAAB",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "Zl_Rq2AGtWy-Cat8AAAT",
+                "sid": "xDzK4ucZBEd8z3ayAAAF",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
                 "faction": "Gwardia Kr\u00f3lewska",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 55,
+                    "Influence": 50,
                     "Spite": 0
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "joined",
+                "action_status": "waiting",
                 "current_action": null,
                 "action_target": null,
                 "action_target_stat": null,
-                "statement": "Niech G\u0142odni jedz\u0105 bezdomnych",
                 "predicted_effect": {
-                    "Stability": -15,
-                    "Economy": 5,
-                    "Faith": -15
+                    "Stability": 5,
+                    "Economy": 0,
+                    "Faith": 10
                 },
-                "statement_vote": "player_1",
                 "was_blocked": false,
-                "comment": "co na to kosciol?"
+                "comment": "rozda\u0107 im kinder bueno"
             }
         },
         "factions": {
@@ -167,51 +165,51 @@
                 ]
             }
         },
-        "state": "SHADOW_PHASE",
+        "state": "DILEMMA",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "event_round_1_famine_riots",
-            "title": "G\u0142\u00f3d u Bram",
-            "description": "Zapasy zbo\u017ca gnij\u0105 w wilgotnych spichlerzach, a szczury s\u0105 jedynym sytym stworzeniem w mie\u015bcie. Na targowiskach wybuchaj\u0105 krwawe b\u00f3jki o ostatnie bochenki sple\u015bnia\u0142ego chleba, podczas gdy stra\u017c miejska bezradnie patrzy na narastaj\u0105cy chaos. 'Dzieci jedz\u0105 b\u0142oto, panie, a wy siedzicie w cieple!' krzyczy zdesperowana matka, ciskaj\u0105c kamieniem w mury pa\u0142acu. Cie\u0144 buntu pada na Rad\u0119, gdy g\u0142\u00f3d odbiera ludziom resztki rozs\u0105dku.",
+            "id": "hunger_heresy_round3",
+            "title": "Szepty w Cieniu G\u0142odowej Zimnicy",
+            "description": "Wiatr niesie ze sob\u0105 nie tylko ch\u0142\u00f3d, ale i zgnilizn\u0119, a spichlerze miast wci\u0105\u017c \u015bwiec\u0105 pustkami. Ludzie, wyn\u0119dzniali i zzi\u0119bni\u0119ci, coraz cz\u0119\u015bciej zwracaj\u0105 si\u0119 ku szeptonam z podziemi, gdzie prorocy zakazanych kult\u00f3w obiecuj\u0105 chleb i ocalenie w zamian za wierno\u015b\u0107. 'Kupiec szepcze, \u017ce to kara za zuchwa\u0142o\u015b\u0107 wobec Prastarych,' a na ulicach s\u0142ycha\u0107 skargi i ciche pie\u015bni ku zapomnianym bogom, gdy \u015bwi\u0105tynie prawowitej wiary stoj\u0105 opustosza\u0142e i zapomniane.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Jak Rada zamierza nakarmi\u0107 miasto, gdy spichlerze s\u0105 puste, a lud \u017c\u0105da chleba?"
+            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zareagowa\u0107 na narastaj\u0105ce herezje i g\u0142\u00f3d n\u0119kaj\u0105cy poddanych."
         },
         "global_stats": {
-            "Stability": 22,
-            "Economy": 50,
-            "Faith": 18
+            "Stability": 55,
+            "Economy": 38,
+            "Faith": 30
         },
-        "current_round": 1,
+        "current_round": 3,
         "event_history": [
             {
                 "round": 1,
-                "policy_chosen": "Dekret o Utylizacji Bezdomnych",
+                "policy_chosen": "Obowi\u0105zek \u017bywienia Wiernych",
                 "effects": {
-                    "Stability": -15,
-                    "Economy": 10,
-                    "Faith": -20
+                    "Stability": 5,
+                    "Economy": 0,
+                    "Faith": -5
                 },
                 "faction_votes": {},
-                "outcome_narrative": "Pisarze nie s\u0105 w stanie zapisa\u0107 wydarze\u0144 tej rady.",
+                "outcome_narrative": "\u017bo\u0142nierze Gwardii Kr\u00f3lewskiej, z kr\u00f3lewskim dekretem w d\u0142oni, wkroczyli do opas\u0142ych spichlerzy \u015bwi\u0105ty\u0144, rekwirowuj\u0105c zbo\u017ce w imi\u0119 kr\u00f3lewskiego \u201eObowi\u0105zku \u017bywienia Wiernych\u201d. Impulsem do tych dzia\u0142a\u0144 by\u0142y s\u0142owa goonera, kt\u00f3ry na Radzie rzek\u0142: \u201eKo\u015bci\u00f3\u0142 z swoich zasob\u00f3w ma obowi\u0105zek karmi\u0107 swoich wierz\u0105cych.\u201d Rada przyj\u0119\u0142a to milczeniem. Nikt jednak nie przewidzia\u0142, \u017ce otwarcie spichlerzy otworzy r\u00f3wnie\u017c dawno zapomniane, mroczne wrota. Z cienia wy\u0142onili si\u0119 prorocy zakazanych kult\u00f3w, szepcz\u0105cy o prawdziwej w\u0142adzy i zapomnianych b\u00f3stwach. Chocia\u017c ulice na chwil\u0119 zamilk\u0142y, a gro\u017aba g\u0142odu zosta\u0142a oddalona, w sercach ludzi zago\u015bci\u0142a inna pustka. Wierno\u015b\u0107 Ko\u015bcio\u0142owi os\u0142ab\u0142a, a wraz z ni\u0105 znikn\u0119\u0142o dawne poczucie bezpiecze\u0144stwa. Zamiast tego pojawi\u0142 si\u0119 l\u0119k przed nieznanym i szemrane obietnice zbawienia p\u0142yn\u0105ce z mroku. Podczas gdy Rada \u015bwi\u0119towa\u0142a rozejm, na placach szeptano: \u201eNakarmili nasze brzuchy, ale zabrali nam dusz\u0119 i dali wiar\u0119 w co\u015b gorszego.\u201d",
                 "global_stats_after": {
-                    "Stability": 22,
-                    "Economy": 50,
-                    "Faith": 18
+                    "Stability": 55,
+                    "Economy": 38,
+                    "Faith": 30
                 }
             }
         ],
         "gemini_output": {
-            "id": "event_round_1_famine_riots",
-            "title": "G\u0142\u00f3d u Bram",
-            "description": "Zapasy zbo\u017ca gnij\u0105 w wilgotnych spichlerzach, a szczury s\u0105 jedynym sytym stworzeniem w mie\u015bcie. Na targowiskach wybuchaj\u0105 krwawe b\u00f3jki o ostatnie bochenki sple\u015bnia\u0142ego chleba, podczas gdy stra\u017c miejska bezradnie patrzy na narastaj\u0105cy chaos. 'Dzieci jedz\u0105 b\u0142oto, panie, a wy siedzicie w cieple!' krzyczy zdesperowana matka, ciskaj\u0105c kamieniem w mury pa\u0142acu. Cie\u0144 buntu pada na Rad\u0119, gdy g\u0142\u00f3d odbiera ludziom resztki rozs\u0105dku.",
+            "id": "hunger_heresy_round3",
+            "title": "Szepty w Cieniu G\u0142odowej Zimnicy",
+            "description": "Wiatr niesie ze sob\u0105 nie tylko ch\u0142\u00f3d, ale i zgnilizn\u0119, a spichlerze miast wci\u0105\u017c \u015bwiec\u0105 pustkami. Ludzie, wyn\u0119dzniali i zzi\u0119bni\u0119ci, coraz cz\u0119\u015bciej zwracaj\u0105 si\u0119 ku szeptonam z podziemi, gdzie prorocy zakazanych kult\u00f3w obiecuj\u0105 chleb i ocalenie w zamian za wierno\u015b\u0107. 'Kupiec szepcze, \u017ce to kara za zuchwa\u0142o\u015b\u0107 wobec Prastarych,' a na ulicach s\u0142ycha\u0107 skargi i ciche pie\u015bni ku zapomnianym bogom, gdy \u015bwi\u0105tynie prawowitej wiary stoj\u0105 opustosza\u0142e i zapomniane.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Jak Rada zamierza nakarmi\u0107 miasto, gdy spichlerze s\u0105 puste, a lud \u017c\u0105da chleba?"
+            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zareagowa\u0107 na narastaj\u0105ce herezje i g\u0142\u00f3d n\u0119kaj\u0105cy poddanych."
         },
         "next_round_votes": [],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
                 "Stability": 0,
-                "Economy": 1,
+                "Economy": 0,
                 "Faith": 0
             },
             "Wysokie Kap\u0142a\u0144stwo": {
@@ -220,7 +218,7 @@
                 "Faith": 0
             },
             "Gwardia Kr\u00f3lewska": {
-                "Stability": 0,
+                "Stability": 1,
                 "Economy": 0,
                 "Faith": 0
             }
@@ -235,10 +233,10 @@
             "Wysokie Kap\u0142a\u0144stwo": 0,
             "Gwardia Kr\u00f3lewska": 1
         },
-        "join_url": "/join/MCVT",
+        "join_url": "/join/KBTL",
         "winning_statement": {
             "player_id": "player_1",
-            "statement": "Niech G\u0142odni jedz\u0105 bezdomnych",
+            "statement": "Ko\u015bci\u00f3\u0142 z swoich zasob\u00f3w ma obowi\u0105zek karmi\u0107 swoich wierz\u0105cych.",
             "name": "gooner",
             "was_blocked": false
         },
@@ -252,9 +250,9 @@
             }
         ],
         "last_outcome_narrative_data": {
-            "outcome_narrative": "Pisarze nie s\u0105 w stanie zapisa\u0107 wydarze\u0144 tej rady.",
-            "next_event_hint": "Przysz\u0142o\u015b\u0107 jest niepewna.",
-            "kingdom_status_summary": "Kr\u00f3lestwo jest w stanie ci\u0105g\u0142ych zmian."
+            "outcome_narrative": "\u017bo\u0142nierze Gwardii Kr\u00f3lewskiej, z kr\u00f3lewskim dekretem w d\u0142oni, wkroczyli do opas\u0142ych spichlerzy \u015bwi\u0105ty\u0144, rekwirowuj\u0105c zbo\u017ce w imi\u0119 kr\u00f3lewskiego \u201eObowi\u0105zku \u017bywienia Wiernych\u201d. Impulsem do tych dzia\u0142a\u0144 by\u0142y s\u0142owa goonera, kt\u00f3ry na Radzie rzek\u0142: \u201eKo\u015bci\u00f3\u0142 z swoich zasob\u00f3w ma obowi\u0105zek karmi\u0107 swoich wierz\u0105cych.\u201d Rada przyj\u0119\u0142a to milczeniem. Nikt jednak nie przewidzia\u0142, \u017ce otwarcie spichlerzy otworzy r\u00f3wnie\u017c dawno zapomniane, mroczne wrota. Z cienia wy\u0142onili si\u0119 prorocy zakazanych kult\u00f3w, szepcz\u0105cy o prawdziwej w\u0142adzy i zapomnianych b\u00f3stwach. Chocia\u017c ulice na chwil\u0119 zamilk\u0142y, a gro\u017aba g\u0142odu zosta\u0142a oddalona, w sercach ludzi zago\u015bci\u0142a inna pustka. Wierno\u015b\u0107 Ko\u015bcio\u0142owi os\u0142ab\u0142a, a wraz z ni\u0105 znikn\u0119\u0142o dawne poczucie bezpiecze\u0144stwa. Zamiast tego pojawi\u0142 si\u0119 l\u0119k przed nieznanym i szemrane obietnice zbawienia p\u0142yn\u0105ce z mroku. Podczas gdy Rada \u015bwi\u0119towa\u0142a rozejm, na placach szeptano: \u201eNakarmili nasze brzuchy, ale zabrali nam dusz\u0119 i dali wiar\u0119 w co\u015b gorszego.\u201d",
+            "next_event_hint": "Mroczne szepty wype\u0142niaj\u0105 pustk\u0119, a zakazane kulty rosn\u0105 w si\u0142\u0119, obiecuj\u0105c nadej\u015bcie prawdziwych bog\u00f3w.",
+            "kingdom_status_summary": "Kr\u00f3lestwo balansuje na kraw\u0119dzi nowej wiary, a stabilno\u015b\u0107 to tylko cienka zas\u0142ona dla rodz\u0105cego si\u0119 chaosu i strachu."
         }
     }
 }
