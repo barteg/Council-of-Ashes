@@ -131,53 +131,127 @@
                 
                                 
                 
-                                <!-- Manual Stat Impact -->
+                                                <!-- Balanced Stat Sliders -->
                 
-                                <div class="mb-3 p-2 rounded" style="background-color: #2a2a2a; border: 1px solid #444;">
+                                
                 
-                                    <h6 class="small text-muted mb-2">Przewidywany wpływ na Królestwo (-10 do +10):</h6>
+                                                <div class="mb-3 p-3 rounded" style="background-color: #2a2a2a; border: 1px solid #444;">
                 
-                                    <div class="row no-gutters">
+                                
                 
-                                        <div class="col-4 px-1">
+                                                    <h6 class="small text-white-50 mb-3">Wpływ na Królestwo (Suma zmian max +5):</h6>
                 
-                                            <div class="input-group input-group-sm">
+                                
                 
-                                                <div class="input-group-prepend"><span class="input-group-text bg-primary text-white border-0">S</span></div>
+                                                    
                 
-                                                <input type="number" id="manualStab" class="form-control bg-dark text-white border-0" value="0" min="-10" max="10">
+                                
                 
-                                            </div>
+                                                    <div class="mb-3">
                 
-                                        </div>
+                                
                 
-                                        <div class="col-4 px-1">
+                                                        <div class="d-flex justify-content-between mb-1">
                 
-                                            <div class="input-group input-group-sm">
+                                
                 
-                                                <div class="input-group-prepend"><span class="input-group-text bg-success text-white border-0">E</span></div>
+                                                            <span class="badge badge-primary">Stabilność</span>
                 
-                                                <input type="number" id="manualEcon" class="form-control bg-dark text-white border-0" value="0" min="-10" max="10">
+                                
                 
-                                            </div>
+                                                            <span id="labelStab">0</span>
                 
-                                        </div>
+                                
                 
-                                        <div class="col-4 px-1">
+                                                        </div>
                 
-                                            <div class="input-group input-group-sm">
+                                
                 
-                                                <div class="input-group-prepend"><span class="input-group-text bg-warning text-dark border-0">F</span></div>
+                                                        <input type="range" id="manualStab" class="custom-range" min="-10" max="10" value="0">
                 
-                                                <input type="number" id="manualFaith" class="form-control bg-dark text-white border-0" value="0" min="-10" max="10">
+                                
                 
-                                            </div>
+                                                    </div>
                 
-                                        </div>
+                                
                 
-                                    </div>
+                                
                 
-                                </div>
+                                
+                
+                                                    <div class="mb-3">
+                
+                                
+                
+                                                        <div class="d-flex justify-content-between mb-1">
+                
+                                
+                
+                                                            <span class="badge badge-success">Gospodarka</span>
+                
+                                
+                
+                                                            <span id="labelEcon">0</span>
+                
+                                
+                
+                                                        </div>
+                
+                                
+                
+                                                        <input type="range" id="manualEcon" class="custom-range" min="-10" max="10" value="0">
+                
+                                
+                
+                                                    </div>
+                
+                                
+                
+                                
+                
+                                
+                
+                                                    <div class="mb-3">
+                
+                                
+                
+                                                        <div class="d-flex justify-content-between mb-1">
+                
+                                
+                
+                                                            <span class="badge badge-warning text-dark">Wiara</span>
+                
+                                
+                
+                                                            <span id="labelFaith">0</span>
+                
+                                
+                
+                                                        </div>
+                
+                                
+                
+                                                        <input type="range" id="manualFaith" class="custom-range" min="-10" max="10" value="0">
+                
+                                
+                
+                                                    </div>
+                
+                                
+                
+                                
+                
+                                
+                
+                                                    <div id="budgetWarning" class="small text-danger" style="display: none;">Limit punktów (+5) przekroczony!</div>
+                
+                                
+                
+                                                </div>
+                
+                                
+                
+                                
                 
                 
                 

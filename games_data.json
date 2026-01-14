@@ -1,17 +1,17 @@
 {
-    "PSKU": {
-        "host_sid": "kkMuvkdMPkwyeKXGAAAB",
+    "DVQN": {
+        "host_sid": "taxvAXR9FTlpIwJQAAAB",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "DMWUJhNUHYna-6JZAAAH",
+                "sid": "XIVCDksTZuVxJNIyAAAL",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
-                "faction": "Syndykat Kupiecki",
+                "faction": "Gwardia Kr\u00f3lewska",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 50,
+                    "Influence": 55,
                     "Spite": 0
                 },
                 "ready": true,
@@ -19,15 +19,22 @@
                 "action_status": "joined",
                 "current_action": null,
                 "action_target": null,
-                "action_target_stat": null
+                "action_target_stat": null,
+                "statement": "tak",
+                "predicted_effect": {
+                    "Stability": 0,
+                    "Economy": 0,
+                    "Faith": 0
+                },
+                "statement_vote": "player_1",
+                "was_blocked": false,
+                "comment": ""
             }
         },
         "factions": {
             "Syndykat Kupiecki": {
                 "power": "Mistrzostwo Handlu",
-                "players": [
-                    "player_1"
-                ],
+                "players": [],
                 "objectives": [
                     {
                         "id": "econ_75",
@@ -115,7 +122,9 @@
             },
             "Gwardia Kr\u00f3lewska": {
                 "power": "Utrzymanie Porz\u0105dku",
-                "players": [],
+                "players": [
+                    "player_1"
+                ],
                 "objectives": [
                     {
                         "id": "stab_75",
@@ -158,68 +167,86 @@
                 ]
             }
         },
-        "state": "DILEMMA",
+        "state": "SHADOW_PHASE",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "tutorial_dilemma_1",
-            "title": "Mro\u017any U\u015bcisk G\u0142odu",
-            "description": "Mro\u017ana zima zaci\u0105gn\u0119\u0142a sw\u00f3j p\u0142aszcz nad kr\u00f3lestwem, a spichlerze pustoszej\u0105. G\u0142oduj\u0105cy poddani zbieraj\u0105 si\u0119 na ulicach, ich lament miesza si\u0119 z pos\u0119pnym wiatrem. Drogi sta\u0142y si\u0119 aren\u0105 dla bezwzgl\u0119dnych band rabusi\u00f3w, kt\u00f3rzy poluj\u0105 na ostatnich posiadaczy ziarna. 'Ksi\u0119\u017ca tucz\u0105 si\u0119 w \u015bwi\u0105tyniach, podczas gdy my oddajemy Bogom nasze ostatnie oddechy!' \u2013 krzyczy \u017cebraczka, umieraj\u0105ca z g\u0142odu.",
+            "id": "round_1_hunger_dilemma",
+            "title": "G\u0142\u00f3d Nadchodzi",
+            "description": "N\u0119dzny plon pozostawi\u0142 wiele brzuch\u00f3w pustych, a zima nadci\u0105ga. Szepty niezadowolenia rozprzestrzeniaj\u0105 si\u0119 po b\u0142otnistych ulicach, zamieniaj\u0105c si\u0119 w pomruki buntu w\u015br\u00f3d g\u0142oduj\u0105cych. Nawet modlitwy w zimnych \u015bwi\u0105tyniach oferuj\u0105 niewiele ciep\u0142a przeciwko trawi\u0105cemu strachowi, kt\u00f3ry ogarnia zwyk\u0142ych ludzi. Stara kobieta, skulona na targu, mrukn\u0119\u0142a: \u201e\u017byjemy na popio\u0142ach, a wkr\u00f3tce do nich do\u0142\u0105czymy.\u201d",
             "image": "/static/images/placeholder.png",
             "choices": [
                 {
-                    "text": "Przekierowa\u0107 wszystkie dost\u0119pne zapasy zbo\u017ca do garnizon\u00f3w, zapewniaj\u0105c si\u0142\u0119 wojskow\u0105 kosztem cywili.",
-                    "effects": {
-                        "Stability": -5,
-                        "Economy": 10,
-                        "Faith": -10
-                    },
-                    "narrative_consequence": "Garnizony zostaj\u0105 nasycone, a miejskie place wype\u0142nia cichy gniew. Rozruchy staj\u0105 si\u0119 codzienno\u015bci\u0105, lecz wojsko trzyma je w ryzach \u017celazn\u0105 pi\u0119\u015bci\u0105."
-                },
-                {
-                    "text": "Rozdzieli\u0107 resztki zbo\u017ca r\u00f3wno pomi\u0119dzy wszystkich mieszka\u0144c\u00f3w, by ul\u017cy\u0107 cierpieniu kosztem obrony.",
+                    "text": "Przydziel racje \u017cywno\u015bciowe z kr\u00f3lewskich spichlerzy.",
                     "effects": {
                         "Stability": 10,
                         "Economy": -5,
-                        "Faith": 5
+                        "Faith": 0
                     },
-                    "narrative_consequence": "Chwilowy oddech ulgi przechodzi przez kr\u00f3lestwo, ale zapasy ko\u0144cz\u0105 si\u0119 szybko. Bandyci staj\u0105 si\u0119 coraz \u015bmielsi, a granice pozostaj\u0105 s\u0142abo chronione."
+                    "narrative_consequence": "Zapas kr\u00f3lewski zostanie uszczuplony, ale ludzie poczuj\u0105 ulg\u0119 i zaufanie do w\u0142adzy. Spichlerze \u015bwiec\u0105 pustkami, ale nadzieja na jutro ro\u015bnie."
+                },
+                {
+                    "text": "Zwi\u0119ksz podatki, aby kupi\u0107 \u017cywno\u015b\u0107 z zewn\u0105trz.",
+                    "effects": {
+                        "Stability": -10,
+                        "Economy": 5,
+                        "Faith": 0
+                    },
+                    "narrative_consequence": "Bogatsi obywatele zareaguj\u0105 gniewem na nowe obci\u0105\u017cenia, co mo\u017ce doprowadzi\u0107 do zamieszek, ale kr\u00f3tkoterminowo sprowadzi to jedzenie. Bogactwo kr\u00f3lestwa wzro\u015bnie, lecz niezadowolenie b\u0119dzie widoczne na ulicach."
+                },
+                {
+                    "text": "Zorganizuj modlitwy i posty, szukaj\u0105c boskiej interwencji.",
+                    "effects": {
+                        "Stability": -5,
+                        "Economy": 0,
+                        "Faith": 10
+                    },
+                    "narrative_consequence": "Ludzie zwr\u00f3c\u0105 si\u0119 ku wierze, ale bez natychmiastowej ulgi g\u0142\u00f3d b\u0119dzie narasta\u0142. \u015awi\u0105tynie b\u0119d\u0105 przepe\u0142nione, ale na ulicach wci\u0105\u017c b\u0119d\u0105 s\u0142ycha\u0107 krzyki g\u0142odu."
                 }
             ],
-            "narrative_prompt": "Los kr\u00f3lestwa spoczywa w r\u0119kach Rady. Jakie kroki zostan\u0105 podj\u0119te, by ocali\u0107 lud przed g\u0142odem i chaosem?"
+            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zaradzi\u0107 narastaj\u0105cej rozpaczy, zanim ogarnie ona ca\u0142e kr\u00f3lestwo."
         },
         "global_stats": {
-            "Stability": 40,
-            "Economy": 49,
-            "Faith": 39
+            "Stability": 45,
+            "Economy": 48,
+            "Faith": 43
         },
         "current_round": 1,
         "event_history": [],
         "gemini_output": {
-            "id": "tutorial_dilemma_1",
-            "title": "Mro\u017any U\u015bcisk G\u0142odu",
-            "description": "Mro\u017ana zima zaci\u0105gn\u0119\u0142a sw\u00f3j p\u0142aszcz nad kr\u00f3lestwem, a spichlerze pustoszej\u0105. G\u0142oduj\u0105cy poddani zbieraj\u0105 si\u0119 na ulicach, ich lament miesza si\u0119 z pos\u0119pnym wiatrem. Drogi sta\u0142y si\u0119 aren\u0105 dla bezwzgl\u0119dnych band rabusi\u00f3w, kt\u00f3rzy poluj\u0105 na ostatnich posiadaczy ziarna. 'Ksi\u0119\u017ca tucz\u0105 si\u0119 w \u015bwi\u0105tyniach, podczas gdy my oddajemy Bogom nasze ostatnie oddechy!' \u2013 krzyczy \u017cebraczka, umieraj\u0105ca z g\u0142odu.",
+            "id": "round_1_hunger_dilemma",
+            "title": "G\u0142\u00f3d Nadchodzi",
+            "description": "N\u0119dzny plon pozostawi\u0142 wiele brzuch\u00f3w pustych, a zima nadci\u0105ga. Szepty niezadowolenia rozprzestrzeniaj\u0105 si\u0119 po b\u0142otnistych ulicach, zamieniaj\u0105c si\u0119 w pomruki buntu w\u015br\u00f3d g\u0142oduj\u0105cych. Nawet modlitwy w zimnych \u015bwi\u0105tyniach oferuj\u0105 niewiele ciep\u0142a przeciwko trawi\u0105cemu strachowi, kt\u00f3ry ogarnia zwyk\u0142ych ludzi. Stara kobieta, skulona na targu, mrukn\u0119\u0142a: \u201e\u017byjemy na popio\u0142ach, a wkr\u00f3tce do nich do\u0142\u0105czymy.\u201d",
             "image": "/static/images/placeholder.png",
             "choices": [
                 {
-                    "text": "Przekierowa\u0107 wszystkie dost\u0119pne zapasy zbo\u017ca do garnizon\u00f3w, zapewniaj\u0105c si\u0142\u0119 wojskow\u0105 kosztem cywili.",
-                    "effects": {
-                        "Stability": -5,
-                        "Economy": 10,
-                        "Faith": -10
-                    },
-                    "narrative_consequence": "Garnizony zostaj\u0105 nasycone, a miejskie place wype\u0142nia cichy gniew. Rozruchy staj\u0105 si\u0119 codzienno\u015bci\u0105, lecz wojsko trzyma je w ryzach \u017celazn\u0105 pi\u0119\u015bci\u0105."
-                },
-                {
-                    "text": "Rozdzieli\u0107 resztki zbo\u017ca r\u00f3wno pomi\u0119dzy wszystkich mieszka\u0144c\u00f3w, by ul\u017cy\u0107 cierpieniu kosztem obrony.",
+                    "text": "Przydziel racje \u017cywno\u015bciowe z kr\u00f3lewskich spichlerzy.",
                     "effects": {
                         "Stability": 10,
                         "Economy": -5,
-                        "Faith": 5
+                        "Faith": 0
                     },
-                    "narrative_consequence": "Chwilowy oddech ulgi przechodzi przez kr\u00f3lestwo, ale zapasy ko\u0144cz\u0105 si\u0119 szybko. Bandyci staj\u0105 si\u0119 coraz \u015bmielsi, a granice pozostaj\u0105 s\u0142abo chronione."
+                    "narrative_consequence": "Zapas kr\u00f3lewski zostanie uszczuplony, ale ludzie poczuj\u0105 ulg\u0119 i zaufanie do w\u0142adzy. Spichlerze \u015bwiec\u0105 pustkami, ale nadzieja na jutro ro\u015bnie."
+                },
+                {
+                    "text": "Zwi\u0119ksz podatki, aby kupi\u0107 \u017cywno\u015b\u0107 z zewn\u0105trz.",
+                    "effects": {
+                        "Stability": -10,
+                        "Economy": 5,
+                        "Faith": 0
+                    },
+                    "narrative_consequence": "Bogatsi obywatele zareaguj\u0105 gniewem na nowe obci\u0105\u017cenia, co mo\u017ce doprowadzi\u0107 do zamieszek, ale kr\u00f3tkoterminowo sprowadzi to jedzenie. Bogactwo kr\u00f3lestwa wzro\u015bnie, lecz niezadowolenie b\u0119dzie widoczne na ulicach."
+                },
+                {
+                    "text": "Zorganizuj modlitwy i posty, szukaj\u0105c boskiej interwencji.",
+                    "effects": {
+                        "Stability": -5,
+                        "Economy": 0,
+                        "Faith": 10
+                    },
+                    "narrative_consequence": "Ludzie zwr\u00f3c\u0105 si\u0119 ku wierze, ale bez natychmiastowej ulgi g\u0142\u00f3d b\u0119dzie narasta\u0142. \u015awi\u0105tynie b\u0119d\u0105 przepe\u0142nione, ale na ulicach wci\u0105\u017c b\u0119d\u0105 s\u0142ycha\u0107 krzyki g\u0142odu."
                 }
             ],
-            "narrative_prompt": "Los kr\u00f3lestwa spoczywa w r\u0119kach Rady. Jakie kroki zostan\u0105 podj\u0119te, by ocali\u0107 lud przed g\u0142odem i chaosem?"
+            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zaradzi\u0107 narastaj\u0105cej rozpaczy, zanim ogarnie ona ca\u0142e kr\u00f3lestwo."
         },
         "next_round_votes": [],
         "policies_passed_counts": {
@@ -242,13 +269,35 @@
         "winning_statement_counts": {
             "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 0
+            "Gwardia Kr\u00f3lewska": 1
         },
         "unanimous_vote_counts": {
             "Syndykat Kupiecki": 0,
             "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 0
+            "Gwardia Kr\u00f3lewska": 1
         },
-        "join_url": "/join/PSKU"
+        "join_url": "/join/DVQN",
+        "winning_statement": {
+            "player_id": "player_1",
+            "statement": "tak",
+            "name": "gooner",
+            "was_blocked": false
+        },
+        "shadow_effects": [
+            {
+                "source": "player_1",
+                "type": "curse",
+                "target": "",
+                "payload": "chuj",
+                "round": 1
+            },
+            {
+                "source": "player_1",
+                "type": "curse",
+                "target": "",
+                "payload": "",
+                "round": 1
+            }
+        ]
     }
 }

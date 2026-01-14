@@ -855,9 +855,14 @@ if (gameId && playerId) {
              if (gameArea) gameArea.style.display = 'block';
              if (mainContentArea) mainContentArea.style.display = 'block';
              const darkMarketSection = document.getElementById('darkMarketSection');
-             if (darkMarketSection) {
+             const player = game_state.players[playerId];
+             const alreadyDone = player && player.shadow_action_done;
+
+             if (darkMarketSection && !alreadyDone) {
                  darkMarketSection.style.display = 'block';
                  renderDarkMarket();
+             } else if (darkMarketSection) {
+                 darkMarketSection.style.display = 'none';
              }
         } else if (game_state.state === 'COMMENT_PHASE') {
             if (gameArea) gameArea.style.display = 'block';
@@ -1422,4 +1427,35 @@ function renderTutorialHint(round, phase) {
     hintArea.innerHTML = hints[phase] || '';
     hintArea.style.display = hints[phase] ? 'block' : 'none';
 }
+
+
+// Real-time Slider Balancing
+const sliders = ['manualStab', 'manualEcon', 'manualFaith'];
+const labels = { manualStab: 'labelStab', manualEcon: 'labelEcon', manualFaith: 'labelFaith' };
+
+sliders.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+        el.addEventListener('input', () => {
+            const stab = parseInt(document.getElementById('manualStab').value);
+            const econ = parseInt(document.getElementById('manualEcon').value);
+            const faith = parseInt(document.getElementById('manualFaith').value);
+            const total = stab + econ + faith;
+            const warning = document.getElementById('budgetWarning');
+            const submitBtn = document.getElementById('submitStatementBtn');
+
+            document.getElementById(labels[id]).textContent = el.value > 0 ? '+' + el.value : el.value;
+
+            if (total > 5) {
+                warning.style.display = 'block';
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = '0.5';
+            } else {
+                warning.style.display = 'none';
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+            }
+        });
+    }
+});
 

@@ -20,14 +20,8 @@ def start_game_logic(game_id):
         game["current_round"] = 1
         game["dilemma_active"] = True
         
-        for player_id, player in game["players"].items():
-            player["choice"] = None
-            player.pop("statement", None)
-            player.pop("statement_vote", None)
-            player["current_action"] = None
-            player["action_target"] = None
-            player["action_target_stat"] = None
             player["action_status"] = "waiting"
+            player["shadow_action_done"] = False
 
         game_state_for_gemini = {
             "current_round": game["current_round"],
@@ -326,7 +320,8 @@ def handle_player_action(data):
         # Deduct Costs
         player["personal_stats"]["Spite"] -= spite_cost
         player["personal_stats"]["Influence"] -= influence_cost
-        
+        player["shadow_action_done"] = True # PERSISTENCE FIX
+
         effect = {
             "source": player_id,
             "type": shadow_type,
