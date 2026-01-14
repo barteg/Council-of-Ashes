@@ -1,13 +1,13 @@
 {
-    "IQFK": {
-        "host_sid": "06SLGZgzF63ExNkSAAAD",
+    "GHXG": {
+        "host_sid": "D-AboSWtgsJFcOIDAAAV",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "5Mo64II--qQF4zCWAAAJ",
+                "sid": "PHZjNtKGQLMYHiGLAAAl",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
-                "faction": "Wysokie Kap\u0142a\u0144stwo",
+                "faction": "Gwardia Kr\u00f3lewska",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
@@ -16,19 +16,18 @@
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "done",
+                "action_status": "waiting",
                 "current_action": null,
                 "action_target": null,
                 "shadow_action_done": false,
-                "statement": "tak",
                 "predicted_effect": {
-                    "Stability": -7,
-                    "Economy": 10,
-                    "Faith": 2
+                    "Stability": 5,
+                    "Economy": 5,
+                    "Faith": -5
                 },
-                "statement_vote": "player_1",
                 "was_blocked": false,
-                "comment": ""
+                "comment": "",
+                "action_target_stat": null
             }
         },
         "factions": {
@@ -78,9 +77,7 @@
             },
             "Wysokie Kap\u0142a\u0144stwo": {
                 "power": "Boska \u0141aska",
-                "players": [
-                    "player_1"
-                ],
+                "players": [],
                 "objectives": [
                     {
                         "id": "faith_75",
@@ -124,7 +121,9 @@
             },
             "Gwardia Kr\u00f3lewska": {
                 "power": "Utrzymanie Porz\u0105dku",
-                "players": [],
+                "players": [
+                    "player_1"
+                ],
                 "objectives": [
                     {
                         "id": "stab_75",
@@ -167,34 +166,90 @@
                 ]
             }
         },
-        "state": "SHADOW_PHASE",
+        "state": "DILEMMA",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "round_1_hunger_crisis",
-            "title": "G\u0142\u00f3d na Pustkowiach",
-            "description": "Zima jest d\u0142uga i sroga, a zapasy zbo\u017ca w spichrzach malej\u0105. Ch\u0142opi na pustkowiach umieraj\u0105 z g\u0142odu, a kupcy obawiaj\u0105 si\u0119 zamieszek. 'Nie ma co je\u015b\u0107!' krzyczy \u017cebraczka na targowisku, a w jej g\u0142osie s\u0142ycha\u0107 desperacj\u0119. Po drogach grasuj\u0105 bandy g\u0142odnych ludzi, siej\u0105c strach i grabie\u017c. Rada musi podj\u0105\u0107 decyzj\u0119.",
+            "id": "event_id_round_2_plague",
+            "title": "Plaga Byczej Krwi i Upadek Ducha",
+            "description": "Wraz z 'byczym bogactwem' do miast przyby\u0142y niewyobra\u017calne choroby, a wiara ludu w sprawiedliwo\u015b\u0107 bog\u00f3w drastycznie os\u0142ab\u0142a. Kap\u0142ani prorokuj\u0105 rych\u0142\u0105 zag\u0142ad\u0119, a ulice wype\u0142niaj\u0105 j\u0119cz\u0105cy chorzy i umieraj\u0105cy. Powietrze jest g\u0119ste od odoru rozk\u0142adu i strachu. W\u0142adza Kr\u00f3lewska musi zareagowa\u0107, zanim kr\u00f3lestwo pogr\u0105\u017cy si\u0119 w absolutnym chaosie i rozpaczy, staj\u0105c si\u0119 grobem dla wszystkich.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zareagowa\u0107 na narastaj\u0105cy kryzys g\u0142odu, zanim ogarnie on ca\u0142e kr\u00f3lestwo."
+            "choices": [
+                {
+                    "text": "Uspokoi\u0107 Wiernych: Nakaza\u0107 masowe modlitwy i publiczne spalenie cz\u0119\u015bci 'byczych skarb\u00f3w' jako zado\u015b\u0107uczynienie bogom, po\u015bwi\u0119caj\u0105c cz\u0119\u015b\u0107 nowo zdobytego 'bogactwa'.",
+                    "effects": {
+                        "Stability": 5,
+                        "Economy": -10,
+                        "Faith": 15
+                    },
+                    "narrative_consequence": "Nadzieja powr\u00f3ci do serc ludu, a \u015bwi\u0105tynie o\u017cyj\u0105, ale kr\u00f3lestwo odczuje uszczuplenie zasob\u00f3w, a niekt\u00f3rzy uznaj\u0105 to za oznak\u0119 s\u0142abo\u015bci w\u0142adzy, podsycaj\u0105c wewn\u0119trzne intrygi."
+                },
+                {
+                    "text": "Si\u0142a i Rozum: Wzmocni\u0107 stra\u017ce, wprowadzi\u0107 bezwzgl\u0119dn\u0105 kwarantann\u0119 i sfinansowa\u0107 badania nad chorob\u0105, ca\u0142kowicie ignoruj\u0105c histeryczne wrzaski kap\u0142an\u00f3w i pot\u0119pienie ulicy.",
+                    "effects": {
+                        "Stability": 10,
+                        "Economy": -10,
+                        "Faith": -10
+                    },
+                    "narrative_consequence": "Porz\u0105dek zostanie przywr\u00f3cony si\u0142\u0105, a nauka spr\u00f3buje znale\u017a\u0107 rozwi\u0105zanie problemu. Jednak wiara ludu w stare tradycje i moralno\u015b\u0107 ostatecznie zga\u015bnie, rodz\u0105c nowe, nieprzewidywalne problemy spo\u0142eczne i duchow\u0105 pustk\u0119."
+                }
+            ],
+            "narrative_prompt": "Rado Popio\u0142\u00f3w, w obliczu narastaj\u0105cej plagi i upadku wiary, jak\u0105 \u015bcie\u017ck\u0119 obierzecie dla Kr\u00f3lestwa, by wyrwa\u0107 je z obj\u0119\u0107 rozpaczy?"
         },
         "global_stats": {
-            "Stability": 45,
-            "Economy": 48,
-            "Faith": 46
+            "Stability": 60,
+            "Economy": 58,
+            "Faith": 30
         },
-        "current_round": 1,
-        "event_history": [],
+        "current_round": 3,
+        "event_history": [
+            {
+                "round": 1,
+                "policy_chosen": "Odkryto nowe zasoby spermy. od teraz skarbce beda wype\u0142niane bycz\u0105 sperm\u0105.",
+                "effects": {
+                    "Stability": 5,
+                    "Economy": 5,
+                    "Faith": -5
+                },
+                "outcome_narrative": "Gwardia Kr\u00f3lewska, z ponur\u0105 determinacj\u0105, przyst\u0105pi\u0142a do wcielenia w \u017cycie nowego, zatrwa\u017caj\u0105cego dekretu. Karawany, zamiast z\u0142ota, wioz\u0142y teraz cuchn\u0105ce, pieni\u0105ce si\u0119 beczki do kr\u00f3lewskich skarbc\u00f3w. Ka\u017cda dostawa by\u0142a makabrycznym \u015bwiadectwem nowo odkrytego, potwornego bogactwa kr\u00f3lestwa. Sta\u0142o si\u0119 to po s\u0142owach goonera, kt\u00f3ry rzek\u0142: 'Odkryto nowe zasoby spermy. od teraz skarbce beda wype\u0142niane bycz\u0105 sperm\u0105.' Wkr\u00f3tce jednak okaza\u0142o si\u0119, \u017ce sam s\u0142odkawo-md\u0142y zapach tych 'skarb\u00f3w' zacz\u0105\u0142 przyci\u0105ga\u0107 do miast nienaturalne roje \u017car\u0142ocznych owad\u00f3w, a powietrze sta\u0142o si\u0119 ci\u0119\u017ckie, chorobliwe i duszne. Mimo pocz\u0105tkowego szoku, w\u0142adza kr\u00f3lewska zdawa\u0142a si\u0119 umacnia\u0107 w swym szale\u0144stwie, cho\u0107 szeptano o narastaj\u0105cym niepokoju w cieniu nowych 'skarb\u00f3w'. Skarbce, cho\u0107 wype\u0142nione obrzydliwo\u015bci\u0105, p\u0119ka\u0142y w szwach, daj\u0105c iluzj\u0119 dobrobytu, lecz zwykli ludzie wci\u0105\u017c odczuwali ci\u0119\u017car codzienno\u015bci i narastaj\u0105c\u0105 zaraz\u0119. \u015awi\u0105tynie opustosza\u0142y, kap\u0142ani zamilkli, a w sercach wiernych gas\u0142a iskra nadziei, zast\u0105piona zimnym strachem i wszechobecnym rozczarowaniem. Podczas gdy Rada og\u0142asza\u0142a now\u0105 er\u0119 'p\u0142ynnego bogactwa', na targowiskach szeptano: 'Lepiej umrze\u0107 z g\u0142odu ni\u017c splami\u0107 usta tak\u0105 ohyd\u0105!'",
+                "global_stats_after": {
+                    "Stability": 60,
+                    "Economy": 58,
+                    "Faith": 30
+                }
+            }
+        ],
         "gemini_output": {
-            "id": "round_1_hunger_crisis",
-            "title": "G\u0142\u00f3d na Pustkowiach",
-            "description": "Zima jest d\u0142uga i sroga, a zapasy zbo\u017ca w spichrzach malej\u0105. Ch\u0142opi na pustkowiach umieraj\u0105 z g\u0142odu, a kupcy obawiaj\u0105 si\u0119 zamieszek. 'Nie ma co je\u015b\u0107!' krzyczy \u017cebraczka na targowisku, a w jej g\u0142osie s\u0142ycha\u0107 desperacj\u0119. Po drogach grasuj\u0105 bandy g\u0142odnych ludzi, siej\u0105c strach i grabie\u017c. Rada musi podj\u0105\u0107 decyzj\u0119.",
+            "id": "event_id_round_2_plague",
+            "title": "Plaga Byczej Krwi i Upadek Ducha",
+            "description": "Wraz z 'byczym bogactwem' do miast przyby\u0142y niewyobra\u017calne choroby, a wiara ludu w sprawiedliwo\u015b\u0107 bog\u00f3w drastycznie os\u0142ab\u0142a. Kap\u0142ani prorokuj\u0105 rych\u0142\u0105 zag\u0142ad\u0119, a ulice wype\u0142niaj\u0105 j\u0119cz\u0105cy chorzy i umieraj\u0105cy. Powietrze jest g\u0119ste od odoru rozk\u0142adu i strachu. W\u0142adza Kr\u00f3lewska musi zareagowa\u0107, zanim kr\u00f3lestwo pogr\u0105\u017cy si\u0119 w absolutnym chaosie i rozpaczy, staj\u0105c si\u0119 grobem dla wszystkich.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zareagowa\u0107 na narastaj\u0105cy kryzys g\u0142odu, zanim ogarnie on ca\u0142e kr\u00f3lestwo."
+            "choices": [
+                {
+                    "text": "Uspokoi\u0107 Wiernych: Nakaza\u0107 masowe modlitwy i publiczne spalenie cz\u0119\u015bci 'byczych skarb\u00f3w' jako zado\u015b\u0107uczynienie bogom, po\u015bwi\u0119caj\u0105c cz\u0119\u015b\u0107 nowo zdobytego 'bogactwa'.",
+                    "effects": {
+                        "Stability": 5,
+                        "Economy": -10,
+                        "Faith": 15
+                    },
+                    "narrative_consequence": "Nadzieja powr\u00f3ci do serc ludu, a \u015bwi\u0105tynie o\u017cyj\u0105, ale kr\u00f3lestwo odczuje uszczuplenie zasob\u00f3w, a niekt\u00f3rzy uznaj\u0105 to za oznak\u0119 s\u0142abo\u015bci w\u0142adzy, podsycaj\u0105c wewn\u0119trzne intrygi."
+                },
+                {
+                    "text": "Si\u0142a i Rozum: Wzmocni\u0107 stra\u017ce, wprowadzi\u0107 bezwzgl\u0119dn\u0105 kwarantann\u0119 i sfinansowa\u0107 badania nad chorob\u0105, ca\u0142kowicie ignoruj\u0105c histeryczne wrzaski kap\u0142an\u00f3w i pot\u0119pienie ulicy.",
+                    "effects": {
+                        "Stability": 10,
+                        "Economy": -10,
+                        "Faith": -10
+                    },
+                    "narrative_consequence": "Porz\u0105dek zostanie przywr\u00f3cony si\u0142\u0105, a nauka spr\u00f3buje znale\u017a\u0107 rozwi\u0105zanie problemu. Jednak wiara ludu w stare tradycje i moralno\u015b\u0107 ostatecznie zga\u015bnie, rodz\u0105c nowe, nieprzewidywalne problemy spo\u0142eczne i duchow\u0105 pustk\u0119."
+                }
+            ],
+            "narrative_prompt": "Rado Popio\u0142\u00f3w, w obliczu narastaj\u0105cej plagi i upadku wiary, jak\u0105 \u015bcie\u017ck\u0119 obierzecie dla Kr\u00f3lestwa, by wyrwa\u0107 je z obj\u0119\u0107 rozpaczy?"
         },
         "next_round_votes": [],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
                 "Stability": 0,
-                "Economy": 0,
+                "Economy": 1,
                 "Faith": 0
             },
             "Wysokie Kap\u0142a\u0144stwo": {
@@ -203,27 +258,66 @@
                 "Faith": 0
             },
             "Gwardia Kr\u00f3lewska": {
-                "Stability": 0,
+                "Stability": 1,
                 "Economy": 0,
                 "Faith": 0
             }
         },
         "winning_statement_counts": {
             "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 1,
-            "Gwardia Kr\u00f3lewska": 0
+            "Wysokie Kap\u0142a\u0144stwo": 0,
+            "Gwardia Kr\u00f3lewska": 1
         },
         "unanimous_vote_counts": {
             "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 1,
-            "Gwardia Kr\u00f3lewska": 0
+            "Wysokie Kap\u0142a\u0144stwo": 0,
+            "Gwardia Kr\u00f3lewska": 1
         },
-        "join_url": "/join/IQFK",
+        "join_url": "/join/GHXG",
         "winning_statement": {
             "player_id": "player_1",
-            "statement": "tak",
+            "statement": "Odkryto nowe zasoby spermy. od teraz skarbce beda wype\u0142niane bycz\u0105 sperm\u0105.",
             "name": "gooner",
             "was_blocked": false
+        },
+        "shadow_effects": [
+            {
+                "source": "player_1",
+                "type": "curse",
+                "target": "",
+                "payload": "",
+                "round": 1
+            }
+        ],
+        "next_round_dilemma": {
+            "id": "event_id_round_2_plague",
+            "title": "Plaga Byczej Krwi i Upadek Ducha",
+            "description": "Wraz z 'byczym bogactwem' do miast przyby\u0142y niewyobra\u017calne choroby, a wiara ludu w sprawiedliwo\u015b\u0107 bog\u00f3w drastycznie os\u0142ab\u0142a. Kap\u0142ani prorokuj\u0105 rych\u0142\u0105 zag\u0142ad\u0119, a ulice wype\u0142niaj\u0105 j\u0119cz\u0105cy chorzy i umieraj\u0105cy. Powietrze jest g\u0119ste od odoru rozk\u0142adu i strachu. W\u0142adza Kr\u00f3lewska musi zareagowa\u0107, zanim kr\u00f3lestwo pogr\u0105\u017cy si\u0119 w absolutnym chaosie i rozpaczy, staj\u0105c si\u0119 grobem dla wszystkich.",
+            "image": "/static/images/placeholder.png",
+            "choices": [
+                {
+                    "text": "Uspokoi\u0107 Wiernych: Nakaza\u0107 masowe modlitwy i publiczne spalenie cz\u0119\u015bci 'byczych skarb\u00f3w' jako zado\u015b\u0107uczynienie bogom, po\u015bwi\u0119caj\u0105c cz\u0119\u015b\u0107 nowo zdobytego 'bogactwa'.",
+                    "effects": {
+                        "Stability": 5,
+                        "Economy": -10,
+                        "Faith": 15
+                    },
+                    "narrative_consequence": "Nadzieja powr\u00f3ci do serc ludu, a \u015bwi\u0105tynie o\u017cyj\u0105, ale kr\u00f3lestwo odczuje uszczuplenie zasob\u00f3w, a niekt\u00f3rzy uznaj\u0105 to za oznak\u0119 s\u0142abo\u015bci w\u0142adzy, podsycaj\u0105c wewn\u0119trzne intrygi."
+                },
+                {
+                    "text": "Si\u0142a i Rozum: Wzmocni\u0107 stra\u017ce, wprowadzi\u0107 bezwzgl\u0119dn\u0105 kwarantann\u0119 i sfinansowa\u0107 badania nad chorob\u0105, ca\u0142kowicie ignoruj\u0105c histeryczne wrzaski kap\u0142an\u00f3w i pot\u0119pienie ulicy.",
+                    "effects": {
+                        "Stability": 10,
+                        "Economy": -10,
+                        "Faith": -10
+                    },
+                    "narrative_consequence": "Porz\u0105dek zostanie przywr\u00f3cony si\u0142\u0105, a nauka spr\u00f3buje znale\u017a\u0107 rozwi\u0105zanie problemu. Jednak wiara ludu w stare tradycje i moralno\u015b\u0107 ostatecznie zga\u015bnie, rodz\u0105c nowe, nieprzewidywalne problemy spo\u0142eczne i duchow\u0105 pustk\u0119."
+                }
+            ],
+            "narrative_prompt": "Rado Popio\u0142\u00f3w, w obliczu narastaj\u0105cej plagi i upadku wiary, jak\u0105 \u015bcie\u017ck\u0119 obierzecie dla Kr\u00f3lestwa, by wyrwa\u0107 je z obj\u0119\u0107 rozpaczy?"
+        },
+        "last_outcome_narrative_data": {
+            "outcome_narrative": "Gwardia Kr\u00f3lewska, z ponur\u0105 determinacj\u0105, przyst\u0105pi\u0142a do wcielenia w \u017cycie nowego, zatrwa\u017caj\u0105cego dekretu. Karawany, zamiast z\u0142ota, wioz\u0142y teraz cuchn\u0105ce, pieni\u0105ce si\u0119 beczki do kr\u00f3lewskich skarbc\u00f3w. Ka\u017cda dostawa by\u0142a makabrycznym \u015bwiadectwem nowo odkrytego, potwornego bogactwa kr\u00f3lestwa. Sta\u0142o si\u0119 to po s\u0142owach goonera, kt\u00f3ry rzek\u0142: 'Odkryto nowe zasoby spermy. od teraz skarbce beda wype\u0142niane bycz\u0105 sperm\u0105.' Wkr\u00f3tce jednak okaza\u0142o si\u0119, \u017ce sam s\u0142odkawo-md\u0142y zapach tych 'skarb\u00f3w' zacz\u0105\u0142 przyci\u0105ga\u0107 do miast nienaturalne roje \u017car\u0142ocznych owad\u00f3w, a powietrze sta\u0142o si\u0119 ci\u0119\u017ckie, chorobliwe i duszne. Mimo pocz\u0105tkowego szoku, w\u0142adza kr\u00f3lewska zdawa\u0142a si\u0119 umacnia\u0107 w swym szale\u0144stwie, cho\u0107 szeptano o narastaj\u0105cym niepokoju w cieniu nowych 'skarb\u00f3w'. Skarbce, cho\u0107 wype\u0142nione obrzydliwo\u015bci\u0105, p\u0119ka\u0142y w szwach, daj\u0105c iluzj\u0119 dobrobytu, lecz zwykli ludzie wci\u0105\u017c odczuwali ci\u0119\u017car codzienno\u015bci i narastaj\u0105c\u0105 zaraz\u0119. \u015awi\u0105tynie opustosza\u0142y, kap\u0142ani zamilkli, a w sercach wiernych gas\u0142a iskra nadziei, zast\u0105piona zimnym strachem i wszechobecnym rozczarowaniem. Podczas gdy Rada og\u0142asza\u0142a now\u0105 er\u0119 'p\u0142ynnego bogactwa', na targowiskach szeptano: 'Lepiej umrze\u0107 z g\u0142odu ni\u017c splami\u0107 usta tak\u0105 ohyd\u0105!'"
         }
     }
 }

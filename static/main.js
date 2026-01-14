@@ -92,6 +92,9 @@ function completeLoading(isPlayerView = false) {
 }
 
 function playNarration(text) {
+    if (!isTTSEnabled) {
+        return Promise.resolve();
+    }
     return new Promise((resolve, reject) => {
         if (!text || text.trim() === '') {
             resolve();
@@ -205,6 +208,9 @@ const nextRoundBtn = document.getElementById('nextRoundBtn');
 let playerChoice = null;
 let lastSubmittedStatement = ''; // New variable to store the last submitted statement
 let clientGlobalStats = { Stability: 50, Economy: 50, Faith: 50 };
+let isHost = false;
+let isTTSEnabled = true;
+let isMusicEnabled = true;
 
 if (nextRoundBtn) {
     nextRoundBtn.addEventListener('click', () => {
@@ -1493,6 +1499,30 @@ sliders.forEach(id => {
                 submitBtn.disabled = false;
                 submitBtn.style.opacity = '1';
             }
+        });
+    }
+});
+
+
+// Audio Control Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleMusic = document.getElementById('toggleMusic');
+    const toggleTTS = document.getElementById('toggleTTS');
+    const bgMusic = document.getElementById('backgroundMusic');
+
+    if (toggleMusic) {
+        toggleMusic.addEventListener('change', (e) => {
+            isMusicEnabled = e.target.checked;
+            if (bgMusic) {
+                if (isMusicEnabled) bgMusic.play();
+                else bgMusic.pause();
+            }
+        });
+    }
+
+    if (toggleTTS) {
+        toggleTTS.addEventListener('change', (e) => {
+            isTTSEnabled = e.target.checked;
         });
     }
 });

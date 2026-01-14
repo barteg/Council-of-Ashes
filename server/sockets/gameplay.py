@@ -13,7 +13,6 @@ def start_game_logic(game_id):
         print(f"[DEBUG] Starting game {game_id}")
         game = game_manager.get_game(game_id)
         if not game or game["state"] != "waiting":
-            print(f"[ERROR] start_game_logic called with invalid game state")
             return
 
         game["state"] = "DILEMMA"
@@ -24,30 +23,20 @@ def start_game_logic(game_id):
             player["action_status"] = "waiting"
             player["shadow_action_done"] = False
 
-        game_state_for_gemini = {
-            "current_round": game["current_round"],
-            "global_stats": game["global_stats"],
-            "event_history": game["event_history"],
-            "player_statements": [],
-            "previous_dilemma_outcome": None,
+        # ROUND 1: Hardcoded Tutorial Dilemma
+        tutorial_dilemma = {
+            "id": "tutorial_prologue",
+            "title": "📜 Prolog: Pierwsze Głosowanie",
+            "description": "To jest runda treningowa. Królestwo cierpi na brak zboża. Możesz zaproponować 'Rozdanie zapasów' (+Stab, -Econ) lub 'Modlitwę o deszcz' (+Faith). Wpisz swój pomysł i przetestuj mechaniki. Ta runda nie liczy się do wyniku!",
+            "image": "/static/images/placeholder.png",
+            "narrative_prompt": "Jak rada odpowie na głód?",
+            "is_tutorial": True
         }
-        
-        if narrator.generate_dilemma(game_state_for_gemini):
-            with open("dilemma.json", "r", encoding="utf-8") as f:
-                generated_dilemma = json.load(f)
-        else:
-            generated_dilemma = {
-                "id": "error_dilemma",
-                "title": "Chwila ciszy",
-                "description": "Wiatry losu milczą. Rada nie jest w stanie się zebrać w tym czasie.",
-                "narrative_prompt": "Królestwo wstrzymuje oddech.",
-            }
 
-        game["current_dilemma"] = generated_dilemma
-        game["gemini_output"] = generated_dilemma
+        game["current_dilemma"] = tutorial_dilemma
+        game["gemini_output"] = tutorial_dilemma
 
         emit("game_started_for_player", game, room=game_id, broadcast=True)
-        emit("game_started_for_host", game, room=game["host_sid"])
         emit(
             "game_event",
             {
@@ -77,7 +66,7 @@ def resolve_dilemma(game_id, player_comments=None):
 
     # Apply Manual Effects from Winning Statement
     policy_effects = {}
-    if winning_player:
+    if winning_player and game["current_round"] > 1: # SKIP EFFECTS IN TUTORIAL
         policy_effects = winning_player.get("predicted_effect", {"Stability": 0, "Economy": 0, "Faith": 0})
         for stat, change in policy_effects.items():
             game["global_stats"][stat] += int(change)
@@ -88,6 +77,8 @@ def resolve_dilemma(game_id, player_comments=None):
                     for objective in game["factions"][faction_id]["objectives"]:
                         if objective["type"] == "policies_passed" and objective["stat"] == stat:
                             game["policies_passed_counts"][faction_id][stat] += 1
+    elif game["current_round"] == 1:
+        print("[GAME] Tutorial Round Resolve: No stats changed.")
 
     # Check Objectives
     winning_faction = None
