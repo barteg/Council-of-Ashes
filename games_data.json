@@ -1,13 +1,13 @@
 {
-    "EFGA": {
-        "host_sid": "jNtCJfIN9Rh7yWrDAAAD",
+    "IQFK": {
+        "host_sid": "06SLGZgzF63ExNkSAAAD",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "U78HridHy9YdVpRNAAAN",
+                "sid": "5Mo64II--qQF4zCWAAAJ",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
-                "faction": "Gwardia Kr\u00f3lewska",
+                "faction": "Wysokie Kap\u0142a\u0144stwo",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
@@ -16,15 +16,15 @@
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "joined",
+                "action_status": "done",
                 "current_action": null,
                 "action_target": null,
-                "shadow_action_done": true,
-                "statement": "g\u0142osni ida na front",
+                "shadow_action_done": false,
+                "statement": "tak",
                 "predicted_effect": {
-                    "Stability": -10,
-                    "Economy": 5,
-                    "Faith": 5
+                    "Stability": -7,
+                    "Economy": 10,
+                    "Faith": 2
                 },
                 "statement_vote": "player_1",
                 "was_blocked": false,
@@ -78,7 +78,9 @@
             },
             "Wysokie Kap\u0142a\u0144stwo": {
                 "power": "Boska \u0141aska",
-                "players": [],
+                "players": [
+                    "player_1"
+                ],
                 "objectives": [
                     {
                         "id": "faith_75",
@@ -122,9 +124,7 @@
             },
             "Gwardia Kr\u00f3lewska": {
                 "power": "Utrzymanie Porz\u0105dku",
-                "players": [
-                    "player_1"
-                ],
+                "players": [],
                 "objectives": [
                     {
                         "id": "stab_75",
@@ -170,37 +170,37 @@
         "state": "SHADOW_PHASE",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "tutorial_hunger_unrest",
-            "title": "Szept G\u0142odnych",
-            "description": "Zima nadesz\u0142a, a wraz z ni\u0105 g\u0142\u00f3d, kt\u00f3ry dusi\u0142 kr\u00f3lestwo. Spichlerze \u015bwiec\u0105 pustkami, a lud, zwykle cichy i pos\u0142uszny, zaczyna szepta\u0107 o buncie. Kap\u0142ani, pr\u00f3buj\u0105c uspokoi\u0107 nastroje, widz\u0105, jak ich \u015bwi\u0105tynie pustoszej\u0105, a wiara s\u0142abnie, zast\u0105piona przez desperacj\u0119. Na ulicach s\u0142ycha\u0107 krzyki: 'Chleba, albo krew!'",
+            "id": "round_1_hunger_crisis",
+            "title": "G\u0142\u00f3d na Pustkowiach",
+            "description": "Zima jest d\u0142uga i sroga, a zapasy zbo\u017ca w spichrzach malej\u0105. Ch\u0142opi na pustkowiach umieraj\u0105 z g\u0142odu, a kupcy obawiaj\u0105 si\u0119 zamieszek. 'Nie ma co je\u015b\u0107!' krzyczy \u017cebraczka na targowisku, a w jej g\u0142osie s\u0142ycha\u0107 desperacj\u0119. Po drogach grasuj\u0105 bandy g\u0142odnych ludzi, siej\u0105c strach i grabie\u017c. Rada musi podj\u0105\u0107 decyzj\u0119.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "G\u0142\u00f3d trawi wasze ziemie, a cierpliwo\u015b\u0107 ludu wygasa. Jak Rada zamierza zaspokoi\u0107 krzyki g\u0142odnych i uciszy\u0107 narastaj\u0105cy bunt?"
+            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zareagowa\u0107 na narastaj\u0105cy kryzys g\u0142odu, zanim ogarnie on ca\u0142e kr\u00f3lestwo."
         },
         "global_stats": {
-            "Stability": 37,
-            "Economy": 46,
-            "Faith": 45
+            "Stability": 45,
+            "Economy": 48,
+            "Faith": 46
         },
         "current_round": 1,
         "event_history": [],
         "gemini_output": {
-            "id": "tutorial_hunger_unrest",
-            "title": "Szept G\u0142odnych",
-            "description": "Zima nadesz\u0142a, a wraz z ni\u0105 g\u0142\u00f3d, kt\u00f3ry dusi\u0142 kr\u00f3lestwo. Spichlerze \u015bwiec\u0105 pustkami, a lud, zwykle cichy i pos\u0142uszny, zaczyna szepta\u0107 o buncie. Kap\u0142ani, pr\u00f3buj\u0105c uspokoi\u0107 nastroje, widz\u0105, jak ich \u015bwi\u0105tynie pustoszej\u0105, a wiara s\u0142abnie, zast\u0105piona przez desperacj\u0119. Na ulicach s\u0142ycha\u0107 krzyki: 'Chleba, albo krew!'",
+            "id": "round_1_hunger_crisis",
+            "title": "G\u0142\u00f3d na Pustkowiach",
+            "description": "Zima jest d\u0142uga i sroga, a zapasy zbo\u017ca w spichrzach malej\u0105. Ch\u0142opi na pustkowiach umieraj\u0105 z g\u0142odu, a kupcy obawiaj\u0105 si\u0119 zamieszek. 'Nie ma co je\u015b\u0107!' krzyczy \u017cebraczka na targowisku, a w jej g\u0142osie s\u0142ycha\u0107 desperacj\u0119. Po drogach grasuj\u0105 bandy g\u0142odnych ludzi, siej\u0105c strach i grabie\u017c. Rada musi podj\u0105\u0107 decyzj\u0119.",
             "image": "/static/images/placeholder.png",
-            "narrative_prompt": "G\u0142\u00f3d trawi wasze ziemie, a cierpliwo\u015b\u0107 ludu wygasa. Jak Rada zamierza zaspokoi\u0107 krzyki g\u0142odnych i uciszy\u0107 narastaj\u0105cy bunt?"
+            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zareagowa\u0107 na narastaj\u0105cy kryzys g\u0142odu, zanim ogarnie on ca\u0142e kr\u00f3lestwo."
         },
         "next_round_votes": [],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
                 "Stability": 0,
-                "Economy": 1,
+                "Economy": 0,
                 "Faith": 0
             },
             "Wysokie Kap\u0142a\u0144stwo": {
                 "Stability": 0,
                 "Economy": 0,
-                "Faith": 1
+                "Faith": 0
             },
             "Gwardia Kr\u00f3lewska": {
                 "Stability": 0,
@@ -210,29 +210,20 @@
         },
         "winning_statement_counts": {
             "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Wysokie Kap\u0142a\u0144stwo": 1,
+            "Gwardia Kr\u00f3lewska": 0
         },
         "unanimous_vote_counts": {
             "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 1
+            "Wysokie Kap\u0142a\u0144stwo": 1,
+            "Gwardia Kr\u00f3lewska": 0
         },
-        "join_url": "/join/EFGA",
+        "join_url": "/join/IQFK",
         "winning_statement": {
             "player_id": "player_1",
-            "statement": "g\u0142osni ida na front",
+            "statement": "tak",
             "name": "gooner",
             "was_blocked": false
-        },
-        "shadow_effects": [
-            {
-                "source": "player_1",
-                "type": "curse",
-                "target": "",
-                "payload": "chuj",
-                "round": 1
-            }
-        ]
+        }
     }
 }

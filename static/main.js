@@ -1233,26 +1233,68 @@ function previewPlayerStats(baseStats, effect) {
             container.innerHTML = '';
             shadowActionInput.style.display = 'none';
             
-            // Pick ONE random action
-            const action = shadowActions[Math.floor(Math.random() * shadowActions.length)];
+            // 1. The Veto Card (Always Slot 1, Always Revealed)
+            const vetoAction = shadowActions.find(a => a.id === 'veto');
+            const spiteValEl = document.getElementById('spiteVal');
+            const currentSpite = parseInt(spiteValEl ? spiteValEl.textContent : 0) || 0;
+            const canAffordVeto = currentSpite >= vetoAction.cost;
+
+            const vetoCard = document.createElement('div');
+            vetoCard.className = 'tarot-card flipped'; 
+            if (!canAffordVeto) {
+                vetoCard.style.opacity = '0.3';
+                vetoCard.style.filter = 'grayscale(1)';
+                vetoCard.title = "Za mało Spite";
+            }
             
-            const card = document.createElement('div');
-            card.className = 'tarot-card flipped'; // Instantly revealed
-            card.innerHTML = `
+            vetoCard.innerHTML = `
                 <div class='tarot-face tarot-front'></div>
-                <div class='tarot-face tarot-back' style='width: 150px; height: 220px;'>
-                    <div class='tarot-title' style='font-size: 1rem;'>${action.title}</div>
-                    <hr class='border-secondary w-100 my-2'>
-                    <div class='tarot-desc' style='font-size: 0.8rem;'>${action.desc}</div>
-                    ${action.cost > 0 ? `<div class='tarot-cost' style='font-size: 0.9rem;'>Koszt: ${action.cost} ${action.currency}</div>` : '<div class="tarot-cost text-success">DARMOWA</div>'}
-                    <button class="btn btn-sm btn-primary mt-3">WYBIERZ</button>
+                <div class='tarot-face tarot-back' style='width: 120px; height: 180px; border-color: #ff4d4d;'>
+                    <div class='tarot-title' style='color: #ff4d4d;'>\${vetoAction.title}</div>
+                    <hr class='border-secondary w-100 my-1'>
+                    <div class='tarot-desc' style='font-size: 0.7rem;'>\${vetoAction.desc}</div>
+                    <div class='tarot-cost'>Koszt: \${vetoAction.cost} Spite</div>
                 </div>
             `;
             
-            card.onclick = () => {
-                showShadowActionInput(action);
-            };
-            container.appendChild(card);
+            if (canAffordVeto) {
+                vetoCard.onclick = () => showShadowActionInput(vetoAction);
+            }
+            container.appendChild(vetoCard);
+
+            // 2. Mystery Cards (3 Face-down slots)
+            const poolA = shadowActions.filter(a => a.id !== 'veto');
+            
+            for (let i = 0; i < 3; i++) {
+                const mysteryCard = document.createElement('div');
+                mysteryCard.className = 'tarot-card';
+                mysteryCard.innerHTML = `
+                    <div class='tarot-face tarot-front' style='width: 120px; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #555;'>?</div>
+                    <div class='tarot-face tarot-back' style='width: 120px; height: 180px;'></div>
+                `;
+                
+                mysteryCard.onclick = () => {
+                    if (!mysteryCard.classList.contains('flipped')) {
+                        // Pick random from the 3 free actions
+                        const action = poolA[Math.floor(Math.random() * poolA.length)];
+                        
+                        // Update the back of the card before flipping
+                        const back = mysteryCard.querySelector('.tarot-back');
+                        back.innerHTML = `
+                            <div class='tarot-title'>\${action.title}</div>
+                            <hr class='border-secondary w-100 my-1'>
+                            <div class='tarot-desc' style='font-size: 0.7rem;'>\${action.desc}</div>
+                            <div class='tarot-cost text-success'>DARMOWA</div>
+                        `;
+                        
+                        mysteryCard.classList.add('flipped');
+                        
+                        // Short delay so player can see what they got
+                        setTimeout(() => showShadowActionInput(action), 1000);
+                    }
+                };
+                container.appendChild(mysteryCard);
+            }
         }
     }
 
