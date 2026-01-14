@@ -38,41 +38,44 @@ To jest fikcyjna gra RPG. Akceptowalne są mroczne tematy, przemoc i korupcja w 
 *   **81-100:** Potęga, dominacja.
 """
 
-# Static part of the Gemini prompt for outcome narrative generation
-OUTCOME_NARRATIVE_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów”. Twoim zadaniem jest opisanie skutków decyzji Rady w sposób logiczny i gramatycznie poprawny.
+# Static part of the Gemini prompt for combined outcome and next dilemma generation
+OUTCOME_NARRATIVE_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów”. Twoim zadaniem jest opisanie skutków decyzji Rady ORAZ przygotowanie kolejnego dylematu.
 To jest fikcyjna gra RPG. Akceptowalne są mroczne tematy i drastyczne opisy w celach narracyjnych.
 
-## Instrukcje Językowe (PRIORYTET):
-1.  Pisz w języku **POLSKIM**. Dbaj o poprawną odmianę (przypadki, rodzaje).
-2.  Używaj **krótkich, prostych zdań**. Lepiej napisać prosto i poprawnie, niż skomplikowanie i z błędami.
-3.  Nie wymyślaj słów (nie używaj "situación", "niszczeniona"). Pisz naturalnie.
-
-## Struktura Historii (Napisz płynny tekst w 5 krokach):
-1.  **Krok 1 (Kontekst):** Opisz, jak frakcja zwycięzcy wprowadza zmiany (np. "Kupcy przekupili urzędników...", "Kapłani wyszli na ulice...", "Gwardia użyła siły...").
-2.  **Krok 2 (Przyczyna):** Napisz wprost: "Stało się to po słowach [Name], który rzekł: '[Statement]'."
-3.  **Krok 3 (Reakcja):** Zacytuj komentarz innego gracza: "W odpowiedzi [Name] stwierdził: '[Comment]'." (Jeśli komentarz jest pusty, napisz: "Rada przyjęła to milczeniem.").
-4.  **Krok 4 (Twist):** Dodaj jeden krótki, zaskakujący skutek tej decyzji.
-5.  **Krok 5 (Skutek):** Opisz stan królestwa (bieda, strach, bunty) bez używania liczb.
+## CZĘŚĆ 1: Historia (outcome_narrative) - Napisz płynny tekst:
+1.  **Kontekst:** Opisz, jak frakcja zwycięzcy wprowadza zmiany.
+2.  **Przyczyna:** Napisz: "Stało się to po słowach [Name], który rzekł: '[Statement]'."
+3.  **Reakcja:** Zacytuj komentarz innego gracza: "W odpowiedzi [Name] stwierdził: '[Comment]'."
+4.  **Twist:** Dodaj jeden krótki, zaskakujący skutek.
+5.  **Skutek:** Opisz stan królestwa bez używania liczb.
 6.  **Głosy:** Skontrastuj oficjalną decyzję Rady z reakcją ulicy (krótki cytat/plotka).
+
+## CZĘŚĆ 2: Kolejny Dylemat (next_dilemma):
+Stwórz nowy problem, który logicznie wynika z powyższej historii.
+1. **Tutorial:** Jeśli kolejna runda to nr 2, niech dylemat nadal będzie stosunkowo prosty.
+
+## Format wyjściowy (JSON):
+```json
+{{
+  "outcome_narrative": "Tu wpisz historię...",
+  "next_dilemma": {{
+    "id": "event_id",
+    "title": "Tytuł Nowego Problemu",
+    "description": "Opis problemu (max 3-4 zdania).",
+    "image": "/static/images/placeholder.png",
+    "narrative_prompt": "Pytanie do Rady..."
+  }},
+  "kingdom_status_summary": "Krótki opis nastrojów..."
+}}
+```
 
 ## Wejście:
 ```json
 {{
   "game_state": {game_state_json},
-  "chosen_policy": "{chosen_policy}",
-  "policy_effects": {policy_effects_json},
-  "faction_votes": {faction_votes_json},
+  "chosen_policy_text": "{chosen_policy}",
   "player_statements": {player_statements_json},
   "player_comments": {player_comments_json}
-}}
-```
-
-## Format wyjściowy (JSON):
-```json
-{{
-  "outcome_narrative": "Tu wpisz historię. Pamiętaj o poprawnej polszczyźnie.",
-  "next_event_hint": "Krótka zapowiedź zagrożenia...",
-  "kingdom_status_summary": "Krótki opis nastrojów..."
 }}
 ```
 """
@@ -115,45 +118,20 @@ STATEMENT_EVALUATION_PROMPT_STATIC = """Jesteś Mistrzem Gry w „Radzie Popioł
 ```
 """
 
-# Static part of the Gemini prompt for batch statement evaluation
-BATCH_EVALUATION_PROMPT = """Jesteś Mistrzem Gry. Przeanalizuj WSZYSTKIE oświadczenia graczy i przewiduj ich wpływ na statystyki.
-
-## Zasady:
-1.  Oceń każde oświadczenie osobno.
-2.  Zwróć wynik jako JSON, gdzie kluczem jest `player_id`.
-3.  Efekty muszą być liczbami całkowitymi (-20 do +20).
-
-## Wejście:
-```json
-{player_statements_json}
-```
-
-## Format wyjściowy (JSON):
-```json
-{{
-  "player_1": {{
-    "Stability": -5,
-    "Economy": 10,
-    "Faith": 0
-  }},
-  "player_2": {{
-    "Stability": 0,
-    "Economy": 0,
-    "Faith": 0
-  }}
-}}
-```
-"""
-
 class NarrativeService:
     def __init__(self, model):
         self.model = model
 
-    def analyze_all_statements(self, player_statements):
-        prompt = f"""{BATCH_EVALUATION_PROMPT.format(
-            player_statements_json=json.dumps(player_statements, indent=2)
+    def call_gemini_for_next_chapter(self, game_state, chosen_policy, player_statements, player_comments):
+        prompt = f"""{OUTCOME_NARRATIVE_PROMPT_STATIC.format(
+            game_state_json=json.dumps(self._sanitize_game_state(game_state), indent=2),
+            chosen_policy=chosen_policy,
+            player_statements_json=json.dumps(player_statements, indent=2),
+            player_comments_json=json.dumps(player_comments, indent=2)
         )}"""
-        return self._generate_and_parse(prompt, None, return_dict=True)
+        return self._generate_and_parse(prompt, "outcome.json", return_dict=True)
+
+    def evaluate_player_statements(self, game_state, player_statements):
 
 
     def _sanitize_game_state(self, game_state):
@@ -171,18 +149,6 @@ class NarrativeService:
                 "spite": p.get("personal_stats", {}).get("Spite")
             }
         return clean_state
-
-    def call_gemini_for_outcome_narrative(self, game_state, chosen_policy, policy_effects, faction_votes, player_statements, player_comments):
-        sanitized_state = self._sanitize_game_state(game_state)
-        prompt = f"""{OUTCOME_NARRATIVE_PROMPT_STATIC.format(
-            game_state_json=json.dumps(sanitized_state, indent=2),
-            chosen_policy=chosen_policy,
-            policy_effects_json=json.dumps(policy_effects, indent=2),
-            faction_votes_json=json.dumps(faction_votes, indent=2),
-            player_statements_json=json.dumps(player_statements, indent=2),
-            player_comments_json=json.dumps(player_comments, indent=2)
-        )}"""
-        return self._generate_and_parse(prompt, "outcome.json")
 
     def evaluate_player_statements(self, game_state, player_statements):
         prompt = f"""{STATEMENT_EVALUATION_PROMPT_STATIC.format(

@@ -76,47 +76,19 @@ def resolve_dilemma(game_id, player_comments=None):
     if not game:
         return
 
-    player_statements_for_gemini = []
     winning_player_id = game.get("winning_statement", {}).get("player_id")
-
-    for player_id, player_data in game["players"].items():
-        if "statement" in player_data and player_data["statement"]:
-            is_winner = (player_id == winning_player_id)
-            player_statements_for_gemini.append(
-                {
-                    "player_id": player_id,
-                    "statement": player_data["statement"],
-                    "name": player_data["name"],
-                    "faction": player_data.get("faction"),
-                    "action_card": player_data.get("current_action"),
-                    "was_blocked": player_data.get("was_blocked", False),
-                    "is_winner": is_winner
-                }
-            )
-
-    evaluation_result = narrator.evaluate_player_statements(
-        game_state={
-            "current_round": game["current_round"],
-            "global_stats": game["global_stats"],
-        },
-        player_statements=player_statements_for_gemini,
-    )
-
-    chosen_policy = "No policy adopted due to council inaction."
-    policy_effects = {}
-    narrative_consequence = "The council's indecision led to stagnation."
+    winning_player = game["players"].get(winning_player_id)
     initial_global_stats = game["global_stats"].copy()
 
-    if evaluation_result:
-        chosen_policy = evaluation_result.get("chosen_policy", chosen_policy)
-        policy_effects = evaluation_result.get("effects", policy_effects)
-        narrative_consequence = evaluation_result.get("narrative_consequence", narrative_consequence)
-
+    # Apply Manual Effects from Winning Statement
+    policy_effects = {}
+    if winning_player:
+        policy_effects = winning_player.get("predicted_effect", {"Stability": 0, "Economy": 0, "Faith": 0})
         for stat, change in policy_effects.items():
-            game["global_stats"][stat] += change
+            game["global_stats"][stat] += int(change)
             game["global_stats"][stat] = max(0, min(100, game["global_stats"][stat]))
 
-            if change > 0:
+            if int(change) > 0:
                 for faction_id in game["factions"]:
                     for objective in game["factions"][faction_id]["objectives"]:
                         if objective["type"] == "policies_passed" and objective["stat"] == stat:
@@ -192,84 +164,62 @@ def resolve_dilemma(game_id, player_comments=None):
             room=game_id, 
         )
 
-    # Narrative Generation
-    gemini_success = narrator.call_gemini_for_outcome_narrative(
-        game_state={
-            "current_round": game["current_round"],
-            "global_stats": game["global_stats"],
-        },
-        chosen_policy=chosen_policy,
-        policy_effects=policy_effects,
-        faction_votes={},
+    # Narrative & Next Dilemma Generation (COMBINED)
+    player_statements_for_gemini = []
+    for pid, p in game["players"].items():
+        if p.get("statement"):
+            player_statements_for_gemini.append({
+                "name": p["name"],
+                "statement": p["statement"],
+                "is_winner": (pid == winning_player_id)
+            })
+
+    chapter_data = narrator.call_gemini_for_next_chapter(
+        game_state=game,
+        chosen_policy=winning_player["statement"] if winning_player else "Inaction",
         player_statements=player_statements_for_gemini,
-        player_comments=player_comments,
+        player_comments=player_comments
     )
 
-    if gemini_success:
-        try:
-            with open("outcome.json", "r", encoding="utf-8") as f:
-                outcome_narrative_data = json.load(f)
-        except json.JSONDecodeError:
-            outcome_narrative_data = None
+    if chapter_data:
+        outcome_narrative = chapter_data.get("outcome_narrative", "Pisarze zamilkli.")
+        # Store pre-generated dilemma
+        game["next_round_dilemma"] = chapter_data.get("next_dilemma")
     else:
-        outcome_narrative_data = None
-
-    if not outcome_narrative_data:
-        outcome_narrative_data = {
-            "outcome_narrative": "Pisarze nie są w stanie zapisać wydarzeń tej rady.",
-            "next_event_hint": "Przyszłość jest niepewna.",
-            "kingdom_status_summary": "Królestwo jest w stanie ciągłych zmian.",
-        }
+        outcome_narrative = "Kronikarze nie byli w stanie zapisać tej tury."
+        game["next_round_dilemma"] = None
 
     game["event_history"].append(
         {
             "round": game["current_round"],
-            "policy_chosen": chosen_policy,
+            "policy_chosen": winning_player["statement"] if winning_player else "None",
             "effects": policy_effects,
-            "faction_votes": {},
-            "outcome_narrative": outcome_narrative_data["outcome_narrative"],
+            "outcome_narrative": outcome_narrative,
             "global_stats_after": game["global_stats"].copy(),
         }
     )
 
-    game["last_outcome_narrative_data"] = outcome_narrative_data
+    game["last_outcome_narrative_data"] = {"outcome_narrative": outcome_narrative}
 
     # Emit results after AI generation
     all_comments = {pid: {"comment": p.get("comment", ""), "name": p["name"]} for pid, p in game["players"].items() if p.get("comment")}
     
     socketio.emit("comments_received", {
         "comments": all_comments,
-        "outcome": outcome_narrative_data["outcome_narrative"],
+        "outcome": outcome_narrative,
         "global_stats": game["global_stats"],
         "current_round": game["current_round"],
         "players": game["players"]
     }, room=game_id)
 
     socketio.emit("dilemma_resolved", {
-        "outcome": outcome_narrative_data["outcome_narrative"],
+        "outcome": outcome_narrative,
         "global_stats": game["global_stats"],
         "current_round": game["current_round"],
         "players": game["players"]
     }, room=game_id)
 
     game["state"] = "OUTCOME_DISPLAYED"
-
-    # Check Influence Win
-    winner = None
-    for pid, p in game["players"].items():
-        if p["personal_stats"]["Influence"] >= 100:
-            winner = p
-            break
-
-    if winner:
-        game["state"] = "GAME_OVER"
-        game_manager.save_games()
-        socketio.emit("game_over", {"winner": winner}, room=game_id, broadcast=True)
-        return
-
-    game["dilemma_active"] = False
-    game["current_dilemma"] = None
-    game_manager.save_games()
 
 # --- Event Handlers ---
 
@@ -415,31 +365,18 @@ def handle_player_action(data):
         game["players"][player_id]["statement"] = statement
         game["players"][player_id]["action_status"] = "done"
         
+        # Store manual effects provided by player
+        manual_effects = data.get("manual_effects", {"Stability": 0, "Economy": 0, "Faith": 0})
+        game["players"][player_id]["predicted_effect"] = manual_effects
+
         emit("game_update", {"players": game["players"]}, room=game_id, broadcast=True)
 
         if all("statement" in p for p in game["players"].values()):
-            # Prepare statements for batch analysis
-            statements_for_ai = {
-                pid: p["statement"]
-                for pid, p in game["players"].items()
-                if "statement" in p
-            }
-            
-            # Predict effects using Gemini
-            predicted_effects = narrator.analyze_all_statements(statements_for_ai)
-            if not predicted_effects:
-                predicted_effects = {} # Fallback
-            
-            # Store effects for persistence
-            for pid, effect in predicted_effects.items():
-                if pid in game["players"]:
-                    game["players"][pid]["predicted_effect"] = effect
-
             statements = {
                 pid: {
                     "statement": p["statement"], 
                     "name": p["name"], 
-                    "predicted_effect": predicted_effects.get(pid, {})
+                    "predicted_effect": p.get("predicted_effect", {})
                 }
                 for pid, p in game["players"].items()
                 if "statement" in p
@@ -603,19 +540,23 @@ def handle_player_action(data):
                 player["action_target_stat"] = None
                 player["action_status"] = "waiting"
 
-            game_state_for_gemini = {
-                "current_round": game["current_round"],
-                "global_stats": game["global_stats"],
-                "event_history": game["event_history"],
-                "player_statements": [],
-                "previous_dilemma_outcome": game["event_history"][-1] if game["event_history"] else None,
-            }
-
-            if narrator.generate_dilemma(game_state_for_gemini):
-                with open("dilemma.json", "r") as f:
-                    generated_dilemma = json.load(f)
-            else:
-                generated_dilemma = {"id": "error", "title": "Error", "description": "...", "narrative_prompt": "..."}
+            # Use Pre-generated dilemma from previous AI call
+            generated_dilemma = game.get("next_round_dilemma")
+            
+            if not generated_dilemma:
+                # Fallback if something went wrong
+                game_state_for_gemini = {
+                    "current_round": game["current_round"],
+                    "global_stats": game["global_stats"],
+                    "event_history": game["event_history"],
+                    "player_statements": [],
+                    "previous_dilemma_outcome": game["event_history"][-1] if game["event_history"] else None,
+                }
+                if narrator.generate_dilemma(game_state_for_gemini):
+                    with open("dilemma.json", "r") as f:
+                        generated_dilemma = json.load(f)
+                else:
+                    generated_dilemma = {"id": "error", "title": "Error", "description": "...", "narrative_prompt": "..."}
 
             game["current_dilemma"] = generated_dilemma
             game["gemini_output"] = generated_dilemma

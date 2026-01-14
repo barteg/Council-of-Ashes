@@ -468,13 +468,21 @@ if (gameId && playerId) {
     if (submitStatementBtn) {
         submitStatementBtn.addEventListener('click', () => {
             const statement = playerStatementInput.value;
+            const manualStab = parseInt(document.getElementById('manualStab').value) || 0;
+            const manualEcon = parseInt(document.getElementById('manualEcon').value) || 0;
+            const manualFaith = parseInt(document.getElementById('manualFaith').value) || 0;
 
             if (statement) {
                 socket.emit('player_action', { 
                     game_id: gameId, 
                     player_id: playerId, 
                     action: 'submit_statement', 
-                    statement: statement
+                    statement: statement,
+                    manual_effects: {
+                        Stability: manualStab,
+                        Economy: manualEcon,
+                        Faith: manualFaith
+                    }
                 });
                 lastSubmittedStatement = statement; 
                 

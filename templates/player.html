@@ -127,8 +127,63 @@
             <div id="playerInputSection" class="floating-element" style="display: none;">
                 <label for="playerStatementInput" class="form-label">Twoje Słowa:</label>
                 
-                <textarea class="form-control mb-3" id="playerStatementInput" rows="3" placeholder="Wpisz swoje oświadczenie..."></textarea>
-                        <button id="submitStatementBtn" class="btn btn-primary mt-2">Zatwierdź Akcję</button>
+                                <textarea class="form-control mb-3" id="playerStatementInput" rows="3" placeholder="Wpisz swoje oświadczenie..."></textarea>
+                
+                                
+                
+                                <!-- Manual Stat Impact -->
+                
+                                <div class="mb-3 p-2 rounded" style="background-color: #2a2a2a; border: 1px solid #444;">
+                
+                                    <h6 class="small text-muted mb-2">Przewidywany wpływ na Królestwo (-10 do +10):</h6>
+                
+                                    <div class="row no-gutters">
+                
+                                        <div class="col-4 px-1">
+                
+                                            <div class="input-group input-group-sm">
+                
+                                                <div class="input-group-prepend"><span class="input-group-text bg-primary text-white border-0">S</span></div>
+                
+                                                <input type="number" id="manualStab" class="form-control bg-dark text-white border-0" value="0" min="-10" max="10">
+                
+                                            </div>
+                
+                                        </div>
+                
+                                        <div class="col-4 px-1">
+                
+                                            <div class="input-group input-group-sm">
+                
+                                                <div class="input-group-prepend"><span class="input-group-text bg-success text-white border-0">E</span></div>
+                
+                                                <input type="number" id="manualEcon" class="form-control bg-dark text-white border-0" value="0" min="-10" max="10">
+                
+                                            </div>
+                
+                                        </div>
+                
+                                        <div class="col-4 px-1">
+                
+                                            <div class="input-group input-group-sm">
+                
+                                                <div class="input-group-prepend"><span class="input-group-text bg-warning text-dark border-0">F</span></div>
+                
+                                                <input type="number" id="manualFaith" class="form-control bg-dark text-white border-0" value="0" min="-10" max="10">
+                
+                                            </div>
+                
+                                        </div>
+                
+                                    </div>
+                
+                                </div>
+                
+                
+                
+                                <button id="submitStatementBtn" class="btn btn-primary mt-2">Zatwierdź Akcję</button>
+                
+                
                     </div>
                     <div id="statementSubmitted" style="display: none;">
                         <p class="text-success">Akcja Zatwierdzona</p>
