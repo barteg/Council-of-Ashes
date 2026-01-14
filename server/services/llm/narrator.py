@@ -12,6 +12,7 @@ To jest fikcyjna gra RPG. Akceptowalne są mroczne tematy, przemoc i korupcja w 
 4.  **Statystyki:** NIGDY nie używaj liczb. Opisuj stan królestwa przez widoczne skutki (np. "Spichlerze świecą pustkami" zamiast "Niska Ekonomia").
 5.  **Dylemat:** Stwórz realny problem wymagający decyzji.
 6.  **Głosy:** Uwzględnij krótki cytat lub plotkę od konkretnego mieszkańca (np. "Żebrak krzyczy...", "Kupiec szepcze...").
+7.  **Tutorial:** Jeśli `current_round` wynosi 1, stwórz klasyczny, wprowadzający dylemat (np. o głodzie lub bezpieczeństwie), aby gracze łatwo zrozumieli wpływ na statystyki.
 
 ## Wejście:
 ```json

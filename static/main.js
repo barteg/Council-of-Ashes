@@ -349,6 +349,7 @@ socket.on('game_event', async (data) => {
             const currentRoundSpan = document.getElementById('currentRound');
             if (currentRoundSpan) {
                 currentRoundSpan.textContent = data.current_round;
+                renderTutorialHint(data.current_round, 'DILEMMA');
             }
             const narrativeOutput = document.getElementById('narrativeOutput');
             if (narrativeOutput) {
@@ -549,6 +550,9 @@ if (gameId && playerId) {
         const dilemmaSection = document.getElementById('dilemmaSection');
         const narrativeOutput = document.getElementById('narrativeOutput');
         const nextRoundBtn = document.getElementById('nextRoundBtn');
+
+        const currentRoundVal = parseInt(document.getElementById('currentRound').textContent) || 1;
+        renderTutorialHint(currentRoundVal, data.phase);
 
         console.log(`[DEBUG] phase_change: Phase: ${data.phase}`);
         console.log(`[DEBUG] phase_change: playerStatementsSection.style.display BEFORE: ${playerStatementsSection ? playerStatementsSection.style.display : 'N/A'}`);
@@ -1389,5 +1393,25 @@ function renderVotingPhase(statements) {
             });
         }
     }
+}
+
+
+function renderTutorialHint(round, phase) {
+    const hintArea = document.getElementById('tutorialHint');
+    if (!hintArea) return;
+    
+    if (round > 1) {
+        hintArea.style.display = 'none';
+        return;
+    }
+
+    const hints = {
+        'DILEMMA': '📖 <b>Tutorial:</b> Skryba opisał problem. Wpisz swoje oświadczenie powyżej i kliknij Zatwierdź.',
+        'VOTING_PHASE': '🗳️ <b>Tutorial:</b> Wybierz plan, który najbardziej Ci odpowiada. Kliknij plan, aby zobaczyć jego skutki na paskach u góry.',
+        'SHADOW_PHASE': '🕯️ <b>Tutorial:</b> Skryba pisze historię. Możesz teraz rzucić klątwę lub obstawić wynik głosowania.'
+    };
+
+    hintArea.innerHTML = hints[phase] || '';
+    hintArea.style.display = hints[phase] ? 'block' : 'none';
 }
 

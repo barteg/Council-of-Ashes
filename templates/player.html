@@ -21,6 +21,41 @@
     <div id="gameId" style="display: none;">{{ game_id }}</div>
     <div id="playerId" style="display: none;">{{ player_id }}</div>
 
+    <!-- Floating Help Button -->
+    <button id="helpBtn" class="btn btn-secondary help-fab" data-toggle="modal" data-target="#rulesModal">?</button>
+
+    <!-- Rules Modal -->
+    <div class="modal fade" id="rulesModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">📜 Kodeks Rady Popiołów</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="font-size: 0.9rem;">
+                    <h6>🎯 Cel Gry</h6>
+                    <p>Zdobądź 100 punktów <b>Wpływu (Influence)</b> lub zrealizuj tajne Cele Frakcji, aby zdominować królestwo.</p>
+                    
+                    <h6>📊 Statystyki</h6>
+                    <ul>
+                        <li><b>Wpływ:</b> Twoje punkty zwycięstwa.</li>
+                        <li><b>Uraza (Spite):</b> Zyskujesz ją, gdy nikt na Ciebie nie głosuje. Używaj jej do Weta i Sabotażu.</li>
+                        <li><b>Statystyki Królestwa:</b> Jeśli spadną do 0, następuje upadek i "Pręgierz" (utrata punktów).</li>
+                    </ul>
+
+                    <h6>🔄 Fazy Rundy</h6>
+                    <ol>
+                        <li><b>Dylemat:</b> Opisz swoje rozwiązanie problemu.</li>
+                        <li><b>Głosowanie:</b> Wybierz najlepszy plan. Kliknij, by zobaczyć przewidywane skutki.</li>
+                        <li><b>Mroczny Rynek:</b> Gdy Skryba pisze historię, możesz rzucać klątwy lub obstawiać wyniki.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container mt-4">
         <!-- New Mobile Global Stats -->
         <div id="mobileGlobalStats" class="mb-3 p-2 rounded text-white" style="background-color: #222; border: 1px solid #444;">
@@ -72,6 +107,9 @@
         </div>
 
         <div id="gameArea" style="display: none;">
+            <!-- Tutorial Hint (Visible only in Round 1) -->
+            <div id="tutorialHint" class="alert alert-info mb-3" style="display: none; border-radius: 12px; font-size: 0.85rem;"></div>
+
             <div id="mainContentArea">
                 <!-- Dilemma Section -->
                 <div id="dilemmaSection" class="floating-element" style="display: none;">
