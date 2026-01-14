@@ -1,39 +1,42 @@
 {
-    "MABN": {
-        "host_sid": "OUi53rKYuNFGUFsSAAAD",
+    "YIXD": {
+        "host_sid": "8RlWCkjU8apyfT1yAAAP",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "K14LelGvGtaCgGcbAAAN",
-                "name": "gooner",
+                "sid": "wtKPyIBN1DseCPC9AAAV",
+                "name": "t\u0119py chuj",
                 "avatar": "/static/avatars/avatar1.png",
-                "faction": "Wysokie Kap\u0142a\u0144stwo",
+                "faction": "Syndykat Kupiecki",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 50,
+                    "Influence": 55,
                     "Spite": 0
                 },
                 "ready": true,
                 "shamed": false,
-                "action_status": "waiting",
+                "action_status": "joined",
                 "current_action": null,
                 "action_target": null,
-                "shadow_action_done": false,
+                "shadow_action_done": true,
+                "statement": "Lud odkrywa ze sperma jest bardziej zyciodajna od zbo\u017ca. Ca\u0142y rynek robi obrot o 180 stopni i produkuja spermy zostaje g\u0142\u00f3wnym nap\u0119dem jedzenia i gospodarki.",
                 "predicted_effect": {
-                    "Stability": -10,
+                    "Stability": 5,
                     "Economy": 5,
-                    "Faith": 10
+                    "Faith": -5
                 },
+                "statement_vote": "player_1",
                 "was_blocked": false,
-                "comment": "oj tak buczq +1",
-                "action_target_stat": null
+                "comment": ""
             }
         },
         "factions": {
             "Syndykat Kupiecki": {
                 "power": "Mistrzostwo Handlu",
-                "players": [],
+                "players": [
+                    "player_1"
+                ],
                 "objectives": [
                     {
                         "id": "econ_75",
@@ -77,9 +80,7 @@
             },
             "Wysokie Kap\u0142a\u0144stwo": {
                 "power": "Boska \u0141aska",
-                "players": [
-                    "player_1"
-                ],
+                "players": [],
                 "objectives": [
                     {
                         "id": "faith_75",
@@ -166,80 +167,30 @@
                 ]
             }
         },
-        "state": "DILEMMA",
+        "state": "SHADOW_PHASE",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "unholy_harvest",
-            "title": "Przekl\u0119te plony",
-            "description": "Nadnaturalnie bujne plony, cho\u0107 obfite, budz\u0105 groz\u0119. Ich smak jest nienaturalnie s\u0142odki, a ci, kt\u00f3rzy je spo\u017cywaj\u0105, odczuwaj\u0105 dziwne, mroczne pragnienia. Ludzie boj\u0105 si\u0119 je\u015b\u0107, ale g\u0142\u00f3d zaczyna doskwiera\u0107, a sady obfituj\u0105ce w owoce zdaj\u0105 si\u0119 szepta\u0107 kusz\u0105ce s\u0142owa.",
+            "id": "tutorial_prologue",
+            "title": "\ud83d\udcdc Prolog: Pierwsze G\u0142osowanie",
+            "description": "To jest runda treningowa. Kr\u00f3lestwo cierpi na brak zbo\u017ca. Mo\u017cesz zaproponowa\u0107 'Rozdanie zapas\u00f3w' (+Stab, -Econ) lub 'Modlitw\u0119 o deszcz' (+Faith). Wpisz sw\u00f3j pomys\u0142 i przetestuj mechaniki. Ta runda nie liczy si\u0119 do wyniku!",
             "image": "/static/images/placeholder.png",
-            "choices": [
-                {
-                    "text": "Rozkaza\u0107 ludowi spo\u017cywa\u0107 obfite, lecz dziwne plony.",
-                    "effects": {
-                        "Stability": -5,
-                        "Economy": 10,
-                        "Faith": -10
-                    },
-                    "narrative_consequence": "Ludzie z obrzydzeniem poch\u0142aniaj\u0105 plony, ich oczy p\u0142on\u0105 nowym, z\u0142owrogim blaskiem. Rynek p\u0119ka w szwach od jedzenia, lecz w sercach rodzi si\u0119 herezja, a pod sk\u00f3r\u0105 czu\u0107 narastaj\u0105ce, nieznane po\u017c\u0105danie."
-                },
-                {
-                    "text": "Spali\u0107 przekl\u0119te plony i polega\u0107 na starych zapasach, modl\u0105c si\u0119 o \u0142ask\u0119 bog\u00f3w.",
-                    "effects": {
-                        "Stability": 5,
-                        "Economy": -10,
-                        "Faith": 10
-                    },
-                    "narrative_consequence": "Pola p\u0142on\u0105, a dym z ognia wznosi si\u0119 do nieba, nios\u0105c modlitwy i strach. Spi\u017carnie pustoszej\u0105, ale dawna wiara odzyskuje swoj\u0105 si\u0142\u0119, a ulice na nowo oddychaj\u0105 spokojem, cho\u0107 burczy w nich z g\u0142odu."
-                }
-            ],
-            "narrative_prompt": "Co Rada uczyni z tym obrzydliwym darem? Czy nakarmicie nim lud, czy sp\u0142oniecie w imi\u0119 czysto\u015bci? Wyb\u00f3r nale\u017cy do was, \u015bcierwa."
+            "narrative_prompt": "Jak rada odpowie na g\u0142\u00f3d?",
+            "is_tutorial": true
         },
         "global_stats": {
-            "Stability": 49,
-            "Economy": 44,
-            "Faith": 38
+            "Stability": 48,
+            "Economy": 41,
+            "Faith": 47
         },
-        "current_round": 3,
-        "event_history": [
-            {
-                "round": 1,
-                "policy_chosen": "Bogowie oglosili, ze sperma jest nowym, najlepszym nawozem ",
-                "effects": {},
-                "outcome_narrative": "Wysokie Kap\u0142a\u0144stwo, op\u0119tane nowym, perwersyjnym objawieniem, z zapa\u0142em wdro\u017cy\u0142o boskie instrukcje. Smr\u00f3d religijnej gorliwo\u015bci zmieszany z czym\u015b plugawym zacz\u0105\u0142 unosi\u0107 si\u0119 nad kr\u00f3lestwem, gdy kap\u0142ani z fanatycznym oddaniem gromadzili i rozprowadzali '\u015bwi\u0119ty' naw\u00f3z. Sta\u0142o si\u0119 to po s\u0142owach goonera, kt\u00f3ry rzek\u0142: 'Bogowie oglosili, ze sperma jest nowym, najlepszym nawozem '. W odpowiedzi gooner stwierdzi\u0142: 'oj tak buczq +1', co tylko utwierdzi\u0142o kap\u0142an\u00f3w w ich obrzydliwym dziele. Niespodziewanie, w miejscach, gdzie zastosowano t\u0119 now\u0105 metod\u0119, plony zacz\u0119\u0142y rosn\u0105\u0107 z nienaturaln\u0105, groteskow\u0105 si\u0142\u0105, a ich owoce pulsowa\u0142y nie\u015bwi\u0119tym \u017cyciem. Stare b\u00f3stwa skamla\u0142y w zapomnianych \u015bwi\u0105tyniach, gdy wierni zwracali si\u0119 ku nowej, niepokoj\u0105cej dewocji. Rynki, niegdy\u015b gwarne, teraz cuchn\u0119\u0142y \u017cyznym, mi\u0119snym nadmiarem, ale szepty o nienaturalnym g\u0142odzie rozchodzi\u0142y si\u0119 w\u015br\u00f3d ludu. Rada og\u0142osi\u0142a to za objawienie, a jej kap\u0142ani z zapa\u0142em rozpowszechniali now\u0105, lepk\u0105 doktryn\u0119. Lecz na brudnych ulicach szeptano: \"To pierdolony absurd, nawet szczury tego nie tkn\u0105... chyba, \u017ce to ich jedyny posi\u0142ek, zjebany nawozie!\".",
-                "global_stats_after": {
-                    "Stability": 49,
-                    "Economy": 44,
-                    "Faith": 38
-                }
-            }
-        ],
+        "current_round": 1,
+        "event_history": [],
         "gemini_output": {
-            "id": "unholy_harvest",
-            "title": "Przekl\u0119te plony",
-            "description": "Nadnaturalnie bujne plony, cho\u0107 obfite, budz\u0105 groz\u0119. Ich smak jest nienaturalnie s\u0142odki, a ci, kt\u00f3rzy je spo\u017cywaj\u0105, odczuwaj\u0105 dziwne, mroczne pragnienia. Ludzie boj\u0105 si\u0119 je\u015b\u0107, ale g\u0142\u00f3d zaczyna doskwiera\u0107, a sady obfituj\u0105ce w owoce zdaj\u0105 si\u0119 szepta\u0107 kusz\u0105ce s\u0142owa.",
+            "id": "tutorial_prologue",
+            "title": "\ud83d\udcdc Prolog: Pierwsze G\u0142osowanie",
+            "description": "To jest runda treningowa. Kr\u00f3lestwo cierpi na brak zbo\u017ca. Mo\u017cesz zaproponowa\u0107 'Rozdanie zapas\u00f3w' (+Stab, -Econ) lub 'Modlitw\u0119 o deszcz' (+Faith). Wpisz sw\u00f3j pomys\u0142 i przetestuj mechaniki. Ta runda nie liczy si\u0119 do wyniku!",
             "image": "/static/images/placeholder.png",
-            "choices": [
-                {
-                    "text": "Rozkaza\u0107 ludowi spo\u017cywa\u0107 obfite, lecz dziwne plony.",
-                    "effects": {
-                        "Stability": -5,
-                        "Economy": 10,
-                        "Faith": -10
-                    },
-                    "narrative_consequence": "Ludzie z obrzydzeniem poch\u0142aniaj\u0105 plony, ich oczy p\u0142on\u0105 nowym, z\u0142owrogim blaskiem. Rynek p\u0119ka w szwach od jedzenia, lecz w sercach rodzi si\u0119 herezja, a pod sk\u00f3r\u0105 czu\u0107 narastaj\u0105ce, nieznane po\u017c\u0105danie."
-                },
-                {
-                    "text": "Spali\u0107 przekl\u0119te plony i polega\u0107 na starych zapasach, modl\u0105c si\u0119 o \u0142ask\u0119 bog\u00f3w.",
-                    "effects": {
-                        "Stability": 5,
-                        "Economy": -10,
-                        "Faith": 10
-                    },
-                    "narrative_consequence": "Pola p\u0142on\u0105, a dym z ognia wznosi si\u0119 do nieba, nios\u0105c modlitwy i strach. Spi\u017carnie pustoszej\u0105, ale dawna wiara odzyskuje swoj\u0105 si\u0142\u0119, a ulice na nowo oddychaj\u0105 spokojem, cho\u0107 burczy w nich z g\u0142odu."
-                }
-            ],
-            "narrative_prompt": "Co Rada uczyni z tym obrzydliwym darem? Czy nakarmicie nim lud, czy sp\u0142oniecie w imi\u0119 czysto\u015bci? Wyb\u00f3r nale\u017cy do was, \u015bcierwa."
+            "narrative_prompt": "Jak rada odpowie na g\u0142\u00f3d?",
+            "is_tutorial": true
         },
         "next_round_votes": [],
         "policies_passed_counts": {
@@ -260,60 +211,30 @@
             }
         },
         "winning_statement_counts": {
-            "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 1,
+            "Syndykat Kupiecki": 1,
+            "Wysokie Kap\u0142a\u0144stwo": 0,
             "Gwardia Kr\u00f3lewska": 0
         },
         "unanimous_vote_counts": {
-            "Syndykat Kupiecki": 0,
-            "Wysokie Kap\u0142a\u0144stwo": 1,
+            "Syndykat Kupiecki": 1,
+            "Wysokie Kap\u0142a\u0144stwo": 0,
             "Gwardia Kr\u00f3lewska": 0
         },
-        "join_url": "/join/MABN",
+        "join_url": "/join/YIXD",
         "winning_statement": {
             "player_id": "player_1",
-            "statement": "Bogowie oglosili, ze sperma jest nowym, najlepszym nawozem ",
-            "name": "gooner",
+            "statement": "Lud odkrywa ze sperma jest bardziej zyciodajna od zbo\u017ca. Ca\u0142y rynek robi obrot o 180 stopni i produkuja spermy zostaje g\u0142\u00f3wnym nap\u0119dem jedzenia i gospodarki.",
+            "name": "t\u0119py chuj",
             "was_blocked": false
         },
         "shadow_effects": [
             {
                 "source": "player_1",
-                "type": "gambler",
+                "type": "censor",
                 "target": "",
                 "payload": "",
                 "round": 1
             }
-        ],
-        "next_round_dilemma": {
-            "id": "unholy_harvest",
-            "title": "Przekl\u0119te plony",
-            "description": "Nadnaturalnie bujne plony, cho\u0107 obfite, budz\u0105 groz\u0119. Ich smak jest nienaturalnie s\u0142odki, a ci, kt\u00f3rzy je spo\u017cywaj\u0105, odczuwaj\u0105 dziwne, mroczne pragnienia. Ludzie boj\u0105 si\u0119 je\u015b\u0107, ale g\u0142\u00f3d zaczyna doskwiera\u0107, a sady obfituj\u0105ce w owoce zdaj\u0105 si\u0119 szepta\u0107 kusz\u0105ce s\u0142owa.",
-            "image": "/static/images/placeholder.png",
-            "choices": [
-                {
-                    "text": "Rozkaza\u0107 ludowi spo\u017cywa\u0107 obfite, lecz dziwne plony.",
-                    "effects": {
-                        "Stability": -5,
-                        "Economy": 10,
-                        "Faith": -10
-                    },
-                    "narrative_consequence": "Ludzie z obrzydzeniem poch\u0142aniaj\u0105 plony, ich oczy p\u0142on\u0105 nowym, z\u0142owrogim blaskiem. Rynek p\u0119ka w szwach od jedzenia, lecz w sercach rodzi si\u0119 herezja, a pod sk\u00f3r\u0105 czu\u0107 narastaj\u0105ce, nieznane po\u017c\u0105danie."
-                },
-                {
-                    "text": "Spali\u0107 przekl\u0119te plony i polega\u0107 na starych zapasach, modl\u0105c si\u0119 o \u0142ask\u0119 bog\u00f3w.",
-                    "effects": {
-                        "Stability": 5,
-                        "Economy": -10,
-                        "Faith": 10
-                    },
-                    "narrative_consequence": "Pola p\u0142on\u0105, a dym z ognia wznosi si\u0119 do nieba, nios\u0105c modlitwy i strach. Spi\u017carnie pustoszej\u0105, ale dawna wiara odzyskuje swoj\u0105 si\u0142\u0119, a ulice na nowo oddychaj\u0105 spokojem, cho\u0107 burczy w nich z g\u0142odu."
-                }
-            ],
-            "narrative_prompt": "Co Rada uczyni z tym obrzydliwym darem? Czy nakarmicie nim lud, czy sp\u0142oniecie w imi\u0119 czysto\u015bci? Wyb\u00f3r nale\u017cy do was, \u015bcierwa."
-        },
-        "last_outcome_narrative_data": {
-            "outcome_narrative": "Wysokie Kap\u0142a\u0144stwo, op\u0119tane nowym, perwersyjnym objawieniem, z zapa\u0142em wdro\u017cy\u0142o boskie instrukcje. Smr\u00f3d religijnej gorliwo\u015bci zmieszany z czym\u015b plugawym zacz\u0105\u0142 unosi\u0107 si\u0119 nad kr\u00f3lestwem, gdy kap\u0142ani z fanatycznym oddaniem gromadzili i rozprowadzali '\u015bwi\u0119ty' naw\u00f3z. Sta\u0142o si\u0119 to po s\u0142owach goonera, kt\u00f3ry rzek\u0142: 'Bogowie oglosili, ze sperma jest nowym, najlepszym nawozem '. W odpowiedzi gooner stwierdzi\u0142: 'oj tak buczq +1', co tylko utwierdzi\u0142o kap\u0142an\u00f3w w ich obrzydliwym dziele. Niespodziewanie, w miejscach, gdzie zastosowano t\u0119 now\u0105 metod\u0119, plony zacz\u0119\u0142y rosn\u0105\u0107 z nienaturaln\u0105, groteskow\u0105 si\u0142\u0105, a ich owoce pulsowa\u0142y nie\u015bwi\u0119tym \u017cyciem. Stare b\u00f3stwa skamla\u0142y w zapomnianych \u015bwi\u0105tyniach, gdy wierni zwracali si\u0119 ku nowej, niepokoj\u0105cej dewocji. Rynki, niegdy\u015b gwarne, teraz cuchn\u0119\u0142y \u017cyznym, mi\u0119snym nadmiarem, ale szepty o nienaturalnym g\u0142odzie rozchodzi\u0142y si\u0119 w\u015br\u00f3d ludu. Rada og\u0142osi\u0142a to za objawienie, a jej kap\u0142ani z zapa\u0142em rozpowszechniali now\u0105, lepk\u0105 doktryn\u0119. Lecz na brudnych ulicach szeptano: \"To pierdolony absurd, nawet szczury tego nie tkn\u0105... chyba, \u017ce to ich jedyny posi\u0142ek, zjebany nawozie!\"."
-        }
+        ]
     }
 }

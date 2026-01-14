@@ -3,6 +3,7 @@ from flask_socketio import emit
 from server.extensions import socketio
 from server.services.game_manager import game_manager
 from server.services.llm.narrator import narrator
+from server.services.search_service import search_service
 import json
 import random
 
@@ -160,11 +161,20 @@ def resolve_dilemma(game_id, player_comments=None):
                 "is_winner": (pid == winning_player_id)
             })
 
+    # Research Step: Search for unknown terms/names in statements
+    try:
+        search_terms = narrator.get_search_recommendations(player_statements_for_gemini)
+        web_context = search_service.search_terms(search_terms) if search_terms else None
+    except Exception as e:
+        print(f"[SEARCH] Research step failed: {e}")
+        web_context = None
+
     chapter_data = narrator.call_gemini_for_next_chapter(
         game_state=game,
         chosen_policy=winning_player["statement"] if winning_player else "Inaction",
         player_statements=player_statements_for_gemini,
-        player_comments=player_comments
+        player_comments=player_comments,
+        web_context=web_context
     )
 
     if chapter_data:

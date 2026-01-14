@@ -122,17 +122,46 @@ STATEMENT_EVALUATION_PROMPT_STATIC = """Jesteś Mistrzem Gry w „Radzie Popioł
 ```
 """
 
+# Prompt to identify terms that need searching
+SEARCH_TERMS_PROMPT = """Przeanalizuj poniższe oświadczenia graczy. 
+Wypisz listę (maksymalnie 3) nazwisk, terminów lub nawiązań, których NIE ROZUMIESZ lub które wydają się być postaciami/miejscami ze świata rzeczywistego lub popkultury.
+
+Jeśli wszystko jest jasne, zwróć pustą listę.
+
+## Oświadczenia:
+{player_statements_json}
+
+## Format wyjściowy (JSON):
+```json
+{{
+  "search_terms": ["Termin 1", "Termin 2"]
+}}
+```
+"""
+
 class NarrativeService:
     def __init__(self, model):
         self.model = model
 
-    def call_gemini_for_next_chapter(self, game_state, chosen_policy, player_statements, player_comments):
+    def get_search_recommendations(self, player_statements):
+        prompt = SEARCH_TERMS_PROMPT.format(
+            player_statements_json=json.dumps(player_statements, indent=2)
+        )
+        result = self._generate_and_parse(prompt, None, return_dict=True)
+        return result.get("search_terms", []) if result else []
+
+    def call_gemini_for_next_chapter(self, game_state, chosen_policy, player_statements, player_comments, web_context=None):
         prompt = f"""{OUTCOME_NARRATIVE_PROMPT_STATIC.format(
             game_state_json=json.dumps(self._sanitize_game_state(game_state), indent=2),
             chosen_policy=chosen_policy,
             player_statements_json=json.dumps(player_statements, indent=2),
             player_comments_json=json.dumps(player_comments, indent=2)
         )}"""
+        
+        if web_context:
+            prompt += f"\n\n## DODATKOWY KONTEKST Z INTERNETU:\n{json.dumps(web_context, indent=2, ensure_ascii=False)}"
+            prompt += "\nUżyj powyższych informacji, aby lepiej zrozumieć intencje graczy i nawiązania w ich oświadczeniach."
+
         return self._generate_and_parse(prompt, "outcome.json", return_dict=True)
 
     def _sanitize_game_state(self, game_state):
