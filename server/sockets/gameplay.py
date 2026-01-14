@@ -20,6 +20,7 @@ def start_game_logic(game_id):
         game["current_round"] = 1
         game["dilemma_active"] = True
         
+        for player_id, player in game["players"].items():
             player["action_status"] = "waiting"
             player["shadow_action_done"] = False
 
@@ -534,6 +535,7 @@ def handle_player_action(data):
                 player["action_target"] = None
                 player["action_target_stat"] = None
                 player["action_status"] = "waiting"
+                player["shadow_action_done"] = False
 
             # Use Pre-generated dilemma from previous AI call
             generated_dilemma = game.get("next_round_dilemma")
