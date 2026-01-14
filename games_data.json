@@ -1,10 +1,10 @@
 {
-    "DVQN": {
-        "host_sid": "taxvAXR9FTlpIwJQAAAB",
+    "EFGA": {
+        "host_sid": "jNtCJfIN9Rh7yWrDAAAD",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "XIVCDksTZuVxJNIyAAAL",
+                "sid": "U78HridHy9YdVpRNAAAN",
                 "name": "gooner",
                 "avatar": "/static/avatars/avatar1.png",
                 "faction": "Gwardia Kr\u00f3lewska",
@@ -19,12 +19,12 @@
                 "action_status": "joined",
                 "current_action": null,
                 "action_target": null,
-                "action_target_stat": null,
-                "statement": "tak",
+                "shadow_action_done": true,
+                "statement": "g\u0142osni ida na front",
                 "predicted_effect": {
-                    "Stability": 0,
-                    "Economy": 0,
-                    "Faith": 0
+                    "Stability": -10,
+                    "Economy": 5,
+                    "Faith": 5
                 },
                 "statement_vote": "player_1",
                 "was_blocked": false,
@@ -170,95 +170,37 @@
         "state": "SHADOW_PHASE",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "round_1_hunger_dilemma",
-            "title": "G\u0142\u00f3d Nadchodzi",
-            "description": "N\u0119dzny plon pozostawi\u0142 wiele brzuch\u00f3w pustych, a zima nadci\u0105ga. Szepty niezadowolenia rozprzestrzeniaj\u0105 si\u0119 po b\u0142otnistych ulicach, zamieniaj\u0105c si\u0119 w pomruki buntu w\u015br\u00f3d g\u0142oduj\u0105cych. Nawet modlitwy w zimnych \u015bwi\u0105tyniach oferuj\u0105 niewiele ciep\u0142a przeciwko trawi\u0105cemu strachowi, kt\u00f3ry ogarnia zwyk\u0142ych ludzi. Stara kobieta, skulona na targu, mrukn\u0119\u0142a: \u201e\u017byjemy na popio\u0142ach, a wkr\u00f3tce do nich do\u0142\u0105czymy.\u201d",
+            "id": "tutorial_hunger_unrest",
+            "title": "Szept G\u0142odnych",
+            "description": "Zima nadesz\u0142a, a wraz z ni\u0105 g\u0142\u00f3d, kt\u00f3ry dusi\u0142 kr\u00f3lestwo. Spichlerze \u015bwiec\u0105 pustkami, a lud, zwykle cichy i pos\u0142uszny, zaczyna szepta\u0107 o buncie. Kap\u0142ani, pr\u00f3buj\u0105c uspokoi\u0107 nastroje, widz\u0105, jak ich \u015bwi\u0105tynie pustoszej\u0105, a wiara s\u0142abnie, zast\u0105piona przez desperacj\u0119. Na ulicach s\u0142ycha\u0107 krzyki: 'Chleba, albo krew!'",
             "image": "/static/images/placeholder.png",
-            "choices": [
-                {
-                    "text": "Przydziel racje \u017cywno\u015bciowe z kr\u00f3lewskich spichlerzy.",
-                    "effects": {
-                        "Stability": 10,
-                        "Economy": -5,
-                        "Faith": 0
-                    },
-                    "narrative_consequence": "Zapas kr\u00f3lewski zostanie uszczuplony, ale ludzie poczuj\u0105 ulg\u0119 i zaufanie do w\u0142adzy. Spichlerze \u015bwiec\u0105 pustkami, ale nadzieja na jutro ro\u015bnie."
-                },
-                {
-                    "text": "Zwi\u0119ksz podatki, aby kupi\u0107 \u017cywno\u015b\u0107 z zewn\u0105trz.",
-                    "effects": {
-                        "Stability": -10,
-                        "Economy": 5,
-                        "Faith": 0
-                    },
-                    "narrative_consequence": "Bogatsi obywatele zareaguj\u0105 gniewem na nowe obci\u0105\u017cenia, co mo\u017ce doprowadzi\u0107 do zamieszek, ale kr\u00f3tkoterminowo sprowadzi to jedzenie. Bogactwo kr\u00f3lestwa wzro\u015bnie, lecz niezadowolenie b\u0119dzie widoczne na ulicach."
-                },
-                {
-                    "text": "Zorganizuj modlitwy i posty, szukaj\u0105c boskiej interwencji.",
-                    "effects": {
-                        "Stability": -5,
-                        "Economy": 0,
-                        "Faith": 10
-                    },
-                    "narrative_consequence": "Ludzie zwr\u00f3c\u0105 si\u0119 ku wierze, ale bez natychmiastowej ulgi g\u0142\u00f3d b\u0119dzie narasta\u0142. \u015awi\u0105tynie b\u0119d\u0105 przepe\u0142nione, ale na ulicach wci\u0105\u017c b\u0119d\u0105 s\u0142ycha\u0107 krzyki g\u0142odu."
-                }
-            ],
-            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zaradzi\u0107 narastaj\u0105cej rozpaczy, zanim ogarnie ona ca\u0142e kr\u00f3lestwo."
+            "narrative_prompt": "G\u0142\u00f3d trawi wasze ziemie, a cierpliwo\u015b\u0107 ludu wygasa. Jak Rada zamierza zaspokoi\u0107 krzyki g\u0142odnych i uciszy\u0107 narastaj\u0105cy bunt?"
         },
         "global_stats": {
-            "Stability": 45,
-            "Economy": 48,
-            "Faith": 43
+            "Stability": 37,
+            "Economy": 46,
+            "Faith": 45
         },
         "current_round": 1,
         "event_history": [],
         "gemini_output": {
-            "id": "round_1_hunger_dilemma",
-            "title": "G\u0142\u00f3d Nadchodzi",
-            "description": "N\u0119dzny plon pozostawi\u0142 wiele brzuch\u00f3w pustych, a zima nadci\u0105ga. Szepty niezadowolenia rozprzestrzeniaj\u0105 si\u0119 po b\u0142otnistych ulicach, zamieniaj\u0105c si\u0119 w pomruki buntu w\u015br\u00f3d g\u0142oduj\u0105cych. Nawet modlitwy w zimnych \u015bwi\u0105tyniach oferuj\u0105 niewiele ciep\u0142a przeciwko trawi\u0105cemu strachowi, kt\u00f3ry ogarnia zwyk\u0142ych ludzi. Stara kobieta, skulona na targu, mrukn\u0119\u0142a: \u201e\u017byjemy na popio\u0142ach, a wkr\u00f3tce do nich do\u0142\u0105czymy.\u201d",
+            "id": "tutorial_hunger_unrest",
+            "title": "Szept G\u0142odnych",
+            "description": "Zima nadesz\u0142a, a wraz z ni\u0105 g\u0142\u00f3d, kt\u00f3ry dusi\u0142 kr\u00f3lestwo. Spichlerze \u015bwiec\u0105 pustkami, a lud, zwykle cichy i pos\u0142uszny, zaczyna szepta\u0107 o buncie. Kap\u0142ani, pr\u00f3buj\u0105c uspokoi\u0107 nastroje, widz\u0105, jak ich \u015bwi\u0105tynie pustoszej\u0105, a wiara s\u0142abnie, zast\u0105piona przez desperacj\u0119. Na ulicach s\u0142ycha\u0107 krzyki: 'Chleba, albo krew!'",
             "image": "/static/images/placeholder.png",
-            "choices": [
-                {
-                    "text": "Przydziel racje \u017cywno\u015bciowe z kr\u00f3lewskich spichlerzy.",
-                    "effects": {
-                        "Stability": 10,
-                        "Economy": -5,
-                        "Faith": 0
-                    },
-                    "narrative_consequence": "Zapas kr\u00f3lewski zostanie uszczuplony, ale ludzie poczuj\u0105 ulg\u0119 i zaufanie do w\u0142adzy. Spichlerze \u015bwiec\u0105 pustkami, ale nadzieja na jutro ro\u015bnie."
-                },
-                {
-                    "text": "Zwi\u0119ksz podatki, aby kupi\u0107 \u017cywno\u015b\u0107 z zewn\u0105trz.",
-                    "effects": {
-                        "Stability": -10,
-                        "Economy": 5,
-                        "Faith": 0
-                    },
-                    "narrative_consequence": "Bogatsi obywatele zareaguj\u0105 gniewem na nowe obci\u0105\u017cenia, co mo\u017ce doprowadzi\u0107 do zamieszek, ale kr\u00f3tkoterminowo sprowadzi to jedzenie. Bogactwo kr\u00f3lestwa wzro\u015bnie, lecz niezadowolenie b\u0119dzie widoczne na ulicach."
-                },
-                {
-                    "text": "Zorganizuj modlitwy i posty, szukaj\u0105c boskiej interwencji.",
-                    "effects": {
-                        "Stability": -5,
-                        "Economy": 0,
-                        "Faith": 10
-                    },
-                    "narrative_consequence": "Ludzie zwr\u00f3c\u0105 si\u0119 ku wierze, ale bez natychmiastowej ulgi g\u0142\u00f3d b\u0119dzie narasta\u0142. \u015awi\u0105tynie b\u0119d\u0105 przepe\u0142nione, ale na ulicach wci\u0105\u017c b\u0119d\u0105 s\u0142ycha\u0107 krzyki g\u0142odu."
-                }
-            ],
-            "narrative_prompt": "Rada musi zdecydowa\u0107, jak zaradzi\u0107 narastaj\u0105cej rozpaczy, zanim ogarnie ona ca\u0142e kr\u00f3lestwo."
+            "narrative_prompt": "G\u0142\u00f3d trawi wasze ziemie, a cierpliwo\u015b\u0107 ludu wygasa. Jak Rada zamierza zaspokoi\u0107 krzyki g\u0142odnych i uciszy\u0107 narastaj\u0105cy bunt?"
         },
         "next_round_votes": [],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
                 "Stability": 0,
-                "Economy": 0,
+                "Economy": 1,
                 "Faith": 0
             },
             "Wysokie Kap\u0142a\u0144stwo": {
                 "Stability": 0,
                 "Economy": 0,
-                "Faith": 0
+                "Faith": 1
             },
             "Gwardia Kr\u00f3lewska": {
                 "Stability": 0,
@@ -276,10 +218,10 @@
             "Wysokie Kap\u0142a\u0144stwo": 0,
             "Gwardia Kr\u00f3lewska": 1
         },
-        "join_url": "/join/DVQN",
+        "join_url": "/join/EFGA",
         "winning_statement": {
             "player_id": "player_1",
-            "statement": "tak",
+            "statement": "g\u0142osni ida na front",
             "name": "gooner",
             "was_blocked": false
         },
@@ -289,13 +231,6 @@
                 "type": "curse",
                 "target": "",
                 "payload": "chuj",
-                "round": 1
-            },
-            {
-                "source": "player_1",
-                "type": "curse",
-                "target": "",
-                "payload": "",
                 "round": 1
             }
         ]

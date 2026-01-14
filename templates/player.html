@@ -131,123 +131,131 @@
                 
                                 
                 
-                                                <!-- Balanced Stat Sliders -->
+                                                                <!-- Balanced Vertical Sliders -->
                 
                                 
                 
-                                                <div class="mb-3 p-3 rounded" style="background-color: #2a2a2a; border: 1px solid #444;">
+                                                                <div class="mb-3 p-3 rounded" style="background-color: #2a2a2a; border: 1px solid #444;">
                 
                                 
                 
-                                                    <h6 class="small text-white-50 mb-3">Wpływ na Królestwo (Suma zmian max +5):</h6>
+                                                                    <h6 class="text-center small text-white-50">Wpływ na Królestwo (Suma zmian max +5):</h6>
                 
                                 
                 
-                                                    
+                                                                    
                 
                                 
                 
-                                                    <div class="mb-3">
+                                                                    <div class="vertical-slider-container">
                 
                                 
                 
-                                                        <div class="d-flex justify-content-between mb-1">
+                                                                        <!-- Stability -->
                 
                                 
                 
-                                                            <span class="badge badge-primary">Stabilność</span>
+                                                                        <div class="vertical-slider-group">
                 
                                 
                 
-                                                            <span id="labelStab">0</span>
+                                                                            <span class="badge badge-primary stat-label-vertical">Stab.</span>
                 
                                 
                 
-                                                        </div>
+                                                                            <input type="range" id="manualStab" min="-10" max="10" value="0">
                 
                                 
                 
-                                                        <input type="range" id="manualStab" class="custom-range" min="-10" max="10" value="0">
+                                                                            <span id="labelStab" class="stat-value-vertical">0</span>
                 
                                 
                 
-                                                    </div>
+                                                                        </div>
                 
                                 
                 
-                                
+                                                
                 
                                 
                 
-                                                    <div class="mb-3">
+                                                                        <!-- Economy -->
                 
                                 
                 
-                                                        <div class="d-flex justify-content-between mb-1">
+                                                                        <div class="vertical-slider-group">
                 
                                 
                 
-                                                            <span class="badge badge-success">Gospodarka</span>
+                                                                            <span class="badge badge-success stat-label-vertical">Econ.</span>
                 
                                 
                 
-                                                            <span id="labelEcon">0</span>
+                                                                            <input type="range" id="manualEcon" min="-10" max="10" value="0">
                 
                                 
                 
-                                                        </div>
+                                                                            <span id="labelEcon" class="stat-value-vertical">0</span>
                 
                                 
                 
-                                                        <input type="range" id="manualEcon" class="custom-range" min="-10" max="10" value="0">
+                                                                        </div>
                 
                                 
                 
-                                                    </div>
+                                                
                 
                                 
                 
-                                
+                                                                        <!-- Faith -->
                 
                                 
                 
-                                                    <div class="mb-3">
+                                                                        <div class="vertical-slider-group">
                 
                                 
                 
-                                                        <div class="d-flex justify-content-between mb-1">
+                                                                            <span class="badge badge-danger stat-label-vertical">Faith</span>
                 
                                 
                 
-                                                            <span class="badge badge-warning text-dark">Wiara</span>
+                                                                            <input type="range" id="manualFaith" min="-10" max="10" value="0">
                 
                                 
                 
-                                                            <span id="labelFaith">0</span>
+                                                                            <span id="labelFaith" class="stat-value-vertical">0</span>
                 
                                 
                 
-                                                        </div>
+                                                                        </div>
                 
                                 
                 
-                                                        <input type="range" id="manualFaith" class="custom-range" min="-10" max="10" value="0">
+                                                                    </div>
                 
                                 
                 
-                                                    </div>
+                                                
                 
                                 
                 
-                                
+                                                                    <div id="budgetWarning" class="alert alert-danger mt-3 py-2 text-center" style="display: none; font-size: 0.9rem; font-weight: bold;">
                 
                                 
                 
-                                                    <div id="budgetWarning" class="small text-danger" style="display: none;">Limit punktów (+5) przekroczony!</div>
+                                                                        🛑 LIMIT PUNKTÓW (+5) PRZEKROCZONY!
                 
                                 
                 
-                                                </div>
+                                                                    </div>
+                
+                                
+                
+                                                                </div>
+                
+                                
+                
+                                                
                 
                                 
                 

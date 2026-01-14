@@ -1233,30 +1233,26 @@ function previewPlayerStats(baseStats, effect) {
             container.innerHTML = '';
             shadowActionInput.style.display = 'none';
             
-            const shuffled = [...shadowActions].sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, 3);
+            // Pick ONE random action
+            const action = shadowActions[Math.floor(Math.random() * shadowActions.length)];
             
-            selected.forEach(action => {
-                const card = document.createElement('div');
-                card.className = 'tarot-card';
-                card.innerHTML = `
-                    <div class='tarot-face tarot-front'></div>
-                    <div class='tarot-face tarot-back'>
-                        <div class='tarot-title'>${action.title}</div>
-                        <div class='tarot-desc'>${action.desc}</div>
-                        ${action.cost > 0 ? `<div class='tarot-cost'>Koszt: ${action.cost} ${action.currency}</div>` : ''}
-                    </div>
-                `;
-                
-                card.onclick = () => {
-                    if (card.classList.contains('flipped')) {
-                        showShadowActionInput(action);
-                    } else {
-                        card.classList.add('flipped');
-                    }
-                };
-                container.appendChild(card);
-            });
+            const card = document.createElement('div');
+            card.className = 'tarot-card flipped'; // Instantly revealed
+            card.innerHTML = `
+                <div class='tarot-face tarot-front'></div>
+                <div class='tarot-face tarot-back' style='width: 150px; height: 220px;'>
+                    <div class='tarot-title' style='font-size: 1rem;'>${action.title}</div>
+                    <hr class='border-secondary w-100 my-2'>
+                    <div class='tarot-desc' style='font-size: 0.8rem;'>${action.desc}</div>
+                    ${action.cost > 0 ? `<div class='tarot-cost' style='font-size: 0.9rem;'>Koszt: ${action.cost} ${action.currency}</div>` : '<div class="tarot-cost text-success">DARMOWA</div>'}
+                    <button class="btn btn-sm btn-primary mt-3">WYBIERZ</button>
+                </div>
+            `;
+            
+            card.onclick = () => {
+                showShadowActionInput(action);
+            };
+            container.appendChild(card);
         }
     }
 

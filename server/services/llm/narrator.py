@@ -193,7 +193,6 @@ class NarrativeService:
             if output_file:
                 with open(output_file, "w", encoding="utf-8") as f:
                     json.dump(parsed_json, f, ensure_ascii=False, indent=2)
-                return True
             
             if return_dict:
                 return parsed_json

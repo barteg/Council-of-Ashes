@@ -451,3 +451,39 @@ h1 {
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 
+
+/* Vertical Sliders Styling */
+.vertical-slider-container {
+    display: flex;
+    justify-content: space-around;
+    height: 200px;
+    margin-top: 20px;
+}
+
+.vertical-slider-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+}
+
+.vertical-slider-group input[type='range'] {
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    width: 25px;
+    height: 150px;
+    padding: 0 5px;
+}
+
+.stat-label-vertical {
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.stat-value-vertical {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
