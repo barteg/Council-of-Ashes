@@ -209,7 +209,7 @@ let playerChoice = null;
 let lastSubmittedStatement = ''; // New variable to store the last submitted statement
 let clientGlobalStats = { Stability: 50, Economy: 50, Faith: 50 };
 let isHost = false;
-let isTTSEnabled = true;
+let isTTSEnabled = false;
 let isMusicEnabled = true;
 
 if (nextRoundBtn) {
