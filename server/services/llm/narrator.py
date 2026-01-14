@@ -131,9 +131,6 @@ class NarrativeService:
         )}"""
         return self._generate_and_parse(prompt, "outcome.json", return_dict=True)
 
-    def evaluate_player_statements(self, game_state, player_statements):
-
-
     def _sanitize_game_state(self, game_state):
         clean_state = {
             "current_round": game_state.get("current_round"),
