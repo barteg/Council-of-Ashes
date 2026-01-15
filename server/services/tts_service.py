@@ -17,15 +17,40 @@ class TTSService:
         self.load_model()
 
     def load_model(self):
-        print("[TTS] TTS is disabled by configuration to improve speed.")
-        self.model = None
-        # Original loading logic commented out/removed
+        try:
+            print("[TTS] Loading TTS model (this might take a few seconds)...")
+            self.model = TTS(
+                model_name="tts_models/multilingual/multi-dataset/xtts_v2",
+                progress_bar=False,
+                gpu=True
+            ).to(self.device)
+            print(f"[TTS] Model loaded successfully on {self.device}.")
+        except Exception as e:
+            print(f"[TTS] Failed to load on {self.device}: {e}")
+            if self.device == "cuda":
+                print("[TTS] Retrying on CPU...")
+                self.device = "cpu"
+                try:
+                    self.model = TTS(
+                        model_name="tts_models/multilingual/multi-dataset/xtts_v2",
+                        progress_bar=False,
+                        gpu=False
+                    ).to("cpu")
+                    print("[TTS] Model loaded successfully on CPU.")
+                except Exception as e2:
+                    print(f"[TTS] Failed to load on CPU: {e2}")
+                    self.model = None
+            else:
+                self.model = None
 
     def generate_audio(self, text, output_file):
         if not self.model:
             raise Exception("TTS Model not loaded")
         
-        speaker_wav_path = "tts/Rafal_Walentowicz.wav"
+        # Calculate absolute path to the speaker file
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        speaker_wav_path = os.path.join(base_dir, "tts", "Rafal_Walentowicz.wav")
+        
         if not os.path.exists(speaker_wav_path):
              raise Exception(f"Speaker WAV not found at {speaker_wav_path}")
 

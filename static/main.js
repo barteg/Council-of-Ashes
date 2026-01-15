@@ -91,13 +91,13 @@ function completeLoading(isPlayerView = false) {
     }, 500); // Wait half a second before hiding
 }
 
-function playNarration(text) {
+function fetchNarrationAudio(text) {
     if (!isTTSEnabled) {
-        return Promise.resolve();
+        return Promise.resolve(null);
     }
     return new Promise((resolve, reject) => {
         if (!text || text.trim() === '') {
-            resolve();
+            resolve(null);
             return;
         }
 
@@ -105,8 +105,8 @@ function playNarration(text) {
         const timeoutId = setTimeout(() => {
             controller.abort();
             console.warn('TTS request timed out.');
-            resolve(); // Resolve anyway to unblock UI
-        }, 10000); // 10 second timeout
+            resolve(null); // Resolve with null to allow game to proceed
+        }, 60000); // 60 second timeout
 
         fetch('/api/tts', {
             method: 'POST',
@@ -121,13 +121,8 @@ function playNarration(text) {
         })
         .then(blob => {
             const audioUrl = URL.createObjectURL(blob);
-            currentAudio = new Audio(audioUrl);
-            currentAudio.play();
-            currentAudio.onended = () => {
-                currentAudio = null;
-                // This part is for queuing, not directly related to the loading promise
-            };
-            resolve(); // Resolve the promise once audio is ready and starts playing
+            const audio = new Audio(audioUrl);
+            resolve(audio); 
         })
         .catch(error => {
             clearTimeout(timeoutId);
@@ -136,8 +131,7 @@ function playNarration(text) {
             } else {
                 console.error('Error fetching TTS audio:', error);
             }
-            // Resolve anyway to ensure UI unblocks
-            resolve(); 
+            resolve(null); 
         });
     });
 }
@@ -209,7 +203,7 @@ let playerChoice = null;
 let lastSubmittedStatement = ''; // New variable to store the last submitted statement
 let clientGlobalStats = { Stability: 50, Economy: 50, Faith: 50 };
 let isHost = false;
-let isTTSEnabled = false;
+let isTTSEnabled = !!document.getElementById('createGameBtn');
 let isMusicEnabled = true;
 
 if (nextRoundBtn) {
@@ -282,6 +276,50 @@ socket.on('game_started_for_player', (initial_game_state) => {
     }
 });
 
+function loadImage(src) {
+    return new Promise((resolve) => {
+        if (!src || src.includes('placeholder')) {
+            resolve(false); // Resolve false if no valid image to load
+            return;
+        }
+
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => {
+            console.warn("Image failed to load:", src);
+            resolve(false);
+        };
+        img.src = src;
+    });
+}
+
+function revealContent(imgElement, containerElement, src, textElement) {
+     if (textElement) textElement.style.opacity = '0';
+     
+     if (src && !src.includes('placeholder')) {
+         if (containerElement) containerElement.style.display = 'block';
+         if (imgElement) {
+             imgElement.style.opacity = '0';
+             imgElement.src = src;
+             // Trigger reflow to ensure transition happens
+             void imgElement.offsetWidth;
+             imgElement.style.opacity = '1';
+         }
+     } else {
+         if (containerElement) containerElement.style.display = 'none';
+     }
+
+     setTimeout(() => {
+        if (textElement) {
+            textElement.style.display = 'block';
+             // Trigger reflow
+            void textElement.offsetWidth;
+            textElement.style.transition = 'opacity 1s ease-in-out';
+            textElement.style.opacity = '1';
+        }
+    }, 500);
+}
+
 socket.on('game_event', async (data) => {
     console.log('Game Event:', data);
     if (data.event === 'dilemma_prompt') {
@@ -289,22 +327,32 @@ socket.on('game_event', async (data) => {
 
         // Check if we are on the host page
         if (document.getElementById('hostControl')) {
-            showLoadingScreen(false);
             console.log('[DEBUG] Host Dilemma Description:', dilemma.description);
-            document.getElementById('hostNarrative').textContent = dilemma.description;
+            const hostNarrative = document.getElementById('hostNarrative');
+            hostNarrative.textContent = dilemma.description;
+            hostNarrative.style.opacity = '0'; // Ensure hidden start
             
-            /*
-            try {
-                await playNarration(dilemma.description); // AI NARRATOR
-            } catch (error) {
-                console.error("Failed to play narration:", error);
-            } finally {
-                completeLoading(false);
-            }
-            */
-            completeLoading(false); // Ensure loading completes
+            const hostEventImage = document.getElementById('hostEventImage');
+            const hostImageContainer = document.getElementById('hostImageContainer');
 
-            // Update host global stats progress bars
+            // Synchronize Assets
+            Promise.all([
+                loadImage(dilemma.image),
+                fetchNarrationAudio(dilemma.description)
+            ]).then(([imageLoaded, audio]) => {
+                completeLoading(false); // Hide loading screen
+                
+                // Reveal Visuals
+                revealContent(hostEventImage, hostImageContainer, dilemma.image, hostNarrative);
+
+                // Play Audio
+                if (audio) {
+                    currentAudio = audio;
+                    currentAudio.play().catch(e => console.error("Audio play failed:", e));
+                    currentAudio.onended = () => { currentAudio = null; };
+                }
+            });
+
             const globalStats = data.global_stats;
             if (globalStats) {
                 updatePlayerStatsBars(globalStats);
@@ -331,8 +379,20 @@ socket.on('game_event', async (data) => {
                 }
             }
         } else {
-             // If not host (i.e., player), complete the loading screen started by 'game_started_for_player'
-            completeLoading(true);
+             // If not host (i.e., player), complete the loading screen immediately or after image load
+             // Players don't wait for audio usually
+             if (document.getElementById('gameArea')) {
+                // Player view
+                const dilemmaImage = document.getElementById('dilemmaImage');
+                const dilemmaImageContainer = document.getElementById('dilemmaImageContainer');
+                
+                loadImage(dilemma.image).then(() => {
+                     completeLoading(true);
+                     revealContent(dilemmaImage, dilemmaImageContainer, dilemma.image, dilemmaDescription);
+                });
+             } else {
+                 completeLoading(true);
+             }
         }
 
         // Check if we are on the player page
@@ -340,6 +400,9 @@ socket.on('game_event', async (data) => {
             console.log('[DEBUG] Player Dilemma Object:', dilemma);
             dilemmaTitle.textContent = dilemma.title;
             dilemmaDescription.textContent = dilemma.description;
+            
+            // Hide specific elements initially
+            dilemmaDescription.style.opacity = '0'; 
 
             const dilemmaSection = document.getElementById('dilemmaSection');
             const playerStatementsSection = document.getElementById('playerStatementsSection');
@@ -518,17 +581,14 @@ if (gameId && playerId) {
         showLoadingScreen(true);
         if (gameArea) gameArea.style.display = 'block'; // Ensure gameArea is visible
         narrativeText.textContent = data.outcome; // Set text content
+        narrativeText.style.opacity = '0';
+
+        const outcomeImage = document.getElementById('outcomeImage');
+        const outcomeImageContainer = document.getElementById('outcomeImageContainer');
         
-        /*
-        try {
-            await playNarration(data.outcome); // AI NARRATOR
-        } catch (error) {
-            console.error("Failed to play narration:", error);
-        } finally {
-            completeLoading(true);
-        }
-        */
-        completeLoading(true);
+        handleImageLoading(outcomeImage, outcomeImageContainer, data.outcome_image, narrativeText, () => {
+             completeLoading(true);
+        });
 
         if (narrativeText) narrativeText.style.setProperty('display', 'block', 'important'); // Ensure the narrative text is visible
         currentRoundSpan.textContent = data.current_round;
@@ -842,16 +902,44 @@ if (gameId && playerId) {
         if (game_state.state === 'waiting') {
             if (gameArea) gameArea.style.display = 'block';
             if (waitingRoom) waitingRoom.style.display = 'block';
-        } else if (game_state.state === 'DILEMMA') {
-            if (gameArea) gameArea.style.display = 'block';
-            if (mainContentArea) mainContentArea.style.display = 'block';
-            if (dilemmaSection) dilemmaSection.style.display = 'block';
-            if (playerStatementsSection) playerStatementsSection.style.display = 'block';
-            if (game_state.current_dilemma) {
-                dilemmaTitle.textContent = game_state.current_dilemma.title;
-                dilemmaDescription.textContent = game_state.current_dilemma.description;
-            }
-        } else if (game_state.state === 'VOTING_PHASE') {
+                        } else if (game_state.state === 'DILEMMA') {
+                            if (gameArea) gameArea.style.display = 'block';
+                            if (mainContentArea) mainContentArea.style.display = 'block';
+                            if (dilemmaSection) dilemmaSection.style.display = 'block';
+                            
+                            // Check if player has already submitted
+                            const player = game_state.players[playerId];
+                            const playerInputSection = document.getElementById('playerInputSection');
+                            const statementSubmitted = document.getElementById('statementSubmitted');
+
+                            if (playerStatementsSection) playerStatementsSection.style.display = 'block';
+
+                            if (player && player.action_status === 'done') {
+                                if (playerInputSection) playerInputSection.style.display = 'none';
+                                if (statementSubmitted) statementSubmitted.style.display = 'block';
+                            } else {
+                                if (playerInputSection) playerInputSection.style.display = 'block';
+                                if (statementSubmitted) statementSubmitted.style.display = 'none';
+                            }
+
+                            if (game_state.current_dilemma) {
+                                dilemmaTitle.textContent = game_state.current_dilemma.title;
+                                dilemmaDescription.textContent = game_state.current_dilemma.description;
+                                
+                                const dilemmaImage = document.getElementById('dilemmaImage');
+                                const dilemmaImageContainer = document.getElementById('dilemmaImageContainer');
+                
+                                if (dilemmaImage && dilemmaImageContainer && game_state.current_dilemma.image && !game_state.current_dilemma.image.includes('placeholder')) {
+                                    dilemmaImage.src = game_state.current_dilemma.image;
+                                    dilemmaImage.style.opacity = '1';
+                                    dilemmaImageContainer.style.display = 'block';
+                                } else if (dilemmaImageContainer) {
+                                    dilemmaImageContainer.style.display = 'none';
+                                }
+                            }
+                        }
+                
+         else if (game_state.state === 'VOTING_PHASE') {
             if (gameArea) gameArea.style.display = 'block';
             if (mainContentArea) mainContentArea.style.display = 'block';
             if (game_state.statements) {
@@ -875,15 +963,28 @@ if (gameId && playerId) {
             if (mainContentArea) mainContentArea.style.display = 'block';
             if (commentPhaseSection) commentPhaseSection.style.display = 'block';
             // Potentially re-render statements for voting if that's part of the comment phase UI
-        } else if (game_state.state === 'OUTCOME_DISPLAYED') {
-            if (gameArea) gameArea.style.display = 'block';
-            if (mainContentArea) mainContentArea.style.display = 'block';
-            if (narrativeOutput) narrativeOutput.style.display = 'block';
-            if (nextRoundBtn) nextRoundBtn.style.display = 'block';
-            if (game_state.last_outcome_narrative_data && narrativeText) {
-                narrativeText.textContent = game_state.last_outcome_narrative_data.outcome_narrative;
-            }
-        } else if (game_state.state === 'GAME_OVER') {
+                        } else if (game_state.state === 'OUTCOME_DISPLAYED') {
+                            if (gameArea) gameArea.style.display = 'block';
+                            if (mainContentArea) mainContentArea.style.display = 'block';
+                            if (narrativeOutput) narrativeOutput.style.display = 'block';
+                            if (nextRoundBtn) nextRoundBtn.style.display = 'block';
+                            if (game_state.last_outcome_narrative_data && narrativeText) {
+                                narrativeText.textContent = game_state.last_outcome_narrative_data.outcome_narrative;
+                                
+                                const outcomeImage = document.getElementById('outcomeImage');
+                                const outcomeImageContainer = document.getElementById('outcomeImageContainer');
+                                
+                                if (outcomeImage && outcomeImageContainer && game_state.last_outcome_narrative_data.outcome_image && !game_state.last_outcome_narrative_data.outcome_image.includes('placeholder')) {
+                                    outcomeImage.src = game_state.last_outcome_narrative_data.outcome_image;
+                                    outcomeImage.style.opacity = '1';
+                                    outcomeImageContainer.style.display = 'block';
+                                } else if (outcomeImageContainer) {
+                                    outcomeImageContainer.style.display = 'none';
+                                }
+                            }
+                        }
+                
+         else if (game_state.state === 'GAME_OVER') {
             if (gameOverScreen) gameOverScreen.style.display = 'block';
             // Populate winner info if available
         }
@@ -892,6 +993,26 @@ if (gameId && playerId) {
         if (document.getElementById('hostControl')) {
             if (hostControl) hostControl.style.display = 'block';
             
+            const hostEventImage = document.getElementById('hostEventImage');
+            const hostImageContainer = document.getElementById('hostImageContainer');
+            
+            if (hostEventImage && hostImageContainer) {
+                let imgUrl = null;
+                if (game_state.state === 'DILEMMA' && game_state.current_dilemma && game_state.current_dilemma.image) {
+                    imgUrl = game_state.current_dilemma.image;
+                } else if (game_state.state === 'OUTCOME_DISPLAYED' && game_state.last_outcome_narrative_data && game_state.last_outcome_narrative_data.outcome_image) {
+                    imgUrl = game_state.last_outcome_narrative_data.outcome_image;
+                }
+
+                if (imgUrl && !imgUrl.includes('placeholder')) {
+                    hostEventImage.src = imgUrl;
+                    hostEventImage.style.opacity = '1';
+                    hostImageContainer.style.display = 'block';
+                } else {
+                    hostImageContainer.style.display = 'none';
+                }
+            }
+
             updateHostFactionObjectives(game_state.factions);
         }
     });
@@ -940,7 +1061,10 @@ if (backgroundMusic) {
 if (createGameBtn) {
     createGameBtn.addEventListener('click', () => {
         const numPlayers = document.getElementById('numPlayers').value;
-        socket.emit('create_game', { num_players: parseInt(numPlayers) });
+        const toggleAIImages = document.getElementById('toggleAIImages');
+        const useAIImages = toggleAIImages ? toggleAIImages.checked : true;
+        
+        socket.emit('create_game', { num_players: parseInt(numPlayers), use_ai_images: useAIImages });
         if (backgroundMusic) {
             backgroundMusic.play().catch(e => console.error("Error playing background music:", e));
         }
@@ -1075,7 +1199,12 @@ if (createGameBtn) {
     socket.on('comments_received', async (data) => {
         console.log('Comments received event fired');
         console.log('Comments received:', data);
-        showLoadingScreen(false);
+        showLoadingScreen(false); // Wait for assets is handled below, but we can keep loading screen logic if desired. 
+        // Actually, let's keep it visible until assets load? The loading screen is usually managed by 'showLoadingScreen'.
+        // If we want it to persist, we should probably not call showLoadingScreen(false) here, but after promise resolves.
+        // However, 'comments_received' usually marks end of calculation.
+        // Let's assume we want to hold the curtain until ready.
+        
         const playerCommentsDisplay = document.getElementById('playerCommentsDisplay');
         const commentList = document.getElementById('commentList');
         const hostNarrative = document.getElementById('hostNarrative');
@@ -1099,17 +1228,28 @@ if (createGameBtn) {
             // Now display the outcome narrative
             if (hostNarrative) {
                 hostNarrative.textContent = data.outcome; // Assuming outcome is passed in data
-                hostNarrative.style.display = 'block';
-        /*
-        try {
-            await playNarration(data.outcome); // AI NARRATOR
-        } catch (error) {
-            console.error("Failed to play narration:", error);
-        } finally {
-            completeLoading(false); // Host loading
-        }
-        */
-        completeLoading(false);
+                hostNarrative.style.opacity = '0';
+
+                const hostEventImage = document.getElementById('hostEventImage');
+                const hostImageContainer = document.getElementById('hostImageContainer');
+                
+                // Synchronize Assets
+                Promise.all([
+                    loadImage(data.outcome_image),
+                    fetchNarrationAudio(data.outcome)
+                ]).then(([imageLoaded, audio]) => {
+                    completeLoading(false); // NOW hide loading screen
+                    
+                    // Reveal Visuals
+                    revealContent(hostEventImage, hostImageContainer, data.outcome_image, hostNarrative);
+
+                    // Play Audio
+                    if (audio) {
+                        currentAudio = audio;
+                        currentAudio.play().catch(e => console.error("Audio play failed:", e));
+                        currentAudio.onended = () => { currentAudio = null; };
+                    }
+                });
             }
         }
     });

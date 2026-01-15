@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, send_file
+from flask import Blueprint, request, jsonify, send_file, after_this_request
 import tempfile
 import os
 import json
@@ -18,10 +18,20 @@ def tts():
 
     temp_audio_file = None
     try:
+        # Create a temp file but close it immediately so TTS service can open it
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmpfile:
             temp_audio_file = tmpfile.name
 
         tts_service.generate_audio(text, temp_audio_file)
+
+        @after_this_request
+        def remove_file(response):
+            try:
+                if os.path.exists(temp_audio_file):
+                    os.remove(temp_audio_file)
+            except Exception as error:
+                print(f"Error removing temp file: {error}")
+            return response
 
         return send_file(
             temp_audio_file,
@@ -32,10 +42,10 @@ def tts():
         )
     except Exception as e:
         print(f"[TTS] Error: {e}")
-        return jsonify({"error": str(e)}), 500
-    finally:
+        # Clean up if error occurred before sending
         if temp_audio_file and os.path.exists(temp_audio_file):
             os.remove(temp_audio_file)
+        return jsonify({"error": str(e)}), 500
 
 @api_bp.route("/dilemma")
 def dilemma():
