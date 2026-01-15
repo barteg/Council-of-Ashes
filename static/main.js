@@ -656,6 +656,8 @@ if (gameId && playerId) {
             const playerCommentInput = document.getElementById('playerCommentInput');
             const submitCommentBtn = document.getElementById('submitCommentBtn');
             const playerStatementResultsSection = document.getElementById('playerStatementResultsSection');
+            const commentInputContainer = document.getElementById('commentInputContainer');
+            const commentSubmitted = document.getElementById('commentSubmitted');
 
 
             // Hide all other sections
@@ -667,14 +669,22 @@ if (gameId && playerId) {
 
             if (commentPhaseSection) {
                 commentPhaseSection.style.display = 'block';
+                
+                // Reset UI
+                if (commentInputContainer) commentInputContainer.style.display = 'block';
+                if (commentSubmitted) commentSubmitted.style.display = 'none';
+                if (playerCommentInput) playerCommentInput.value = '';
+
                 if (playerStatementResultsSection) playerStatementResultsSection.style.display = 'none'; // Hide results during commenting
                 if (submitCommentBtn) {
                     submitCommentBtn.onclick = () => { // Use onclick to prevent multiple listeners
                         const comment = playerCommentInput.value;
                         // Loading screen removed to allow Shadow Phase interaction
                         socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_comment', comment: comment });
-                        playerCommentInput.value = '';
-                        commentPhaseSection.style.display = 'none'; // Hide comment section after submission
+                        
+                        // Update UI locally immediately
+                        if (commentInputContainer) commentInputContainer.style.display = 'none';
+                        if (commentSubmitted) commentSubmitted.style.display = 'block';
                     };
                 }
             } else {
@@ -961,8 +971,33 @@ if (gameId && playerId) {
         } else if (game_state.state === 'COMMENT_PHASE') {
             if (gameArea) gameArea.style.display = 'block';
             if (mainContentArea) mainContentArea.style.display = 'block';
-            if (commentPhaseSection) commentPhaseSection.style.display = 'block';
-            // Potentially re-render statements for voting if that's part of the comment phase UI
+            if (commentPhaseSection) {
+                commentPhaseSection.style.display = 'block';
+                
+                const player = game_state.players[playerId];
+                const commentInputContainer = document.getElementById('commentInputContainer');
+                const commentSubmitted = document.getElementById('commentSubmitted');
+                const playerCommentInput = document.getElementById('playerCommentInput');
+                const submitCommentBtn = document.getElementById('submitCommentBtn');
+                
+                // Attach Listener (needed on refresh)
+                if (submitCommentBtn) {
+                     submitCommentBtn.onclick = () => { 
+                        const comment = playerCommentInput.value;
+                        socket.emit('player_action', { game_id: gameId, player_id: playerId, action: 'submit_comment', comment: comment });
+                        if (commentInputContainer) commentInputContainer.style.display = 'none';
+                        if (commentSubmitted) commentSubmitted.style.display = 'block';
+                    };
+                }
+
+                if (player && player.comment) {
+                     if (commentInputContainer) commentInputContainer.style.display = 'none';
+                     if (commentSubmitted) commentSubmitted.style.display = 'block';
+                } else {
+                     if (commentInputContainer) commentInputContainer.style.display = 'block';
+                     if (commentSubmitted) commentSubmitted.style.display = 'none';
+                }
+            }
                         } else if (game_state.state === 'OUTCOME_DISPLAYED') {
                             if (gameArea) gameArea.style.display = 'block';
                             if (mainContentArea) mainContentArea.style.display = 'block';
@@ -1065,7 +1100,7 @@ if (createGameBtn) {
         const useAIImages = toggleAIImages ? toggleAIImages.checked : true;
         
         socket.emit('create_game', { num_players: parseInt(numPlayers), use_ai_images: useAIImages });
-        if (backgroundMusic) {
+        if (backgroundMusic && isMusicEnabled) {
             backgroundMusic.play().catch(e => console.error("Error playing background music:", e));
         }
     });

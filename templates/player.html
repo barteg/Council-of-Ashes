@@ -321,8 +321,13 @@
                 <!-- Comment Phase Section -->
                 <div id="commentPhaseSection" class="floating-element" style="display: none;">
                     <h5>Twój Komentarz do Wyników</h5>
-                    <textarea id="playerCommentInput" class="form-control" rows="3"></textarea>
-                    <button id="submitCommentBtn" class="btn btn-primary mt-2">Zatwierdź Komentarz</button>
+                    <div id="commentInputContainer">
+                        <textarea id="playerCommentInput" class="form-control" rows="3"></textarea>
+                        <button id="submitCommentBtn" class="btn btn-primary mt-2">Zatwierdź Komentarz</button>
+                    </div>
+                    <div id="commentSubmitted" style="display: none;">
+                        <p class="text-success">Komentarz przyjęty. Oczekiwanie na innych...</p>
+                    </div>
                 </div>
 
                 <!-- Narrative Output and Next Round Button -->

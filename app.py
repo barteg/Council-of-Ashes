@@ -26,4 +26,4 @@ if __name__ == "__main__":
     print(f"🔗 Network: http://{IP}:{port}")
     print("="*50 + "\n")
     
-    socketio.run(app, host=host, port=port)
+    socketio.run(app, host=host, port=port, debug=True, use_reloader=False)

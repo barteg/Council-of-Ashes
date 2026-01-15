@@ -12,9 +12,22 @@ torch.serialization.add_safe_globals(
 
 class TTSService:
     def __init__(self):
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        # Allow forcing CPU usage to avoid VRAM issues
+        if os.environ.get("TTS_DEVICE", "auto").lower() == "cpu":
+            self.device = "cpu"
+            print("[TTS] Forced to CPU mode via TTS_DEVICE=cpu.")
+        else:
+            self.device = "cuda" if torch.cuda.is_available() else "cpu"
+
         self.model = None
-        self.load_model()
+        
+        # Check if TTS is enabled via environment variable (Default: False to save RAM)
+        self.enabled = os.environ.get("ENABLE_TTS", "False").lower() == "true"
+        
+        if self.enabled:
+            self.load_model()
+        else:
+            print("[TTS] Service disabled. Set ENABLE_TTS=True to enable (requires significant RAM).")
 
     def load_model(self):
         try:
@@ -22,7 +35,7 @@ class TTSService:
             self.model = TTS(
                 model_name="tts_models/multilingual/multi-dataset/xtts_v2",
                 progress_bar=False,
-                gpu=True
+                gpu=(self.device == "cuda")
             ).to(self.device)
             print(f"[TTS] Model loaded successfully on {self.device}.")
         except Exception as e:
@@ -45,7 +58,7 @@ class TTSService:
 
     def generate_audio(self, text, output_file):
         if not self.model:
-            raise Exception("TTS Model not loaded")
+            raise Exception("TTS Model not loaded. Set ENABLE_TTS=True env var to use this feature.")
         
         # Calculate absolute path to the speaker file
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

@@ -9,6 +9,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 </head>
 <body>
+    <!-- Persistent Host Settings (Top Left) -->
+    <div id="persistentHostControls" style="position: fixed; top: 10px; left: 10px; z-index: 10000; background: rgba(0, 0, 0, 0.85); padding: 12px; border-radius: 8px; border: 1px solid #555; color: #ddd; width: 220px; box-shadow: 0 4px 6px rgba(0,0,0,0.5);">
+        <h6 class="mb-2" style="font-size: 0.75rem; text-transform: uppercase; color: #aaa; letter-spacing: 1px; border-bottom: 1px solid #444; padding-bottom: 5px; margin-bottom: 8px;">Ustawienia Gry</h6>
+        <div class="custom-control custom-switch mb-2">
+            <input type="checkbox" class="custom-control-input" id="toggleMusic" checked>
+            <label class="custom-control-label" for="toggleMusic" style="font-size: 0.9rem; cursor: pointer;">Muzyka</label>
+        </div>
+        <div class="custom-control custom-switch mb-2">
+            <input type="checkbox" class="custom-control-input" id="toggleTTS" checked>
+            <label class="custom-control-label" for="toggleTTS" style="font-size: 0.9rem; cursor: pointer;">Głos AI (TTS)</label>
+        </div>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="toggleAIImages" checked>
+            <label class="custom-control-label" for="toggleAIImages" style="font-size: 0.9rem; cursor: pointer;">Obrazy AI</label>
+        </div>
+    </div>
+
     <div id="loadingOverlay" class="loading-overlay" style="display: none;">
         <div class="loading-content">
             <p id="loadingMessage">Preparing event...</p>
@@ -29,21 +46,7 @@
                 <input type="number" id="numPlayers" class="form-control" value="4" min="2" max="8">
             </div>
 
-            <!-- Audio Controls -->
-            <div class="d-flex justify-content-around mb-3">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="toggleMusic" checked>
-                    <label class="custom-control-label" for="toggleMusic">Muzyka</label>
-                </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="toggleTTS" checked>
-                    <label class="custom-control-label" for="toggleTTS">Głos AI (TTS)</label>
-                </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="toggleAIImages" checked>
-                    <label class="custom-control-label" for="toggleAIImages">Obrazy AI</label>
-                </div>
-            </div>
+            <!-- Audio Controls moved to top-left overlay -->
 
             <button id="createGameBtn" class="btn btn-primary btn-block">Stwórz Nową Grę</button>
         </div>
@@ -154,7 +157,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
-    <audio id="backgroundMusic" src="/static/tts/medival_background_music.mp3" loop preload="auto" style="display: none;"></audio>
+    <audio id="backgroundMusic" src="{{ url_for('static', filename='tts/medival_background_music.mp3') }}" loop preload="none" style="display: none;"></audio>
     <script src="/static/main.js?v={{ range(1, 1000000) | random }}"></script>
 </body>
 </html>
