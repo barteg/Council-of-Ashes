@@ -12,8 +12,8 @@ class SearchService:
         print(f"[SEARCH] Looking up terms: {terms}")
         for term in terms:
             try:
-                # Get the first 2 relevant results
-                search_results = self.ddgs.text(term, max_results=2)
+                # Get the first 2 relevant results, targeting Polish region
+                search_results = self.ddgs.text(term, region='pl-pl', max_results=2)
                 summary = " ".join([r['body'] for r in search_results])
                 results[term] = summary[:500] # Limit to 500 chars per term
             except Exception as e:
