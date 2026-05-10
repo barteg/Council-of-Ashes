@@ -84,9 +84,10 @@ If you vote for a policy that causes a Kingdom Stat to hit 0, you are **Exiled**
 This project is built with:
 *   **Backend:** Python (Flask, Flask-SocketIO) for real-time game state management.
     *   Modular architecture: logic separated into `services`, `routes`, and `sockets`.
-*   **AI Engine:** Local LLM (via **Ollama**, default `qwen2.5:3b`) or Google Gemini for:
+*   **AI Engine:** Local LLM (via **Ollama**, default `qwen2.5:7b`) or Google Gemini for:
     *   Generating context-aware dilemmas.
     *   Interpreting player decisions to craft dynamic narrative outcomes.
+*   **Dynamic Context Augmentation (RAG):** An autonomous research pipeline that identifies unknown terms or pop-culture references in player statements and fetches real-time context via DuckDuckGo to inform the AI's narrative.
 *   **Frontend:** HTML/JS/CSS (Jinja2 Templates) for responsive mobile/desktop UIs.
 *   **Audio:** Coqui XTTS v2 (Python) for AI-generated voiceovers of the narrative.
 
