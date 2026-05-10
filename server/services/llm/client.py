@@ -24,6 +24,31 @@ class GeminiCLIClient:
                 print(f"[GEMINI CLI] Stderr: {e.stderr}")
             return None
 
+class OllamaClient:
+    def __init__(self, model_name="qwen2.5:7b", url="http://localhost:11434/api/generate"):
+        self.model_name = model_name
+        self.url = url
+        print(f"[OLLAMA] Initialized with model {self.model_name} at {self.url}")
+
+    def generate_content(self, prompt):
+        print(f"[OLLAMA] Generating content with model {self.model_name}")
+        try:
+            payload = {
+                "model": self.model_name,
+                "prompt": prompt,
+                "stream": False,
+                "format": "json" # Ollama support for JSON mode
+            }
+            response = requests.post(self.url, json=payload, timeout=60)
+            response.raise_for_status()
+            
+            data = response.json()
+            text = data.get("response", "")
+            return LocalLLMResponse(text)
+        except Exception as e:
+            print(f"[OLLAMA] Error: {e}")
+            return None
+
 class LocalLLMResponse:
     def __init__(self, text):
         self.candidates = [LocalLLMCandidate(text)]

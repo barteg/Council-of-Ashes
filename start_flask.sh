@@ -2,8 +2,8 @@
 
 # 1. LLM Configuration
 export USE_LOCAL_LLM=true
-export LOCAL_LLM_MODEL="qwen2.5:3b"
-# export LOCAL_LLM_URL="http://localhost:11434/api/generate"
+export LOCAL_LLM_MODEL="qwen2.5:7b"
+export LOCAL_LLM_URL="http://localhost:11434/api/generate"
 export OLLAMA_MODELS="$(pwd)/models"
 
 # 2. Flask Configuration

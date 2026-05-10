@@ -1,5 +1,6 @@
+import os
 import json
-from .client import GeminiCLIClient
+from .client import GeminiCLIClient, OllamaClient
 
 # Static part of the Gemini prompt for event generation
 EVENT_GENERATION_PROMPT_STATIC = """Jesteś narratorem w grze „Rada Popiołów”. Twoim zadaniem jest tworzenie krótkich, konkretnych dylematów politycznych w świecie Dark Fantasy.
@@ -243,6 +244,20 @@ class NarrativeService:
             print(f"Error calling Gemini API: {e}")
             return False if not return_dict else None
 
+# LLM Client Factory logic
+def get_llm_client():
+    use_local = os.environ.get("USE_LOCAL_LLM", "false").lower() == "true"
+    
+    if use_local:
+        model = os.environ.get("LOCAL_LLM_MODEL", "qwen2.5:7b")
+        url = os.environ.get("LOCAL_LLM_URL", "http://localhost:11434/api/generate")
+        return OllamaClient(model_name=model, url=url)
+    else:
+        # Default to Gemini CLI
+        model = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+        return GeminiCLIClient(model_name=model)
+
 # Global instance for easier access
-print("[LLM] Using Gemini CLI (gemini-2.5-flash) for narrative generation.")
-narrator = NarrativeService(GeminiCLIClient(model_name="gemini-2.5-flash"))
+print(f"[LLM] Initializing NarrativeService...")
+client = get_llm_client()
+narrator = NarrativeService(client)
