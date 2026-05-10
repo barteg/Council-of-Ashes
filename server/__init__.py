@@ -9,7 +9,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     # Initialize extensions
-    socketio.init_app(app, async_mode='eventlet')
+    socketio.init_app(app, async_mode='eventlet', ping_timeout=60, ping_interval=25)
 
     # Register Blueprints
     from .routes.main import main_bp

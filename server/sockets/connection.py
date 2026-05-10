@@ -7,7 +7,8 @@ import random
 @socketio.on("create_game")
 def handle_create_game(data):
     num_players = data.get("num_players", 1)
-    game_id, game = game_manager.create_game(request.sid, num_players)
+    use_ai_images = data.get("use_ai_images", False)
+    game_id, game = game_manager.create_game(request.sid, num_players, use_ai_images)
     
     join_room(game_id)
     emit(

@@ -9,6 +9,7 @@ export OLLAMA_MODELS="$(pwd)/models"
 # 2. Flask Configuration
 export FLASK_APP=app.py
 export FLASK_ENV=development
+export ENABLE_TTS=true
 # Ensure you have your Gemini key set here
 # export GEMINI_API_KEY="your_key_here"
 

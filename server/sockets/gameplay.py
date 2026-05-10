@@ -29,7 +29,7 @@ def start_game_logic(game_id):
             "id": "tutorial_prologue",
             "title": "📜 Prolog: Pierwsze Głosowanie",
             "description": "To jest runda treningowa. Królestwo cierpi na brak zboża. Możesz zaproponować 'Rozdanie zapasów' (+Stab, -Econ) lub 'Modlitwę o deszcz' (+Faith). Wpisz swój pomysł i przetestuj mechaniki. Ta runda nie liczy się do wyniku!",
-            "image": "/static/images/placeholder.png",
+            "image": "/static/images/placeholder.png" if game.get("use_ai_images") else None,
             "narrative_prompt": "Jak rada odpowie na głód?",
             "is_tutorial": True
         }
@@ -181,6 +181,12 @@ def resolve_dilemma(game_id, player_comments=None):
         outcome_narrative = chapter_data.get("outcome_narrative", "Pisarze zamilkli.")
         # Store pre-generated dilemma
         game["next_round_dilemma"] = chapter_data.get("next_dilemma")
+        
+        # FILTER IMAGE IF DISABLED
+        if not game.get("use_ai_images"):
+            if game["next_round_dilemma"]:
+                 game["next_round_dilemma"]["image"] = None
+            chapter_data["outcome_image"] = None
     else:
         outcome_narrative = "Kronikarze nie byli w stanie zapisać tej tury."
         game["next_round_dilemma"] = None
@@ -542,17 +548,13 @@ def handle_player_action(data):
             generated_dilemma = game.get("next_round_dilemma")
             
             if not generated_dilemma:
-                # Fallback if something went wrong
-                game_state_for_gemini = {
-                    "current_round": game["current_round"],
-                    "global_stats": game["global_stats"],
-                    "event_history": game["event_history"],
-                    "player_statements": [],
-                    "previous_dilemma_outcome": game["event_history"][-1] if game["event_history"] else None,
-                }
+                # ... (rest of fallback logic)
                 if narrator.generate_dilemma(game_state_for_gemini):
                     with open("dilemma.json", "r") as f:
                         generated_dilemma = json.load(f)
+                    
+                    if not game.get("use_ai_images") and generated_dilemma:
+                         generated_dilemma["image"] = None
                 else:
                     generated_dilemma = {"id": "error", "title": "Error", "description": "...", "narrative_prompt": "..."}
 

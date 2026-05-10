@@ -40,12 +40,13 @@ class GameManager:
     def generate_game_id(self):
         return "".join(random.choices(string.ascii_uppercase, k=4))
 
-    def create_game(self, host_sid, num_players=1):
+    def create_game(self, host_sid, num_players=1, use_ai_images=False):
         game_id = self.generate_game_id()
         while game_id in self.games:
             game_id = self.generate_game_id()
 
         players = {}
+        # ... (rest of factions remains same)
         factions = {
             "Syndykat Kupiecki": {
                 "power": "Mistrzostwo Handlu",
@@ -123,6 +124,7 @@ class GameManager:
             "winning_statement_counts": {faction_id: 0 for faction_id in factions},
             "unanimous_vote_counts": {faction_id: 0 for faction_id in factions},
             "join_url": join_url,
+            "use_ai_images": use_ai_images,
         }
         
         self.games[game_id] = game

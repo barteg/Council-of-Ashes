@@ -21,8 +21,8 @@ class TTSService:
 
         self.model = None
         
-        # Check if TTS is enabled via environment variable (Default: False to save RAM)
-        self.enabled = os.environ.get("ENABLE_TTS", "False").lower() == "true"
+        # Check if TTS is enabled via environment variable (Default: True)
+        self.enabled = os.environ.get("ENABLE_TTS", "True").lower() == "true"
         
         if self.enabled:
             self.load_model()

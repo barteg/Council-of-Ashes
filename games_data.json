@@ -1,41 +1,129 @@
 {
-    "YIXD": {
-        "host_sid": "8RlWCkjU8apyfT1yAAAP",
+    "HCLU": {
+        "host_sid": "_uOHZHjwzzwtxUkcAAAB",
         "players": {
             "player_1": {
                 "id": "player_1",
-                "sid": "wtKPyIBN1DseCPC9AAAV",
-                "name": "t\u0119py chuj",
+                "sid": null,
+                "name": "Anio\u0142ek",
                 "avatar": "/static/avatars/avatar1.png",
-                "faction": "Syndykat Kupiecki",
+                "faction": "Gwardia Kr\u00f3lewska",
                 "choice": null,
                 "statements": [],
                 "personal_stats": {
-                    "Influence": 55,
-                    "Spite": 0
+                    "Influence": 51,
+                    "Spite": 1
                 },
                 "ready": true,
                 "shamed": false,
                 "action_status": "joined",
                 "current_action": null,
                 "action_target": null,
-                "shadow_action_done": true,
-                "statement": "Lud odkrywa ze sperma jest bardziej zyciodajna od zbo\u017ca. Ca\u0142y rynek robi obrot o 180 stopni i produkuja spermy zostaje g\u0142\u00f3wnym nap\u0119dem jedzenia i gospodarki.",
+                "shadow_action_done": false,
                 "predicted_effect": {
                     "Stability": 5,
-                    "Economy": 5,
-                    "Faith": -5
+                    "Economy": 0,
+                    "Faith": 0
                 },
-                "statement_vote": "player_1",
                 "was_blocked": false,
-                "comment": ""
+                "comment": "",
+                "action_target_stat": null,
+                "statement": "Tak jebac prostacki lud, tylko czerwony przycisk",
+                "statement_vote": "player_4"
+            },
+            "player_2": {
+                "id": "player_2",
+                "sid": null,
+                "name": "Chuj",
+                "avatar": "/static/avatars/avatar2.png",
+                "faction": "Wysokie Kap\u0142a\u0144stwo",
+                "choice": null,
+                "statements": [],
+                "personal_stats": {
+                    "Influence": 53,
+                    "Spite": 0
+                },
+                "ready": true,
+                "shamed": false,
+                "action_status": "done",
+                "current_action": null,
+                "action_target": null,
+                "shadow_action_done": false,
+                "predicted_effect": {
+                    "Stability": 0,
+                    "Economy": 0,
+                    "Faith": 5
+                },
+                "was_blocked": false,
+                "comment": "Dobrze jeba\u0107 baby",
+                "action_target_stat": null,
+                "statement": "NIE POZWOLIMY!!! zajebac Tomka na \u015bmier\u0107 jako ofiar\u0119 za plony",
+                "statement_vote": "player_1"
+            },
+            "player_3": {
+                "id": "player_3",
+                "sid": "bH8QCJWWXO9LrD4PAABg",
+                "name": "knur",
+                "avatar": "/static/avatars/avatar3.png",
+                "faction": "Syndykat Kupiecki",
+                "choice": null,
+                "statements": [],
+                "personal_stats": {
+                    "Influence": 56,
+                    "Spite": 1
+                },
+                "ready": true,
+                "shamed": false,
+                "action_status": "joined",
+                "current_action": null,
+                "action_target": null,
+                "shadow_action_done": false,
+                "predicted_effect": {
+                    "Stability": 10,
+                    "Economy": -5,
+                    "Faith": 0
+                },
+                "was_blocked": false,
+                "comment": "baby nie stsosie sa zbyt seksowne by je palic, zostawy je dla dominika",
+                "action_target_stat": null,
+                "statement": "Tak",
+                "statement_vote": "player_2"
+            },
+            "player_4": {
+                "id": "player_4",
+                "sid": null,
+                "name": "Bagienny ruchach podjeziorny",
+                "avatar": "/static/avatars/avatar4.png",
+                "faction": "Gwardia Kr\u00f3lewska",
+                "choice": null,
+                "statements": [],
+                "personal_stats": {
+                    "Influence": 51,
+                    "Spite": 0
+                },
+                "ready": true,
+                "shamed": false,
+                "action_status": "done",
+                "current_action": null,
+                "action_target": null,
+                "shadow_action_done": false,
+                "predicted_effect": {
+                    "Stability": 0,
+                    "Economy": 0,
+                    "Faith": 0
+                },
+                "was_blocked": false,
+                "comment": "Wszystkie by\u0142y chujowe",
+                "action_target_stat": null,
+                "statement": "Pot\u0119\u017cna inwestycja w gospodark\u0119 grzyb\u00f3w halucynogen\u00f3w, i pa\u0144stwo kurwa kwitnie",
+                "statement_vote": "player_2"
             }
         },
         "factions": {
             "Syndykat Kupiecki": {
                 "power": "Mistrzostwo Handlu",
                 "players": [
-                    "player_1"
+                    "player_3"
                 ],
                 "objectives": [
                     {
@@ -80,7 +168,9 @@
             },
             "Wysokie Kap\u0142a\u0144stwo": {
                 "power": "Boska \u0141aska",
-                "players": [],
+                "players": [
+                    "player_2"
+                ],
                 "objectives": [
                     {
                         "id": "faith_75",
@@ -124,7 +214,10 @@
             },
             "Gwardia Kr\u00f3lewska": {
                 "power": "Utrzymanie Porz\u0105dku",
-                "players": [],
+                "players": [
+                    "player_1",
+                    "player_4"
+                ],
                 "objectives": [
                     {
                         "id": "stab_75",
@@ -167,32 +260,44 @@
                 ]
             }
         },
-        "state": "SHADOW_PHASE",
+        "state": "COMMENT_PHASE",
         "dilemma_active": true,
         "current_dilemma": {
-            "id": "tutorial_prologue",
-            "title": "\ud83d\udcdc Prolog: Pierwsze G\u0142osowanie",
-            "description": "To jest runda treningowa. Kr\u00f3lestwo cierpi na brak zbo\u017ca. Mo\u017cesz zaproponowa\u0107 'Rozdanie zapas\u00f3w' (+Stab, -Econ) lub 'Modlitw\u0119 o deszcz' (+Faith). Wpisz sw\u00f3j pomys\u0142 i przetestuj mechaniki. Ta runda nie liczy si\u0119 do wyniku!",
-            "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Jak rada odpowie na g\u0142\u00f3d?",
-            "is_tutorial": true
+            "id": "event_round_2_blight",
+            "title": "Kl\u0105twa Plugawych Plon\u00f3w",
+            "description": "Plugawa wymiana z Tomkiem \u015bci\u0105gn\u0119\u0142a na kr\u00f3lestwo straszliw\u0105 kl\u0105tw\u0119. Pola zbo\u017ca, zamiast obfitowa\u0107, gnij\u0105, zainfekowane przez groteskowe, pulsuj\u0105ce grzyby. G\u0142\u00f3d zagl\u0105da w oczy, a lud krzyczy z rozpaczy, domagaj\u0105c si\u0119 ratunku. Czy pozwolicie, by zaraza poch\u0142on\u0119\u0142a wszystko?",
+            "image": null,
+            "narrative_prompt": "Rado, jak zareagujecie na t\u0119 obrzydliw\u0105 kl\u0105tw\u0119 niszcz\u0105c\u0105 plony? Czy podejmiecie desperackie \u015brodki, by ocali\u0107 kr\u00f3lestwo przed g\u0142odem i ostatecznym upadkiem, czy te\u017c znajdziecie winnych tej herezji?"
         },
         "global_stats": {
-            "Stability": 48,
-            "Economy": 41,
+            "Stability": 39,
+            "Economy": 35,
             "Faith": 47
         },
-        "current_round": 1,
-        "event_history": [],
+        "current_round": 2,
+        "event_history": [
+            {
+                "round": 1,
+                "policy_chosen": "zamieni\u0107 zboze sperma Tomka, lichwiarza soerminsczyzny",
+                "effects": {},
+                "outcome_narrative": "Syndykat Kupiecki, podjudzony przez deprawacyjn\u0105 wizj\u0119 knura, wdro\u017cy\u0142 polityk\u0119, kt\u00f3ra zmusi\u0142a zdesperowany lud do ohydnej wymiany z Tomkiem, lichwiarzem z Soerminsczyzny. Zbo\u017ce, podstawa \u017cycia, zosta\u0142o zamienione na niewypowiedziane upokorzenia i zepsute przyjemno\u015bci \u017c\u0105dane przez lichwiarza, wci\u0105gaj\u0105c kr\u00f3lestwo w moralne plugastwo. Sta\u0142o si\u0119 to po s\u0142owach knura, kt\u00f3ry rzek\u0142: \"zamieni\u0107 zboze sperma Tomka, lichwiarza soerminsczyzny\". W odpowiedzi Chuj stwierdzi\u0142: \"Dobrze jeba\u0107 baby\". Wkr\u00f3tce potem, na polach zbo\u017ca, mimo plugawej transakcji, zacz\u0119\u0142y pojawia\u0107 si\u0119 groteskowe, pulsuj\u0105ce grzyby, odbijaj\u0105ce moralny rozk\u0142ad. Kr\u00f3lestwo cuchn\u0119\u0142o rozpacz\u0105 i moraln\u0105 zgnilizn\u0105. Ludzie, niegdy\u015b dumni, teraz chodzili ze spuszczonymi g\u0142owami, ich godno\u015b\u0107 zosta\u0142a zerwana. N\u0119dzne monety w ich kieszeniach by\u0142y bezwarto\u015bciowe, a g\u0142\u00f3d szarpa\u0142 ich trzewia. Szepty blu\u017anierstw zast\u0105pi\u0142y modlitwy, a staro\u017cytna wiara usch\u0142a, pozostawiaj\u0105c puste \u015bwi\u0105tynie i o\u0142tarze. Na ulicach szepta\u0142o si\u0119, \"Rada sprzeda\u0142a nam dusze za zgni\u0142e ziarno, niech ich chuj strzeli!\"",
+                "global_stats_after": {
+                    "Stability": 39,
+                    "Economy": 35,
+                    "Faith": 47
+                }
+            }
+        ],
         "gemini_output": {
-            "id": "tutorial_prologue",
-            "title": "\ud83d\udcdc Prolog: Pierwsze G\u0142osowanie",
-            "description": "To jest runda treningowa. Kr\u00f3lestwo cierpi na brak zbo\u017ca. Mo\u017cesz zaproponowa\u0107 'Rozdanie zapas\u00f3w' (+Stab, -Econ) lub 'Modlitw\u0119 o deszcz' (+Faith). Wpisz sw\u00f3j pomys\u0142 i przetestuj mechaniki. Ta runda nie liczy si\u0119 do wyniku!",
-            "image": "/static/images/placeholder.png",
-            "narrative_prompt": "Jak rada odpowie na g\u0142\u00f3d?",
-            "is_tutorial": true
+            "id": "event_round_2_blight",
+            "title": "Kl\u0105twa Plugawych Plon\u00f3w",
+            "description": "Plugawa wymiana z Tomkiem \u015bci\u0105gn\u0119\u0142a na kr\u00f3lestwo straszliw\u0105 kl\u0105tw\u0119. Pola zbo\u017ca, zamiast obfitowa\u0107, gnij\u0105, zainfekowane przez groteskowe, pulsuj\u0105ce grzyby. G\u0142\u00f3d zagl\u0105da w oczy, a lud krzyczy z rozpaczy, domagaj\u0105c si\u0119 ratunku. Czy pozwolicie, by zaraza poch\u0142on\u0119\u0142a wszystko?",
+            "image": null,
+            "narrative_prompt": "Rado, jak zareagujecie na t\u0119 obrzydliw\u0105 kl\u0105tw\u0119 niszcz\u0105c\u0105 plony? Czy podejmiecie desperackie \u015brodki, by ocali\u0107 kr\u00f3lestwo przed g\u0142odem i ostatecznym upadkiem, czy te\u017c znajdziecie winnych tej herezji?"
         },
-        "next_round_votes": [],
+        "next_round_votes": [
+            "player_4"
+        ],
         "policies_passed_counts": {
             "Syndykat Kupiecki": {
                 "Stability": 0,
@@ -212,29 +317,61 @@
         },
         "winning_statement_counts": {
             "Syndykat Kupiecki": 1,
-            "Wysokie Kap\u0142a\u0144stwo": 0,
+            "Wysokie Kap\u0142a\u0144stwo": 1,
             "Gwardia Kr\u00f3lewska": 0
         },
         "unanimous_vote_counts": {
-            "Syndykat Kupiecki": 1,
-            "Wysokie Kap\u0142a\u0144stwo": 0,
-            "Gwardia Kr\u00f3lewska": 0
+            "Syndykat Kupiecki": 2,
+            "Wysokie Kap\u0142a\u0144stwo": 2,
+            "Gwardia Kr\u00f3lewska": 1
         },
-        "join_url": "/join/YIXD",
+        "join_url": "/join/HCLU",
+        "use_ai_images": false,
         "winning_statement": {
-            "player_id": "player_1",
-            "statement": "Lud odkrywa ze sperma jest bardziej zyciodajna od zbo\u017ca. Ca\u0142y rynek robi obrot o 180 stopni i produkuja spermy zostaje g\u0142\u00f3wnym nap\u0119dem jedzenia i gospodarki.",
-            "name": "t\u0119py chuj",
+            "player_id": "player_2",
+            "statement": "NIE POZWOLIMY!!! zajebac Tomka na \u015bmier\u0107 jako ofiar\u0119 za plony",
+            "name": "Chuj",
             "was_blocked": false
         },
         "shadow_effects": [
             {
+                "source": "player_2",
+                "type": "gambler",
+                "target": "",
+                "payload": "",
+                "round": 1
+            },
+            {
                 "source": "player_1",
-                "type": "censor",
+                "type": "curse",
+                "target": "",
+                "payload": "",
+                "round": 1
+            },
+            {
+                "source": "player_3",
+                "type": "curse",
+                "target": "",
+                "payload": "chuj",
+                "round": 1
+            },
+            {
+                "source": "player_4",
+                "type": "veto",
                 "target": "",
                 "payload": "",
                 "round": 1
             }
-        ]
+        ],
+        "next_round_dilemma": {
+            "id": "event_round_2_blight",
+            "title": "Kl\u0105twa Plugawych Plon\u00f3w",
+            "description": "Plugawa wymiana z Tomkiem \u015bci\u0105gn\u0119\u0142a na kr\u00f3lestwo straszliw\u0105 kl\u0105tw\u0119. Pola zbo\u017ca, zamiast obfitowa\u0107, gnij\u0105, zainfekowane przez groteskowe, pulsuj\u0105ce grzyby. G\u0142\u00f3d zagl\u0105da w oczy, a lud krzyczy z rozpaczy, domagaj\u0105c si\u0119 ratunku. Czy pozwolicie, by zaraza poch\u0142on\u0119\u0142a wszystko?",
+            "image": null,
+            "narrative_prompt": "Rado, jak zareagujecie na t\u0119 obrzydliw\u0105 kl\u0105tw\u0119 niszcz\u0105c\u0105 plony? Czy podejmiecie desperackie \u015brodki, by ocali\u0107 kr\u00f3lestwo przed g\u0142odem i ostatecznym upadkiem, czy te\u017c znajdziecie winnych tej herezji?"
+        },
+        "last_outcome_narrative_data": {
+            "outcome_narrative": "Syndykat Kupiecki, podjudzony przez deprawacyjn\u0105 wizj\u0119 knura, wdro\u017cy\u0142 polityk\u0119, kt\u00f3ra zmusi\u0142a zdesperowany lud do ohydnej wymiany z Tomkiem, lichwiarzem z Soerminsczyzny. Zbo\u017ce, podstawa \u017cycia, zosta\u0142o zamienione na niewypowiedziane upokorzenia i zepsute przyjemno\u015bci \u017c\u0105dane przez lichwiarza, wci\u0105gaj\u0105c kr\u00f3lestwo w moralne plugastwo. Sta\u0142o si\u0119 to po s\u0142owach knura, kt\u00f3ry rzek\u0142: \"zamieni\u0107 zboze sperma Tomka, lichwiarza soerminsczyzny\". W odpowiedzi Chuj stwierdzi\u0142: \"Dobrze jeba\u0107 baby\". Wkr\u00f3tce potem, na polach zbo\u017ca, mimo plugawej transakcji, zacz\u0119\u0142y pojawia\u0107 si\u0119 groteskowe, pulsuj\u0105ce grzyby, odbijaj\u0105ce moralny rozk\u0142ad. Kr\u00f3lestwo cuchn\u0119\u0142o rozpacz\u0105 i moraln\u0105 zgnilizn\u0105. Ludzie, niegdy\u015b dumni, teraz chodzili ze spuszczonymi g\u0142owami, ich godno\u015b\u0107 zosta\u0142a zerwana. N\u0119dzne monety w ich kieszeniach by\u0142y bezwarto\u015bciowe, a g\u0142\u00f3d szarpa\u0142 ich trzewia. Szepty blu\u017anierstw zast\u0105pi\u0142y modlitwy, a staro\u017cytna wiara usch\u0142a, pozostawiaj\u0105c puste \u015bwi\u0105tynie i o\u0142tarze. Na ulicach szepta\u0142o si\u0119, \"Rada sprzeda\u0142a nam dusze za zgni\u0142e ziarno, niech ich chuj strzeli!\""
+        }
     }
 }
