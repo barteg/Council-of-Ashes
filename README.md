@@ -87,7 +87,6 @@ This project is built with:
 *   **AI Engine:** Local LLM (via **Ollama**, default `qwen2.5:3b`) or Google Gemini for:
     *   Generating context-aware dilemmas.
     *   Interpreting player decisions to craft dynamic narrative outcomes.
-    *   **Safety Guardrails:** Strict content filtering for NSFW and hate speech.
 *   **Frontend:** HTML/JS/CSS (Jinja2 Templates) for responsive mobile/desktop UIs.
 *   **Audio:** Coqui XTTS v2 (Python) for AI-generated voiceovers of the narrative.
 
